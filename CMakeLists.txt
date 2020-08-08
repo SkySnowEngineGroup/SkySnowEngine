@@ -12,3 +12,11 @@ project(Phoneix)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 	cmake_policy(SET CMP0074 NEW)
 endif()
+
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Phoneix/Source/")
+set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Phoneix/RenderSystems/")
+set(PLUGINS "${CMAKE_CURRENT_SOURCE_DIR}/Phoneix/Plugins/")
+
+file(GLOB SRC_LISTS "${SOURCES_DIR}/*.cpp")
+
+add_executable(Phoneix ${SRC_LISTS})
