@@ -3,6 +3,8 @@
 .vscode
 *.log
 .vs
+
+# win proj config
 /Build/Window/CMakeFiles/
 /Build/Window/Phoneix/
 /Build/Window/CMakeCache.txt
