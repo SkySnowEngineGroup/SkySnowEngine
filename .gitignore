@@ -2,3 +2,8 @@
 .idea
 .vscode
 *.log
+.vs
+./Build/Window/CMakeFiles/
+./Build/Window/Phoneix/
+./Build/Window/CMakeCache.txt
+./Build/Window/cmake_install.cmake
