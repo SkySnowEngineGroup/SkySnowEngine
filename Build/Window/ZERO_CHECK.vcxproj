@@ -66,7 +66,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\StudyEnginer\PhoneixEngine\Phoneix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -76,7 +76,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\StudyEnginer\PhoneixEngine\Phoneix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -86,7 +86,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\StudyEnginer\PhoneixEngine\Phoneix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -96,7 +96,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
     <Midl>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\StudyEnginer\PhoneixEngine\Phoneix;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -108,7 +108,7 @@
     <CustomBuild Include="D:\StudyEnginer\PhoneixEngine\Build\Window\CMakeFiles\546edb0fa08795cbf48148a244a0da65\generate.stamp.rule">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Checking Build System</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
-D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/Phoneix.sln
+D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/PhoneixEngine.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -121,7 +121,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Checking Build System</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
-D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/Phoneix.sln
+D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/PhoneixEngine.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -134,7 +134,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Checking Build System</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
-D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/Phoneix.sln
+D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/PhoneixEngine.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -147,7 +147,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Checking Build System</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
-D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/Phoneix.sln
+D:\cmake-3.16.0-rc4-win64-x64\bin\cmake.exe -SD:/StudyEnginer/PhoneixEngine -BD:/StudyEnginer/PhoneixEngine/Build/Window --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/StudyEnginer/PhoneixEngine/Build/Window/PhoneixEngine.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone

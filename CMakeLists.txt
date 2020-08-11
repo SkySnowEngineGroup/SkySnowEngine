@@ -28,7 +28,7 @@
 #指定cmake版本
 cmake_minimum_required(VERSION 3.10)
 #工程名字
-project(Phoneix)
+project(PhoneixEngine)
 
 #camke 准则
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
@@ -38,5 +38,9 @@ endif()
 if(WIN32)
 	message("WIN32 Platform 测试数据")
 endif()
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)
+
+include_directories("${PROJECT_SOURCE_DIR}/Phoneix")
 
 add_subdirectory(Phoneix)
