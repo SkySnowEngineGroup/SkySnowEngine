@@ -28,7 +28,7 @@
 #指定cmake版本
 cmake_minimum_required(VERSION 3.10)
 #工程名字
-project(PhoneixEngine)
+project(SkySnow3D)
 
 #camke 准则
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
@@ -41,9 +41,9 @@ endif()
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)
 
-set(DEST_INCLUDE_DIR include/Phoneix)
+set(DEST_INCLUDE_DIR include/SkySnow3D)
 
-include_directories("${PROJECT_SOURCE_DIR}/Phoneix")
+include_directories("${PROJECT_SOURCE_DIR}/SkySnow3D")
 file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${DEST_INCLUDE_DIR}/ThirdParty)
 
-add_subdirectory(Phoneix)
+add_subdirectory(SkySnow3D)
