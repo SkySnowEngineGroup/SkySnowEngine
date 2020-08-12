@@ -20,11 +20,21 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/")
 set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
-set(PLUGINS "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
+set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
+#set(THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
+include_directories("${SOURCES_DIR}/Source")
+include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
+include_directories("${PLUGINS_DIR}/Plugins")
+#include_directories("${THIRDPARTY_DIR}/ThirdParty")
 
-add_executable(PhoneixEngine ${Sources_lists})
+add_subdirectory(Plugins)
+add_subdirectory(RenderSystems)
+add_subdirectory(Samples)
+add_subdirectory(Source)
+#add_subdirectory(ThirdParty)
+
+
+
