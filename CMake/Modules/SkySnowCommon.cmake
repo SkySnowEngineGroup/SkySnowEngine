@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhoneixEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,12 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/01_HelloWorld")
 
-file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
 
-add_executable(Samples SHARED ${Sources_lists})
 
-target_include_directories(Samples PRIVATE $<BUILD_INTERFACE:${SAMPLE_DIR}/>
-					      )
-target_link_libraries(Samples Plugins RenderSystems Source ) #ThirdParty
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)

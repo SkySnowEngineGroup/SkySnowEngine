@@ -24,7 +24,7 @@ set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
 
-add_library(Source SHARED ${Sources_lists})
+add_library(RenderSystems ${Sources_lists})
 
-target_include_directories(Source PRIVATE $<BUILD_INTERFACE:${SOURCES_DIR}>
+target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						  )

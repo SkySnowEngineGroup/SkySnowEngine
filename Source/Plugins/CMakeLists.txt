@@ -24,7 +24,7 @@ set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/LuaScript/*.cpp")
 
-add_library(Plugins SHARED ${Sources_lists})
+add_library(Plugins ${Sources_lists})
 
-target_include_directories(Plugins PRIVATE $<BUILD_INTERFACE:${SOURCES_DIR}>
+target_include_directories(Plugins PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						  )

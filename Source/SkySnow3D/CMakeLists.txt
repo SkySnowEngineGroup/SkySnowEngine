@@ -20,28 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-#======
-# cmake文件，编译各个平台对应的IDE工程
-# 其中vs和xcode的工程文件是可以动态调试源码
-# android工程的是打包为aar或者so包，然后android中自己配置cmake链接源码进行动态调试
-#======
-#指定cmake版本
-cmake_minimum_required(VERSION 3.10)
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
+file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
 
-#camke 准则
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
-	cmake_policy(SET CMP0074 NEW)
-endif()
+add_library(SkySnow3D ${Sources_lists})
 
-#工程名字
-project(SkySnow3D)
-
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-
-
-set(DEST_INCLUDE_DIR include/Source)
-
-file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${DEST_INCLUDE_DIR}/ThirdParty)
-
-add_subdirectory(Source)
+target_include_directories(SkySnow3D PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+						  )

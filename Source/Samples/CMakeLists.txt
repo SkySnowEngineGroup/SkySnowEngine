@@ -20,11 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/01_HelloWorld")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
+file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
 
-add_library(RenderSystems SHARED ${Sources_lists})
+add_executable(Samples ${Sources_lists})
 
-target_include_directories(RenderSystems PRIVATE $<BUILD_INTERFACE:${SOURCES_DIR}>
-						  )
+target_include_directories(Samples PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+					      )
+target_link_libraries(Samples Plugins RenderSystems SkySnow3D ) #ThirdParty

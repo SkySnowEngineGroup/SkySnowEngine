@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhoneixEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Source/")
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SkySnow3D/")
 set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
 set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
 #set(THIRDPARTY_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
-include_directories("${SOURCES_DIR}/Source")
+include_directories("${SOURCES_DIR}/SkySnow3D")
 include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
 include_directories("${PLUGINS_DIR}/Plugins")
 #include_directories("${THIRDPARTY_DIR}/ThirdParty")
@@ -33,7 +33,7 @@ include_directories("${PLUGINS_DIR}/Plugins")
 add_subdirectory(Plugins)
 add_subdirectory(RenderSystems)
 add_subdirectory(Samples)
-add_subdirectory(Source)
+add_subdirectory(SkySnow3D)
 #add_subdirectory(ThirdParty)
 
 
