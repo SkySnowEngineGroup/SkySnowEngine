@@ -169,6 +169,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
+    <ProjectReference Include="D:\StudyEnginer\SkySnowEngine\Build\Window\Source\ThirdParty\GLEW\GLEW.vcxproj">
+      <Project>{054268DD-6269-353E-A30A-020AABEB74F8}</Project>
+      <Name>GLEW</Name>
+    </ProjectReference>
     <ProjectReference Include="D:\StudyEnginer\SkySnowEngine\Build\Window\Source\Plugins\Plugins.vcxproj">
       <Project>{5B75777A-EF72-3500-8F20-2D75B29E9DA5}</Project>
       <Name>Plugins</Name>
