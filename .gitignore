@@ -2,17 +2,12 @@
 .idea
 .vscode
 *.log
-.vs
+*.vs
 
 # win proj config
 /Build/Window/CMakeFiles/
-/Build/Window/Phoneix/
+/Build/Window/include/
+/Build/Window/Source/
 /Build/Window/CMakeCache.txt
 /Build/Window/cmake_install.cmake
 /Build/Window/x64
-/Build/Mac/CMakeCache.txt
-/Build/Mac/CMakeScripts
-/Build/Mac/SkySnow3D.build
-/Build/Mac/Source
-/Build/Mac/CMakeFiles
-/Build/Mac/cmake_install.cmake

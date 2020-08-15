@@ -20,22 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SkySnow3D/")
-set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
-set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
-set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-include_directories("${SOURCES_DIR}/SkySnow3D")
-include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
-include_directories("${PLUGINS_DIR}/Plugins")
-include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
+file(GLOB Sources_lists "${SOURCES_DIR}/*.h"
+						"${SOURCES_DIR}/*.cpp"
+	)
 
-add_subdirectory(Plugins)
-add_subdirectory(RenderSystems)
-add_subdirectory(Samples)
-add_subdirectory(SkySnow3D)
-add_subdirectory(ThirdParty/GLEW)
-add_subdirectory(ThirdParty/imgui)
+add_library(imgui ${Sources_lists})
 
-
-
+target_include_directories(imgui PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+						  )
