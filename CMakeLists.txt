@@ -35,7 +35,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 endif()
 
 #工程名字
-project(SkySnow3D)
+project(Phonenix)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 

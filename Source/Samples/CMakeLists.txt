@@ -28,4 +28,4 @@ add_executable(Samples ${Sources_lists})
 
 target_include_directories(Samples PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
-target_link_libraries(Samples Plugins RenderSystems SkySnow3D GLEW) #ThirdParty
+target_link_libraries(Samples Plugins RenderSystems Phonenix GLEW) #ThirdParty
