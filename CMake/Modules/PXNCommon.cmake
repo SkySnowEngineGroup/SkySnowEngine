@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhoneixEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,4 +21,7 @@
 # THE SOFTWARE.
 #
 
-add_subdirectory(01_HelloWorld)
+
+
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 11)

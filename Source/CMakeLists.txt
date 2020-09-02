@@ -32,10 +32,10 @@ include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
 
 add_subdirectory(Plugins)
 add_subdirectory(RenderSystems)
-add_subdirectory(Samples)
 add_subdirectory(Phonenix)
-add_subdirectory(ThirdParty/GLEW)
-add_subdirectory(ThirdParty/imgui)
+add_subdirectory(Samples)
+add_subdirectory(ThirdParty/glfw)
+
 
 
 

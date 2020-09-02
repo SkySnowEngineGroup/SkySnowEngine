@@ -20,5 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_subdirectory(01_HelloWorld)
+file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
+
+add_executable(HelloWorld ${Sources_lists})
+
+target_include_directories(HelloWorld PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+					      )
+target_link_libraries(HelloWorld Plugins RenderSystems Phonenix glfw) #ThirdParty

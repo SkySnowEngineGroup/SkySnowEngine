@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhoneixEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,5 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_subdirectory(01_HelloWorld)
+file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
+
+add_library(Phonenix ${Sources_lists})
+
+target_include_directories(Phonenix PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+						  )
