@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2020-2022 the PhoneixEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,5 +21,12 @@
 # THE SOFTWARE.
 #
 
-add_subdirectory(01_HelloWorld)
-add_subdirectory(02_Window)
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+
+file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
+
+add_executable(Window ${Sources_lists})
+
+target_include_directories(Window PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
+
+target_link_libraries(Window Phonenix Plugins RenderSystems glfw ${OpenGL_LIBRARY}) #ThirdParty
