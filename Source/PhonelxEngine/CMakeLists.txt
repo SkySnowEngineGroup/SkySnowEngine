@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2020-2022 the SkySnowEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@ set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
 
-add_library(SkySnow3D ${Sources_lists})
+add_library(PhonelxEngine ${Sources_lists})
 
-target_include_directories(SkySnow3D PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+target_include_directories(PhonelxEngine PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						  )

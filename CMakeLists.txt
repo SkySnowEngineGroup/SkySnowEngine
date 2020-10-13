@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the SkySnowEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 endif()
 
 #工程名字
-project(SkySnow3D)
+project(PhonelxEngine)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 

@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the SkySnowEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/SkySnow3D/")
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/PhonelxEngine/")
 set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
 set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
 set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
-include_directories("${SOURCES_DIR}/SkySnow3D")
+include_directories("${SOURCES_DIR}/PhonelxEngine")
 include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
 include_directories("${PLUGINS_DIR}/Plugins")
 include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
@@ -33,7 +33,7 @@ include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
 add_subdirectory(Plugins)
 add_subdirectory(RenderSystems)
 add_subdirectory(Samples)
-add_subdirectory(SkySnow3D)
+add_subdirectory(PhonelxEngine)
 add_subdirectory(ThirdParty/GLEW)
 add_subdirectory(ThirdParty/imgui)
 

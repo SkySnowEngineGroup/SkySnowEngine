@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the SkySnowEngine project.
+# Copyright (c) 2020-2022 the PhonelxEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy

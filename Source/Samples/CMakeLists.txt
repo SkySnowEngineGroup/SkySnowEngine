@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the PhoneixEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,4 +28,4 @@ add_executable(Samples ${Sources_lists})
 
 target_include_directories(Samples PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
-target_link_libraries(Samples Plugins RenderSystems SkySnow3D GLEW) #ThirdParty
+target_link_libraries(Samples Plugins RenderSystems PhonelxEngine GLEW) #ThirdParty
