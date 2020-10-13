@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2020-2022 the PhonelxEngine project.
-# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,12 +20,6 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/01_HelloWorld")
 
-file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
-
-add_executable(Samples ${Sources_lists})
-
-target_include_directories(Samples PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
-					      )
-target_link_libraries(Samples Plugins RenderSystems PhonelxEngine GLEW) #ThirdParty
+add_subdirectory(01_HelloWorld)
+add_subdirectory(02_Window)

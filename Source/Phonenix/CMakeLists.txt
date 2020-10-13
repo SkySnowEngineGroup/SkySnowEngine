@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Copyright (c) 2020-2022 the SkySnowEngine project.
+# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,11 +22,13 @@
 #
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.c"
-						"${SOURCES_DIR}/*.cpp"
-	)
+file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
 
-add_library(GLEW ${Sources_lists})
 
-target_include_directories(GLEW PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+add_library(PhonelxEngine ${Sources_lists})
+
+add_library(Phonenix ${Sources_lists})
+
+
+target_include_directories(Phonenix PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						  )

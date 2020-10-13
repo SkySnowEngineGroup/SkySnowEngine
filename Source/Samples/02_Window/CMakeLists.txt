@@ -1,7 +1,6 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
-#
+# Copyright (c) 2020-2022 the PhoneixEngine project.
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -20,13 +19,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.h"
-						"${SOURCES_DIR}/*.cpp"
-	)
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-add_library(imgui ${Sources_lists})
+file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
 
-target_include_directories(imgui PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
-						  )
+add_executable(Window ${Sources_lists})
+
+target_include_directories(Window PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
+
+target_link_libraries(Window Phonenix Plugins RenderSystems glfw ${OpenGL_LIBRARY}) #ThirdParty
