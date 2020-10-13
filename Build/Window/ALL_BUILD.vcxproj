@@ -169,13 +169,17 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </ProjectReference>
-    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\ThirdParty\GLEW\GLEW.vcxproj">
-      <Project>{FAB04ACF-0DF4-3836-B2A2-4DBEA7FD2DE9}</Project>
-      <Name>GLEW</Name>
+    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\Samples\01_HelloWorld\HelloWorld.vcxproj">
+      <Project>{D2A82192-EC1B-3B76-AB11-6CD6CEE95FCE}</Project>
+      <Name>HelloWorld</Name>
     </ProjectReference>
-    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\PhonelxEngine\PhonelxEngine.vcxproj">
+    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\Phonenix\PhonelxEngine.vcxproj">
       <Project>{BB70DE5E-7BA6-3450-ACE6-8632407EBE24}</Project>
       <Name>PhonelxEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\Phonenix\Phonenix.vcxproj">
+      <Project>{08B22E14-39AB-3AAE-A1F7-EE28E70D7934}</Project>
+      <Name>Phonenix</Name>
     </ProjectReference>
     <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\Plugins\Plugins.vcxproj">
       <Project>{B9AB4F03-2C2F-3D48-B792-9FD8D9592497}</Project>
@@ -185,9 +189,13 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{DEA598E4-B173-3BC3-88DB-DDB708D08516}</Project>
       <Name>RenderSystems</Name>
     </ProjectReference>
-    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\Samples\Samples.vcxproj">
-      <Project>{FD054A5B-03DF-392E-AB04-A37F6787A71E}</Project>
-      <Name>Samples</Name>
+    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\Samples\02_Window\Window.vcxproj">
+      <Project>{042C7EB3-2932-35ED-88B4-3736AC5FC48D}</Project>
+      <Name>Window</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\ThirdParty\glfw\src\glfw.vcxproj">
+      <Project>{9EF643C0-10C4-36F6-B978-F18421C8D6E8}</Project>
+      <Name>glfw</Name>
     </ProjectReference>
     <ProjectReference Include="D:\PhoneIxEngine\Build\Window\Source\ThirdParty\imgui\imgui.vcxproj">
       <Project>{53BDCFC8-1AB6-3134-A14C-73E6C775781E}</Project>
