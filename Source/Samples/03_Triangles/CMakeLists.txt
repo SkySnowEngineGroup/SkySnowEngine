@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Copyright (c) 2020-2022 the PhoneixEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,37 +20,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Nuwa/")
-set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
-set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
-set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
-#find OpenGL Library
-if(WIN32)
-elseif(UNIX AND NOT APPLE)
-elseif(APPLE)
-    include_directories(/System/Library/Frameworks)
-    find_library(COCOA_LIBRARY Cocoa)
-    find_library(OpenGL_LIBRARY OpenGL)
-    find_library(IOKit_LIBRARY IOKit)
-    find_library(CoreVideo_LIBRARY CoreVideo)
-    message("find library OpenGL Library ${OpenGL_LIBRARY}")
-else()
-endif(WIN32)
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp")
 
-include_directories("${SOURCES_DIR}/Nuwa")
-include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
-include_directories("${PLUGINS_DIR}/Plugins")
-include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
-
-add_subdirectory(Plugins)
-add_subdirectory(RenderSystems)
-add_subdirectory(Nuwa)
-add_subdirectory(Samples)
-
-add_subdirectory(ThirdParty/imgui)
-add_subdirectory(ThirdParty/glfw)
-
-
-
-
+add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
+target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
+target_link_libraries(Triangle Nuwa Plugins RenderSystems glfw ${OpenGL_LIBRARY}) #ThirdParty

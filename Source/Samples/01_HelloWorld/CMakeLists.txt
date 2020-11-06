@@ -29,4 +29,4 @@ add_executable(HelloWorld ${Sources_lists})
 
 target_include_directories(HelloWorld PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
-target_link_libraries(HelloWorld Phonenix Plugins RenderSystems glfw ${OpenGL_LIBRARY}) #ThirdParty
+target_link_libraries(HelloWorld Nuwa Plugins RenderSystems glfw ${OpenGL_LIBRARY}) #ThirdParty
