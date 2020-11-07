@@ -21,5 +21,10 @@
 # THE SOFTWARE.
 #
 
+set(FRAMEWORK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Frameworks")
+file(GLOB Frameworks_lists  "${FRAMEWORK_DIR}/*.cpp")
+include_directories(PUBLIC $<BUILD_INTERFACE:${FRAMEWORK_DIR}/>)
+
 add_subdirectory(01_HelloWorld)
 add_subdirectory(02_Window)
+add_subdirectory(03_Triangles)

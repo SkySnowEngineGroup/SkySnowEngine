@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include <GLFW/glfw3.h>
-#include "Frameworks/nw_renderpipeline.h"
+#include "nw_renderpipeline.h"
 
 //glfw callbacks
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);

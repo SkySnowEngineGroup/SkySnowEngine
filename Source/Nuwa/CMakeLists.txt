@@ -25,10 +25,9 @@ set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
 
 
-add_library(PhonelxEngine ${Sources_lists})
+add_library(NuwaEngine ${Sources_lists})
+add_library(Nuwa ${Sources_lists})
 
-add_library(Phonenix ${Sources_lists})
 
-
-target_include_directories(Phonenix PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						  )

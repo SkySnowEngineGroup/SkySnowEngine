@@ -13,7 +13,7 @@ namespace nw
 
     }
 
-    GLuint RenderPipeline::loadShader(GLenum type, const char* shaderScr)
+    GLuint RenderPipeline::loadShader(GLenum type, const char* shaderSrc)
     {
         GLuint shader;
         GLint compiled;
