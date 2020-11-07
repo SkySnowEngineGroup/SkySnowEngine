@@ -27,6 +27,7 @@ set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
 #find OpenGL Library
 if(WIN32)
+    set(OpenGL_LIBRARY opengl32)
 elseif(UNIX AND NOT APPLE)
 elseif(APPLE)
     include_directories(/System/Library/Frameworks)
