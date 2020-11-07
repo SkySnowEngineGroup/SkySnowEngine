@@ -49,7 +49,7 @@ add_subdirectory(Nuwa)
 add_subdirectory(Samples)
 
 add_subdirectory(ThirdParty/imgui)
-add_subdirectory(ThirdParty/glfw)
+add_subdirectory(ThirdParty/glfw3)
 
 
 
