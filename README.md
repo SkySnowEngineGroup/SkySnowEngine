@@ -1,4 +1,4 @@
-# PhoneixEngine
+# NuwaEngine
 Mobile rendering engine, cool effects and cutting-edge rendering technology
 
 ### 1.Compile Engineering
@@ -13,4 +13,4 @@ then,open the command line tool,input order：
 cmake ../..
 ```
 
-final,open Phoneix.sln project
+final,open Nuwa.sln project
