@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Copyright (c) 2020-2022 the NuwaEngine project.
 # Open source is written by wangcan(crygl)、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,11 +20,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
+#该链接是讲解如何使用camke的文件，可以参考使用
+#https://www.cnblogs.com/hgwang/p/9100343.html
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
+file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
+		"${SOURCES_DIR}/src/*.cpp"	)
 
-add_library(RenderSystems ${Sources_lists})
+file(GLOB_RECURSE CURRENT_HEADERS *.h *.hpp)
+source_group("include"FILES ${CURRENT_HEADERS})
 
-target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+add_library(RenderSystems ${Sources_lists} ${CURRENT_HEADERS})
+
+target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
 						  )
