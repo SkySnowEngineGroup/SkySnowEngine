@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhoneixEngine project.
+# Copyright (c) 2020-2022 the NuwaEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

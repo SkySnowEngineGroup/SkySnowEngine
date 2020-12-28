@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the SkySnowEngine project.
+# Copyright (c) 2020-2022 the NuwaEngine project.
 # Open source is written by wangcan(crygl)、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@ set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
 
 
-add_library(NuwaEngine ${Sources_lists})
+#add_library(NuwaEngine ${Sources_lists})
 add_library(Nuwa ${Sources_lists})
 
 
