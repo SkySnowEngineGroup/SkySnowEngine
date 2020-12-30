@@ -26,6 +26,9 @@
 # android工程的是打包为aar或者so包，然后android中自己配置cmake链接源码进行动态调试
 #======
 #指定cmake版本
+#该链接是讲解如何使用camke的文件，可以参考使用
+#https://www.cnblogs.com/hgwang/p/9100343.html
+
 cmake_minimum_required(VERSION 3.10)
 
 

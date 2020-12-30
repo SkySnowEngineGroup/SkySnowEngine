@@ -20,17 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-#该链接是讲解如何使用camke的文件，可以参考使用
-#https://www.cnblogs.com/hgwang/p/9100343.html
+
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+#Window OpenGL Platform Dir Path
+set(Sources_Dir_Window "${CMAKE_CURRENT_SOURCE_DIR}/OpenGLDrv/Window")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
-		"${SOURCES_DIR}/src/*.cpp"	)
+			            "${SOURCES_DIR}/*.h	")
 
-file(GLOB_RECURSE CURRENT_HEADERS *.h *.hpp)
-source_group("include"FILES ${CURRENT_HEADERS})
-
-add_library(RenderSystems ${Sources_lists} ${CURRENT_HEADERS})
+add_library(RenderSystems ${Sources_lists})
 
 target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
 						  )

@@ -30,5 +30,5 @@ file(GLOB Sources_lists "${SOURCES_DIR}/glad/*.h"
 add_library(glad ${Sources_lists})
 
 target_include_directories(glad PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
-								PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+								PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/glad/
 						  )
