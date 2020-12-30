@@ -1,6 +1,7 @@
 #
 # Copyright (c) 2020-2022 the NuwaEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -19,13 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+file(GLOB Sources_lists "${SOURCES_DIR}/glad/*.h"
+		                "${SOURCES_DIR}/glad/*.c"
+						"${SOURCES_DIR}/*.c"
+	)
 
-file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
+add_library(glad ${Sources_lists})
 
-add_executable(Window ${Sources_lists})
-
-target_include_directories(Window PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
-
-target_link_libraries(Window Nuwa Plugins RenderSystems glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+target_include_directories(glad PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+								PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+						  )

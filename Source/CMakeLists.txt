@@ -51,6 +51,7 @@ add_subdirectory(Samples)
 
 add_subdirectory(ThirdParty/imgui)
 add_subdirectory(ThirdParty/glfw3)
+add_subdirectory(ThirdParty/Glad)
 
 
 

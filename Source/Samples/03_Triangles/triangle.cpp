@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <iostream>
-#include <GLFW/glfw3.h>
 #include "nw_renderpipeline.h"
 
 //glfw callbacks
@@ -13,7 +12,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     
-    GLFWwindow* window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "NuwaTriangle", NULL, NULL);
     if(window == NULL)
     {
         std::cout<< "Failed to create GLFW window" << std::endl;
@@ -21,6 +20,8 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
+    gladLoadGL(glfwGetProcAddress);
+    glfwSwapInterval(1);
     //register callbacks
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glViewport(0, 0, 800, 600);

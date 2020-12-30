@@ -1,6 +1,6 @@
-#ifndef NWRENDERPIPELINE_H
-#define NWRENDERPIPELINE_H
-
+#pragma once
+#define GLFW_INCLUDE_NONE
+#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
 namespace nw
@@ -18,5 +18,3 @@ namespace nw
         GLuint pipeline = -1;
     };
 }
-
-#endif
