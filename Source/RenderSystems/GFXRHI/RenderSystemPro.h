@@ -30,6 +30,8 @@ namespace Nuwa
 #define PLATFORM_MAC 4
 #define PLATFORM_LINUX 5
 
+#define DEBUG 1
+#define NUWA_LOG_TAG "Nuwa:"
 #define PLATFORM PLATFORM_UNKNOW
 //ф╫л╗еп╤о
 #if defined(__ANDROID__) || defined(ANDROID)

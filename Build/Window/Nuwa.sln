@@ -73,7 +73,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ZERO_CHECK", "ZERO_CHECK.vc
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "Source\ThirdParty\glad\glad.vcxproj", "{AC60F7FD-AB0B-3892-87C5-5C9597401A94}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glad", "Source\ThirdParty\Glad\glad.vcxproj", "{AC60F7FD-AB0B-3892-87C5-5C9597401A94}"
 	ProjectSection(ProjectDependencies) = postProject
 		{75BEA800-B0D6-301D-BC4C-A982BAA4075F} = {75BEA800-B0D6-301D-BC4C-A982BAA4075F}
 	EndProjectSection
