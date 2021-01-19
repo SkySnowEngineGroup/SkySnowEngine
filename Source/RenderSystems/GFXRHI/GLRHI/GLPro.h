@@ -20,10 +20,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#include "GFXDevice.h"
-
-namespace grapi
-{
-
-}
+#pragma once
+#include "RenderSystemPro.h"
+#if PLATFORM == PLATFORM_WINDOW
+#define GLFW_INCLUDE_NONE
+#include <glad/gl.h>
+#include <GLFW/glfw3.h>
+#endif // 0

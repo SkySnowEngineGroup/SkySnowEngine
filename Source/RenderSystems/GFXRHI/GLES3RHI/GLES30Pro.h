@@ -20,10 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#include "GFXDevice.h"
-
-namespace grapi
-{
-
-}
+#pragma once
+#include "RenderSystemPro.h"
+#if PLATFORM == PLATFORM_ANDROID
+#include <GLES3/gl3.h>
+#include <GLES3/gl3ext.h>
+#elif PLATFORM == PLATFORM_IOS
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
+//GPU加速使用
+#if __has_include(<simd/simd.h>)
+#	ifndef WBSIMD
+#		define WBSIMD
+#	endif
+#endif
+#endif

@@ -22,13 +22,23 @@
 #
 
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-#Window OpenGL Platform Dir Path
-set(Sources_Dir_Window "${CMAKE_CURRENT_SOURCE_DIR}/OpenGLDrv/Window")
-
+#GFX Render hardware interface
+set(SOURCE_GLRHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI/GLRHI")
+set(SOURCE_GLES3RHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI/GLES3RHI")
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
-			            "${SOURCES_DIR}/*.h	")
+                        "${SOURCES_DIR}/*.h"
+						"${SOURCES_DIR}/GFXRHI/*.h"
+						"${SOURCES_DIR}/GFXRHI/*.cpp"
+                        "${SOURCE_GLRHI_DIR}/*.h"
+						"${SOURCE_GLES3RHI_DIR}/*.h"
+						"${SOURCE_GLRHI_DIR}/*.cpp"
+						"${SOURCE_GLES3RHI_DIR}/*.cpp")
 
 add_library(RenderSystems ${Sources_lists})
 
 target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
-						  )
+                           RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/GFXRHI/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLRHI_DIR}>/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLES3RHI_DIR}>/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/GLAD/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
