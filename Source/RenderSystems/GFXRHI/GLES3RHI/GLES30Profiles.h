@@ -21,7 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-namespace NuWa
-{
-	
-};
+#include "RenderSystemProfiles.h"
+#if PLATFORM == PLATFORM_ANDROID
+#include <GLES3/gl3.h>
+#include <GLES3/gl3ext.h>
+#elif PLATFORM == PLATFORM_IOS
+#include <OpenGLES/ES3/gl.h>
+#include <OpenGLES/ES3/glext.h>
+//GPU加速使用
+#if __has_include(<simd/simd.h>)
+#	ifndef WBSIMD
+#		define WBSIMD
+#	endif
+#endif
+#endif

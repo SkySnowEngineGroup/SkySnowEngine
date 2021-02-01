@@ -20,10 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#include "GFXDevice.h"
-
-namespace grapi
-{
-
-}
+#pragma once
+#include "RenderSystemProfiles.h"
+#if PLATFORM == PLATFORM_WINDOW
+#define GLFW_INCLUDE_NONE
+#include <stdarg.h>
+#include <stdio.h>
+#include <glad/gl.h>
+#include <GLFW/glfw3.h>
+#define LOGI(...) if(DEBUG) printf(NUWA_LOG_TAG,__VA_ARGS__)
+#endif // 0

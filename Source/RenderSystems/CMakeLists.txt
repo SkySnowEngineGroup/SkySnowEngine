@@ -23,6 +23,7 @@
 
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 #GFX Render hardware interface
+set(SOURCE_RHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RHI")
 set(SOURCE_GLRHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI/GLRHI")
 set(SOURCE_GLES3RHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI/GLES3RHI")
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
@@ -32,11 +33,14 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
                         "${SOURCE_GLRHI_DIR}/*.h"
 						"${SOURCE_GLES3RHI_DIR}/*.h"
 						"${SOURCE_GLRHI_DIR}/*.cpp"
-						"${SOURCE_GLES3RHI_DIR}/*.cpp")
+						"${SOURCE_GLES3RHI_DIR}/*.cpp"
+						"${SOURCE_RHI_DIR}/*.cpp"
+						"${SOURCE_RHI_DIR}/*.h")
 
 add_library(RenderSystems ${Sources_lists})
 
 target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_RHI_DIR}>/
                            RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/GFXRHI/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLRHI_DIR}>/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLES3RHI_DIR}>/
