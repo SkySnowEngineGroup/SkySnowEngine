@@ -205,6 +205,10 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <Project>{6469A140-4666-3BB1-B7D8-4F5D98050D02}</Project>
       <Name>imgui</Name>
     </ProjectReference>
+    <ProjectReference Include="D:\NuwaEngine\Build\Window\Source\ThirdParty\pthreads_win32\pthread_win32.vcxproj">
+      <Project>{9A9A7122-4A1E-3E56-98C9-65C7E749BA3E}</Project>
+      <Name>pthread_win32</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -52,7 +52,9 @@ add_subdirectory(Samples)
 add_subdirectory(ThirdParty/imgui)
 add_subdirectory(ThirdParty/glfw3)
 add_subdirectory(ThirdParty/Glad)
-
+if(WIN32)
+add_subdirectory(ThirdParty/pthreads_win32)
+endif(WIN32)
 
 
 

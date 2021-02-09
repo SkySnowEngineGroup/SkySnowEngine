@@ -22,7 +22,6 @@
 //
 #include "TestRenderSystem.h"
 
-
 TestRenderSystem::TestRenderSystem()
 {
 }

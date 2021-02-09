@@ -21,8 +21,14 @@
 # THE SOFTWARE.
 #
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+set(SOURCES_THREADS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Threads/")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp")
+file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
+	                    "${SOURCES_DIR}/*.h"
+						"${SOURCES_THREADS_DIR}/*.cpp"
+						"${SOURCES_THREADS_DIR}/*.h"
+						"${SOURCES_THREADS_DIR}/Possix/*.cpp"
+						"${SOURCES_THREADS_DIR}/Possix/*.h")
 
 
 #add_library(NuwaEngine ${Sources_lists})
@@ -30,4 +36,14 @@ add_library(Nuwa ${Sources_lists})
 
 
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
-						  )
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Possix/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GFXRHI/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GFXRHI/GLES3RHI/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GFXRHI/GLRHI/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/RHI/)
+#在win32平台使用Pthreads库
+if(WIN32)
+target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/pthreads_win32/pthreads.2/)
+endif(WIN32)
