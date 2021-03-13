@@ -31,9 +31,8 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCES_THREADS_DIR}/Possix/*.h")
 
 
-#add_library(NuwaEngine ${Sources_lists})
 add_library(Nuwa ${Sources_lists})
-
+set_property(TARGET Nuwa PROPERTY FOLDER "Nuwa")
 
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
