@@ -24,8 +24,9 @@
 set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
+file(GLOB Headers_lists "${SAMPLE_DIR}/*.h")
 
-add_executable(HelloWorld ${Sources_lists})
+add_executable(HelloWorld ${Headers_lists} ${Sources_lists})
 
 target_include_directories(HelloWorld PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
