@@ -21,18 +21,26 @@
 # THE SOFTWARE.
 #
 
+# Define target name
+set (TARGET_NAME RenderSystems)
+
+# dispaly folder in MSVS
+#set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
+
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 #GFX Render hardware interface
 set(SOURCE_RHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RHI")
+set(SOURCE_GFXRHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI")
 set(SOURCE_GLRHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI/GLRHI")
 set(SOURCE_GLES3RHI_DIR "${CMAKE_CURRENT_SOURCE_DIR}/GFXRHI/GLES3RHI")
 
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
                         "${SOURCES_DIR}/*.h"
-						"${SOURCES_DIR}/GFXRHI/*.h"
-						"${SOURCES_DIR}/GFXRHI/*.cpp"
+						"${SOURCE_GFXRHI_DIR}/*.h"
+						"${SOURCE_GFXRHI_DIR}/*.cpp"
                         "${SOURCE_GLRHI_DIR}/*.h"
 						"${SOURCE_GLES3RHI_DIR}/*.h"
 						"${SOURCE_GLRHI_DIR}/*.cpp"
@@ -40,9 +48,27 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCE_RHI_DIR}/*.cpp"
 						"${SOURCE_RHI_DIR}/*.h")
 
+#RHI分组
+file(GLOB Sources_RHI_lists "${SOURCE_RHI_DIR}/*.cpp"
+						"${SOURCE_RHI_DIR}/*.h")
+SOURCE_GROUP("Source Files\\RHI" FILES ${Sources_RHI_lists})
 
-#set_property(TARGET RenderSystems PROPERTY FOLDER "RenderSystems")
+#GFXRHI分组
+file(GLOB Sources_GFXRHI_lists "${SOURCE_GFXRHI_DIR}/*.cpp"
+						"${SOURCE_GFXRHI_DIR}/*.h")
+SOURCE_GROUP("Source Files\\GFXRHI" FILES ${Sources_GFXRHI_lists})
 
+#GLRHI分组
+file(GLOB Sources_GLRHI_lists "${SOURCE_GLRHI_DIR}/*.cpp"
+						"${SOURCE_GLRHI_DIR}/*.h")
+SOURCE_GROUP("Source Files\\GFXRHI\\GLRHI" FILES ${Sources_GLRHI_lists})
+
+#GLES3RHI分组
+file(GLOB Sources_GLES3RHI_lists "${SOURCE_GLES3RHI_DIR}/*.cpp"
+						"${SOURCE_GLES3RHI_DIR}/*.h")
+SOURCE_GROUP("Source Files\\GFXRHI\\GLES3RHI" FILES ${Sources_GLES3RHI_lists})
+
+ 
 add_library(RenderSystems ${Sources_lists})
 target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_RHI_DIR}>/
@@ -51,3 +77,5 @@ target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLES3RHI_DIR}>/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/GLAD/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
+
+
