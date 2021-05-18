@@ -68,6 +68,10 @@ file(GLOB Sources_GLES3RHI_lists "${SOURCE_GLES3RHI_DIR}/*.cpp"
 						"${SOURCE_GLES3RHI_DIR}/*.h")
 SOURCE_GROUP("Source Files\\GFXRHI\\GLES3RHI" FILES ${Sources_GLES3RHI_lists})
 
+#根目录头文件移动到SourceFiles下
+file(GLOB Sources_Root_lists "${SOURCES_DIR}/*.h")
+SOURCE_GROUP("Source Files" FILES ${Sources_Root_lists})
+
  
 add_library(RenderSystems ${Sources_lists})
 target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
