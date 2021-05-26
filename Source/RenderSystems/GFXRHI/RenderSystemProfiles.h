@@ -33,7 +33,7 @@ namespace Nuwa
 #define DEBUG 1
 #define NUWA_LOG_TAG "Nuwa:"
 #define PLATFORM PLATFORM_UNKNOW
-//ф╫л╗еп╤о
+//config various platforms
 #if defined(__ANDROID__) || defined(ANDROID)
 #	undef  PLATFORM
 #	define PLATFORM PLATFORM_ANDROID

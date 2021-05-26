@@ -39,17 +39,10 @@ endif()
 
 #工程名字
 project(Nuwa)
-option(USE_SOLUTION_FOLDERS "使用资源管理器文件夹" ON)
-option(GROUP_BY_EXPLORER ON)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
 set(DEST_INCLUDE_DIR include/Source)
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/Binaries)
-
-if(USE_SOLUTION_FOLDERS)
-	set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-	set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
-endif()
 
 add_subdirectory(Source)

@@ -44,17 +44,8 @@ include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
 include_directories("${PLUGINS_DIR}/Plugins")
 include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
 
+add_subdirectory(Nuwa)
 add_subdirectory(Plugins)
 add_subdirectory(RenderSystems)
-add_subdirectory(Nuwa)
 add_subdirectory(Samples)
-
-add_subdirectory(ThirdParty/imgui)
-add_subdirectory(ThirdParty/glfw3)
-add_subdirectory(ThirdParty/Glad)
-if(WIN32)
-add_subdirectory(ThirdParty/pthreads_win32)
-endif(WIN32)
-
-
-
+add_subdirectory(ThirdParty)

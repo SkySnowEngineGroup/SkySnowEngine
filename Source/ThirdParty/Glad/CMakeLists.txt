@@ -26,6 +26,12 @@ file(GLOB Sources_lists "${SOURCES_DIR}/glad/*.h"
 		                "${SOURCES_DIR}/glad/*.c"
 						"${SOURCES_DIR}/*.c"
 	)
+foreach(source IN LISTS Sources_lists)
+    file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
+    get_filename_component(source_path "${source_rel}" PATH)
+    string(REPLACE "/" "\\" source_path_dir "${source_path}")
+    source_group("${source_path_dir}" FILES "${source}")
+endforeach()
 
 add_library(glad ${Sources_lists})
 

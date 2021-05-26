@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2020-2022 the NuwaEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,13 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-file(GLOB Sources_lists "${SOURCES_DIR}/*.h"
-						"${SOURCES_DIR}/*.cpp"
-	)
+set (TARGET_NAME ThirdParty)
 
-add_library(imgui ${Sources_lists})
+set(ThirdParty_Dir "${CMAKE_CURRENT_SOURCE_DIR}")
 
-target_include_directories(imgui PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
-						  )
+add_subdirectory(imgui)
+add_subdirectory(glfw3)
+add_subdirectory(Glad)
+
+if(WIN32)
+add_subdirectory(pthreads_win32)
+endif(WIN32)

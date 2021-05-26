@@ -24,10 +24,6 @@
 # Define target name
 set (TARGET_NAME RenderSystems)
 
-# dispaly folder in MSVS
-#set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-
-
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 #GFX Render hardware interface
@@ -48,31 +44,13 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCE_RHI_DIR}/*.cpp"
 						"${SOURCE_RHI_DIR}/*.h")
 
-#RHI分组
-file(GLOB Sources_RHI_lists "${SOURCE_RHI_DIR}/*.cpp"
-						"${SOURCE_RHI_DIR}/*.h")
-SOURCE_GROUP("Source Files\\RHI" FILES ${Sources_RHI_lists})
+foreach(source IN LISTS Sources_lists)
+	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
+	get_filename_component(source_path "${source_rel}" PATH)
+	string(REPLACE "/" "\\" source_path_dir "${source_path}")
+	source_group("${source_path_dir}" FILES "${source}")
+endforeach()
 
-#GFXRHI分组
-file(GLOB Sources_GFXRHI_lists "${SOURCE_GFXRHI_DIR}/*.cpp"
-						"${SOURCE_GFXRHI_DIR}/*.h")
-SOURCE_GROUP("Source Files\\GFXRHI" FILES ${Sources_GFXRHI_lists})
-
-#GLRHI分组
-file(GLOB Sources_GLRHI_lists "${SOURCE_GLRHI_DIR}/*.cpp"
-						"${SOURCE_GLRHI_DIR}/*.h")
-SOURCE_GROUP("Source Files\\GFXRHI\\GLRHI" FILES ${Sources_GLRHI_lists})
-
-#GLES3RHI分组
-file(GLOB Sources_GLES3RHI_lists "${SOURCE_GLES3RHI_DIR}/*.cpp"
-						"${SOURCE_GLES3RHI_DIR}/*.h")
-SOURCE_GROUP("Source Files\\GFXRHI\\GLES3RHI" FILES ${Sources_GLES3RHI_lists})
-
-#根目录头文件移动到SourceFiles下
-file(GLOB Sources_Root_lists "${SOURCES_DIR}/*.h")
-SOURCE_GROUP("Source Files" FILES ${Sources_Root_lists})
-
- 
 add_library(RenderSystems ${Sources_lists})
 target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_RHI_DIR}>/

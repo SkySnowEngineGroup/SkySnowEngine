@@ -14,3 +14,14 @@ cmake ../..
 ```
 
 final,open Nuwa.sln project
+
+#### 1.2  MacOS Xcode
+
+First cd “Build/Mac”directory
+
+then,open the command line tool ,input order:
+
+```
+cmake -G "Xcode" ../..
+```
+
