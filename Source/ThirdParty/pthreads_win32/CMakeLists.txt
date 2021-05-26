@@ -26,6 +26,14 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
                         "${SOURCES_DIR}/*.h"
 					    "${SOURCES_DIR}/pthreads.2/*.c"
 					    "${SOURCES_DIR}/pthreads.2/*.h")
+
+foreach(source IN LISTS Sources_lists)
+	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
+	get_filename_component(source_path "${source_rel}" PATH)
+	string(REPLACE "/" "\\" source_path_dir "${source_path}")
+	source_group("${source_path_dir}" FILES "${source}")
+endforeach()
+
 add_library(pthread_win32 ${Sources_lists})
 
 target_include_directories(pthread_win32 PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/

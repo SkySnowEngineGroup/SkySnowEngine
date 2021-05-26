@@ -30,18 +30,21 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCES_THREADS_DIR}/Possix/*.cpp"
 						"${SOURCES_THREADS_DIR}/Possix/*.h")
 
+foreach(source IN LISTS Sources_lists)
+	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
+	get_filename_component(source_path "${source_rel}" PATH)
+	string(REPLACE "/" "\\" source_path_dir "${source_path}")
+	source_group("${source_path_dir}" FILES "${source}")
+endforeach()
 
 add_library(Nuwa ${Sources_lists})
-set_property(TARGET Nuwa PROPERTY FOLDER "Nuwa")
 
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Possix/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/
-						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GFXRHI/
-						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GFXRHI/GLES3RHI/
-						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GFXRHI/GLRHI/
-						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/RHI/)
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GRI/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../RenderSystems/GLGRI/)
 #在win32平台使用Pthreads库
 if(WIN32)
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/pthreads_win32/pthreads.2/)
