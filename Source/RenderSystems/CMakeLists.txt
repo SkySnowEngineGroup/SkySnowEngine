@@ -32,7 +32,15 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCE_GRI_DIR}/*.h"
 						"${SOURCE_GRI_DIR}/*.cpp"
                         "${SOURCE_GLGRI_DIR}/*.h"
-						"${SOURCE_GLGRI_DIR}/*.cpp")
+						"${SOURCE_GLGRI_DIR}/*.cpp"
+						"${SOURCE_GLGRI_DIR}/Android/*.h"
+						"${SOURCE_GLGRI_DIR}/Android/*.cpp"
+						"${SOURCE_GLGRI_DIR}/Ios/*.h"
+						"${SOURCE_GLGRI_DIR}/Ios/*.cpp"
+						"${SOURCE_GLGRI_DIR}/Mac/*.h"
+						"${SOURCE_GLGRI_DIR}/Mac/*.cpp"
+						"${SOURCE_GLGRI_DIR}/Window/*.h"
+						"${SOURCE_GLGRI_DIR}/Window/*.cpp")
 
 foreach(source IN LISTS Sources_lists)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
@@ -46,6 +54,10 @@ target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../Nuwa/
                            RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Android/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Ios/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Mac/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Window/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/GLAD/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
 

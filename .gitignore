@@ -5,19 +5,8 @@
 *.vs
 
 # win proj config
-/Build/Window/CMakeFiles/
-/Build/Window/include/
-/Build/Window/Source/
-/Build/Window/CMakeCache.txt
-/Build/Window/cmake_install.cmake
-/Build/Window/x64
+/Build/Window/
 #mac proj config
 /build/Mac/
-/Build/Mac/CMakeScripts
-/Build/Mac/CMakeFiles
-/Build/Mac/CMakeCache.txt
-/Build/Mac/cmake_install.cmake
-/Build/Mac/Phonenix.build
-/Build/Mac/Source
 /Binaries/
 /bcmake

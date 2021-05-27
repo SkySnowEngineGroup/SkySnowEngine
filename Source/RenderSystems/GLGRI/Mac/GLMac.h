@@ -20,15 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
 #pragma once
+
 namespace Nuwa
 {
-	//根据不同平台创建不同的渲染API
-	class DynamicGFX
+	namespace glgri
 	{
-	public:
 
-	};
-
-	DynamicGFX* createPlatformGFX();
-};
+	}
+}

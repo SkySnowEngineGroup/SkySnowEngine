@@ -24,7 +24,7 @@
 set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp"
 	                     "${SAMPLE_DIR}/*.h"
-	)
+						 )
 
 add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
 target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
