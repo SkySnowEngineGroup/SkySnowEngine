@@ -24,7 +24,7 @@
 #pragma once
 namespace Nuwa
 {
-	namespace glesgri
+	namespace glgri
 	{
 		
 	}
