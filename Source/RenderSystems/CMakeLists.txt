@@ -58,7 +58,7 @@ target_include_directories(RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Ios/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Mac/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Window/
-						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/GLAD/
+						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Glad/
 						   RenderSystems PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
 
 

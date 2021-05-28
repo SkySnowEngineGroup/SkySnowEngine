@@ -22,13 +22,16 @@
 #
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(SOURCES_THREADS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Threads/")
+set(SOURCE_APPLICATION_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Application/")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 	                    "${SOURCES_DIR}/*.h"
 						"${SOURCES_THREADS_DIR}/*.cpp"
 						"${SOURCES_THREADS_DIR}/*.h"
 						"${SOURCES_THREADS_DIR}/Possix/*.cpp"
-						"${SOURCES_THREADS_DIR}/Possix/*.h")
+						"${SOURCES_THREADS_DIR}/Possix/*.h"
+						"${SOURCE_APPLICATION_DIR}/*.cpp"
+						"${SOURCE_APPLICATION_DIR}/*.h")
 
 foreach(source IN LISTS Sources_lists)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")

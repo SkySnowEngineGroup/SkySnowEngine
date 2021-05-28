@@ -23,11 +23,9 @@
 
 set (TARGET_NAME ThirdParty)
 
-set(ThirdParty_Dir "${CMAKE_CURRENT_SOURCE_DIR}")
-
 add_subdirectory(imgui)
-add_subdirectory(glfw3)
 add_subdirectory(Glad)
+add_subdirectory(glfw3)
 
 if(WIN32)
 add_subdirectory(pthreads_win32)
