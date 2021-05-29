@@ -36,7 +36,7 @@
 #endif
 #endif
 
-#if PLATFORM == PLATFORM_WINDOW
+#if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
 #define GLFW_INCLUDE_NONE
 #include <stdarg.h>
 #include <stdio.h>

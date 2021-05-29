@@ -23,7 +23,7 @@
 #pragma once
 #define GRI_UNKNOW 0
 #define GRI_GL 1
-#define GRI_VULKAN £²
+#define GRI_VULKAN 2
 #define GRI_METAL 3
 
 #define GRI_PLATFORM GRI_GL
