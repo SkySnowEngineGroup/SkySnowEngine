@@ -22,6 +22,8 @@
 //
 #pragma once
 #include "GRIProfiles.h"
+#include <stdlib.h>
+#include <iostream>
 namespace Nuwa
 {
 	namespace Engine

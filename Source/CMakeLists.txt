@@ -22,7 +22,6 @@
 #
 
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
 set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
 set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
@@ -41,12 +40,10 @@ else()
 endif(WIN32)
 
 include_directories("${SOURCES_DIR}/Nuwa")
-include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
 include_directories("${PLUGINS_DIR}/Plugins")
 include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
 
 add_subdirectory(Nuwa)
 add_subdirectory(Plugins)
-add_subdirectory(RenderSystems)
 add_subdirectory(Samples)
 add_subdirectory(ThirdParty)

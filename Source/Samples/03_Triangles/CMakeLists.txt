@@ -28,4 +28,4 @@ file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp"
 
 add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
 target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
-target_link_libraries(Triangle Nuwa Plugins RenderSystems glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+target_link_libraries(Triangle Nuwa Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty

@@ -2,6 +2,10 @@
 #include <iostream>
 #include "nw_renderpipeline.h"
 
+class Triangle
+{
+
+};
 //glfw callbacks
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
