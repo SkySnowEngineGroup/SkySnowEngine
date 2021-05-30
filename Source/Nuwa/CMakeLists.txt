@@ -60,6 +60,7 @@ endforeach()
 add_library(Nuwa ${Sources_lists})
 
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_APPLICATION_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Possix/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_RS_DIR}>/

@@ -31,6 +31,8 @@ namespace Nuwa
 #define PLATFORM_LINUX 5
 
 #define DEBUG 1
+#define DEFAUT_WADTH 800
+#define DEFAUT_HEIGHT 600
 #define NUWA_LOG_TAG "Nuwa:"
 #define PLATFORM PLATFORM_UNKNOW
 //config various platforms
