@@ -20,7 +20,7 @@ namespace Nuwa
 
 			while (app->Update())
 			{
-				break;
+				//break;
 			}
 			return app->ShutDown();
 		}
