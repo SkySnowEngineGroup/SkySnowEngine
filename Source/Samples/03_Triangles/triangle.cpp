@@ -29,7 +29,7 @@ public:
         {
             std::cout<< "Failed to create GLFW window" << std::endl;
             glfwTerminate();
-            return -1;
+            return ;
         }
         glfwMakeContextCurrent(m_Window);
         gladLoadGL(glfwGetProcAddress);

@@ -24,7 +24,7 @@ set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
                         "${SOURCES_DIR}/*.h"
-					    "${SOURCES_DIR}/pthreads.2/*.c"
+					    "${SOURCES_DIR}/pthreads.2/pthread.c"
 					    "${SOURCES_DIR}/pthreads.2/*.h")
 
 foreach(source IN LISTS Sources_lists)
