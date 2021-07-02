@@ -21,8 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-namespace Nuwa
-{
+
 #define PLATFORM_UNKNOW 0
 #define PLATFORM_ANDROID 1
 #define PLATFORM_IOS 2
@@ -66,4 +65,3 @@ namespace Nuwa
 #	include <io.h>
 #endif
 
-}

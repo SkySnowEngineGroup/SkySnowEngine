@@ -27,10 +27,10 @@ namespace Nuwa
 	LogAssert::LogAssert()
 	{
 		logInstance = this;
-//#if PLATFORM == PLATFORM_WINDOW
-//		AllocConsole();
-//		m_WinHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-//#endif // PLATFORM == PLATFORM_WINDOW
+#if PLATFORM == PLATFORM_WINDOW
+		AllocConsole();
+		m_WinHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+#endif // PLATFORM == PLATFORM_WINDOW
 	}
 
 	LogAssert::~LogAssert()
@@ -48,26 +48,26 @@ namespace Nuwa
 	{
 		if (level < LOG_TRACE || level >= LOG_NONE)
 			return;
-//#if PLATFORM == PLATFORM_WINDOW
-//		//switch (level)
-//		//{
-//		//case INFO:
-//		//	SetConsoleTextAttribute(m_WinHandle, 2);
-//		//	break;
-//		//case WARNING:
-//		//	SetConsoleTextAttribute(m_WinHandle, 14);
-//		//	break;
-//		//case ERROR:
-//		//	SetConsoleTextAttribute(m_WinHandle, 12);
-//		//	break;
-//		//default:
-//		//	SetConsoleTextAttribute(m_WinHandle, 7);
-//		//	break;
-//		//}
-//		std::cout << str << std::endl;
-//#elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS
-//
-//#endif // PLATFORM == PLATFORM_WINDOW
+#if PLATFORM == PLATFORM_WINDOW
+		switch (level)
+		{
+		case LOG_INFO:
+			SetConsoleTextAttribute(m_WinHandle, 2);
+			break;
+		case LOG_WARNING:
+			SetConsoleTextAttribute(m_WinHandle, 14);
+			break;
+		case LOG_ERROR:
+			SetConsoleTextAttribute(m_WinHandle, 12);
+			break;
+		default:
+			SetConsoleTextAttribute(m_WinHandle, 7);
+			break;
+		}
+		std::cout << str << std::endl;
+#elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS
+
+#endif // PLATFORM == PLATFORM_WINDOW
 
 	}
 }
