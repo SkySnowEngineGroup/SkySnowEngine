@@ -20,26 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "PlatformProfiles.h"
-#if PLATFORM == PLATFORM_ANDROID
-#include <GLES3/gl3.h>
-#include <GLES3/gl3ext.h>
-#elif PLATFORM == PLATFORM_IOS
-#include <OpenGLES/ES3/gl.h>
-#include <OpenGLES/ES3/glext.h>
-//GPU加速使用
-#if __has_include(<simd/simd.h>)
-#	ifndef WBSIMD
-#		define WBSIMD
-#	endif
-#endif
-#endif
+#include "NWMutex.h"
 
-#if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
-#define GLFW_INCLUDE_NONE
-#include <stdarg.h>
-#include <stdio.h>
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-#endif // 0
+namespace Nuwa
+{
+	Mutex::Mutex()
+	{
+		pthread_mutexattr_t    attr;
+		pthread_mutexattr_init(&attr);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&m_mutex, &attr);
+		pthread_mutexattr_destroy(&attr);
+	}
+
+	Mutex::~Mutex()
+	{
+		pthread_mutex_destroy(&m_mutex);
+	}
+
+	void Mutex::Lock()
+	{
+		pthread_mutex_lock(&m_mutex);
+	}
+
+	void Mutex::UnLock()
+	{
+		pthread_mutex_unlock(&m_mutex);
+	}
+
+	bool Mutex::TryLock()
+	{
+		return pthread_mutex_trylock(&m_mutex) == 0;
+	}
+}

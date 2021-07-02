@@ -21,25 +21,19 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "PlatformProfiles.h"
-#if PLATFORM == PLATFORM_ANDROID
-#include <GLES3/gl3.h>
-#include <GLES3/gl3ext.h>
-#elif PLATFORM == PLATFORM_IOS
-#include <OpenGLES/ES3/gl.h>
-#include <OpenGLES/ES3/glext.h>
-//GPU加速使用
-#if __has_include(<simd/simd.h>)
-#	ifndef WBSIMD
-#		define WBSIMD
-#	endif
-#endif
-#endif
-
-#if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
-#define GLFW_INCLUDE_NONE
-#include <stdarg.h>
-#include <stdio.h>
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-#endif // 0
+#include "NonCopyable.h"
+#include <semaphore.h>
+namespace Nuwa
+{
+	class Semaphore :public NonCopyable
+	{
+		friend class ThreadSemaphore;
+	protected:
+		void Create();
+		void Destroy();
+		void WaitForSignal();
+		void Signal();
+	private:
+		sem_t m_Semaphore;
+	};
+}

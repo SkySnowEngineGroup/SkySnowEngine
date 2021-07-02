@@ -21,25 +21,34 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "NonCopyable.h"
 #include "PlatformProfiles.h"
-#if PLATFORM == PLATFORM_ANDROID
-#include <GLES3/gl3.h>
-#include <GLES3/gl3ext.h>
-#elif PLATFORM == PLATFORM_IOS
-#include <OpenGLES/ES3/gl.h>
-#include <OpenGLES/ES3/glext.h>
-//GPU加速使用
-#if __has_include(<simd/simd.h>)
-#	ifndef WBSIMD
-#		define WBSIMD
-#	endif
+namespace Nuwa
+{
+	enum LogLevel
+	{
+		LOG_TRACE = 0,
+		LOG_DEBUG,
+		LOG_INFO,
+		LOG_WARNING,
+		LOG_ERROR,
+		LOG_NONE
+	};
+	class LogAssert:public NonCopyable
+	{
+	private:
+		LogAssert();
+		~LogAssert();
+	public:
+		static LogAssert* Instance();
+		void LogProcessing(LogLevel level,const char* str, ...);
+	private:
+		static LogAssert* logInstance;
+#if PLATFORM == PLATFORM_WINDOW
+		HANDLE			m_WinHandle;
 #endif
-#endif
-
-#if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
-#define GLFW_INCLUDE_NONE
-#include <stdarg.h>
-#include <stdio.h>
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-#endif // 0
+	};
+}
+#define NUWALOG(x, ...)		if(Nuwa::LogAssert::Instance())Nuwa::logAssert::Instance->LogProcessing(Nuwa::LOG_INFO,x, ##__VA_ARGS__)
+#define NUWAWARNING(x, ...) if(Nuwa::LogAssert::Instance())Nuwa::logAssert::Instance->LogProcessing(Nuwa::LOG_WARNING,x, ##__VA_ARGS__)
+#define NUWAERROR(x, ...)	if(Nuwa::LogAssert::Instance())Nuwa::logAssert::Instance->LogProcessing(Nuwa::LOG_ERROR,x, ##__VA_ARGS__)

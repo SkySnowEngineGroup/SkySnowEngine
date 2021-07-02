@@ -20,26 +20,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "PlatformProfiles.h"
-#if PLATFORM == PLATFORM_ANDROID
-#include <GLES3/gl3.h>
-#include <GLES3/gl3ext.h>
-#elif PLATFORM == PLATFORM_IOS
-#include <OpenGLES/ES3/gl.h>
-#include <OpenGLES/ES3/glext.h>
-//GPU加速使用
-#if __has_include(<simd/simd.h>)
-#	ifndef WBSIMD
-#		define WBSIMD
-#	endif
-#endif
-#endif
+#include "LogAssert.h"
 
-#if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
-#define GLFW_INCLUDE_NONE
-#include <stdarg.h>
-#include <stdio.h>
-#include <glad/gl.h>
-#include <GLFW/glfw3.h>
-#endif // 0
+namespace Nuwa
+{
+	LogAssert::LogAssert()
+	{
+		logInstance = this;
+//#if PLATFORM == PLATFORM_WINDOW
+//		AllocConsole();
+//		m_WinHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+//#endif // PLATFORM == PLATFORM_WINDOW
+	}
+
+	LogAssert::~LogAssert()
+	{
+		logInstance = nullptr;
+	}
+
+	LogAssert* LogAssert::Instance()
+	{
+		static LogAssert instance;
+		return &instance;
+	}
+
+	void LogAssert::LogProcessing(LogLevel level, const char* str, ...)
+	{
+		if (level < LOG_TRACE || level >= LOG_NONE)
+			return;
+//#if PLATFORM == PLATFORM_WINDOW
+//		//switch (level)
+//		//{
+//		//case INFO:
+//		//	SetConsoleTextAttribute(m_WinHandle, 2);
+//		//	break;
+//		//case WARNING:
+//		//	SetConsoleTextAttribute(m_WinHandle, 14);
+//		//	break;
+//		//case ERROR:
+//		//	SetConsoleTextAttribute(m_WinHandle, 12);
+//		//	break;
+//		//default:
+//		//	SetConsoleTextAttribute(m_WinHandle, 7);
+//		//	break;
+//		//}
+//		std::cout << str << std::endl;
+//#elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS
+//
+//#endif // PLATFORM == PLATFORM_WINDOW
+
+	}
+}

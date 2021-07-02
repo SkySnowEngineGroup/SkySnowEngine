@@ -26,15 +26,20 @@ set(SOURCE_APPLICATION_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Application/")
 set(SOURCE_RS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
 set(SOURCE_GRI_DIR "${SOURCE_RS_DIR}/GRI/")
 set(SOURCE_GLGRI_DIR "${SOURCE_RS_DIR}/GLGRI/")
+set(SOURCE_UTIL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Utilities/")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 	                    "${SOURCES_DIR}/*.h"
 						"${SOURCES_THREADS_DIR}/*.cpp"
 						"${SOURCES_THREADS_DIR}/*.h"
-						"${SOURCES_THREADS_DIR}/Possix/*.cpp"
-						"${SOURCES_THREADS_DIR}/Possix/*.h"
+						"${SOURCES_THREADS_DIR}/Posix/*.cpp"
+						"${SOURCES_THREADS_DIR}/Posix/*.h"
 						"${SOURCE_APPLICATION_DIR}/*.cpp"
 						"${SOURCE_APPLICATION_DIR}/*.h"
+						"${SOURCE_UTIL_DIR}/*.cpp"
+						"${SOURCE_UTIL_DIR}/*.h"
+						"${SOURCE_UTIL_DIR}/Log/*.cpp"
+						"${SOURCE_UTIL_DIR}/Log/*.h"
 						"${SOURCE_RS_DIR}/*.h"
 						"${SOURCE_RS_DIR}/*.cpp"
 						"${SOURCE_GRI_DIR}/*.h"
@@ -62,7 +67,9 @@ add_library(Nuwa ${Sources_lists})
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_APPLICATION_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
-						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Possix/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Posix/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_UTIL_DIR}>/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_UTIL_DIR}>/Log/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_RS_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/

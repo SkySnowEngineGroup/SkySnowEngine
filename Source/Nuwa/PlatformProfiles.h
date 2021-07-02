@@ -35,10 +35,13 @@ namespace Nuwa
 #define DEFAUT_HEIGHT 600
 #define NUWA_LOG_TAG "Nuwa:"
 #define PLATFORM PLATFORM_UNKNOW
+#include <iostream>
 //config various platforms
 #if defined(__ANDROID__) || defined(ANDROID)
 #	undef  PLATFORM
 #	define PLATFORM PLATFORM_ANDROID
+#	include <android/log.h>
+#	include <trace_log.h>
 #elif defined(__APPLE__)
 #	undef  PLATFORM
 #	if defined(__arm__) || (TARGET_IPHONE_SIMULATOR)
@@ -46,12 +49,21 @@ namespace Nuwa
 #	else 
 #		define PLATFORM PLATFORM_MAC
 #	endif
+#	include <syslog.h>
+#	include <sys/fcntl.h>
+#	include <unistd.h>
 #elif defined(LINUX) || defined(__LINUX) || defined(__LINUX__) || defined(linux) || defined(__unix__)
 #	undef  PLATFORM
 #	define PLATFORM PLATFORM_LINUX
+#	include <syslog.h>
+#	include <sys/fcntl.h>
+#	include <unistd.h>
 #elif defined(_WIN32)||defined(__WIN32__)
 #	undef  PLATFORM
 #	define PLATFORM PLATFORM_WINDOW
+#	include <windows.h>
+#	include <fcntl.h>
+#	include <io.h>
 #endif
 
 }
