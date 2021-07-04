@@ -27,13 +27,14 @@ namespace Nuwa
 {
 	enum LogLevel
 	{
-		LOG_TRACE = 0,
-		LOG_DEBUG,
-		LOG_INFO,
-		LOG_WARNING,
-		LOG_ERROR,
-		LOG_NONE
+		ELOG_TRACE = 0,
+		ELOG_DEBUG,
+		ELOG_INFO,
+		ELOG_WARNING,
+		ELOG_ERROR,
+		ELOG_NONE
 	};
+
 	class LogAssert:public NonCopyable
 	{
 	private:
@@ -53,6 +54,6 @@ namespace Nuwa
 #endif
 	};
 }
-#define NUWALOGI(x, ...)	if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::LOG_INFO,x, ##__VA_ARGS__)
-#define NUWAWARNING(x, ...) if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::LOG_WARNING,x, ##__VA_ARGS__)
-#define NUWAERROR(x, ...)	if(Nuwa::LogAssert::Instance())Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::LOG_ERROR,x, ##__VA_ARGS__)
+#define NUWALOGI(x, ...)	if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::ELOG_INFO,x, ##__VA_ARGS__)
+#define NUWAWARNING(x, ...) if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::ELOG_WARNING,x, ##__VA_ARGS__)
+#define NUWAERROR(x, ...)	if(Nuwa::LogAssert::Instance())Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::ELOG_ERROR,x, ##__VA_ARGS__)

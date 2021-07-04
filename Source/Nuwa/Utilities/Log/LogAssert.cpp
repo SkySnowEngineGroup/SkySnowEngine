@@ -53,7 +53,7 @@ namespace Nuwa
 
 	void LogAssert::LogProcessing(LogLevel level, const char* str, ...)
 	{
-		if (level < LOG_TRACE || level >= LOG_NONE)
+		if (level < ELOG_TRACE || level >= ELOG_NONE)
 			return;
 		va_list args;
 		va_start(args,str);
@@ -73,13 +73,13 @@ namespace Nuwa
 #if PLATFORM == PLATFORM_WINDOW
 		switch (level)
 		{
-		case LOG_INFO:
+		case ELOG_INFO:
 			SetConsoleTextAttribute(m_WinHandle, 2);
 			break;
-		case LOG_WARNING:
+		case ELOG_WARNING:
 			SetConsoleTextAttribute(m_WinHandle, 14);
 			break;
-		case LOG_ERROR:
+		case ELOG_ERROR:
 			SetConsoleTextAttribute(m_WinHandle, 12);
 			break;
 		default:
@@ -90,11 +90,11 @@ namespace Nuwa
 #elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_LINUX
 		switch (level)
 		{
-		case LOG_INFO:
+		case ELOG_INFO:
 			printf("Info:%s\n", buffer);
-		case LOG_WARNING:
-			printf("Warning:%s", buffer);
-		case LOG_ERROR:
+		case ELOG_WARNING:
+			printf("Warning:%s\n", buffer);
+		case ELOG_ERROR:
 			printf("Error:%s\n", buffer);
 			break;
 		default:
@@ -103,13 +103,13 @@ namespace Nuwa
 #elif PLATFORM == PLATFORM_ANDROID 
 		switch (level)
 		{
-		case LOG_INFO:
+		case ELOG_INFO:
 			__android_log_print(ANDROID_LOG_INFO, NUWA_LOG_TAG, "%s", buffer);
 			break;
-		case LOG_WARNING:
+		case ELOG_WARNING:
 			__android_log_print(ANDROID_LOG_WARN, NUWA_LOG_TAG, "%s", buffer);
 			break;
-		case LOG_ERROR:
+		case ELOG_ERROR:
 			__android_log_print(ANDROID_LOG_ERROR, NUWA_LOG_TAG, "%s", buffer);
 			break;
 		default:
