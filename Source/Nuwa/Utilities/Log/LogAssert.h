@@ -39,17 +39,20 @@ namespace Nuwa
 	private:
 		LogAssert();
 		~LogAssert();
+		
+		char* VspFun(const char* str, va_list args);
+		void PrintLog(LogLevel level,char* str);
+		void RecordLog(LogLevel level, char* str);
 	public:
 		static LogAssert* Instance();
 		void LogProcessing(LogLevel level,const char* str, ...);
 	private:
-		static LogAssert* logInstance;
+		char m_logBuffer[MAX_BUFFER_SIZE];
 #if PLATFORM == PLATFORM_WINDOW
 		HANDLE			m_WinHandle;
 #endif
 	};
-
-#define NUWALOG(x, ...)		if(Nuwa::LogAssert::Instance())Nuwa::logAssert::Instance->LogProcessing(Nuwa::LOG_INFO,x, ##__VA_ARGS__)
-#define NUWAWARNING(x, ...) if(Nuwa::LogAssert::Instance())Nuwa::logAssert::Instance->LogProcessing(Nuwa::LOG_WARNING,x, ##__VA_ARGS__)
-#define NUWAERROR(x, ...)	if(Nuwa::LogAssert::Instance())Nuwa::logAssert::Instance->LogProcessing(Nuwa::LOG_ERROR,x, ##__VA_ARGS__)
 }
+#define NUWALOGI(x, ...)	if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::LOG_INFO,x, ##__VA_ARGS__)
+#define NUWAWARNING(x, ...) if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::LOG_WARNING,x, ##__VA_ARGS__)
+#define NUWAERROR(x, ...)	if(Nuwa::LogAssert::Instance())Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::LOG_ERROR,x, ##__VA_ARGS__)

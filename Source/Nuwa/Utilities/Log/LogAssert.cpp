@@ -24,6 +24,7 @@
 
 namespace Nuwa
 {
+	static LogAssert* logInstance = nullptr;
 	LogAssert::LogAssert()
 	{
 		logInstance = this;
@@ -43,11 +44,32 @@ namespace Nuwa
 		static LogAssert instance;
 		return &instance;
 	}
+	char* LogAssert::VspFun(const char* str, va_list args)
+	{
+		int index = sprintf(m_logBuffer, NUWA_LOG_TAG);
+		vsnprintf(m_logBuffer + index, MAX_BUFFER_SIZE - index - 1, str, args);
+		return m_logBuffer;
+	}
 
 	void LogAssert::LogProcessing(LogLevel level, const char* str, ...)
 	{
 		if (level < LOG_TRACE || level >= LOG_NONE)
 			return;
+		va_list args;
+		va_start(args,str);
+		char* buffer = VspFun(str, args);
+		va_end(args);
+		PrintLog(level,buffer);
+		RecordLog(level, buffer);
+	}
+	void LogAssert::RecordLog(LogLevel level, char* str)
+	{
+		//Write the log to a file or upload it to the server
+		//should be in the log thread
+	}
+
+	void LogAssert::PrintLog(LogLevel level, char* buffer)
+	{
 #if PLATFORM == PLATFORM_WINDOW
 		switch (level)
 		{
@@ -64,10 +86,35 @@ namespace Nuwa
 			SetConsoleTextAttribute(m_WinHandle, 7);
 			break;
 		}
-		std::cout << str << std::endl;
-#elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS
-
+		std::cout << buffer << std::endl;
+#elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_LINUX
+		switch (level)
+		{
+		case LOG_INFO:
+			printf("Info:%s\n", buffer);
+		case LOG_WARNING:
+			printf("Warning:%s", buffer);
+		case LOG_ERROR:
+			printf("Error:%s\n", buffer);
+			break;
+		default:
+			break;
+		}
+#elif PLATFORM == PLATFORM_ANDROID 
+		switch (level)
+		{
+		case LOG_INFO:
+			__android_log_print(ANDROID_LOG_INFO, NUWA_LOG_TAG, "%s", buffer);
+			break;
+		case LOG_WARNING:
+			__android_log_print(ANDROID_LOG_WARN, NUWA_LOG_TAG, "%s", buffer);
+			break;
+		case LOG_ERROR:
+			__android_log_print(ANDROID_LOG_ERROR, NUWA_LOG_TAG, "%s", buffer);
+			break;
+		default:
+			break;
+		}
 #endif // PLATFORM == PLATFORM_WINDOW
-
 	}
 }

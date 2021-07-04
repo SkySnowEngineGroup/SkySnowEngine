@@ -23,6 +23,8 @@
 #pragma once
 #include "NonCopyable.h"
 #include <semaphore.h>
+#include <errno.h>
+#include "LogAssert.h"
 namespace Nuwa
 {
 	class Semaphore :public NonCopyable
@@ -36,4 +38,38 @@ namespace Nuwa
 	private:
 		sem_t m_Semaphore;
 	};
+
+	inline void Semaphore::Create()
+	{
+		if (sem_init(&m_Semaphore, 0, 0) == -1)
+		{
+			NUWAERROR("Failed to open a semaphore(%s).", strerror(errno));
+		}	
+	}
+
+	inline void Semaphore::Destroy()
+	{
+		if (sem_destroy(&m_Semaphore) == -1)
+		{
+			NUWAERROR("Filed to destroy a semaphore(%s).", strerror(errno));
+		}	
+	}
+	inline void Semaphore::WaitForSignal()
+	{
+		int ret = 0;
+		while ((ret = sem_wait(&m_Semaphore)) == -1 && errno == EINTR)
+		{
+			continue;
+		}
+		if (ret == -1)
+			NUWAERROR("Filed to wait on a semaphore(%s).", strerror(errno));
+	}
+	inline void Semaphore::Signal()
+	{
+		if (sem_post(&m_Semaphore) == -1)
+		{
+			NUWAERROR("Filed to post to a semaphore(%s).", strerror(errno));
+		}
+
+	}
 }

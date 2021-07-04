@@ -2,6 +2,7 @@
 #include <iostream>
 #include "nw_renderpipeline.h"
 #include "Application.h"
+#include "LogAssert.h"
 //glfw callbacks
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -37,6 +38,9 @@ public:
         //register callbacks
         //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
         glViewport(0, 0, 800, 600);
+        NUWALOGI("Info LogAssert width:%d", width);
+        NUWAWARNING("Warning LogAssert width:%d", width);
+        NUWAERROR("Error LogAssert width:%d", width);
 	}
 	int ShutDown()
 	{
