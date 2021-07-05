@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Copyright (c) 2020-2022 the NuwaEngine project.
 #
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
@@ -30,4 +30,4 @@ add_executable(HelloWorld ${Headers_lists} ${Sources_lists})
 
 target_include_directories(HelloWorld PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
-target_link_libraries(HelloWorld Nuwa Plugins RenderSystems glfw ${OpenGL_LIBRARY}) #ThirdParty
+target_link_libraries(HelloWorld Nuwa Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty

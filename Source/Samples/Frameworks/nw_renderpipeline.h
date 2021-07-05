@@ -1,8 +1,5 @@
-#ifndef NWRENDERPIPELINE_H
-#define NWRENDERPIPELINE_H
-
-#include <GLFW/glfw3.h>
-
+#pragma once
+#include "GRIProfiles.h"
 namespace nw
 {
     class RenderPipeline
@@ -18,5 +15,3 @@ namespace nw
         GLuint pipeline = -1;
     };
 }
-
-#endif
