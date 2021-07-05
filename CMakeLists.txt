@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Copyright (c) 2020-2022 the NuwaEngine project.
 # Open source is written by wangcan(crygl)、liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,6 +26,9 @@
 # android工程的是打包为aar或者so包，然后android中自己配置cmake链接源码进行动态调试
 #======
 #指定cmake版本
+#该链接是讲解如何使用camke的文件，可以参考使用
+#https://www.cnblogs.com/hgwang/p/9100343.html
+
 cmake_minimum_required(VERSION 3.10)
 
 
@@ -39,9 +42,7 @@ project(Nuwa)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
-
 set(DEST_INCLUDE_DIR include/Source)
-
-file (MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/${DEST_INCLUDE_DIR}/ThirdParty)
+set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/Binaries)
 
 add_subdirectory(Source)

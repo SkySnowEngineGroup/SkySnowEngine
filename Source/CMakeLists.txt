@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
+# Copyright (c) 2020-2022 the NuwaEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Nuwa/")
-set(RENDERSYSTEM_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
+
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
 set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
@@ -40,18 +40,10 @@ else()
 endif(WIN32)
 
 include_directories("${SOURCES_DIR}/Nuwa")
-include_directories("${RENDERSYSTEM_DIR}/RenderSystems")
 include_directories("${PLUGINS_DIR}/Plugins")
 include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
 
-add_subdirectory(Plugins)
-add_subdirectory(RenderSystems)
 add_subdirectory(Nuwa)
+add_subdirectory(Plugins)
 add_subdirectory(Samples)
-
-add_subdirectory(ThirdParty/imgui)
-add_subdirectory(ThirdParty/glfw3)
-
-
-
-
+add_subdirectory(ThirdParty)
