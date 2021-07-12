@@ -36,7 +36,6 @@ elseif(APPLE)
     find_library(IOKit_LIBRARY IOKit)
     find_library(CoreVideo_LIBRARY CoreVideo)
     message("find library OpenGL Library ${OpenGL_LIBRARY}")
-else()
 endif(WIN32)
 
 include_directories("${SOURCES_DIR}/Nuwa")
