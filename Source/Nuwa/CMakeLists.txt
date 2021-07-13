@@ -48,6 +48,10 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCE_GLGRI_DIR}/*.cpp"
 						"${SOURCE_GLGRI_DIR}/GLImport/*.h"
 						"${SOURCE_GLGRI_DIR}/GLImport*.cpp"
+						"${SOURCE_GLGRI_DIR}/GLEnv/*.h"
+						"${SOURCE_GLGRI_DIR}/GLEnv*.cpp"
+						"${SOURCE_GLGRI_DIR}/GLResource/*.h"
+						"${SOURCE_GLGRI_DIR}/GLResource*.cpp"
 						"${SOURCE_GLGRI_DIR}/Android/*.h"
 						"${SOURCE_GLGRI_DIR}/Android/*.cpp"
 						"${SOURCE_GLGRI_DIR}/Ios/*.h"
@@ -80,6 +84,8 @@ target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Mac/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Window/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/GLImport/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/GLEnv/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/GLResource/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Glad/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
 #在win32平台使用Pthreads库
