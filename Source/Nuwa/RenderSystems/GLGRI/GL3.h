@@ -21,15 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GL4.h"
-#if PLATFORM == PLATFORM_WINDOW
-
+#include "GLBase.h"
 namespace Nuwa
 {
-	class GLWindow : public OpenGL4
+	class OpenGL3 : public OpenGLBase
 	{
 
 	};
 }
-
-#endif

@@ -21,23 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLProfiles.h"
+#if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
+
 namespace Nuwa
 {
 	class Imports_GL
 	{
-	public:
-		Imports_GL();
-		~Imports_GL();
-
-	private:
 
 	};
-
-	Imports_GL::Imports_GL()
-	{
-	}
-
-	Imports_GL::~Imports_GL()
-	{
-	}
 }
+
+#endif

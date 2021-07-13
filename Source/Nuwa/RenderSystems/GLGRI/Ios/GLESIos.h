@@ -20,13 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
+//IOS支持的Api是GLES3.0,GLES3.0以下不支持
 #pragma once
+#include "GLES.h"
+#if PLATFORM == PLATFORM_IOS
 
 namespace Nuwa
 {
-	namespace glgri
+	class GLESIos : public GLES
 	{
 
-	}
+	};
 }
+typedef Nuwa::GLESIos OpenGL;
+
+#endif

@@ -21,6 +21,9 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLProfiles.h"
+#if PLATFORM == PLATFORM_ANDROID || PLATFORM == PLATFORM_IOS
+
 namespace Nuwa
 {
 	class Imports_GLES
@@ -28,3 +31,5 @@ namespace Nuwa
 
 	};
 }
+
+#endif

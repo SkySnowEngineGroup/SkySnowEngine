@@ -20,13 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
 #pragma once
+#include "GL4.h"
+#if PLATFORM == PLATFORM_MAC
 
 namespace Nuwa
 {
-	namespace glgri
+	class GLMac : public OpenGL4
 	{
 
-	}
+	};
 }
+
+#endif

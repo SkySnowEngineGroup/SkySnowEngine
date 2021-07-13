@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#pragma once
 /*
 	在Nuwa引擎中，不在像UE或者Bgfx一样，在window&linux&Mac中不在引擎底层中进行API导入
 	BGFX&UE框架大致是:
@@ -39,29 +37,20 @@
 					进行封装，这样版本控制以及扩展都是可以灵活定制与转换的
 			APIImport:这一层是使用opengl的回调接口来自己注册一些api接口，这么做的
 					 原因是，接口可以自己掌控，对待不同显卡产商的支持，灵活处理
-					  
+
 	在Nuwa中我们将APIImport层去掉，去掉原因是，暂时还没有过多精力处理这些问题
 	但是Nuwa会保留GPUEnv、GPUResource以及GPU接口的三层封装，如果后期针对渲染优
 	化，需要自己导入一些函数以及宏定义时，我们将会把这最底层添加进来，虽然我们
 	去掉这一层设计，但是我们会保留架构的拓展性，以便后面可以拓展它。
 */
+#pragma once
+#include "Imports_GL.h"
+#include "Imports_GLES.h"
+
 namespace Nuwa
 {
 	class OpenGLBase
 	{
-	public:
-		OpenGLBase();
-		~OpenGLBase();
-
-	private:
 
 	};
-
-	OpenGLBase::OpenGLBase()
-	{
-	}
-
-	OpenGLBase::~OpenGLBase()
-	{
-	}
 }

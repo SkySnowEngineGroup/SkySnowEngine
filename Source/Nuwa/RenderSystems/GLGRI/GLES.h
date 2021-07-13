@@ -22,10 +22,15 @@
 //
 
 #pragma once
+#include "GLBase.h"
+#if PLATFORM == PLATFORM_ANDROID || PLATFORM == PLATFORM_IOS
+
 namespace Nuwa
 {
-	namespace glgri
+	class GLES :public OpenGLBase
 	{
-		
-	}
+
+	};
 }
+
+#endif
