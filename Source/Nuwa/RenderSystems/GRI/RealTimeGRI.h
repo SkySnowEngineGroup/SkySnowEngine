@@ -24,11 +24,15 @@
 namespace Nuwa
 {
 	//根据不同平台创建不同的渲染API
-	class DynamicGFX
+	class RealTimeGRI
 	{
 	public:
+		// FlushType: Wait RHI Thread
+		virtual int GRICreateFragmentShader(char* Code) = 0;
 
+		// FlushType: Wait RHI Thread
+		virtual int GRICreateVertexShader(char* Code) = 0;
 	};
 
-	DynamicGFX* createPlatformGFX();
+	RealTimeGRI* createPlatformGRI();
 };
