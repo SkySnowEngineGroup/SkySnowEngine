@@ -22,10 +22,33 @@
 //
 #pragma once
 #include "RealTimeGRI.h"
+#include "PlatformProfiles.h"
+
+//The rendering API allocates different API header imports depending on the platform
+#if PLATFORM == PLATFORM_ANDROID
+#	include "GLESAndroid.h"
+#elif PLATFORM == PLATFORM_IOS
+#	include "GLESIos.h"
+#elif PLATFORM == PLATFORM_WINDOW
+#	include "GLWindow.h"
+#elif PLATFORM == PLATFORM_MAC
+#	include "GLMac.h"
+#endif
+
 namespace Nuwa
 {
+	/*
+		brief: Each real-time rendering API (GRI) unifies the base class of the external interface. 
+			   Different rendering APIs inherit from this class and implement the functions of 
+			   different APIs with the same capability
+	*/
 	class GLRealTimeGRI :public RealTimeGRI
 	{
+	public:
+		GLRealTimeGRI();
 
+		~GLRealTimeGRI() {}
+
+		void GRIClearColor(float red, float green, float blue, float alpha) final override;
 	};
 }

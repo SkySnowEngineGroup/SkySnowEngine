@@ -21,15 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "RealTimeGRI.h"
+//brief:Create different Real-Time Rendering API (GRI) interface objects based on 
+//		platform support and default configuration 
 namespace Nuwa
 {
-	//根据不同平台创建不同的渲染API
-	class RealTimeGRI
+	class PlatformGRI
 	{
 	public:
-		virtual ~RealTimeGRI() {}
-		// Test:clear quad color
-		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
+		virtual bool IsSupport() = 0;
+		virtual RealTimeGRI* CreateGRI() = 0;
 	};
-	RealTimeGRI* CreateRealTimeGRI();
-};
+}

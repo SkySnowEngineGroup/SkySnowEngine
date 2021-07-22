@@ -31,5 +31,5 @@ namespace Nuwa
 
 	};
 }
-
+typedef Nuwa::GLWindow OpenGL;
 #endif

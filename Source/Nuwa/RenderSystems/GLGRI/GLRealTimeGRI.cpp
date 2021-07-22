@@ -20,16 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
+
+#include "GLRealTimeGRI.h"
+
 namespace Nuwa
 {
-	//根据不同平台创建不同的渲染API
-	class RealTimeGRI
+	GLRealTimeGRI::GLRealTimeGRI()
 	{
-	public:
-		virtual ~RealTimeGRI() {}
-		// Test:clear quad color
-		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
-	};
-	RealTimeGRI* CreateRealTimeGRI();
-};
+
+	}
+
+	void GLRealTimeGRI::GRIClearColor(float red, float green, float blue, float alpha)
+	{
+		glClearColor(red,green,blue,alpha);
+	}
+}
