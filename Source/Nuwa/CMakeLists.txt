@@ -27,7 +27,8 @@ set(SOURCE_RS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
 set(SOURCE_GRI_DIR "${SOURCE_RS_DIR}/GRI/")
 set(SOURCE_GLGRI_DIR "${SOURCE_RS_DIR}/GLGRI/")
 set(SOURCE_UTIL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Utilities/")
-
+#最好使用filegroup的方式遍历文件夹，把文件夹名字拿到然后进行分组
+#手动填写这些文件夹名字太麻烦了
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 	                    "${SOURCES_DIR}/*.h"
 						"${SOURCES_THREADS_DIR}/*.cpp"
@@ -44,6 +45,18 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCE_RS_DIR}/*.cpp"
 						"${SOURCE_GRI_DIR}/*.h"
 						"${SOURCE_GRI_DIR}/*.cpp"
+						"${SOURCE_GRI_DIR}/Android/*.h"
+						"${SOURCE_GRI_DIR}/Android/*.cpp"
+						"${SOURCE_GRI_DIR}/Apple/*.h"
+						"${SOURCE_GRI_DIR}/Apple/*.cpp"
+						"${SOURCE_GRI_DIR}/Apple/IOS/*.h"
+						"${SOURCE_GRI_DIR}/Apple/IOS/*.cpp"
+						"${SOURCE_GRI_DIR}/Apple/Mac/*.h"
+						"${SOURCE_GRI_DIR}/Apple/Mac/*.cpp"
+						"${SOURCE_GRI_DIR}/Linux/*.h"
+						"${SOURCE_GRI_DIR}/Linux/*.cpp"
+						"${SOURCE_GRI_DIR}/Window/*.h"
+						"${SOURCE_GRI_DIR}/Window/*.cpp"
                         "${SOURCE_GLGRI_DIR}/*.h"
 						"${SOURCE_GLGRI_DIR}/*.cpp"
 						"${SOURCE_GLGRI_DIR}/GLImport/*.h"
@@ -78,6 +91,12 @@ target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_UTIL_DIR}>/Log/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_RS_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/Android/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/Apple/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/Apple/IOS/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/Apple/MAC/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/Linux/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GRI_DIR}>/Window/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Android/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_GLGRI_DIR}>/Ios/

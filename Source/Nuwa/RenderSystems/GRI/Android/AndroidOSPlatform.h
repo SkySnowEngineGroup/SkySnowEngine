@@ -21,14 +21,14 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "OSPlatform.h"
 namespace Nuwa
 {
-	//根据不同平台创建不同的渲染API
-	class RealTimeGRI
+	class AndroidOSPlatform : public OSPlatform
 	{
 	public:
-		virtual ~RealTimeGRI() {}
-		// Test:clear quad color
-		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
+		AndroidOSPlatform() {}
+		~AndroidOSPlatform() {}
+		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
 	};
-};
+}
