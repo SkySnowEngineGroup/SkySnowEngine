@@ -22,13 +22,17 @@
 //
 #pragma once
 #include "OSPlatform.h"
+#include "GLRealTimeGRI.h"
 namespace Nuwa
 {
 	class WindowOSPlatform : public OSPlatform
 	{
 	public:
-		WindowOSPlatform() {}
-		~WindowOSPlatform() {}
+		WindowOSPlatform();
+		~WindowOSPlatform();
 		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
+	private:
+		PlatformGRI*	m_PlatformGRI;
+		RealTimeGRI*	m_RealTimeGRI;
 	};
 }

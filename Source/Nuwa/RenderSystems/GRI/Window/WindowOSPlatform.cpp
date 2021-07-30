@@ -20,17 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "RealTimeGRI.h"
-//brief:Create different Real-Time Rendering API (GRI) interface objects based on 
-//		platform support and default configuration 
+
+#include "WindowOSPlatform.h"
+#include "GLPlatformGRI.h"
 namespace Nuwa
 {
-
-	class PlatformGRI
+	WindowOSPlatform::WindowOSPlatform()
+		: m_PlatformGRI(nullptr)
+		, m_RealTimeGRI(nullptr)
 	{
-	public:
-		virtual bool IsSupport() = 0;
-		virtual RealTimeGRI* CreateGRI() = 0;
-	};
+
+	}
+
+	WindowOSPlatform::~WindowOSPlatform()
+	{
+		if (nullptr != m_PlatformGRI)
+		{
+			delete m_PlatformGRI;
+			m_PlatformGRI = nullptr;
+		}
+		if (m_RealTimeGRI)
+		{
+			delete m_RealTimeGRI;
+			m_RealTimeGRI = nullptr;
+		}
+	}
+
+	RealTimeGRI* WindowOSPlatform::OSPlatformCreateRealTimeGRI()
+	{ 
+		if (m_PlatformGRI && m_RealTimeGRI)
+		{
+			return m_RealTimeGRI;
+		}
+		m_PlatformGRI = new GLPlatformGRI();
+		//
+		if (m_PlatformGRI->IsSupport())
+		{
+			m_RealTimeGRI = m_PlatformGRI->CreateGRI();
+		}
+		return m_RealTimeGRI;
+	}
 }

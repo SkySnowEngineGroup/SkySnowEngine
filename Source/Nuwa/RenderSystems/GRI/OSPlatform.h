@@ -22,9 +22,18 @@
 //
 #pragma once
 #include "PlatformGRI.h"
-
+#include "NonCopyable.h"
 namespace Nuwa
 {
+	enum GRIFeature
+	{
+		EVulkan,
+		EMetal,
+		EGLES,
+		EOpenGL,
+		ENum
+	};
+
 	class OSPlatform
 	{
 	public:
@@ -32,5 +41,19 @@ namespace Nuwa
 		virtual ~OSPlatform() {}
 
 		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() = 0;
+	};
+
+	class GRTCreate : public NonCopyable
+	{
+	private:
+		GRTCreate();
+		~GRTCreate();
+	public:
+		static GRTCreate* Instance();
+
+		RealTimeGRI* GetRealTimeGRI();
+	private:
+		OSPlatform*		m_OSPlatform;
+		RealTimeGRI*	m_GRI;
 	};
 }
