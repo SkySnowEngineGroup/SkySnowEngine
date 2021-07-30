@@ -53,7 +53,7 @@ namespace Nuwa
 			return m_RealTimeGRI;
 		}
 		m_PlatformGRI = new GLPlatformGRI();
-		//
+		//Windows platform can support OpenGL, Vulakn GRI
 		if (m_PlatformGRI->IsSupport())
 		{
 			m_RealTimeGRI = m_PlatformGRI->CreateGRI();

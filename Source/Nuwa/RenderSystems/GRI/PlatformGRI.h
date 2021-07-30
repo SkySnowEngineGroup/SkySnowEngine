@@ -26,7 +26,14 @@
 //		platform support and default configuration 
 namespace Nuwa
 {
-
+	enum GRIFeature
+	{
+		EVulkan,
+		EMetal,
+		EGLES,
+		EOpenGL,
+		ENum
+	};
 	class PlatformGRI
 	{
 	public:

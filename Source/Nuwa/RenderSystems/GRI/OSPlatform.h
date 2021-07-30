@@ -25,15 +25,6 @@
 #include "NonCopyable.h"
 namespace Nuwa
 {
-	enum GRIFeature
-	{
-		EVulkan,
-		EMetal,
-		EGLES,
-		EOpenGL,
-		ENum
-	};
-
 	class OSPlatform
 	{
 	public:
@@ -57,3 +48,4 @@ namespace Nuwa
 		RealTimeGRI*	m_GRI;
 	};
 }
+#define GRI Nuwa::GRTCreate::Instance()->GetRealTimeGRI()

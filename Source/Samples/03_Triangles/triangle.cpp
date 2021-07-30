@@ -3,6 +3,7 @@
 #include "nw_renderpipeline.h"
 #include "Application.h"
 #include "LogAssert.h"
+#include "OSPlatform.h"
 //glfw callbacks
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -50,7 +51,8 @@ public:
 	bool Update()
 	{
         processInput(m_Window);
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        //glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        GRI->GRIClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
 
