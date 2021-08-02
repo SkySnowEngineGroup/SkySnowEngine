@@ -21,12 +21,13 @@
 # THE SOFTWARE.
 #
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(SOURCES_THREADS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Threads/")
-set(SOURCE_APPLICATION_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Application/")
-set(SOURCE_RS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/RenderSystems/")
+set(SOURCES_THREADS_DIR "${SOURCES_DIR}/Threads/")
+set(SOURCE_APPLICATION_DIR "${SOURCES_DIR}/Application/")
+set(SOURCE_RS_DIR "${SOURCES_DIR}/RenderSystems/")
 set(SOURCE_GRI_DIR "${SOURCE_RS_DIR}/GRI/")
 set(SOURCE_GLGRI_DIR "${SOURCE_RS_DIR}/GLGRI/")
-set(SOURCE_UTIL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Utilities/")
+set(SOURCE_UTIL_DIR "${SOURCES_DIR}/Utilities/")
+set(SOURCE_CONTAINERS "${SOURCES_DIR}/Containers/")
 #最好使用filegroup的方式遍历文件夹，把文件夹名字拿到然后进行分组
 #手动填写这些文件夹名字太麻烦了
 file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
@@ -37,6 +38,8 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 						"${SOURCES_THREADS_DIR}/Posix/*.h"
 						"${SOURCE_APPLICATION_DIR}/*.cpp"
 						"${SOURCE_APPLICATION_DIR}/*.h"
+						"${SOURCE_CONTAINERS}/*.cpp"
+						"${SOURCE_CONTAINERS}/*.h"
 						"${SOURCE_UTIL_DIR}/*.cpp"
 						"${SOURCE_UTIL_DIR}/*.h"
 						"${SOURCE_UTIL_DIR}/Log/*.cpp"
@@ -85,6 +88,7 @@ add_library(Nuwa ${Sources_lists})
 
 target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_APPLICATION_DIR}>/
+						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_CONTAINERS}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Posix/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_UTIL_DIR}>/
