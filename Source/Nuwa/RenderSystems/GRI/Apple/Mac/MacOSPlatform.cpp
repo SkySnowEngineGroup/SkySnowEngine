@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the NuwaEngine project.
-// Open source is written by wangcan(crygl)¡¢liuqian(SkySnow)¡¢zhangshuangxue(Calence)
+// Open source is written by wangcan(crygl)ã€liuqian(SkySnow)ã€zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,18 +20,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "OSPlatform.h"
+#include "MacOSPlatform.h"
+#include "GLPlatformGRI.h"
 namespace Nuwa
 {
-	class MacOSPlatform : public OSPlatform
-	{
-	public:
-        MacOSPlatform();
-        ~MacOSPlatform();
-		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
-    private:
-        PlatformGRI*    m_PlatformGRI;
-        RealTimeGRI*    m_RealTimeGRI;
-	};
+    MacOSPlatform::MacOSPlatform()
+        : m_PlatformGRI(nullptr)
+        , m_RealTimeGRI(nullptr)
+    {
+
+    }
+
+    MacOSPlatform::~MacOSPlatform()
+    {
+        if (nullptr != m_PlatformGRI)
+        {
+            delete m_PlatformGRI;
+            m_PlatformGRI = nullptr;
+        }
+        if (m_RealTimeGRI)
+        {
+            delete m_RealTimeGRI;
+            m_RealTimeGRI = nullptr;
+        }
+    }
+
+    RealTimeGRI* MacOSPlatform::OSPlatformCreateRealTimeGRI()
+    {
+        if (m_PlatformGRI && m_RealTimeGRI)
+        {
+            return m_RealTimeGRI;
+        }
+        m_PlatformGRI = new GLPlatformGRI();
+        //Windows platform can support OpenGL, Vulakn GRI
+        if (m_PlatformGRI->IsSupport())
+        {
+            m_RealTimeGRI = m_PlatformGRI->CreateGRI();
+        }
+        return m_RealTimeGRI;
+    }
 }
