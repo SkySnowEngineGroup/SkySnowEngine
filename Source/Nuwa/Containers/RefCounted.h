@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #pragma once 
-
+#include <atomic>
 namespace Nuwa
 {
 	template <typename Referenced>
@@ -37,10 +37,44 @@ namespace Nuwa
 
 	};
 	//If you want your class to be automatically reclaimed, inherit the class Use as RefCountPtr<XXX>
-	//thread safe?
+	//refcount base,thread not safe
 	class RefCounted
 	{
 	public:
+		RefCounted();
 
+		virtual ~RefCounted();
+
+		RefCounted(const RefCounted& rhs) = delete;
+
+		RefCounted& operator =(const RefCounted& rhs) = delete;
+
+		void Add();
+
+		void Release();
+
+		int RefCount()const;
+	private:
+		int32_t m_refs;
+	};
+	//use atomic refcount
+	//thread safe
+	class RefThreadSafeCounted
+	{
+	public:
+		RefThreadSafeCounted();
+		virtual ~RefThreadSafeCounted();
+		/// Prevent copy construction.
+		RefThreadSafeCounted(const RefThreadSafeCounted& rhs) = delete;
+		/// Prevent assignment.
+		RefThreadSafeCounted& operator =(const RefThreadSafeCounted& rhs) = delete;
+
+		void Add();
+
+		void Release();
+
+		int RefCount()const;
+	private:
+		std::atomic<int32_t> m_refs;
 	};
 }

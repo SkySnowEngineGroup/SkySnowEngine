@@ -24,7 +24,7 @@
 #include "RefCounted.h"
 namespace Nuwa
 {
-	class GRIResource : public RefCounted
+	class GRIResource : public RefThreadSafeCounted
 	{
 
 	};
