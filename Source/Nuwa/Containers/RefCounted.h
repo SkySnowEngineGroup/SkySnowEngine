@@ -26,7 +26,7 @@ namespace Nuwa
 	template <typename Referenced>
 	class RefCountPtr
 	{
-		typedef Referenced* m_Referenced;
+		typedef Referenced* ReferencedPtr;
 	public:
 
 		RefCountPtr()
@@ -34,8 +34,151 @@ namespace Nuwa
 		{
 		}
 
+		RefCountPtr(const RefCountPtr& inputCopy)
+		{
+			m_Referenced = inputCopy;
+			if (m_Referenced)
+			{
+				m_Referenced->Add();
+			}
+		}
 
+		RefCountPtr(RefCountPtr&& inputMove)
+		{
+			m_Referenced = inputMove.m_Referenced;
+			inputMove.m_Referenced = nullptr;
+		}
+
+		template<typename CloneReferenced>
+		explicit RefCountPtr(const RefCountPtr<CloneReferenced>& inputClone)
+		{
+			m_Referenced = static_cast<m_Referenced*>(inputClone.GetReference());
+			if (m_Referenced)
+			{
+				m_Referenced->Add();
+			}
+		}
+
+		template<typename MoveReferenced>
+		explicit RefCountPtr(RefCountPtr<MoveReferenced>&& inputMove)
+		{
+			m_Referenced = static_cast<Referenced*>(inputMove.GetReference());
+			inputMove.m_Referenced = nullptr;
+		}
+
+		~RefCountPtr()
+		{
+			if (m_Referenced)
+			{
+				m_Referenced->Release();
+			}
+		}
+
+		RefCountPtr& operator=(Referenced* inputRef)
+		{
+			Referenced* originRef = m_Referenced;
+			m_Referenced = inputRef;
+			if (m_Referenced)
+			{
+				m_Referenced->Add();
+			}
+			if (originRef)
+			{
+				originRef->Release();
+			}
+			return *this;
+		}
+
+		inline RefCountPtr& operator=(const RefCountPtr& inpurRef)
+		{
+			return *this = inpurRef.m_Referenced;
+		}
+
+		template<typename CloneReferenced>
+		inline RefCountPtr& operator=(const RefCountPtr<CloneReferenced>& inputRef)
+		{
+			return *this = inputRef.GetReference();
+		}
+
+		RefCountPtr& operator=(RefCountPtr&& inputPtr)
+		{
+			if (this != &inputPtr)
+			{
+				Referenced originRef = m_Referenced;
+				m_Referenced = inputPtr.m_Referenced;
+				inputPtr.m_Referenced = nullptr;
+				if (originRef)
+				{
+					originRef->Release();
+				}
+			}
+			return *this;
+		}
+
+		inline Referenced* operator->()const
+		{
+			return m_Referenced;
+		}
+
+		inline operator Referenced() const
+		{
+			return m_Referenced;
+		}
+
+		inline bool IsNull()const
+		{
+			return m_Referenced != nullptr;
+		}
+
+		inline bool IsNullRef(const RefCountPtr& inputRef)
+		{
+			return inputRef.m_Referenced != nullptr;
+		}
+
+		inline Referenced* GetReference()
+		{
+			return m_Referenced;
+		}
+
+		int32_t GetRefCount()
+		{
+			int32_t count = 0;
+			if (m_Referenced)
+			{
+				count = m_Referenced->RefCount();
+			}
+			return count;
+		}
+
+		inline void Swap(RefCountPtr& inputPtr)
+		{
+			ReferencedPtr* originRef = m_Referenced;
+			m_Referenced = inputPtr.m_Referenced;
+			inputPtr.m_Referenced = originRef;
+		}
+	private:
+		ReferencedPtr* m_Referenced;
+		template <typename U> friend class RefCountPtr;
 	};
+
+	template<typename Referenced>
+	inline bool operator==(const RefCountPtr<Referenced>& lhs, const RefCountPtr<Referenced>& rhs)
+	{
+		return lhs.GetReference() == rhs.GetReference();
+	}
+
+	template<typename Referenced>
+	inline bool operator==(const RefCountPtr<Referenced>& lhs, Referenced* rhs)
+	{
+		return lhs.GetReference() == rhs;
+	}
+
+	template<typename Referenced>
+	inline bool operator==(Referenced* lhs, const RefCountPtr<Referenced>& rhs)
+	{
+		return lhs == rhs.GetReference();
+	}
+
 	//If you want your class to be automatically reclaimed, inherit the class Use as RefCountPtr<XXX>
 	//refcount base,thread not safe
 	class RefCounted
@@ -63,10 +206,11 @@ namespace Nuwa
 	{
 	public:
 		RefThreadSafeCounted();
+
 		virtual ~RefThreadSafeCounted();
-		/// Prevent copy construction.
+		
 		RefThreadSafeCounted(const RefThreadSafeCounted& rhs) = delete;
-		/// Prevent assignment.
+		
 		RefThreadSafeCounted& operator =(const RefThreadSafeCounted& rhs) = delete;
 
 		void Add();

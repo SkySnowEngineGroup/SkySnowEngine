@@ -23,5 +23,64 @@
 
 namespace Nuwa
 {
+	//==========not safe thread RefCount
+	RefCounted::RefCounted()
+		: m_refs(0)
+	{
+	}
 
+	RefCounted::~RefCounted()
+	{
+		m_refs = -1;
+	}
+	
+	void RefCounted::Add()
+	{
+		m_refs ++;
+	}
+
+	void RefCounted::Release()
+	{
+		m_refs--;
+		if (!m_refs)
+		{
+			delete this;
+		}
+	}
+
+	int RefCounted::RefCount() const
+	{
+		return m_refs;
+	}
+
+	//==========safe thread RefCount
+	RefThreadSafeCounted::RefThreadSafeCounted()
+	{
+		std::atomic_init(&m_refs, 0);
+	}
+
+	RefThreadSafeCounted::~RefThreadSafeCounted()
+	{
+		m_refs.store(-1, std::memory_order_relaxed);
+	}
+
+	void RefThreadSafeCounted::Add()
+	{
+		m_refs.fetch_add(1, std::memory_order_acquire);
+
+	}
+
+	void RefThreadSafeCounted::Release()
+	{
+		m_refs.fetch_sub(1, std::memory_order_release);
+		if (!m_refs.load(std::memory_order_relaxed))
+		{
+			delete this;
+		}
+	}
+
+	int RefThreadSafeCounted::RefCount() const
+	{
+		return m_refs.load(std::memory_order_relaxed);
+	}
 }
