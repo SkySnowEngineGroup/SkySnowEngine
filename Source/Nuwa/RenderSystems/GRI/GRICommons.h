@@ -21,19 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RefCounted.h"
-#include "GRICommons.h"
+
 namespace Nuwa
 {
-	class GRIResource : public RefThreadSafeCounted
+	enum EGRIResourceType
 	{
-	public:
-		GRIResource(EGRIResourceType grit)
-			: m_GRIResourceType(grit)
-		{
-		}
-
-	private:
-		EGRIResourceType m_GRIResourceType;
+		GRI_None,
+		GRI_Num
 	};
 }
