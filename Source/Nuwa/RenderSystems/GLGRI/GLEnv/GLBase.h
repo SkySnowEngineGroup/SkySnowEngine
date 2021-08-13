@@ -28,6 +28,7 @@ namespace Nuwa
 {
 	class OpenGLBase
 	{
-
+	public:
+		static inline GRIFeature GetGRIFeatureType() { return ENone; }
 	};
 }

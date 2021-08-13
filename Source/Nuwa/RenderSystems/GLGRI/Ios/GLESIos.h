@@ -29,7 +29,11 @@ namespace Nuwa
 {
 	class GLESIos : public GLES
 	{
-
+	public:
+		static inline GRIFeature GetGRIFeatureType()
+		{
+			return EGLES;
+		}
 	};
 }
 typedef Nuwa::GLESIos OpenGL;

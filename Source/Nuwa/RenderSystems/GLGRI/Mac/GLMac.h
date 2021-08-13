@@ -22,13 +22,17 @@
 //
 #pragma once
 #include "GL4.h"
-#if PLATFORM == PLATFORM_MAC
+#if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
 
 namespace Nuwa
 {
 	class GLMac : public OpenGL4
 	{
-
+	public:
+		static inline GRIFeature GetGRIFeatureType()
+		{
+			return EOpenGL;
+		}
 	};
 }
 typedef Nuwa::GLMac OpenGL;

@@ -28,7 +28,11 @@ namespace Nuwa
 {
 	class GLWindow : public OpenGL4
 	{
-
+	public:
+		static inline GRIFeature GetGRIFeatureType()
+		{
+			return EOpenGL;
+		}
 	};
 }
 typedef Nuwa::GLWindow OpenGL;

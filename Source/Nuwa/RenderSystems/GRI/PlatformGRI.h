@@ -22,18 +22,12 @@
 //
 #pragma once
 #include "RealTimeGRI.h"
+#include "GRICommons.h"
 //brief:Create different Real-Time Rendering API (GRI) interface objects based on 
 //		platform support and default configuration 
 namespace Nuwa
 {
-	enum GRIFeature
-	{
-		EVulkan,
-		EMetal,
-		EGLES,
-		EOpenGL,
-		ENum
-	};
+
 	class PlatformGRI
 	{
 	public:

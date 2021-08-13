@@ -24,6 +24,16 @@
 
 namespace Nuwa
 {
+	enum GRIFeature
+	{
+		ENone,
+		EVulkan,
+		EMetal,
+		EGLES,
+		EOpenGL,
+		ENum
+	};
+
 	enum EGRIResourceType
 	{
 		GRI_None,

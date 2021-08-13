@@ -20,23 +20,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-//Android支持的Api是GLES3.0以上，GLES3.0以下不支持
 #pragma once
-#include "GLES.h"
-#if PLATFORM == PLATFORM_ANDROID
-
-namespace Nuwa
-{
-	class GLESAndroid : public GLES
-	{
-	public:
-		static inline GRIFeature GetGRIFeatureType()
-		{
-			return EGLES;
-		}
-	};
-	
-}
-typedef Nuwa::GLESAndroid OpenGL;
-
-#endif
+// render type interface for engine 

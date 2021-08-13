@@ -49,6 +49,8 @@ namespace Nuwa
 
 		~GLRealTimeGRI() {}
 
+		GRIFeature GetGRIFeatureType() override { return OpenGL::GetGRIFeatureType(); }
+
 		void GRIClearColor(float red, float green, float blue, float alpha) final override;
 	};
 }
