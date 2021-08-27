@@ -32,8 +32,33 @@ namespace Nuwa
 			: m_GRIResourceType(grit)
 		{
 		}
-
+		inline EGRIResourceType GetType() const
+		{
+			return m_GRIResourceType;
+		}
 	private:
-		EGRIResourceType m_GRIResourceType;
+		const EGRIResourceType m_GRIResourceType;
+	};
+
+	class GRIShader : public GRIResource
+	{
+	public:
+
+	};
+
+	class GRIVertexShader : public GRIShader
+	{
+
+	};
+
+	class GRIFragmentShader : public GRIShader
+	{
+
+	};
+
+	class GRIBuffer : public GRIResource
+	{
+	public:
+
 	};
 }

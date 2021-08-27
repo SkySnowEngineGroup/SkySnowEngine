@@ -28,7 +28,7 @@
 #include "IOSOSPlatform.h"
 #include "MacOSPlatform.h"
 #include "LinuxOSPlatform.h"
-
+#include "LogAssert.h"
 namespace Nuwa
 {
 	static GRTCreate* griCreateInstance = nullptr;

@@ -21,12 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-
-#include "NWSemaphore.h"
+#include "NonCopyable.h"
+#include <cstdint>
+#include <pthread.h>
 namespace Nuwa
 {
-	class ThreadSemaphore : public NonCopyable
+	class NWThread : public NonCopyable
 	{
+		friend class Thread;
+	private:
+		NWThread();
+		~NWThread();
+	protected:
+		void CreateThread(const Thread* thread,const uint32_t stackSize,const int cpuprocessor);
 
+	private:
+		int			m_CPUProcessor;
+		int			m_DefaultPriority;
+		pthread_t	m_PThread;
 	};
 }

@@ -21,10 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "NWMutex.h"
 
 namespace Nuwa
 {
-	class ThreadMutex
+	class ThreadMutex : public NonCopyable
 	{
 
 	};

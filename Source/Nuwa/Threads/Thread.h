@@ -21,11 +21,10 @@
 // THE SOFTWARE.
 //
 #pragma once
-
-#include "NWSemaphore.h"
+#include "NWThread.h"
 namespace Nuwa
 {
-	class ThreadSemaphore : public NonCopyable
+	class Thread : public NonCopyable
 	{
 
 	};

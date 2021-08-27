@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once 
 #include <atomic>
+#include "NonCopyable.h"
 namespace Nuwa
 {
 	template <typename Referenced>
@@ -181,16 +182,12 @@ namespace Nuwa
 
 	//If you want your class to be automatically reclaimed, inherit the class Use as RefCountPtr<XXX>
 	//refcount base,thread not safe
-	class RefCounted
+	class RefCounted : public NonCopyable
 	{
 	public:
 		RefCounted();
 
 		virtual ~RefCounted();
-
-		RefCounted(const RefCounted& rhs) = delete;
-
-		RefCounted& operator =(const RefCounted& rhs) = delete;
 
 		void Add();
 
@@ -202,16 +199,12 @@ namespace Nuwa
 	};
 	//use atomic refcount
 	//thread safe
-	class RefThreadSafeCounted
+	class RefThreadSafeCounted : public NonCopyable
 	{
 	public:
 		RefThreadSafeCounted();
 
 		virtual ~RefThreadSafeCounted();
-		
-		RefThreadSafeCounted(const RefThreadSafeCounted& rhs) = delete;
-		
-		RefThreadSafeCounted& operator =(const RefThreadSafeCounted& rhs) = delete;
 
 		void Add();
 

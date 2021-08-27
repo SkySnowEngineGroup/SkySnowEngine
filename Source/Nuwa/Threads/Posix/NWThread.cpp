@@ -20,13 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
+#include "NWThread.h"
 
-#include "NWSemaphore.h"
 namespace Nuwa
 {
-	class ThreadSemaphore : public NonCopyable
-	{
 
-	};
 }
