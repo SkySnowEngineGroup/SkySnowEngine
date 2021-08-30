@@ -21,12 +21,20 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NWMutex.h"
+#include "NonCopyable.h"
+#include <pthread.h>
 
 namespace Nuwa
 {
 	class ThreadMutex : public NonCopyable
 	{
-
+	public:
+		ThreadMutex();
+		virtual ~ThreadMutex();
+		void Lock();
+		void UnLock();
+		bool TryLock();
+	private:
+		pthread_mutex_t m_mutex;
 	};
 }

@@ -34,8 +34,6 @@ file(GLOB Sources_lists "${SOURCES_DIR}/*.cpp"
 	                    "${SOURCES_DIR}/*.h"
 						"${SOURCES_THREADS_DIR}/*.cpp"
 						"${SOURCES_THREADS_DIR}/*.h"
-						"${SOURCES_THREADS_DIR}/Posix/*.cpp"
-						"${SOURCES_THREADS_DIR}/Posix/*.h"
 						"${SOURCE_APPLICATION_DIR}/*.cpp"
 						"${SOURCE_APPLICATION_DIR}/*.h"
 						"${SOURCE_CONTAINERS}/*.cpp"
@@ -90,7 +88,6 @@ target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_APPLICATION_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_CONTAINERS}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/
-						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_THREADS_DIR}>/Posix/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_UTIL_DIR}>/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_UTIL_DIR}>/Log/
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCE_RS_DIR}>/

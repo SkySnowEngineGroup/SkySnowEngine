@@ -20,24 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "NonCopyable.h"
-#include <cstdint>
-#include <pthread.h>
+#include "ThreadSemaphore.h"
+
 namespace Nuwa
 {
-	class NWThread : public NonCopyable
-	{
-		friend class Thread;
-	private:
-		NWThread();
-		~NWThread();
-	protected:
-		void CreateThread(const Thread* thread,const uint32_t stackSize,const int cpuprocessor);
 
-	private:
-		int			m_CPUProcessor;
-		int			m_DefaultPriority;
-		pthread_t	m_PThread;
-	};
 }

@@ -20,56 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "NonCopyable.h"
-#include <semaphore.h>
-#include <errno.h>
-#include "LogAssert.h"
+#include "ThreadMutex.h"
 namespace Nuwa
 {
-	class Semaphore :public NonCopyable
+	ThreadMutex::ThreadMutex()
 	{
-		friend class ThreadSemaphore;
-	protected:
-		void Create();
-		void Destroy();
-		void WaitForSignal();
-		void Signal();
-	private:
-		sem_t m_Semaphore;
-	};
-
-	inline void Semaphore::Create()
-	{
-		if (sem_init(&m_Semaphore, 0, 0) == -1)
-		{
-			NUWAERROR("Failed to open a semaphore(%s).", strerror(errno));
-		}	
+		pthread_mutexattr_t    attr;
+		pthread_mutexattr_init(&attr);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&m_mutex, &attr);
+		pthread_mutexattr_destroy(&attr);
 	}
 
-	inline void Semaphore::Destroy()
+	ThreadMutex::~ThreadMutex()
 	{
-		if (sem_destroy(&m_Semaphore) == -1)
-		{
-			NUWAERROR("Filed to destroy a semaphore(%s).", strerror(errno));
-		}	
+		pthread_mutex_destroy(&m_mutex);
 	}
-	inline void Semaphore::WaitForSignal()
-	{
-		int ret = 0;
-		while ((ret = sem_wait(&m_Semaphore)) == -1 && errno == EINTR)
-		{
-			continue;
-		}
-		if (ret == -1)
-			NUWAERROR("Filed to wait on a semaphore(%s).", strerror(errno));
-	}
-	inline void Semaphore::Signal()
-	{
-		if (sem_post(&m_Semaphore) == -1)
-		{
-			NUWAERROR("Filed to post to a semaphore(%s).", strerror(errno));
-		}
 
+	void ThreadMutex::Lock()
+	{
+		pthread_mutex_lock(&m_mutex);
+	}
+
+	void ThreadMutex::UnLock()
+	{
+		pthread_mutex_unlock(&m_mutex);
+	}
+
+	bool ThreadMutex::TryLock()
+	{
+		return pthread_mutex_trylock(&m_mutex) == 0;
 	}
 }

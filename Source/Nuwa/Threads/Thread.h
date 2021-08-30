@@ -21,11 +21,31 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NWThread.h"
+#include "NonCopyable.h"
+#include <cstdint>
+#include <pthread.h>
+
 namespace Nuwa
 {
 	class Thread : public NonCopyable
 	{
+		friend class NWThread;
+	public:
+		Thread();
+		virtual ~Thread();
 
+		static pthread_t GetCurrentThreadID();
+	protected:
+		void CreateThread();
+	private:
+		static void* RunThreadFunStatic(void* ptr);
+		void UpdatePriority(const Thread* thread) const;
+	private:
+		void*			m_Data;
+		void*			(*m_ThreadFunPtr)(void*);
+		volatile bool	m_Runing;
+		int				m_Priority;
+		int				m_DefaultPriority;
+		pthread_t*		m_PThread;
 	};
 }

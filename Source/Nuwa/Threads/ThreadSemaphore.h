@@ -21,12 +21,78 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "NonCopyable.h"
+#include <semaphore.h>
+#include <errno.h>
+#include "LogAssert.h"
 
-#include "NWSemaphore.h"
 namespace Nuwa
 {
 	class ThreadSemaphore : public NonCopyable
 	{
+	public:
+		ThreadSemaphore() 
+		{
+			Create(); 
+		}
 
+		virtual ~ThreadSemaphore()
+		{ 
+			Destroy(); 
+		}
+
+		void Reset() 
+		{ 
+			Destroy();
+			Create(); 
+		}
+
+		void WaitForSignal();
+
+		void Signal();
+	private:
+		void Create();
+
+		void Destroy();
+	private:
+		sem_t m_Semaphore;
 	};
+	//=================================================================================================
+	inline void ThreadSemaphore::Create()
+	{
+		if (sem_init(&m_Semaphore, 0, 0) == -1)
+		{
+			NUWAERROR("Failed to open a semaphore(%s).", strerror(errno));
+		}
+	}
+
+	inline void ThreadSemaphore::Destroy()
+	{
+		if (sem_destroy(&m_Semaphore) == -1)
+		{
+			NUWAERROR("Filed to destroy a semaphore(%s).", strerror(errno));
+		}
+	}
+
+	inline void ThreadSemaphore::WaitForSignal()
+	{
+		int ret = 0;
+		while ((ret = sem_wait(&m_Semaphore)) == -1 && errno == EINTR)
+		{
+			continue;
+		}
+		if (ret == -1)
+		{
+			NUWAERROR("Filed to wait on a semaphore(%s).", strerror(errno));
+		}	
+	}
+
+	inline void ThreadSemaphore::Signal()
+	{
+		if (sem_post(&m_Semaphore) == -1)
+		{
+			NUWAERROR("Filed to post to a semaphore(%s).", strerror(errno));
+		}
+	}
+	//=================================================================================================
 }
