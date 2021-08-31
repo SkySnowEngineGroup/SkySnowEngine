@@ -27,21 +27,23 @@ namespace Nuwa
 	void* Thread::RunThreadFunStatic(void* ptr)
 	{
 		Thread* thread = (Thread*)(ptr);
+		pthread_setname_np(*thread->m_PThread, thread->m_ThreadName);
 		thread->UpdatePriority(thread);
 		void* res = nullptr;
 		res = thread->m_ThreadFunPtr(thread->m_Data);
-		thread->m_Runing = false;
+		thread->m_IsRunning = false;
 		pthread_exit((void*)nullptr);
 		return reinterpret_cast<void*>(res);
 	}
 
 	Thread::Thread() 
 		: m_PThread(new pthread_t)
-		, m_Runing(false)
+		, m_IsRunning(false)
 		, m_Priority(ETP_Normal)
 		, m_DefaultPriority(0)
 		, m_Data(nullptr)
 		, m_ThreadFunPtr(nullptr)
+		, m_ThreadName(nullptr)
 	{
 	}
 
@@ -49,15 +51,37 @@ namespace Nuwa
 	{
 		if (m_PThread)
 		{
+			m_IsRunning = false;
 			pthread_join(*m_PThread, nullptr);
 			delete m_PThread;
 			m_PThread = nullptr;
 		}
 	}
+	void Thread::Run(void* (*thread_funptr)(void*), void* data)
+	{
+		m_Data = data;
+		m_ThreadFunPtr = thread_funptr;
+		m_IsRunning = true;
+
+		CreateThread();
+	}
+
+	void Thread::Stop()
+	{
+		void* ptr = 0;
+		pthread_join(*m_PThread, &ptr);
+		if (nullptr != ptr)
+		{
+			pthread_exit(ptr);
+		}
+		m_IsRunning = false;
+		m_PThread = 0;
+	}
 
 	void Thread::CreateThread()
 	{
-		pthread_create(m_PThread, NULL, RunThreadFunStatic, (void*)this);
+		pthread_create(m_PThread, nullptr, RunThreadFunStatic, (void*)this);
+
 		struct sched_param param;
 		int outputPolicy;
 		if (pthread_getschedparam(*m_PThread, &outputPolicy, &param) == 0)
@@ -68,6 +92,16 @@ namespace Nuwa
 		{
 			UpdatePriority(this);
 		}
+	}
+
+	void Thread::SetPriority(ThreadPriority tpri)
+	{
+		if (!m_IsRunning && m_Priority == tpri)
+		{
+			return;
+		}
+		m_Priority = tpri;
+		UpdatePriority(this);
 	}
 
 	void Thread::UpdatePriority(const Thread* thread) const

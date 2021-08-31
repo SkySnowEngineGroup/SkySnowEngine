@@ -24,7 +24,7 @@
 #include "NonCopyable.h"
 #include <cstdint>
 #include <pthread.h>
-
+#include "ThreadProfiles.h"
 namespace Nuwa
 {
 	class Thread : public NonCopyable
@@ -33,7 +33,25 @@ namespace Nuwa
 	public:
 		Thread();
 		virtual ~Thread();
+		void Run(void*(*thread_funptr)(void*), void* data);
 
+		void SetName(const char* name)
+		{
+			m_ThreadName = name;
+		}
+
+		void Stop();
+
+		void SetPriority(ThreadPriority tpri);
+
+		ThreadPriority GetThreadPriority()
+		{
+			return m_Priority;
+		}
+		bool IsRunning() const
+		{
+			return m_IsRunning;
+		}
 		static pthread_t GetCurrentThreadID();
 	protected:
 		void CreateThread();
@@ -43,9 +61,10 @@ namespace Nuwa
 	private:
 		void*			m_Data;
 		void*			(*m_ThreadFunPtr)(void*);
-		volatile bool	m_Runing;
-		int				m_Priority;
+		volatile bool	m_IsRunning;
+		ThreadPriority	m_Priority;
 		int				m_DefaultPriority;
 		pthread_t*		m_PThread;
+		const char*		m_ThreadName;
 	};
 }
