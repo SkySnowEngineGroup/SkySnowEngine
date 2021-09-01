@@ -110,5 +110,5 @@ target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 						   Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
 #在win32平台使用Pthreads库
 if(WIN32)
-target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/pthreads_win32/pthreads.2/)
+target_include_directories(Nuwa PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/pthread_win/pthreads.2/)
 endif(WIN32)

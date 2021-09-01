@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "LogAssert.h"
 #include "OSPlatform.h"
+#include "Thread.h"
 //glfw callbacks
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 //void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -18,6 +19,15 @@ public:
 	{
 
 	}
+
+    static void* TriangleThreadTest(void* data)
+    {
+        while (true)
+        {
+            NUWALOGI("PThread is Running.");
+        }
+        return nullptr;
+    }
 
 	void Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
@@ -42,6 +52,10 @@ public:
         NUWALOGI("Info LogAssert width:%d", width);
         NUWAWARNING("Warning LogAssert width:%d", width);
         NUWAERROR("Error LogAssert width:%d", width);
+
+        m_TestThread = new Nuwa::Thread();
+        m_TestThread->SetName("Test_Thread.");
+        m_TestThread->Run(TriangleThreadTest,this);
 	}
 	int ShutDown()
 	{
@@ -68,6 +82,7 @@ public:
     }
 private:
     GLFWwindow* m_Window;
+    Nuwa::Thread* m_TestThread;
 };
 
 NUWA_DEFINE_APPLICATION_MAIN(
