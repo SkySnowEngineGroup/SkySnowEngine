@@ -88,5 +88,5 @@ private:
 NUWA_DEFINE_APPLICATION_MAIN(
 	Triangle
 	, "03-Triangles"
-	, "Draw Trangle At Window&IOS."
+	, "Draw Trangle At Window&MacOS."
 );

@@ -21,9 +21,9 @@
 # THE SOFTWARE.
 #
 
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
-set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
+#set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+#set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
+#set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
 #find OpenGL Library
 if(WIN32)
@@ -39,8 +39,8 @@ elseif(APPLE)
 endif(WIN32)
 
 include_directories("${SOURCES_DIR}/Nuwa")
-include_directories("${PLUGINS_DIR}/Plugins")
-include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
+include_directories("${SOURCES_DIR}/Plugins")
+include_directories("${SOURCES_DIR}/ThirdParty")
 
 add_subdirectory(Nuwa)
 add_subdirectory(Plugins)

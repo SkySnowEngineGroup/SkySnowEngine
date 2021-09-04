@@ -31,7 +31,6 @@
 
 cmake_minimum_required(VERSION 3.10)
 
-
 #camke 准则
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 	cmake_policy(SET CMP0074 NEW)
@@ -41,8 +40,12 @@ endif()
 project(Nuwa)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+include(NuwaCommon)
 
 set(DEST_INCLUDE_DIR include/Source)
+
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/Binaries)
+#设置exe文件运行存储路径
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries)
 
 add_subdirectory(Source)

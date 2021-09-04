@@ -20,6 +20,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+set(project_name pthread_win)
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/pthreads.2/implement.h"
@@ -28,6 +29,10 @@ file(GLOB Sources_lists "${SOURCES_DIR}/pthreads.2/implement.h"
                         "${SOURCES_DIR}/pthreads.2/semaphore.h"
 					    "${SOURCES_DIR}/pthreads.2/pthread.c")
 
+include_directories(
+	${CMAKE_CURRENT_SOURCE_DIR}/pthreads.2
+)
+
 foreach(source IN LISTS Sources_lists)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
 	get_filename_component(source_path "${source_rel}" PATH)
@@ -35,8 +40,26 @@ foreach(source IN LISTS Sources_lists)
 	source_group("${source_path_dir}" FILES "${source}")
 endforeach()
 
-add_library(pthread_win ${Sources_lists})
+set(CompilerFlags
+	CMAKE_CXX_FLAGS
+	CMAKE_CXX_FLAGS_DEBUG
+	CMAKE_CXX_FLAGS_RELEASE
+	CMAKE_C_FLAGS
+	CMAKE_C_FLAGS_DEBUG
+	CMAKE_C_FLAGS_RELEASE
+	)
+foreach(CompilerFlag ${CompilerFlags})
+	string(REPLACE "/MD" "/MT" ${CompilerFlag} "${${CompilerFlag}}")
+endforeach()
 
-target_include_directories(pthread_win PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
-                           pthread_win PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/pthreads.2/
+add_library(${project_name} SHARED ${Sources_lists})
+
+set(project_compile_options -DHAVE_CONFIG_H)
+
+target_compile_options(${project_name} PRIVATE ${project_compile_options})
+
+target_link_libraries(${project_name} PRIVATE ${MSVC_LIBS})
+
+target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/
+                           ${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/pthreads.2/
 						  )
