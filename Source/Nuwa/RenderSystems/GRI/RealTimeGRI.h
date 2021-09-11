@@ -33,5 +33,7 @@ namespace Nuwa
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		// Test:clear quad color
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
+		//Create Shader
+
 	};
 };

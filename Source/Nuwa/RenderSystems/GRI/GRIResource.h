@@ -43,7 +43,10 @@ namespace Nuwa
 	class GRIShader : public GRIResource
 	{
 	public:
-
+		GRIShader(EGRIResourceType grit)
+			: GRIResource(grit)
+		{
+		}
 	};
 
 	class GRIVertexShader : public GRIShader

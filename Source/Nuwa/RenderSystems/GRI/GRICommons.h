@@ -36,7 +36,10 @@ namespace Nuwa
 
 	enum EGRIResourceType
 	{
-		GRI_None,
-		GRI_Num
+		GRT_None,
+		GRT_VertexShader,
+		GRT_FragmentShader,
+		GRT_Buffer,
+		GRT_Num
 	};
 }

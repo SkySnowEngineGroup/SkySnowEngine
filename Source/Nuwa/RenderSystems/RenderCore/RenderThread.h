@@ -21,3 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
+
+namespace Nuwa
+{
+	class RenderThread
+	{
+
+	};
+}
