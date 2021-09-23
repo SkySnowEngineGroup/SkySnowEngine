@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "GRICommons.h"
+#include "GRIResource.h"
 namespace Nuwa
 {
 	//根据不同平台创建不同的渲染API
@@ -34,6 +35,6 @@ namespace Nuwa
 		// Test:clear quad color
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
 		//Create Shader
-
+		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
 	};
 };

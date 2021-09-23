@@ -51,12 +51,20 @@ namespace Nuwa
 
 	class GRIVertexShader : public GRIShader
 	{
-
+	public:
+		GRIVertexShader()
+			: GRIShader(GRT_VertexShader)
+		{
+		}
 	};
 
 	class GRIFragmentShader : public GRIShader
 	{
-
+	public:
+		GRIFragmentShader()
+			: GRIShader(GRT_FragmentShader)
+		{
+		}
 	};
 
 	class GRIBuffer : public GRIResource
@@ -64,4 +72,7 @@ namespace Nuwa
 	public:
 
 	};
+	// Thread safe ref ptr
+	typedef RefCountPtr<GRIVertexShader> GRIVertexShaderRef;
+	typedef RefCountPtr<GRIFragmentShader> GRIFragmentShaderRef;
 }
