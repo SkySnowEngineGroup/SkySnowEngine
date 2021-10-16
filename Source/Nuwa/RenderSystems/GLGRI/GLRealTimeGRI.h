@@ -52,5 +52,9 @@ namespace Nuwa
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetGRIFeatureType(); }
 
 		void GRIClearColor(float red, float green, float blue, float alpha) final override;
+
+		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) final override;
+
+		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) final override;
 	};
 }

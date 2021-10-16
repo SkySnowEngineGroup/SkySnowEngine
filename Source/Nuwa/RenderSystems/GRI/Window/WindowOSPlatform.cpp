@@ -52,6 +52,7 @@ namespace Nuwa
 		{
 			return m_RealTimeGRI;
 		}
+		//can create OpenGL Vulkan,Nuwa plan not support DX 
 		m_PlatformGRI = new GLPlatformGRI();
 		//Windows platform can support OpenGL, Vulakn GRI
 		if (m_PlatformGRI->IsSupport())
