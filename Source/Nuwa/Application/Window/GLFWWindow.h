@@ -27,7 +27,7 @@ namespace Nuwa
 	namespace Engine
 	{
 		//can be use mac and window os
-		class GLFWWindow:public IWindow
+		class GLFWWindow: public IWindow
 		{
 
 		};
