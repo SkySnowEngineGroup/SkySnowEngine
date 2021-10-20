@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "LogAssert.h"
 namespace Nuwa
 {
 	namespace Engine
@@ -18,9 +19,15 @@ namespace Nuwa
 		{
 			app->Init(argc,argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
 
-			while (app->Update())
+			while (true)
 			{
-				//break;
+				//NUWALOGI("Main Thread Update.");
+				bool flag = app->Update();
+				if (!flag)
+				{
+					NUWALOGI("Main Thread Exit.");
+					break;
+				}
 			}
 			return app->ShutDown();
 		}

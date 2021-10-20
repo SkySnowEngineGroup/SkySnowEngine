@@ -16,17 +16,26 @@ class Triangle : public Nuwa::Engine::Application
 public:
 	Triangle(const char* name, const char* description)
 		: Application(name, description)
+        , m_TestThread(nullptr)
+        , m_TestThread_quit(false)
 	{
-
+        NUWALOGI("Application is name:%s", name);
+        NUWALOGI("Application description info:%s", description);
 	}
 
     static void* TriangleThreadTest(void* data)
     {
-        while (true)
+        Triangle* worker = (Triangle*)data;
+        worker->Run();
+        return nullptr;
+    }
+
+    void Run()
+    {
+        while (!m_TestThread_quit)
         {
             NUWALOGI("PThread is Running.");
         }
-        return nullptr;
     }
 
 	void Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
@@ -56,10 +65,20 @@ public:
         m_TestThread = new Nuwa::Thread();
         m_TestThread->SetName("Test_Thread.");
         m_TestThread->Run(TriangleThreadTest,this);
+
+        if (m_TestThread)
+        {
+            m_TestThread_quit = true;
+            m_TestThread->Stop();
+            //delete m_TestThread;
+            //m_TestThread = nullptr;
+        }
 	}
 	int ShutDown()
 	{
+        NUWALOGI("Application ShutDown.");
         glfwTerminate();
+ 
 		return 0;
 	}
 	bool Update()
@@ -70,7 +89,7 @@ public:
         glClear(GL_COLOR_BUFFER_BIT);
 
 
-
+        
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
 		return !glfwWindowShouldClose(m_Window);
@@ -83,6 +102,7 @@ public:
 private:
     GLFWwindow* m_Window;
     Nuwa::Thread* m_TestThread;
+    bool m_TestThread_quit;
 };
 
 NUWA_DEFINE_APPLICATION_MAIN(
