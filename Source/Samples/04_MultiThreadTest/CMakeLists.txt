@@ -1,5 +1,6 @@
 #
 # Copyright (c) 2020-2022 the NuwaEngine project.
+#
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,21 +21,22 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(FRAMEWORK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Frameworks")
-file(GLOB Frameworks_lists  "${FRAMEWORK_DIR}/*.cpp"
-							"${FRAMEWORK_DIR}/*.h")
+file(GLOB_RECURSE SampleSource  "${SAMPLE_DIR}/../04_MultiThreadTest/*.*")
 
-foreach(source IN LISTS Frameworks_lists)
+#message("${SampleSource}")
+foreach(source IN LISTS SampleSource)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
 	get_filename_component(source_path "${source_rel}" PATH)
 	string(REPLACE "/" "\\" source_path_dir "${source_path}")
 	source_group("${source_path_dir}" FILES "${source}")
 endforeach()
 
-include_directories(PUBLIC $<BUILD_INTERFACE:${FRAMEWORK_DIR}/>)
+add_executable(MultiThreadTest ${Frameworks_lists} ${SampleSource})
 
-add_subdirectory(01_HelloWorld)
-add_subdirectory(02_Window)
-add_subdirectory(03_Triangles)
-add_subdirectory(04_MultiThreadTest)
+target_include_directories(MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/EngineModule/>
+						   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/RenderModule/>
+					      )
+target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
