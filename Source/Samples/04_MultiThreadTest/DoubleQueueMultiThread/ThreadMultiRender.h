@@ -21,44 +21,55 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "LogAssert.h"
-#include "GRI_T.h"
-#include "ThreadMutex.h"
-class Engine_T
+#include "MainThread.h"
+#include "RenderThread.h"
+#include "ThreadDoubleQueue.h"
+namespace ThreadMultiRender
 {
-public:
-	Engine_T()
-		: m_GRI_T(nullptr)
+	class Engine_DoubleQueue
 	{
-	}
+	public:
+		Engine_DoubleQueue()
+			: m_MainThread(nullptr)
+			, m_RenderThread(nullptr)
+			, m_DoublueQueue(nullptr)
+		{
+		}
 
-	virtual ~Engine_T()
-	{
-	}
+		virtual ~Engine_DoubleQueue()
+		{
+			if (m_MainThread)
+			{
+				m_MainThread->StopMainThread();
+				delete m_MainThread;
+				m_MainThread = nullptr;
+			}
+			if (m_RenderThread)
+			{
+				m_RenderThread->StopRenderThread();
+				delete m_RenderThread;
+				m_RenderThread = nullptr;
+			}
+			if (m_DoublueQueue)
+			{
+				delete m_DoublueQueue;
+				m_DoublueQueue = nullptr;
+			}
+		}
 
-	void Initial()
-	{
-		m_GRI_T = new GRI_T();
-		m_GRI_T->Initial();
-	}
+		void Initial()
+		{
+			m_DoublueQueue = new DoubleQueue::ThreadDoubleQueue();
+			m_MainThread = new MainThread(m_DoublueQueue);
+			m_MainThread->StartMainThread();
 
-	void EngineUpdate()
-	{
-		m_LockPrint.Lock();
-		NUWALOGI("MainThread is Running================================.\n");
-		m_LockPrint.UnLock();
-		m_GRI_T->EngineThreadWriteData();
-	}
+			m_RenderThread = new RenderThread(m_DoublueQueue);
+			m_RenderThread->StartRenderThread();
+		}
 
-	void RenderUpdate()
-	{
-		m_LockPrint.Lock();
-		NUWALOGI("RenderThread is Running================================.\n");
-		m_LockPrint.UnLock();
-		m_GRI_T->RenderThreadReadData();
-		m_GRI_T->Update();
-	}
-private:
-	GRI_T* m_GRI_T;
-	Nuwa::ThreadMutex		m_LockPrint;
-};
+	private:
+		MainThread*						m_MainThread;
+		RenderThread*					m_RenderThread;
+		DoubleQueue::ThreadDoubleQueue* m_DoublueQueue;
+	};
+}

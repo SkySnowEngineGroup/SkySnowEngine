@@ -23,14 +23,14 @@
 #pragma once
 #include "LogAssert.h"
 #include "Thread.h"
-#include "Engine_T.h"
+#include "ThreadDoubleQueue.h"
 class RenderThread
 {
 public:
-	RenderThread(Engine_T* engine)
+	RenderThread(DoubleQueue::ThreadDoubleQueue* tdq)
 		: m_RenderThread_quit(false)
 		, m_RenderThread(nullptr)
-        , m_Engine(engine)
+        , m_DoublueQueue(tdq)
 	{
 
 	}
@@ -74,14 +74,14 @@ private:
     {
         while (!m_RenderThread_quit)
         {
-            if (m_Engine)
+            if (m_DoublueQueue)
             {
-                m_Engine->RenderUpdate();
+                m_DoublueQueue->RenderOneFrame();
             }
         }
     }
 private:
-	bool			m_RenderThread_quit;
-	Nuwa::Thread*	m_RenderThread;
-    Engine_T*       m_Engine;
+	bool			                m_RenderThread_quit;
+	Nuwa::Thread*	                m_RenderThread;
+    DoubleQueue::ThreadDoubleQueue* m_DoublueQueue;
 };
