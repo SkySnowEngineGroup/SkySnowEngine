@@ -49,8 +49,8 @@ namespace DoubleQueue
 		{
 			BeginRender();
 			//Submit Render CMD
-			m_EncoderList += 1;
 			m_PrintMutex.Lock();
+			m_EncoderList += 1;
 			NUWALOGI("MainThread=================================:%f", m_EncoderList);
 			m_PrintMutex.UnLock();
 			Present();
@@ -66,8 +66,12 @@ namespace DoubleQueue
 			m_MainSem.WaitForSignal();
 			//Swap(m_EncoderList,m_RenderList);
 			float temp = m_EncoderList;
-			m_EncoderList = m_RenderList;
+			//m_EncoderList = m_RenderList;
 			m_RenderList = temp;
+			m_PrintMutex.Lock();
+			NUWALOGI("Swap CMD  m_EncoderList  ===:%f", m_EncoderList);
+			NUWALOGI("Swap CMD  m_RenderList   ===:%f", m_RenderList);
+			m_PrintMutex.UnLock();
 		}
 		//RenderThread Call this function
 		void RenderOneFrame()

@@ -53,6 +53,7 @@ namespace Nuwa
         }
         m_PlatformGRI = new GLPlatformGRI();
         //m_PlatformGRI = new VulkanPlatformGRI();//if config with json
+        //m_PlatformGRI = new MetalPlatformGRI();
         //Windows platform can support OpenGL, Vulakn GRI
         if (m_PlatformGRI->IsSupport())
         {

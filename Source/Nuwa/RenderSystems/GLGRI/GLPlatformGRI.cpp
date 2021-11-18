@@ -31,6 +31,7 @@ namespace Nuwa
 
 	RealTimeGRI* GLPlatformGRI::CreateGRI()
 	{
+		//这里将OpenGL、OpenGLES2.0、ES3.x归结到一起
 		return new GLRealTimeGRI();
 	}
 }
