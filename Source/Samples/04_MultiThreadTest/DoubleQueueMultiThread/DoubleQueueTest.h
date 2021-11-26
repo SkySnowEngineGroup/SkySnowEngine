@@ -20,17 +20,56 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include <stdlib.h>
-#include <iostream>
-#include "LogAssert.h"
-#include "FrameWorkMultiThread.h"
-int main()
+#pragma once
+#include "MainThread.h"
+#include "RenderThread.h"
+#include "ThreadDoubleQueue.h"
+namespace ThreadMultiRender
 {
-	NUWALOGI("Hello World!\n");
-	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
-	mrtFW->Initial();
+	class Engine_DoubleQueue
+	{
+	public:
+		Engine_DoubleQueue()
+			: m_MainThread(nullptr)
+			, m_RenderThread(nullptr)
+			, m_DoublueQueue(nullptr)
+		{
+		}
 
-	delete mrtFW;
-	system("pause");
-	return 0;
+		virtual ~Engine_DoubleQueue()
+		{
+			if (m_MainThread)
+			{
+				m_MainThread->StopMainThread();
+				delete m_MainThread;
+				m_MainThread = nullptr;
+			}
+			if (m_RenderThread)
+			{
+				m_RenderThread->StopRenderThread();
+				delete m_RenderThread;
+				m_RenderThread = nullptr;
+			}
+			if (m_DoublueQueue)
+			{
+				delete m_DoublueQueue;
+				m_DoublueQueue = nullptr;
+			}
+		}
+
+		void Initial()
+		{
+			m_DoublueQueue = new ThreadDoubleQueue();
+			m_MainThread = new MainThread(m_DoublueQueue);
+			m_MainThread->StartMainThread();
+
+			m_RenderThread = new RenderThread(m_DoublueQueue);
+			m_RenderThread->StartRenderThread();
+		}
+
+	private:
+		MainThread*						m_MainThread;
+		RenderThread*					m_RenderThread;
+		ThreadDoubleQueue*				m_DoublueQueue;
+	};
 }

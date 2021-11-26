@@ -36,6 +36,10 @@ endforeach()
 add_executable(MultiThreadTest ${Frameworks_lists} ${SampleSource})
 
 target_include_directories(MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+                           MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/Common/>
+                           MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/ThreadTypeSwitch/>
 		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/DoubleQueueMultiThread/>
+		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/CircularQueueMultiThread/>
+		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/PipelineMultiThread/>
 					      )
 target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty

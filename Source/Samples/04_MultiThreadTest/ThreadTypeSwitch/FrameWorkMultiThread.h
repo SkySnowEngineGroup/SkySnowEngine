@@ -21,55 +21,51 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "MainThread.h"
-#include "RenderThread.h"
-#include "ThreadDoubleQueue.h"
+#include "DoubleQueueTest.h"
 namespace ThreadMultiRender
 {
-	class Engine_DoubleQueue
+	enum MRTType
+	{
+		DQ_MRT,//双队列帧同步
+		PQ_MRT,//管道
+		CQ_MRT //环形队列
+	};
+	class MTRFrameWork
 	{
 	public:
-		Engine_DoubleQueue()
-			: m_MainThread(nullptr)
-			, m_RenderThread(nullptr)
-			, m_DoublueQueue(nullptr)
+		MTRFrameWork(MRTType mrtType = DQ_MRT)
+			: m_MRTType(mrtType)
 		{
 		}
 
-		virtual ~Engine_DoubleQueue()
+		virtual ~MTRFrameWork()
 		{
-			if (m_MainThread)
+			if (m_Edq)
 			{
-				m_MainThread->StopMainThread();
-				delete m_MainThread;
-				m_MainThread = nullptr;
-			}
-			if (m_RenderThread)
-			{
-				m_RenderThread->StopRenderThread();
-				delete m_RenderThread;
-				m_RenderThread = nullptr;
-			}
-			if (m_DoublueQueue)
-			{
-				delete m_DoublueQueue;
-				m_DoublueQueue = nullptr;
+				delete m_Edq;
+				m_Edq = nullptr;
 			}
 		}
 
 		void Initial()
 		{
-			m_DoublueQueue = new DoubleQueue::ThreadDoubleQueue();
-			m_MainThread = new MainThread(m_DoublueQueue);
-			m_MainThread->StartMainThread();
+			if (m_MRTType == DQ_MRT)//双队列帧同步
+			{
+				m_Edq = new ThreadMultiRender::Engine_DoubleQueue();
+				m_Edq->Initial();
+			}
+			else if(m_MRTType == PQ_MRT)//管道
+			{
 
-			m_RenderThread = new RenderThread(m_DoublueQueue);
-			m_RenderThread->StartRenderThread();
+			}
+			else if (m_MRTType == CQ_MRT)//环形队列
+			{
+
+			}
 		}
 
 	private:
-		MainThread*						m_MainThread;
-		RenderThread*					m_RenderThread;
-		DoubleQueue::ThreadDoubleQueue* m_DoublueQueue;
+		ThreadMultiRender::Engine_DoubleQueue*	m_Edq;
+		MRTType									m_MRTType;
 	};
 }

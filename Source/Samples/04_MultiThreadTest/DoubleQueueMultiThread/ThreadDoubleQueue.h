@@ -23,7 +23,7 @@
 #pragma once
 #include "ThreadSemaphore.h"
 #include "ThreadMutex.h"
-namespace DoubleQueue
+namespace ThreadMultiRender
 {
 	class ThreadDoubleQueue
 	{

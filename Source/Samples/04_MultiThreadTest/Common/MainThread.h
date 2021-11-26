@@ -24,64 +24,62 @@
 #include "LogAssert.h"
 #include "Thread.h"
 #include "ThreadDoubleQueue.h"
-class RenderThread
+class MainThread
 {
 public:
-	RenderThread(DoubleQueue::ThreadDoubleQueue* tdq)
-		: m_RenderThread_quit(false)
-		, m_RenderThread(nullptr)
+	MainThread(ThreadMultiRender::ThreadDoubleQueue* tdq)
+        : m_MainThread_quit(false)
+        , m_MainThread(nullptr)
         , m_DoublueQueue(tdq)
 	{
-
 	}
 
-	virtual ~RenderThread()
+	virtual ~MainThread()
 	{
-        if (m_RenderThread)
+        if (m_MainThread)
         {
-            delete m_RenderThread;
-            m_RenderThread = nullptr;
+            delete m_MainThread;
+            m_MainThread = nullptr;
         }
-
 	}
-    void StartRenderThread()
+    void StartMainThread()
     {
-        if (m_RenderThread == nullptr)
+        if (m_MainThread == nullptr)
         {
-            m_RenderThread = new Nuwa::Thread();
-            m_RenderThread->SetName("Render_Thread.");
-            m_RenderThread->Run(RenderThreadRun, this);
+            m_MainThread = new Nuwa::Thread();
+            m_MainThread->SetName("Main_Thread.");
+            m_MainThread->Run(MainThreadRun, this);
         }
         return;
     }
-    void StopRenderThread()
+    void StopMainThread()
     {
-        if (m_RenderThread)
+        if (m_MainThread)
         {
-            m_RenderThread_quit = true;
-            m_RenderThread->Stop();
+            m_MainThread_quit = true;
+            m_MainThread->Stop();
         }
     }
 private:
-    static void* RenderThreadRun(void* data)
+    static void* MainThreadRun(void* data)
     {
-        RenderThread* worker = (RenderThread*)data;
+        MainThread* worker = (MainThread*)data;
         worker->Run();
         return nullptr;
     }
 
     void Run()
     {
-        while (!m_RenderThread_quit)
+        while (!m_MainThread_quit)
         {
             if (m_DoublueQueue)
             {
-                m_DoublueQueue->RenderOneFrame();
-            }
+                m_DoublueQueue->EngineUpdate();
+            } 
         }
     }
 private:
-	bool			                m_RenderThread_quit;
-	Nuwa::Thread*	                m_RenderThread;
-    DoubleQueue::ThreadDoubleQueue* m_DoublueQueue;
+    bool                            m_MainThread_quit;
+    Nuwa::Thread*                   m_MainThread;
+    ThreadMultiRender::ThreadDoubleQueue* m_DoublueQueue;
 };

@@ -20,17 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include <stdlib.h>
-#include <iostream>
-#include "LogAssert.h"
-#include "FrameWorkMultiThread.h"
-int main()
+#pragma once
+namespace ThreadMultiRender
 {
-	NUWALOGI("Hello World!\n");
-	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
-	mrtFW->Initial();
+	class CircularQueueFrameWork
+	{
+	public:
 
-	delete mrtFW;
-	system("pause");
-	return 0;
+	};
 }
