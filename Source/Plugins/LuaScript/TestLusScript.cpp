@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the NuwaEngine project.
-// Open source is written by wangcan(crygl)、liuqian(SkySnow)、zhangshuangxue(Calence)
+// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
