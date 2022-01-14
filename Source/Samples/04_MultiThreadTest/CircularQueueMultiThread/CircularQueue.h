@@ -21,11 +21,16 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "ThreadQueue.h"
 namespace ThreadMultiRender
 {
-	class CircularQueueFrameWork
+	class ThreadCircularQueue:public ThreadQueue
 	{
 	public:
 
+
+		virtual void EngineUpdate();
+
+		virtual void RenderOneFrame();
 	};
 }

@@ -65,7 +65,8 @@ namespace ThreadMultiRender
 		}
 
 	private:
-		ThreadMultiRender::Engine_DoubleQueue*	m_Edq;
 		MRTType									m_MRTType;
+		ThreadMultiRender::Engine_DoubleQueue*	m_Edq;
+		
 	};
 }

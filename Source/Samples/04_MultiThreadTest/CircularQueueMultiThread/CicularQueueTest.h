@@ -21,15 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ThreadQueue.h"
 namespace ThreadMultiRender
 {
-	class ThreadPipelineQueue:public ThreadQueue
-	{
-	public:
 
-		virtual void EngineUpdate();
-
-		virtual void RenderOneFrame();
-	};
 }

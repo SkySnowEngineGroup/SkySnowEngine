@@ -23,9 +23,10 @@
 #pragma once
 #include "ThreadSemaphore.h"
 #include "ThreadMutex.h"
+#include "ThreadQueue.h"
 namespace ThreadMultiRender
 {
-	class ThreadDoubleQueue
+	class ThreadDoubleQueue :public ThreadQueue
 	{
 	public:
 		ThreadDoubleQueue()
@@ -45,7 +46,7 @@ namespace ThreadMultiRender
 			rhs = lhs;
 		}
 		//MainThread call this function
-		void EngineUpdate()
+		virtual void EngineUpdate()
 		{
 			BeginRender();
 			//Submit Render CMD
@@ -74,7 +75,7 @@ namespace ThreadMultiRender
 			m_PrintMutex.UnLock();
 		}
 		//RenderThread Call this function
-		void RenderOneFrame()
+		virtual void RenderOneFrame()
 		{
 			m_RenderSem.WaitForSignal();
 			//vlm_RenderList = 2;
