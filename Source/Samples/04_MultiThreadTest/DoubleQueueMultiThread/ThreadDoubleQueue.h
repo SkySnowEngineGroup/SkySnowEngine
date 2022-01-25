@@ -24,6 +24,7 @@
 #include "ThreadSemaphore.h"
 #include "ThreadMutex.h"
 #include "ThreadQueue.h"
+#include <unistd.h>
 namespace ThreadMultiRender
 {
 	class ThreadDoubleQueue :public ThreadQueue
@@ -88,7 +89,7 @@ namespace ThreadMultiRender
 	private:
 		void SimulationBusy()
 		{
-			Sleep(3000);
+			sleep(3000);
 			for (int i = 0; i < 10000000; i++)
 			{
 				float value = 10 * 20 * 4.234 * 2341;

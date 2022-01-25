@@ -22,12 +22,18 @@
 //
 #include "Thread.h"
 #include "ThreadProfiles.h"
+#include "PlatformProfiles.h"
+#include "LogAssert.h"
 namespace Nuwa
 {
 	void* Thread::RunThreadFunStatic(void* ptr)
 	{
 		Thread* thread = (Thread*)(ptr);
-		pthread_setname_np(*thread->m_PThread, thread->m_ThreadName);
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+        NUWAWARNING("IOS and Mac not support this api pthread_setname_np.");
+#else
+        pthread_setname_np(*thread->m_PThread, thread->m_ThreadName);
+#endif
 		thread->UpdatePriority(thread);
 		void* res = nullptr;
 		res = thread->m_ThreadFunPtr(thread->m_Data);

@@ -53,7 +53,7 @@ namespace Nuwa
 		template<typename CloneReferenced>
 		explicit RefCountPtr(const RefCountPtr<CloneReferenced>& inputClone)
 		{
-			m_Referenced = static_cast<m_Referenced*>(inputClone.GetReference());
+			m_Referenced = static_cast<Referenced*>(inputClone.GetReference());
 			if (m_Referenced)
 			{
 				m_Referenced->Add();

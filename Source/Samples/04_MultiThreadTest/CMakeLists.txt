@@ -42,4 +42,8 @@ target_include_directories(MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR
 		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/CircularQueueMultiThread/>
 		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/PipelineMultiThread/>
 					      )
-target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
+if(WIN32)
+    target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
+else()
+    target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+endif(WIN32)
