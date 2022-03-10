@@ -28,5 +28,5 @@ add_subdirectory(Glad)
 add_subdirectory(glfw3)
 
 if(WIN32)
-add_subdirectory(pthreads_win32)
+add_subdirectory(pthread_win)
 endif(WIN32)
