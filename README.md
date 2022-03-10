@@ -13,7 +13,7 @@ then,open the command line tool,input order：
 cmake ../..
 ```
 
-final,open Nuwa.sln project
+final,open SkySnow.sln project
 
 #### 1.2  MacOS Xcode
 
