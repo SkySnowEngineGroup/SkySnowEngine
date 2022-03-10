@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the NuwaEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,11 +38,11 @@ elseif(APPLE)
     message("find library OpenGL Library ${OpenGL_LIBRARY}")
 endif(WIN32)
 
-include_directories("${SOURCES_DIR}/Nuwa")
+include_directories("${SOURCES_DIR}/SkySnow")
 include_directories("${SOURCES_DIR}/Plugins")
 include_directories("${SOURCES_DIR}/ThirdParty")
 
-add_subdirectory(Nuwa)
+add_subdirectory(SkySnow)
 add_subdirectory(Plugins)
 add_subdirectory(Samples)
 add_subdirectory(ThirdParty)

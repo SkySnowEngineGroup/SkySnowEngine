@@ -28,4 +28,4 @@ add_executable(Window ${Sources_lists})
 
 target_include_directories(Window PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
 
-target_link_libraries(Window Nuwa Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+target_link_libraries(Window SkySnow Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty

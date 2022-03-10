@@ -37,10 +37,10 @@ if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 endif()
 
 #工程名字
-project(Nuwa)
+project(SkySnow)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-include(NuwaCommon)
+include(SkySnowCommon)
 
 set(DEST_INCLUDE_DIR include/Source)
 

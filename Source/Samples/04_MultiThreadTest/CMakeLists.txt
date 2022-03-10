@@ -43,7 +43,7 @@ target_include_directories(MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR
 		                   MultiThreadTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/PipelineMultiThread/>
 					      )
 if(WIN32)
-    target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
+    target_link_libraries(MultiThreadTest SkySnow Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
 else()
-    target_link_libraries(MultiThreadTest Nuwa Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+    target_link_libraries(MultiThreadTest SkySnow Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
 endif(WIN32)

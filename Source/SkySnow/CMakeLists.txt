@@ -20,29 +20,29 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-set(project_name Nuwa)
+set(project_name SkySnow)
 
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # 遍历读取文件夹名字以及文件名字
 # 源码文件遍历
-file(GLOB_RECURSE NuwaSource "${SOURCES_DIR}/../Nuwa/*.*")
-#message("${NuwaSource}")
+file(GLOB_RECURSE SkySnowSource "${SOURCES_DIR}/../SkySnow/*.*")
+#message("${SkySnowSource}")
 
-foreach(source IN LISTS NuwaSource)
+foreach(source IN LISTS SkySnowSource)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
 	get_filename_component(source_path "${source_rel}" PATH)
 	string(REPLACE "/" "\\" source_path_dir "${source_path}")
 	source_group("${source_path_dir}" FILES "${source}")
 endforeach()
 
-add_library(${project_name} ${NuwaSource})
+add_library(${project_name} ${SkySnowSource})
 
 # 迭代遍历文件夹，然后设置这些文件夹名字给头文件包裹，就省去了手动写
-# Nuwa库的一些头文件遍历链接导入
-file(GLOB_RECURSE NuwaHeader "${SOURCES_DIR}/../Nuwa/*.h")
-#message("Header:${NuwaHeader}")
-foreach (SourceHeader IN LISTS NuwaHeader)
+# SkySnow库的一些头文件遍历链接导入
+file(GLOB_RECURSE SkySnowHeader "${SOURCES_DIR}/../SkySnow/*.h")
+#message("Header:${SkySnowHeader}")
+foreach (SourceHeader IN LISTS SkySnowHeader)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${SourceHeader}")
 	get_filename_component(source_path "${source_rel}" PATH)
 	string(REPLACE "/" "\\" source_path_dir "${source_path}")
