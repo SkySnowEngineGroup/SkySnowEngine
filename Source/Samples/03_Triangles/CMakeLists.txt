@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the NuwaEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
+# Copyright (c) 2020-2022 the SkySnowEngine project.
+# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence),wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -28,4 +28,4 @@ file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp"
 
 add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
 target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
-target_link_libraries(Triangle Nuwa Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+target_link_libraries(Triangle SkySnow Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty

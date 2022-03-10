@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the NuwaEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 # Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -21,9 +21,9 @@
 # THE SOFTWARE.
 #
 
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
-set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
+#set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+#set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
+#set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
 
 #find OpenGL Library
 if(WIN32)
@@ -36,14 +36,13 @@ elseif(APPLE)
     find_library(IOKit_LIBRARY IOKit)
     find_library(CoreVideo_LIBRARY CoreVideo)
     message("find library OpenGL Library ${OpenGL_LIBRARY}")
-else()
 endif(WIN32)
 
-include_directories("${SOURCES_DIR}/Nuwa")
-include_directories("${PLUGINS_DIR}/Plugins")
-include_directories("${THIRDPARTY_BASE_DIR}/ThirdParty")
+include_directories("${SOURCES_DIR}/SkySnow")
+include_directories("${SOURCES_DIR}/Plugins")
+include_directories("${SOURCES_DIR}/ThirdParty")
 
-add_subdirectory(Nuwa)
+add_subdirectory(SkySnow)
 add_subdirectory(Plugins)
 add_subdirectory(Samples)
 add_subdirectory(ThirdParty)
