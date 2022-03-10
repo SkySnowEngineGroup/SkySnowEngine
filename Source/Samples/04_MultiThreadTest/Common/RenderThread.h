@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,7 +48,7 @@ public:
     {
         if (m_RenderThread == nullptr)
         {
-            m_RenderThread = new Nuwa::Thread();
+            m_RenderThread = new SkySnow::Thread();
             m_RenderThread->SetName("Render_Thread.");
             m_RenderThread->Run(RenderThreadRun, this);
         }
@@ -82,6 +82,6 @@ private:
     }
 private:
 	bool			                m_RenderThread_quit;
-	Nuwa::Thread*	                m_RenderThread;
+	SkySnow::Thread*	            m_RenderThread;
     ThreadMultiRender::ThreadQueue* m_ThreadQueue;
 };

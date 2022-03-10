@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +23,7 @@
 #pragma once
 #include "NonCopyable.h"
 #include "PlatformProfiles.h"
-namespace Nuwa
+namespace SkySnow
 {
 	enum LogLevel
 	{
@@ -54,6 +54,6 @@ namespace Nuwa
 #endif
 	};
 }
-#define NUWALOGI(x, ...)	if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::ELOG_INFO,x, ##__VA_ARGS__)
-#define NUWAWARNING(x, ...) if(Nuwa::LogAssert::Instance()&&DEBUG)Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::ELOG_WARNING,x, ##__VA_ARGS__)
-#define NUWAERROR(x, ...)	if(Nuwa::LogAssert::Instance())Nuwa::LogAssert::Instance()->LogProcessing(Nuwa::ELOG_ERROR,x, ##__VA_ARGS__)
+#define SKYSNOWLOGI(x, ...)	if(SkySnow::LogAssert::Instance()&&DEBUG)SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_INFO,x, ##__VA_ARGS__)
+#define SKYSNOWWARNING(x, ...) if(SkySnow::LogAssert::Instance()&&DEBUG)SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_WARNING,x, ##__VA_ARGS__)
+#define SKYSNOWERROR(x, ...)	if(SkySnow::LogAssert::Instance())SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_ERROR,x, ##__VA_ARGS__)

@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,10 @@
 #include "ThreadSemaphore.h"
 #include "ThreadMutex.h"
 #include "ThreadQueue.h"
+#if PLATFORM == PLATFORM_IOS
 #include <unistd.h>
+#endif // PLATFORM == PLATFORM_IOS
+
 namespace ThreadMultiRender
 {
 	class ThreadDoubleQueue :public ThreadQueue
@@ -53,7 +56,7 @@ namespace ThreadMultiRender
 			//Submit Render CMD
 			m_PrintMutex.Lock();
 			m_EncoderList += 1;
-			NUWALOGI("MainThread=================================:%f", m_EncoderList);
+			SKYSNOWLOGI("MainThread=================================:%f", m_EncoderList);
 			m_PrintMutex.UnLock();
 			Present();
 		}
@@ -71,8 +74,8 @@ namespace ThreadMultiRender
 			//m_EncoderList = m_RenderList;
 			m_RenderList = temp;
 			m_PrintMutex.Lock();
-			NUWALOGI("Swap CMD  m_EncoderList  ===:%f", m_EncoderList);
-			NUWALOGI("Swap CMD  m_RenderList   ===:%f", m_RenderList);
+			SKYSNOWLOGI("Swap CMD  m_EncoderList  ===:%f", m_EncoderList);
+			SKYSNOWLOGI("Swap CMD  m_RenderList   ===:%f", m_RenderList);
 			m_PrintMutex.UnLock();
 		}
 		//RenderThread Call this function
@@ -81,7 +84,7 @@ namespace ThreadMultiRender
 			m_RenderSem.WaitForSignal();
 			//vlm_RenderList = 2;
 			m_PrintMutex.Lock();
-			NUWALOGI("RenderThread===:%f", m_RenderList);
+			SKYSNOWLOGI("RenderThread===:%f", m_RenderList);
 			m_PrintMutex.UnLock();
 			SimulationBusy();
 			m_MainSem.Signal();
@@ -89,17 +92,26 @@ namespace ThreadMultiRender
 	private:
 		void SimulationBusy()
 		{
-			sleep(3000);
+			SkySnowSleep(3000);
 			for (int i = 0; i < 10000000; i++)
 			{
 				float value = 10 * 20 * 4.234 * 2341;
 			}
 		}
+
+		void SkySnowSleep(unsigned int time)
+		{
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+			sleep(3000);
+#else
+			Sleep(3000);
+#endif
+		}
 	private:
-		Nuwa::ThreadSemaphore	m_MainSem;
-		Nuwa::ThreadSemaphore	m_RenderSem;
-		float					m_EncoderList;
-		float					m_RenderList;
-		Nuwa::ThreadMutex		m_PrintMutex;
+		SkySnow::ThreadSemaphore	m_MainSem;
+		SkySnow::ThreadSemaphore	m_RenderSem;
+		float						m_EncoderList;
+		float						m_RenderList;
+		SkySnow::ThreadMutex		m_PrintMutex;
 	};
 }

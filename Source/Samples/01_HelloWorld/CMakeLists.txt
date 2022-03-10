@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2020-2022 the NuwaEngine project.
+# Copyright (c) 2020-2022 the SkySnowEngine project.
 #
 # Open source is written by liuqian(SkySnow),zhangshuangxue(Calence),wangcan(crygl)
 #

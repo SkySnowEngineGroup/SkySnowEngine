@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,7 +22,7 @@
 //
 #include "Application.h"
 #include "LogAssert.h"
-namespace Nuwa
+namespace SkySnow
 {
 	namespace Engine
 	{
@@ -47,7 +47,7 @@ namespace Nuwa
 				bool flag = app->Update();
 				if (!flag)
 				{
-					NUWALOGI("Main Thread Exit.");
+					SKYSNOWLOGI("Main Thread Exit.");
 					break;
 				}
 			}

@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +25,7 @@
 #include "GLES.h"
 #if PLATFORM == PLATFORM_IOS
 
-namespace Nuwa
+namespace SkySnow
 {
 	class GLESIos : public GLES
 	{
@@ -36,6 +36,6 @@ namespace Nuwa
 		}
 	};
 }
-typedef Nuwa::GLESIos OpenGL;
+typedef SkySnow::GLESIos OpenGL;
 
 #endif

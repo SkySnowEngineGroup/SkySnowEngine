@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,7 +33,7 @@
 //{
 //    glViewport(0, 0, width, height);
 //}
-class Triangle : public Nuwa::Engine::Application
+class Triangle : public SkySnow::Engine::Application
 {
 public:
 	Triangle(const char* name, const char* description)
@@ -41,8 +41,8 @@ public:
         , m_TestThread(nullptr)
         , m_TestThread_quit(false)
 	{
-        NUWALOGI("Application is name:%s", name);
-        NUWALOGI("Application description info:%s", description);
+        SKYSNOWLOGI("Application is name:%s", name);
+        SKYSNOWLOGI("Application description info:%s", description);
 	}
 
     static void* TriangleThreadTest(void* data)
@@ -56,7 +56,7 @@ public:
     {
         while (!m_TestThread_quit)
         {
-            NUWALOGI("PThread is Running.");
+            SKYSNOWLOGI("PThread is Running.");
         }
     }
 
@@ -80,11 +80,11 @@ public:
         //register callbacks
         //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
         glViewport(0, 0, 800, 600);
-        NUWALOGI("Info LogAssert width:%d", width);
-        NUWAWARNING("Warning LogAssert width:%d", width);
-        NUWAERROR("Error LogAssert width:%d", width);
+        SKYSNOWLOGI("Info LogAssert width:%d", width);
+        SKYSNOWWARNING("Warning LogAssert width:%d", width);
+        SKYSNOWERROR("Error LogAssert width:%d", width);
 
-        m_TestThread = new Nuwa::Thread();
+        m_TestThread = new SkySnow::Thread();
         m_TestThread->SetName("Test_Thread.");
         m_TestThread->Run(TriangleThreadTest,this);
 
@@ -98,7 +98,7 @@ public:
 	}
 	int ShutDown()
 	{
-        NUWALOGI("Application ShutDown.");
+        SKYSNOWLOGI("Application ShutDown.");
         glfwTerminate();
  
 		return 0;
@@ -123,7 +123,7 @@ public:
     }
 private:
     GLFWwindow* m_Window;
-    Nuwa::Thread* m_TestThread;
+    SkySnow::Thread* m_TestThread;
     bool m_TestThread_quit;
 };
 

@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -35,7 +35,7 @@
 #	include "GLMac.h"
 #endif
 
-namespace Nuwa
+namespace SkySnow
 {
 	/*
 		brief: Each real-time rendering API (GRI) unifies the base class of the external interface. 

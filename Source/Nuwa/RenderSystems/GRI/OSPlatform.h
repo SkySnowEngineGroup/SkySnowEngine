@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -23,7 +23,7 @@
 #pragma once
 #include "PlatformGRI.h"
 #include "NonCopyable.h"
-namespace Nuwa
+namespace SkySnow
 {
 	class OSPlatform
 	{
@@ -48,4 +48,4 @@ namespace Nuwa
 		RealTimeGRI*	m_GRI;
 	};
 }
-#define GRI Nuwa::GRTCreate::Instance()->GetRealTimeGRI()
+#define GRI SkySnow::GRTCreate::Instance()->GetRealTimeGRI()

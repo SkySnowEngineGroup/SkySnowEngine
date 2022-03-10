@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@
 #include "GL4.h"
 #if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
 
-namespace Nuwa
+namespace SkySnow
 {
 	class GLMac : public OpenGL4
 	{
@@ -35,5 +35,5 @@ namespace Nuwa
 		}
 	};
 }
-typedef Nuwa::GLMac OpenGL;
+typedef SkySnow::GLMac OpenGL;
 #endif

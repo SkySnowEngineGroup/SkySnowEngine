@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,7 +26,7 @@
 #include <errno.h>
 #include "LogAssert.h"
 
-namespace Nuwa
+namespace SkySnow
 {
 	class ThreadSemaphore : public NonCopyable
 	{
@@ -62,7 +62,7 @@ namespace Nuwa
 	{
 		if (sem_init(&m_Semaphore, 0, 0) == -1)
 		{
-			NUWAERROR("Failed to open a semaphore(%s).", strerror(errno));
+			SKYSNOWERROR("Failed to open a semaphore(%s).", strerror(errno));
 		}
 	}
 
@@ -70,7 +70,7 @@ namespace Nuwa
 	{
 		if (sem_destroy(&m_Semaphore) == -1)
 		{
-			NUWAERROR("Filed to destroy a semaphore(%s).", strerror(errno));
+			SKYSNOWERROR("Filed to destroy a semaphore(%s).", strerror(errno));
 		}
 	}
 
@@ -83,7 +83,7 @@ namespace Nuwa
 		}
 		if (ret == -1)
 		{
-			NUWAERROR("Filed to wait on a semaphore(%s).", strerror(errno));
+			SKYSNOWERROR("Filed to wait on a semaphore(%s).", strerror(errno));
 		}	
 	}
 
@@ -91,7 +91,7 @@ namespace Nuwa
 	{
 		if (sem_post(&m_Semaphore) == -1)
 		{
-			NUWAERROR("Filed to post to a semaphore(%s).", strerror(errno));
+			SKYSNOWERROR("Filed to post to a semaphore(%s).", strerror(errno));
 		}
 	}
 	//=================================================================================================

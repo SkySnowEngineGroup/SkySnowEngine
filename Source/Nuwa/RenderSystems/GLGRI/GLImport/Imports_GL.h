@@ -1,5 +1,5 @@
 //
-// Copyright(c) 2020 - 2022 the NuwaEngine project.
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
 // Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +24,7 @@
 #include "GLProfiles.h"
 #if PLATFORM == PLATFORM_WINDOW || PLATFORM == PLATFORM_MAC
 
-namespace Nuwa
+namespace SkySnow
 {
 	class Imports_GL
 	{
