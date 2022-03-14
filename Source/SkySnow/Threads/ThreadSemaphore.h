@@ -22,10 +22,13 @@
 //
 #pragma once
 #include "NonCopyable.h"
-#include <semaphore.h>
 #include <errno.h>
 #include "LogAssert.h"
-
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+#include <dispatch/dispatch.h>
+#else
+#include <semaphore.h>
+#endif
 namespace SkySnow
 {
 	class ThreadSemaphore : public NonCopyable
@@ -33,66 +36,88 @@ namespace SkySnow
 	public:
 		ThreadSemaphore() 
 		{
-			Create(); 
+            Create();
 		}
 
 		virtual ~ThreadSemaphore()
 		{ 
-			Destroy(); 
+            Destroy();
 		}
 
-		void Reset() 
+		inline void Reset()
 		{ 
 			Destroy();
 			Create(); 
 		}
 
-		void WaitForSignal();
+        inline void WaitForSignal()
+        {
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+            int ret = dispatch_semaphore_wait(m_Semaphore,DISPATCH_TIME_FOREVER);
+            if(ret != 0)
+            {
+                SKYSNOWERROR("Filed to wait on a semaphore.");
+            }
+#else
+            int ret = 0;
+            while ((ret = sem_wait(&m_Semaphore)) == -1 && errno == EINTR)
+            {
+                continue;
+            }
+            if (ret == -1)
+            {
+                SKYSNOWERROR("Filed to wait on a semaphore(%s).", strerror(errno));
+            }
+#endif
+        }
 
-		void Signal();
-	private:
-		void Create();
-
-		void Destroy();
-	private:
-		sem_t m_Semaphore;
+        inline void Signal()
+        {
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+            int ret = dispatch_semaphore_signal(m_Semaphore);
+            if(ret == 0)
+            {
+                SKYSNOWERROR("Filed to post to a semaphore.");
+            }
+#else
+            if (sem_post(&m_Semaphore) == -1)
+            {
+                SKYSNOWERROR("Filed to post to a semaphore(%s).", strerror(errno));
+            }
+#endif
+        }
+    private:
+        void Create()
+        {
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+            m_Semaphore = dispatch_semaphore_create(0);
+            if(m_Semaphore == nullptr)
+            {
+                SKYSNOWERROR("dispatch_semaphore_create failed.");
+            }
+#else
+            if (sem_init(&m_Semaphore, 0, 0) == -1)
+            {
+                SKYSNOWERROR("Failed to open a semaphore(%s).", strerror(errno));
+            }
+#endif
+        }
+        void Destroy()
+        {
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+            dispatch_release(m_Semaphore);
+#else
+            if (sem_destroy(&m_Semaphore) == -1)
+            {
+                SKYSNOWERROR("Filed to destroy a semaphore(%s).", strerror(errno));
+            }
+#endif
+        }
+    private:
+#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
+        dispatch_semaphore_t m_Semaphore;
+#else
+        sem_t m_Semaphore;
+#endif
 	};
-	//=================================================================================================
-	inline void ThreadSemaphore::Create()
-	{
-		if (sem_init(&m_Semaphore, 0, 0) == -1)
-		{
-			SKYSNOWERROR("Failed to open a semaphore(%s).", strerror(errno));
-		}
-	}
-
-	inline void ThreadSemaphore::Destroy()
-	{
-		if (sem_destroy(&m_Semaphore) == -1)
-		{
-			SKYSNOWERROR("Filed to destroy a semaphore(%s).", strerror(errno));
-		}
-	}
-
-	inline void ThreadSemaphore::WaitForSignal()
-	{
-		int ret = 0;
-		while ((ret = sem_wait(&m_Semaphore)) == -1 && errno == EINTR)
-		{
-			continue;
-		}
-		if (ret == -1)
-		{
-			SKYSNOWERROR("Filed to wait on a semaphore(%s).", strerror(errno));
-		}	
-	}
-
-	inline void ThreadSemaphore::Signal()
-	{
-		if (sem_post(&m_Semaphore) == -1)
-		{
-			SKYSNOWERROR("Filed to post to a semaphore(%s).", strerror(errno));
-		}
-	}
-	//=================================================================================================
 }

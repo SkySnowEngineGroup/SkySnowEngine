@@ -30,7 +30,7 @@ namespace SkySnow
 	{
 		Thread* thread = (Thread*)(ptr);
 #if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-        NUWAWARNING("IOS and Mac not support this api pthread_setname_np.");
+        SKYSNOWWARNING("IOS and Mac not support this api pthread_setname_np.");
 #else
         pthread_setname_np(*thread->m_PThread, thread->m_ThreadName);
 #endif
