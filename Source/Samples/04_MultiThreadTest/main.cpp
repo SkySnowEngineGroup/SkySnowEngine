@@ -30,6 +30,7 @@ int main()
 	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
 	mrtFW->Initial();
 
+	system("pause");
 	delete mrtFW;
 	system("pause");
 	return 0;
