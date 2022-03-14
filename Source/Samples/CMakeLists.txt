@@ -32,6 +32,7 @@ foreach(source IN LISTS Frameworks_lists)
 	source_group("${source_path_dir}" FILES "${source}")
 endforeach()
 
+file(GLOB Frameworks_lists  "${FRAMEWORK_DIR}/*.h")
 include_directories(PUBLIC $<BUILD_INTERFACE:${FRAMEWORK_DIR}/>)
 
 add_subdirectory(01_HelloWorld)
