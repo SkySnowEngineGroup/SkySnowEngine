@@ -50,7 +50,11 @@ public:
             m_MainThread->SetName("Main_Thread.");
             m_MainThread->Run(MainThreadRun, this);
         }
-        return;
+        //return;
+    }
+    bool IsRuning()
+    {
+        return m_MainThread->IsRunning();
     }
     void StopMainThread()
     {

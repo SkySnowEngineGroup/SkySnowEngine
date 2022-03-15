@@ -66,6 +66,10 @@ namespace ThreadMultiRender
 			m_RenderThread = new RenderThread(m_DoublueQueue);
 			m_RenderThread->StartRenderThread();
 		}
+        bool IsRuning()
+        {
+            return m_MainThread->IsRuning() && m_RenderThread->IsRuning();
+        }
 
 	private:
 		MainThread*						m_MainThread;

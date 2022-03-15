@@ -29,9 +29,13 @@ int main()
 	SKYSNOWLOGI("Hello World!\n");
 	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
 	mrtFW->Initial();
-
-	system("pause");
-	delete mrtFW;
-	system("pause");
+    
+    bool isrun = mrtFW->IsRuning();
+    while(!isrun)
+    {
+        delete mrtFW;
+        break;
+    }
+	//system("pause");
 	return 0;
 }

@@ -63,6 +63,11 @@ namespace ThreadMultiRender
 
 			}
 		}
+        
+        bool IsRuning()
+        {
+            return m_Edq->IsRuning();
+        }
 
 	private:
 		MRTType									m_MRTType;

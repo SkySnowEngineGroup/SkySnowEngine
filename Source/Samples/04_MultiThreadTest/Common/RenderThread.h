@@ -52,7 +52,7 @@ public:
             m_RenderThread->SetName("Render_Thread.");
             m_RenderThread->Run(RenderThreadRun, this);
         }
-        return;
+        //return;
     }
     void StopRenderThread()
     {
@@ -61,6 +61,10 @@ public:
             m_RenderThread_quit = true;
             m_RenderThread->Stop();
         }
+    }
+    bool IsRuning()
+    {
+        return m_RenderThread->IsRunning();
     }
 private:
     static void* RenderThreadRun(void* data)

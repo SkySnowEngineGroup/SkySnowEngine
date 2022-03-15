@@ -44,6 +44,17 @@ public:
         SKYSNOWLOGI("Application is name:%s", name);
         SKYSNOWLOGI("Application description info:%s", description);
 	}
+    
+    ~Triangle()
+    {
+        if (m_TestThread)
+        {
+            m_TestThread_quit = true;
+            m_TestThread->Stop();
+            delete m_TestThread;
+            m_TestThread = nullptr;
+        }
+    }
 
     static void* TriangleThreadTest(void* data)
     {
@@ -88,19 +99,12 @@ public:
         m_TestThread->SetName("Test_Thread.");
         m_TestThread->Run(TriangleThreadTest,this);
 
-        if (m_TestThread)
-        {
-            m_TestThread_quit = true;
-            m_TestThread->Stop();
-            //delete m_TestThread;
-            //m_TestThread = nullptr;
-        }
+
 	}
 	int ShutDown()
 	{
         SKYSNOWLOGI("Application ShutDown.");
         glfwTerminate();
- 
 		return 0;
 	}
 	bool Update()

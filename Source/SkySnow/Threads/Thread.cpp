@@ -86,7 +86,11 @@ namespace SkySnow
 
 	void Thread::CreateThread()
 	{
-		pthread_create(m_PThread, nullptr, RunThreadFunStatic, (void*)this);
+		int result = pthread_create(m_PThread, nullptr, RunThreadFunStatic, (void*)this);
+        if(result != 0)
+        {
+            SKYSNOWWARNING("Pthread_create fail。");
+        }
 
 		struct sched_param param;
 		int outputPolicy;
