@@ -30,11 +30,9 @@ int main()
 	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
 	mrtFW->Initial();
     
-    bool isrun = mrtFW->IsRuning();
-    while(!isrun)
+    while(true)
     {
-        delete mrtFW;
-        break;
+        int i = 0;
     }
 	//system("pause");
 	return 0;
