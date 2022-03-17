@@ -24,9 +24,7 @@
 #include "ThreadSemaphore.h"
 #include "ThreadMutex.h"
 #include "ThreadQueue.h"
-#if PLATFORM == PLATFORM_IOS
-#include <unistd.h>
-#endif // PLATFORM == PLATFORM_IOS
+
 
 namespace ThreadMultiRender
 {
@@ -92,20 +90,11 @@ namespace ThreadMultiRender
 	private:
 		void SimulationBusy()
 		{
-			SkySnowSleep(3000);
+            SkySnow::SNSleep(3000);
 			for (int i = 0; i < 10000000; i++)
 			{
 				float value = 10 * 20 * 4.234 * 2341;
 			}
-		}
-
-		void SkySnowSleep(unsigned int time)
-		{
-#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-			sleep(1);
-#else
-			Sleep(3000);
-#endif
 		}
 	private:
 		SkySnow::ThreadSemaphore	m_MainSem;
