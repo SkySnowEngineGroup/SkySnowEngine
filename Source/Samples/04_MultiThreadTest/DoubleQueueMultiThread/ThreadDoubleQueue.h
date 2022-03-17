@@ -102,7 +102,7 @@ namespace ThreadMultiRender
 		void SkySnowSleep(unsigned int time)
 		{
 #if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-			sleep(3000);
+			sleep(1);
 #else
 			Sleep(3000);
 #endif

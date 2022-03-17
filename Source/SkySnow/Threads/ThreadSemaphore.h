@@ -74,11 +74,7 @@ namespace SkySnow
         inline void Signal()
         {
 #if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-            int ret = dispatch_semaphore_signal(m_Semaphore);
-            if(ret == 0)
-            {
-                SKYSNOWERROR("Filed to post to a semaphore.");
-            }
+            dispatch_semaphore_signal(m_Semaphore);
 #else
             if (sem_post(&m_Semaphore) == -1)
             {

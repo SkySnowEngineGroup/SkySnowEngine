@@ -24,16 +24,19 @@
 #include <iostream>
 #include "LogAssert.h"
 #include "FrameWorkMultiThread.h"
+
 int main()
 {
 	SKYSNOWLOGI("Hello World!\n");
 	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
 	mrtFW->Initial();
     
+    
     while(true)
     {
-        int i = 0;
+        //SKYSNOWLOGI("======Main Thread.");
     }
-	//system("pause");
+    delete mrtFW;
+	system("pause");
 	return 0;
 }

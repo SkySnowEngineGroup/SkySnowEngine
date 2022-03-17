@@ -92,8 +92,10 @@ namespace SkySnow
 		{
 		case ELOG_INFO:
 			printf("Info:%s\n", buffer);
+            break;
 		case ELOG_WARNING:
 			printf("Warning:%s\n", buffer);
+            break;
 		case ELOG_ERROR:
 			printf("Error:%s\n", buffer);
 			break;
