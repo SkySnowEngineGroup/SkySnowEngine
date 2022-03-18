@@ -25,9 +25,11 @@ namespace SkySnow
 	class IWindow
 	{
 	public:
-		explicit IWindow();
+		explicit IWindow()
+        {}
 
-		virtual ~IWindow();
+		virtual ~IWindow()
+        {}
 
 	public:
 		virtual void SNCreateWindow(unsigned int width, unsigned int height) = 0;
