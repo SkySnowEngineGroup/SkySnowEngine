@@ -35,7 +35,7 @@ namespace SkySnow
 
 		virtual void SNCreateWindow(unsigned int width,unsigned int height) override;
 
-		virtual bool SNCloseWindow() override;
+		virtual bool SNIsCloseWindow() override;
 
 		virtual void SNShutDown() override;
 

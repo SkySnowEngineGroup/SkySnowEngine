@@ -24,14 +24,16 @@
 #include "GRIProfiles.h"
 #include <stdlib.h>
 #include <iostream>
+#include "GLFWWindow.h"
 namespace SkySnow
 {
 #if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
-#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)		\
-	int main(int argc, char** argv)			\
-	{											\
-			application app(__VA_ARGS__);				\
-			return RunApplication(&app,argc,argv);	\
+#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)	\
+	int main(int argc, char** argv)			                \
+	{											            \
+			application app(__VA_ARGS__);				    \
+            app.RunApplication(&app,argc,argv);             \
+			return 0;	                                    \
 	}
 #endif
 	class Application
@@ -39,13 +41,16 @@ namespace SkySnow
 	public:
 		Application(const char* name,const char* description);
 		virtual ~Application() = 0;
-		virtual void Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
-		virtual int ShutDown() = 0;
-		virtual bool Update() = 0;
+		virtual bool Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
+		virtual void Update() = 0;
+    public:
+        //don't overload child
+        int RunApplication(Application* app, int argc, const char* const* argv);
 	private:
 		const char* m_Name;
 		const char* m_Description;
+        SN_GLFWWindow* m_Window;
 	};
-	int RunApplication(Application* app, int argc, const char* const* argv);
+	
 }
 

@@ -89,7 +89,7 @@ namespace SkySnow
             m_Semaphore = dispatch_semaphore_create(0);
             if(m_Semaphore == nullptr)
             {
-                SKYSNOWERROR("dispatch_semaphore_create failed.");
+                SN_ERR("dispatch_semaphore_create failed.");
             }
 #else
             if (sem_init(&m_Semaphore, 0, 0) == -1)

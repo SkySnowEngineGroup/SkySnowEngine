@@ -25,7 +25,8 @@
 namespace SkySnow
 {
 	SN_GLFWWindow::SN_GLFWWindow()
-		: m_Window(nullptr)
+        : IWindow()
+		, m_Window(nullptr)
 		, m_Width(0)
 		, m_Height(0)
 	{
@@ -46,7 +47,7 @@ namespace SkySnow
 		m_Window = glfwCreateWindow(width,height,SkySnow_Name,NULL,NULL);
 	}
 
-	bool SN_GLFWWindow::SNCloseWindow()
+	bool SN_GLFWWindow::SNIsCloseWindow()
 	{
 		int close = false;
 		if (m_Window)
@@ -55,6 +56,7 @@ namespace SkySnow
 			{
 				glfwSetWindowShouldClose(m_Window, true);
 			}
+            //该函数返回0为未退出，返回非零为退出
 			close = glfwWindowShouldClose(m_Window);
 		}
 		return close;

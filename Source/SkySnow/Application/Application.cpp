@@ -27,28 +27,30 @@ namespace SkySnow
 	Application::Application(const char* name, const char* description)
 		: m_Name(name)
 		, m_Description(description)
+        , m_Window(nullptr)
 	{
 
 	}
 	Application::~Application()
 	{
-
+        if(m_Window)
+        {
+            delete m_Window;
+            m_Window = nullptr;
+        }
 	}
 
-	int RunApplication(Application* app, int argc, const char* const* argv)
+	int Application::RunApplication(Application* app, int argc, const char* const* argv)
 	{
-		app->Init(argc,argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
-
-		while (true)
+        m_Window = new SN_GLFWWindow();
+        m_Window->SNCreateWindow(DEFAUT_WADTH,DEFAUT_HEIGHT);
+        bool isInit = app->Init(argc,argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
+		while (!m_Window->SNIsCloseWindow())
 		{
 			//SN_LOG("Main Thread Update.");
-			bool flag = app->Update();
-			if (!flag)
-			{
-				SN_LOG("Main Thread Exit.");
-				break;
-			}
+			app->Update();
 		}
-		return app->ShutDown();
+        m_Window->SNShutDown();
+        return 0;
 	}
 }
