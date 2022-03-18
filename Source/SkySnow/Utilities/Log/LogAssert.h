@@ -54,6 +54,6 @@ namespace SkySnow
 #endif
 	};
 }
-#define SKYSNOWLOGI(x, ...)	if(SkySnow::LogAssert::Instance()&&DEBUG)SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_INFO,x, ##__VA_ARGS__)
-#define SKYSNOWWARNING(x, ...) if(SkySnow::LogAssert::Instance()&&DEBUG)SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_WARNING,x, ##__VA_ARGS__)
-#define SKYSNOWERROR(x, ...)	if(SkySnow::LogAssert::Instance())SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_ERROR,x, ##__VA_ARGS__)
+#define SN_LOG(x, ...)	if(SkySnow::LogAssert::Instance()&&DEBUG)SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_INFO,x, ##__VA_ARGS__)
+#define SN_WARN(x, ...) if(SkySnow::LogAssert::Instance()&&DEBUG)SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_WARNING,x, ##__VA_ARGS__)
+#define SN_ERR(x, ...)	if(SkySnow::LogAssert::Instance())SkySnow::LogAssert::Instance()->LogProcessing(SkySnow::ELOG_ERROR,x, ##__VA_ARGS__)

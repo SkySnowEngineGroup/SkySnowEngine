@@ -54,7 +54,7 @@ namespace ThreadMultiRender
 			//Submit Render CMD
 			m_PrintMutex.Lock();
 			m_EncoderList += 1;
-			SKYSNOWLOGI("MainThread=================================:%f", m_EncoderList);
+			SN_LOG("MainThread=================================:%f", m_EncoderList);
 			m_PrintMutex.UnLock();
 			Present();
 		}
@@ -72,8 +72,8 @@ namespace ThreadMultiRender
 			//m_EncoderList = m_RenderList;
 			m_RenderList = temp;
 			m_PrintMutex.Lock();
-			SKYSNOWLOGI("Swap CMD  m_EncoderList  ===:%f", m_EncoderList);
-			SKYSNOWLOGI("Swap CMD  m_RenderList   ===:%f", m_RenderList);
+			SN_LOG("Swap CMD  m_EncoderList  ===:%f", m_EncoderList);
+			SN_LOG("Swap CMD  m_RenderList   ===:%f", m_RenderList);
 			m_PrintMutex.UnLock();
 		}
 		//RenderThread Call this function
@@ -82,7 +82,7 @@ namespace ThreadMultiRender
 			m_RenderSem.WaitForSignal();
 			//vlm_RenderList = 2;
 			m_PrintMutex.Lock();
-			SKYSNOWLOGI("RenderThread===:%f", m_RenderList);
+			SN_LOG("RenderThread===:%f", m_RenderList);
 			m_PrintMutex.UnLock();
 			SimulationBusy();
 			m_MainSem.Signal();

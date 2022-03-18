@@ -27,14 +27,14 @@
 
 int main()
 {
-	SKYSNOWLOGI("Hello World!\n");
+	SN_LOG("Hello World!\n");
 	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
 	mrtFW->Initial();
     
     
     while(true)
     {
-        //SKYSNOWLOGI("======Main Thread.");
+        //SN_LOG("======Main Thread.");
     }
     delete mrtFW;
 	system("pause");

@@ -47,7 +47,7 @@ namespace SkySnow
 				bool flag = app->Update();
 				if (!flag)
 				{
-					SKYSNOWLOGI("Main Thread Exit.");
+					SN_LOG("Main Thread Exit.");
 					break;
 				}
 			}

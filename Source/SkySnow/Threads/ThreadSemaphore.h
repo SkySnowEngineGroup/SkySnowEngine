@@ -56,7 +56,7 @@ namespace SkySnow
             int ret = dispatch_semaphore_wait(m_Semaphore,DISPATCH_TIME_FOREVER);
             if(ret != 0)
             {
-                SKYSNOWERROR("Filed to wait on a semaphore.");
+                SN_ERR("Filed to wait on a semaphore.");
             }
 #else
             int ret = 0;
@@ -66,7 +66,7 @@ namespace SkySnow
             }
             if (ret == -1)
             {
-                SKYSNOWERROR("Filed to wait on a semaphore(%s).", strerror(errno));
+                SN_ERR("Filed to wait on a semaphore(%s).", strerror(errno));
             }
 #endif
         }
@@ -78,7 +78,7 @@ namespace SkySnow
 #else
             if (sem_post(&m_Semaphore) == -1)
             {
-                SKYSNOWERROR("Filed to post to a semaphore(%s).", strerror(errno));
+                SN_ERR("Filed to post to a semaphore(%s).", strerror(errno));
             }
 #endif
         }
@@ -94,7 +94,7 @@ namespace SkySnow
 #else
             if (sem_init(&m_Semaphore, 0, 0) == -1)
             {
-                SKYSNOWERROR("Failed to open a semaphore(%s).", strerror(errno));
+                SN_ERR("Failed to open a semaphore(%s).", strerror(errno));
             }
 #endif
         }
@@ -105,7 +105,7 @@ namespace SkySnow
 #else
             if (sem_destroy(&m_Semaphore) == -1)
             {
-                SKYSNOWERROR("Filed to destroy a semaphore(%s).", strerror(errno));
+                SN_ERR("Filed to destroy a semaphore(%s).", strerror(errno));
             }
 #endif
         }

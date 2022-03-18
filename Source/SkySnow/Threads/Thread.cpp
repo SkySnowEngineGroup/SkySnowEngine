@@ -30,7 +30,7 @@ namespace SkySnow
 	{
 		Thread* thread = (Thread*)(ptr);
 #if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-        SKYSNOWWARNING("IOS and Mac not support this api pthread_setname_np.");
+        SN_WARN("IOS and Mac not support this api pthread_setname_np.");
 #else
         pthread_setname_np(*thread->m_PThread, thread->m_ThreadName);
 #endif
@@ -89,7 +89,7 @@ namespace SkySnow
 		int result = pthread_create(m_PThread, nullptr, RunThreadFunStatic, (void*)this);
         if(result != 0)
         {
-            SKYSNOWWARNING("Pthread_create fail。");
+            SN_WARN("Pthread_create fail.");
         }
 
 		struct sched_param param;

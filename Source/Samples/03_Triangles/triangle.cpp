@@ -41,8 +41,8 @@ public:
         , m_TestThread(nullptr)
         , m_TestThread_quit(false)
 	{
-        SKYSNOWLOGI("Application is name:%s", name);
-        SKYSNOWLOGI("Application description info:%s", description);
+        SN_LOG("Application is name:%s", name);
+        SN_WARN("Application description info:%s", description);
 	}
     
     ~Triangle()
@@ -67,7 +67,7 @@ public:
     {
         while (!m_TestThread_quit)
         {
-            SKYSNOWLOGI("PThread is Running.");
+            SN_LOG("PThread is Running.");
         }
     }
 
@@ -91,9 +91,9 @@ public:
         //register callbacks
         //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
         glViewport(0, 0, 800, 600);
-        SKYSNOWLOGI("Info LogAssert width:%d", width);
-        SKYSNOWWARNING("Warning LogAssert width:%d", width);
-        SKYSNOWERROR("Error LogAssert width:%d", width);
+        SN_LOG("Info LogAssert width:%d", width);
+        SN_WARN("Warning LogAssert width:%d", width);
+        SN_ERR("Error LogAssert width:%d", width);
 
         m_TestThread = new SkySnow::Thread();
         m_TestThread->SetName("Test_Thread.");
@@ -103,7 +103,7 @@ public:
 	}
 	int ShutDown()
 	{
-        SKYSNOWLOGI("Application ShutDown.");
+        SN_LOG("Application ShutDown.");
         glfwTerminate();
 		return 0;
 	}

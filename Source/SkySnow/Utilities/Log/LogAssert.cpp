@@ -46,7 +46,7 @@ namespace SkySnow
 	}
 	char* LogAssert::VspFun(const char* str, va_list args)
 	{
-		int index = sprintf(m_logBuffer, NUWA_LOG_TAG);
+		int index = sprintf(m_logBuffer, SkySnow_LOG_TAG);
 		vsnprintf(m_logBuffer + index, MAX_BUFFER_SIZE - index - 1, str, args);
 		return m_logBuffer;
 	}
@@ -106,13 +106,13 @@ namespace SkySnow
 		switch (level)
 		{
 		case ELOG_INFO:
-			__android_log_print(ANDROID_LOG_INFO, NUWA_LOG_TAG, "%s", buffer);
+			__android_log_print(ANDROID_LOG_INFO, SkySnow_LOG_TAG, "%s", buffer);
 			break;
 		case ELOG_WARNING:
-			__android_log_print(ANDROID_LOG_WARN, NUWA_LOG_TAG, "%s", buffer);
+			__android_log_print(ANDROID_LOG_WARN, SkySnow_LOG_TAG, "%s", buffer);
 			break;
 		case ELOG_ERROR:
-			__android_log_print(ANDROID_LOG_ERROR, NUWA_LOG_TAG, "%s", buffer);
+			__android_log_print(ANDROID_LOG_ERROR, SkySnow_LOG_TAG, "%s", buffer);
 			break;
 		default:
 			break;
