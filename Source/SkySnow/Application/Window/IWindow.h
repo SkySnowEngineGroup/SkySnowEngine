@@ -20,27 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-namespace Nuwa
+namespace SkySnow
 {
-	namespace SkySnow
+	class IWindow
 	{
-		class IWindow
-		{
-		public:
-			explicit IWindow();
+	public:
+		explicit IWindow();
 
-			virtual ~IWindow();
+		virtual ~IWindow();
 
-			void CreateWindow();
+	public:
+		virtual void SNCreateWindow(unsigned int width, unsigned int height) = 0;
 
-			void DestroyWindow();
+		virtual bool SNCloseWindow() = 0;
 
+		virtual void SNShutDown() = 0;
 
-			void BeginRender();
-
-			void EndRender();
-
-
-		};
-	}
+	};
 }

@@ -22,14 +22,26 @@
 //
 #pragma once
 #include "IWindow.h"
+#include "GRIProfiles.h"
 namespace SkySnow
 {
-	namespace Engine
+	//can be use mac and window os
+	class SN_GLFWWindow: public IWindow
 	{
-		//can be use mac and window os
-		class GLFWWindow: public IWindow
-		{
+	public:
+		SN_GLFWWindow();
+			
+		~SN_GLFWWindow();
 
-		};
-	}
+		virtual void SNCreateWindow(unsigned int width,unsigned int height) override;
+
+		virtual bool SNCloseWindow() override;
+
+		virtual void SNShutDown() override;
+
+	private:
+		unsigned int		m_Width;
+		unsigned int		m_Height;
+		GLFWwindow*			m_Window;
+	};
 }

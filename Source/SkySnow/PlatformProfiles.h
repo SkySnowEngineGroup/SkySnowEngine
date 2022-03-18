@@ -33,6 +33,7 @@
 #define DEFAUT_WADTH 800
 #define DEFAUT_HEIGHT 600
 #define SkySnow_LOG_TAG "SkySnow:"
+#define SkySnow_Name "SkySnowEngine"
 #define MAX_BUFFER_SIZE 1024*4
 #define PLATFORM PLATFORM_UNKNOW
 #include <iostream>

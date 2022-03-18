@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,35 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Application.h"
-#include "LogAssert.h"
+
+#include "GLFWWindow.h"
 namespace SkySnow
 {
-	Application::Application(const char* name, const char* description)
-		: m_Name(name)
-		, m_Description(description)
+	SN_GLFWWindow::SN_GLFWWindow()
+		: m_Window(nullptr)
+		, m_Width(0)
+		, m_Height(0)
 	{
-
-	}
-	Application::~Application()
-	{
-
 	}
 
-	int RunApplication(Application* app, int argc, const char* const* argv)
+	SN_GLFWWindow::~SN_GLFWWindow()
 	{
-		app->Init(argc,argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
+	}
 
-		while (true)
+	void SN_GLFWWindow::SNCreateWindow(unsigned int width, unsigned int height)
+	{
+		m_Width  = width;
+		m_Height = height;
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+		m_Window = glfwCreateWindow(width,height,SkySnow_Name,NULL,NULL);
+	}
+
+	bool SN_GLFWWindow::SNCloseWindow()
+	{
+		int close = false;
+		if (m_Window)
 		{
-			//SN_LOG("Main Thread Update.");
-			bool flag = app->Update();
-			if (!flag)
+			if (glfwGetKey(m_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 			{
-				SN_LOG("Main Thread Exit.");
-				break;
+				glfwSetWindowShouldClose(m_Window, true);
 			}
+			close = glfwWindowShouldClose(m_Window);
 		}
-		return app->ShutDown();
+		return close;
+	}
+
+	void SN_GLFWWindow::SNShutDown()
+	{
+		if (m_Window)
+		{
+			glfwTerminate();
+		}
 	}
 }

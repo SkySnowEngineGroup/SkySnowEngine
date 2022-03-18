@@ -22,18 +22,11 @@
 //
 #include <stdlib.h>
 #include <iostream>
-#include "nw_renderpipeline.h"
 #include "Application.h"
 #include "LogAssert.h"
 #include "OSPlatform.h"
 #include "Thread.h"
-//glfw callbacks
-//void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-//void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-//{
-//    glViewport(0, 0, width, height);
-//}
-class Triangle : public SkySnow::Engine::Application
+class Triangle : public SkySnow::Application
 {
 public:
 	Triangle(const char* name, const char* description)
@@ -118,7 +111,8 @@ public:
         
         glfwSwapBuffers(m_Window);
         glfwPollEvents();
-		return !glfwWindowShouldClose(m_Window);
+        int flag = glfwWindowShouldClose(m_Window);
+		return !flag;
 	}
     void processInput(GLFWwindow *window)
     {
@@ -131,7 +125,7 @@ private:
     bool m_TestThread_quit;
 };
 
-NUWA_DEFINE_APPLICATION_MAIN(
+SkySnow_DEFINE_APPLICATION_MAIN(
 	Triangle
 	, "03-Triangles"
 	, "Draw Trangle At Window&MacOS."

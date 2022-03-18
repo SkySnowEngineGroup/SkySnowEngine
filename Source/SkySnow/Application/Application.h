@@ -26,29 +26,26 @@
 #include <iostream>
 namespace SkySnow
 {
-	namespace Engine
-	{
 #if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
-#define NUWA_DEFINE_APPLICATION_MAIN(application, ...)		\
-		int main(int argc, char** argv)			\
-		{											\
-				application app(__VA_ARGS__);				\
-				return RunApplication(&app,argc,argv);	\
-		}
-#endif
-		class Application
-		{
-		public:
-			Application(const char* name,const char* description);
-			virtual ~Application() = 0;
-			virtual void Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
-			virtual int ShutDown() = 0;
-			virtual bool Update() = 0;
-		private:
-			const char* m_Name;
-			const char* m_Description;
-		};
-		int RunApplication(Application* app, int argc, const char* const* argv);
+#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)		\
+	int main(int argc, char** argv)			\
+	{											\
+			application app(__VA_ARGS__);				\
+			return RunApplication(&app,argc,argv);	\
 	}
+#endif
+	class Application
+	{
+	public:
+		Application(const char* name,const char* description);
+		virtual ~Application() = 0;
+		virtual void Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
+		virtual int ShutDown() = 0;
+		virtual bool Update() = 0;
+	private:
+		const char* m_Name;
+		const char* m_Description;
+	};
+	int RunApplication(Application* app, int argc, const char* const* argv);
 }
 
