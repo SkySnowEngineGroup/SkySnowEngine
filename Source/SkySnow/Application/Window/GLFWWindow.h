@@ -38,6 +38,11 @@ namespace SkySnow
 		virtual bool SNIsCloseWindow() override;
 
 		virtual void SNShutDown() override;
+        
+        GLFWwindow* GetWindow()
+        {
+            return m_Window;
+        }
 
 	private:
 		unsigned int		m_Width;

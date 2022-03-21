@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include <iostream>
 #include "GLFWWindow.h"
+#include "RenderingThread.h"
+#include "EngineMainThread.h"
 namespace SkySnow
 {
 #if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
@@ -46,10 +48,14 @@ namespace SkySnow
     public:
         //don't overload child
         int RunApplication(Application* app, int argc, const char* const* argv);
+        
+        void EngineLoop();
 	private:
 		const char* m_Name;
 		const char* m_Description;
         SN_GLFWWindow* m_Window;
+        EngineMainThread* m_MainThread;
+        RenderingThread* m_RenderThread;
 	};
 	
 }

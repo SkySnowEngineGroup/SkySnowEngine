@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,49 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Application.h"
+#pragma once
+#include "NonCopyable.h"
 #include "LogAssert.h"
+#include "Thread.h"
 namespace SkySnow
 {
-	Application::Application(const char* name, const char* description)
-		: m_Name(name)
-		, m_Description(description)
-        , m_Window(nullptr)
-	{
-
-	}
-	Application::~Application()
-	{
-        if(m_Window)
-        {
-            delete m_Window;
-            m_Window = nullptr;
-        }
-	}
-
-	int Application::RunApplication(Application* app, int argc, const char* const* argv)
-	{
-        m_Window = new SN_GLFWWindow();
-        m_Window->SNCreateWindow(DEFAUT_WADTH,DEFAUT_HEIGHT);
-        m_MainThread = new EngineMainThread();
-        void(*Test)(void);
-        Test a = EngineLoop;
-        m_MainThread->AttactMainThread(el);
-        m_RenderThread = new RenderingThread();
-        m_RenderThread->SetGLContext(m_Window->GetWindow());
-        
-        bool isInit = app->Init(argc,argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
-		while (!m_Window->SNIsCloseWindow())
-		{
-			//SN_LOG("Main Thread Update.");
-			app->Update();
-		}
-        m_Window->SNShutDown();
-        return 0;
-	}
-
-    void Application::EngineLoop()
+    typedef void(*ENGINELOOPFUN)(void)
+    class EngineMainThread : public NonCopyable
     {
+    public:
+        explicit EngineMainThread();
         
-    }
+        ~EngineMainThread();
+        
+        void StartEngineMainThread();
+        
+        void StopEngineMainThread();
+        
+        void AttactMainThread(ENGINELOOPFUN loopfun);
+    private:
+        static void* EngineMainThreadRun(void* data)
+        {
+            EngineMainThread* worker = (EngineMainThread*)data;
+            worker->MainThreadUpdate();
+            return nullptr;
+        }
+        
+        void MainThreadUpdate();
+    private:
+        bool                    m_ExitMainThread;
+        SkySnow::Thread*        m_MainThread;
+        ENGINELOOPFUN           m_EngineLoop;
+    };
 }
+
