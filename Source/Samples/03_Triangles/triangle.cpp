@@ -42,6 +42,7 @@ public:
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
         SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
+		return 0;
 	}
 
 	void Update()

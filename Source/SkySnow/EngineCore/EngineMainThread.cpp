@@ -20,41 +20,57 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "NonCopyable.h"
-#include "LogAssert.h"
-#include "Thread.h"
+#include "EngineMainThread.h"
+#include "Application.h"
 namespace SkySnow
 {
-    class Application;
+	EngineMainThread::EngineMainThread()
+		: m_ExitMainThread(false)
+		, m_MainThread(nullptr)
+		, m_EngineLoopFunPtr(nullptr)
+	{
+	}
 
-    typedef void(Application::*ENGINELOOPFUN)(void);
-    class EngineMainThread : public NonCopyable
-    {
-    public:
-        explicit EngineMainThread();
-        
-        ~EngineMainThread();
-        
-        void StartEngineMainThread();
-        
-        void StopEngineMainThread();
-        
-        void AttactMainThread(void(Application::* EngineLoopFun)(void),Application* ptr);
-    private:
-        static void* EngineMainThreadRun(void* data)
-        {
-            EngineMainThread* worker = (EngineMainThread*)data;
-            worker->MainThreadUpdate();
-            return nullptr;
-        }
-        
-        void MainThreadUpdate();
-    private:
-        bool                    m_ExitMainThread;
-        SkySnow::Thread*        m_MainThread;
-        void (Application::*m_EngineLoopFunPtr)(void);
-        Application*            m_App;
-    };
+	EngineMainThread::~EngineMainThread()
+	{
+		if (m_MainThread)
+		{
+			delete m_MainThread;
+			m_MainThread = nullptr;
+		}
+	}
+
+	void EngineMainThread::StartEngineMainThread()
+	{
+		if (m_MainThread == nullptr)
+		{
+			m_MainThread = new SkySnow::Thread();
+			m_MainThread->SetName("Main_Thread.");
+			m_MainThread->Run(EngineMainThreadRun, this);
+		}
+	}
+
+	void EngineMainThread::StopEngineMainThread()
+	{
+		if (m_MainThread)
+		{
+			m_ExitMainThread = true;
+			m_MainThread->Stop();
+		}
+	}
+
+	void EngineMainThread::AttactMainThread(void(Application::* EngineLoopFun)(void), Application* ptr)
+	{
+		m_EngineLoopFunPtr = EngineLoopFun;
+		m_App = ptr;
+	}
+
+	void EngineMainThread::MainThreadUpdate()
+	{
+		while (!m_ExitMainThread)
+		{
+			(m_App->*m_EngineLoopFunPtr)();
+			SN_LOG("SkySnowEngine EngineMain Thread Update.");
+		}
+	}
 }
-

@@ -54,12 +54,15 @@ namespace SkySnow
     {
         if (m_RenderThread)
         {
-            m_RenderThread_quit = true;
+            m_ExitRenderingThread = true;
             m_RenderThread->Stop();
         }
     }
     void RenderingThread::RenderOneFrame()
     {
-        
+        while (!m_ExitRenderingThread)
+        {
+            SN_LOG("SkySnowEngine Rendering Thread Update.");
+        }
     }
 }

@@ -42,7 +42,7 @@ namespace SkySnow
 	{
 	public:
 		Application(const char* name,const char* description);
-		virtual ~Application() = 0;
+		virtual ~Application();
 		virtual bool Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
 		virtual void Update() = 0;
     public:
@@ -51,11 +51,15 @@ namespace SkySnow
         
         void EngineLoop();
 	private:
-		const char* m_Name;
-		const char* m_Description;
-        SN_GLFWWindow* m_Window;
-        EngineMainThread* m_MainThread;
-        RenderingThread* m_RenderThread;
+		bool				m_IsInit;
+		const char*			m_Name;
+		const char*			m_Description;
+		const char* const*	m_Argv;
+		int					m_Argc;
+        SN_GLFWWindow*		m_Window;
+        EngineMainThread*	m_MainThread;
+        RenderingThread*	m_RenderThread;
+		Application*		m_ChildApp;
 	};
 	
 }

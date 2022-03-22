@@ -28,6 +28,8 @@ namespace SkySnow
 		: m_Name(name)
 		, m_Description(description)
         , m_Window(nullptr)
+        , m_ChildApp(nullptr)
+        , m_IsInit(false)
 	{
 
 	}
@@ -38,31 +40,54 @@ namespace SkySnow
             delete m_Window;
             m_Window = nullptr;
         }
+        if (m_MainThread)
+        {
+            delete m_MainThread;
+            m_MainThread = nullptr;
+        }
+        if (m_RenderThread)
+        {
+            delete m_RenderThread;
+            m_RenderThread = nullptr;
+        }
 	}
 
 	int Application::RunApplication(Application* app, int argc, const char* const* argv)
 	{
         m_Window = new SN_GLFWWindow();
         m_Window->SNCreateWindow(DEFAUT_WADTH,DEFAUT_HEIGHT);
+
         m_MainThread = new EngineMainThread();
-        void(*Test)(void);
-        Test a = EngineLoop;
-        m_MainThread->AttactMainThread(el);
+        m_MainThread->AttactMainThread(&Application::EngineLoop,this);
+        m_MainThread->StartEngineMainThread();
+
         m_RenderThread = new RenderingThread();
         m_RenderThread->SetGLContext(m_Window->GetWindow());
-        
-        bool isInit = app->Init(argc,argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
-		while (!m_Window->SNIsCloseWindow())
-		{
-			//SN_LOG("Main Thread Update.");
-			app->Update();
-		}
-        m_Window->SNShutDown();
+        m_RenderThread->StartRenderingThread();
+
+        m_ChildApp = app;
+        m_Argc = argc;
+        m_Argv = argv;
+        while (!m_Window->SNIsCloseWindow())
+        {
+            continue;
+        }
+        if (m_Window->SNIsCloseWindow())
+        {
+            m_MainThread->StopEngineMainThread();
+            m_RenderThread->StopRenderingThread();
+            m_Window->SNShutDown();
+        }
         return 0;
 	}
 
     void Application::EngineLoop()
     {
-        
+        if (!m_IsInit)
+        {
+            m_ChildApp->Init(m_Argc, m_Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
+            m_IsInit = true;
+        }
+        m_ChildApp->Update();
     }
 }
