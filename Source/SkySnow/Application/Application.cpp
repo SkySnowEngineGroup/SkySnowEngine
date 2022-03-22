@@ -70,6 +70,7 @@ namespace SkySnow
         m_Argv = argv;
         while (!m_Window->SNIsCloseWindow())
         {
+            SNSleep(1000);
             continue;
         }
         if (m_Window->SNIsCloseWindow())
