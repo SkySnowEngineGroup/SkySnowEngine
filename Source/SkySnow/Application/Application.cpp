@@ -30,6 +30,8 @@ namespace SkySnow
         , m_Window(nullptr)
         , m_ChildApp(nullptr)
         , m_IsInit(false)
+        , m_MainThread(nullptr)
+        , m_RenderThread(nullptr)
 	{
 
 	}
@@ -57,28 +59,20 @@ namespace SkySnow
         m_Window = new SN_GLFWWindow();
         m_Window->SNCreateWindow(DEFAUT_WADTH,DEFAUT_HEIGHT);
 
-        m_MainThread = new EngineMainThread();
-        m_MainThread->AttactMainThread(&Application::EngineLoop,this);
-        m_MainThread->StartEngineMainThread();
+        //m_MainThread = new EngineMainThread();
+        //m_MainThread->AttactMainThread(&Application::EngineLoop,this);
+        //m_MainThread->StartEngineMainThread();
 
         m_RenderThread = new RenderingThread();
-        m_RenderThread->SetGLContext(m_Window->GetWindow());
-        m_RenderThread->StartRenderingThread();
+        m_RenderThread->SetSNWindow(m_Window);
 
         m_ChildApp = app;
         m_Argc = argc;
         m_Argv = argv;
-        while (!m_Window->SNIsCloseWindow())
-        {
-            SNSleep(1000);
-            continue;
-        }
-        if (m_Window->SNIsCloseWindow())
-        {
-            m_MainThread->StopEngineMainThread();
-            m_RenderThread->StopRenderingThread();
-            m_Window->SNShutDown();
-        }
+        
+        m_RenderThread->RenderOneFrame();
+
+        //m_MainThread->StopEngineMainThread();
         return 0;
 	}
 

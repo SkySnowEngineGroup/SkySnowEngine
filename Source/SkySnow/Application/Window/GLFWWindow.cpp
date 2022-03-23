@@ -62,6 +62,22 @@ namespace SkySnow
 		return close;
 	}
 
+	void SN_GLFWWindow::MakeGLContext()
+	{
+		glfwMakeContextCurrent(m_Window);
+	}
+
+	void SN_GLFWWindow::GLFWSwapBuffer()
+	{
+		glfwSwapBuffers(m_Window);
+		glfwPollEvents();
+	}
+
+	void SN_GLFWWindow::LoadgladFun()
+	{
+		gladLoadGL(glfwGetProcAddress);
+	}
+
 	void SN_GLFWWindow::SNShutDown()
 	{
 		if (m_Window)

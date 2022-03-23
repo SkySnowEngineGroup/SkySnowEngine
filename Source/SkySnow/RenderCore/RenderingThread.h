@@ -25,6 +25,10 @@
 #include "LogAssert.h"
 #include "Thread.h"
 #include "GRIProfiles.h"
+#include "GLFWWindow.h"
+//目前使用GLFW+glad，事件必须要在主线程进行，不能托管到其它线程
+//后面将自己实现EGL+EAGL等，按照各个平台进行创建窗口，后续渲染
+//系统处理完毕后，将着重处理这块。
 namespace SkySnow
 {
     class RenderingThread : public NonCopyable
@@ -34,27 +38,15 @@ namespace SkySnow
         
         ~RenderingThread();
         
-        void StartRenderingThread();
-        
-        void StopRenderingThread();
-        
-        void SetGLContext(GLFWwindow* glfwhandlw)
+        void SetSNWindow(SN_GLFWWindow* glfwhandlw)
         {
-            m_GLFWHandle = glfwhandlw;
-        }
-    private:
-        static void* RenderThreadRun(void* data)
-        {
-            RenderingThread* worker = (RenderingThread*)data;
-            worker->RenderOneFrame();
-            return nullptr;
+            m_SNWindow = glfwhandlw;
         }
         
         void RenderOneFrame();
     private:
         bool                    m_ExitRenderingThread;
-        SkySnow::Thread*        m_RenderThread;
-        GLFWwindow*             m_GLFWHandle;
+        SN_GLFWWindow*          m_SNWindow;
     };
 }
 
