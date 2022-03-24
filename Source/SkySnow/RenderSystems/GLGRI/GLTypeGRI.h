@@ -21,11 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "PlatformGRI.h"
+#include "GRIType.h"
 #include "GLRealTimeGRI.h"
 namespace SkySnow
 {
-	class GLPlatformGRI : public PlatformGRI
+	class GLTypeGRI : public GRIType
 	{
 	public:
 		virtual bool IsSupport() override;

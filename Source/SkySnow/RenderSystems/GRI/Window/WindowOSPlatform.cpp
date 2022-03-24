@@ -22,11 +22,11 @@
 //
 
 #include "WindowOSPlatform.h"
-#include "GLPlatformGRI.h"
+#include "GLTypeGRI.h"
 namespace SkySnow
 {
 	WindowOSPlatform::WindowOSPlatform()
-		: m_PlatformGRI(nullptr)
+		: m_TypeGRI(nullptr)
 		, m_RealTimeGRI(nullptr)
 	{
 
@@ -34,10 +34,10 @@ namespace SkySnow
 
 	WindowOSPlatform::~WindowOSPlatform()
 	{
-		if (nullptr != m_PlatformGRI)
+		if (nullptr != m_TypeGRI)
 		{
-			delete m_PlatformGRI;
-			m_PlatformGRI = nullptr;
+			delete m_TypeGRI;
+			m_TypeGRI = nullptr;
 		}
 		if (m_RealTimeGRI)
 		{
@@ -48,16 +48,16 @@ namespace SkySnow
 
 	RealTimeGRI* WindowOSPlatform::OSPlatformCreateRealTimeGRI()
 	{ 
-		if (m_PlatformGRI && m_RealTimeGRI)
+		if (m_TypeGRI && m_RealTimeGRI)
 		{
 			return m_RealTimeGRI;
 		}
 		//can create OpenGL Vulkan,Nuwa plan not support DX 
-		m_PlatformGRI = new GLPlatformGRI();
+		m_TypeGRI = new GLTypeGRI();
 		//Windows platform can support OpenGL, Vulakn GRI
-		if (m_PlatformGRI->IsSupport())
+		if (m_TypeGRI->IsSupport())
 		{
-			m_RealTimeGRI = m_PlatformGRI->CreateGRI();
+			m_RealTimeGRI = m_TypeGRI->CreateGRI();
 		}
 		return m_RealTimeGRI;
 	}

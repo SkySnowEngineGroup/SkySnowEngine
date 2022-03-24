@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "PlatformGRI.h"
+#include "GRIType.h"
 #include "NonCopyable.h"
 namespace SkySnow
 {

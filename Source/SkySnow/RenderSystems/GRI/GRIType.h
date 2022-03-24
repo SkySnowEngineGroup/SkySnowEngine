@@ -28,7 +28,7 @@
 namespace SkySnow
 {
 
-	class PlatformGRI
+	class GRIType
 	{
 	public:
 		virtual bool IsSupport() = 0;

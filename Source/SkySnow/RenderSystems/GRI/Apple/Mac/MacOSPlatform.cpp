@@ -21,11 +21,11 @@
 // THE SOFTWARE.
 //
 #include "MacOSPlatform.h"
-#include "GLPlatformGRI.h"
+#include "GLTypeGRI.h"
 namespace SkySnow
 {
     MacOSPlatform::MacOSPlatform()
-        : m_PlatformGRI(nullptr)
+        : m_TypeGRI(nullptr)
         , m_RealTimeGRI(nullptr)
     {
 
@@ -33,10 +33,10 @@ namespace SkySnow
 
     MacOSPlatform::~MacOSPlatform()
     {
-        if (nullptr != m_PlatformGRI)
+        if (nullptr != m_TypeGRI)
         {
-            delete m_PlatformGRI;
-            m_PlatformGRI = nullptr;
+            delete m_TypeGRI;
+            m_TypeGRI = nullptr;
         }
         if (m_RealTimeGRI)
         {
@@ -47,17 +47,17 @@ namespace SkySnow
 
     RealTimeGRI* MacOSPlatform::OSPlatformCreateRealTimeGRI()
     {
-        if (m_PlatformGRI && m_RealTimeGRI)
+        if (m_TypeGRI && m_RealTimeGRI)
         {
             return m_RealTimeGRI;
         }
-        m_PlatformGRI = new GLPlatformGRI();
+        m_TypeGRI = new GLTypeGRI();
         //m_PlatformGRI = new VulkanPlatformGRI();//if config with json
         //m_PlatformGRI = new MetalPlatformGRI();
         //Windows platform can support OpenGL, Vulakn GRI
-        if (m_PlatformGRI->IsSupport())
+        if (m_TypeGRI->IsSupport())
         {
-            m_RealTimeGRI = m_PlatformGRI->CreateGRI();
+            m_RealTimeGRI = m_TypeGRI->CreateGRI();
         }
         return m_RealTimeGRI;
     }

@@ -20,16 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GLPlatformGRI.h"
+#include "GLTypeGRI.h"
 
 namespace SkySnow
 {
-	bool GLPlatformGRI::IsSupport()
+	bool GLTypeGRI::IsSupport()
 	{
 		return true;
 	}
 
-	RealTimeGRI* GLPlatformGRI::CreateGRI()
+	RealTimeGRI* GLTypeGRI::CreateGRI()
 	{
 		//这里将OpenGL、OpenGLES2.0、ES3.x归结到一起
 		return new GLRealTimeGRI();
