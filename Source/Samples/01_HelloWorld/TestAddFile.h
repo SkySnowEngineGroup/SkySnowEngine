@@ -7,5 +7,6 @@ public:
 	~TestAddFile();
 
 private:
-
+	float test;
+	float tes1;
 };

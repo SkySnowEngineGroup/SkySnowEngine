@@ -22,7 +22,7 @@
 //
 #include "HelloWorld.h"
 
-
+SkySnow::MemoryPool<sizeof(HelloWorld), 2> m_MemPool;
 HelloWorld::HelloWorld()
 {
 }
@@ -31,3 +31,12 @@ HelloWorld::~HelloWorld()
 {
 }
 
+void* HelloWorld::operator new(size_t size)
+{
+	return m_MemPool.Malloc();
+}
+
+void HelloWorld::operator delete(void* p)
+{
+	m_MemPool.Free(p);
+}

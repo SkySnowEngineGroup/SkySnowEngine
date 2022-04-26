@@ -22,11 +22,18 @@
 //
 
 #pragma once
-
+#include "MemoryPool.h"
 class HelloWorld 
 {
 
 public:
     HelloWorld();
 	~HelloWorld();
+
+	void* operator new(size_t size);
+	void operator delete(void* p);
+private:
+	float test;
+	float tes1;
 };
+extern SkySnow::MemoryPool<sizeof(HelloWorld), 2> m_MemPool;

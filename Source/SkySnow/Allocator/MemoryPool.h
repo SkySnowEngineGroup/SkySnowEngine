@@ -34,13 +34,13 @@ namespace SkySnow
 	private:
 		struct FreeNode
 		{
-			FreeNode* m_Next;
+			FreeNode*	m_Next;
 			char		m_Data[ObjSize];
 		};
 
 		struct MemoryBlock
 		{
-			MemoryBlock* m_Next;
+			MemoryBlock*	m_Next;
 			FreeNode		m_Data[NumObj];
 		};
 
@@ -54,7 +54,7 @@ namespace SkySnow
 		~MemoryPool()
 		{
 			MemoryBlock* ptr;
-			while ()
+			while (m_MemoryBlockHeader)
 			{
 				ptr = m_MemoryBlockHeader->m_Next;
 				delete m_MemoryBlockHeader;
@@ -71,12 +71,39 @@ namespace SkySnow
 	template<int ObjSize, int NumObj>
 	void* MemoryPool<ObjSize, NumObj>::Malloc()
 	{
+		if (m_FreeNodeHeader == nullptr)
+		{
+			MemoryBlock* newBlock = new MemoryBlock();
+			newBlock->m_Next = nullptr;
+			m_FreeNodeHeader = &newBlock->m_Data[0];
 
+			for (int i = 1; i < NumObj; i++)
+			{
+				newBlock->m_Data[i - 1].m_Next = &newBlock->m_Data[i];
+			}
+			newBlock->m_Data[NumObj - 1].m_Next = nullptr;
+
+			if (m_MemoryBlockHeader == nullptr)
+			{
+				m_MemoryBlockHeader = newBlock;
+			}
+			else
+			{
+				newBlock->m_Next = m_MemoryBlockHeader;
+				m_MemoryBlockHeader = newBlock;
+			}
+		}
+
+		void* freeNode = m_FreeNodeHeader;
+		m_FreeNodeHeader = m_FreeNodeHeader->m_Next;
+		return freeNode;
 	}
 
 	template<int ObjSize, int NumObj>
 	void MemoryPool<ObjSize, NumObj>::Free(void* ptr)
 	{
-
+		FreeNode* pNode = (FreeNode*)ptr;
+		pNode->m_Next = m_FreeNodeHeader;
+		m_FreeNodeHeader = pNode;
 	}
 }

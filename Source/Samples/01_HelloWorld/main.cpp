@@ -23,13 +23,37 @@
 #include <stdlib.h>
 #include <iostream>
 #include "TestAddFile.h"
+#include "HelloWorld.h"
+#include "LogAssert.h"
 int main()
 {
-	printf("Hello World!\n");
+	SN_LOG("Hello World!\n");
 
-	TestAddFile* td = new TestAddFile();
+	TestAddFile* td1 = new TestAddFile();
+	SN_LOG("No MemoryPool Demo Test td1:%p", td1);
+	TestAddFile* td2 = new TestAddFile();
+	SN_LOG("No MemoryPool Demo Test td2:%p", td2);
+	delete td1;
+	TestAddFile* td3 = new TestAddFile();
+	SN_LOG("No MemoryPool Demo Test td3:%p", td3);
+	delete td2;
+	TestAddFile* td4 = new TestAddFile();
+	SN_LOG("No MemoryPool Demo Test td3:%p", td4);
+	delete td3;
+	delete td4;
 
-	delete td;
+	HelloWorld* hw1 = new HelloWorld();
+	SN_LOG("MemoryPool Demo Test hw1:%p",hw1);
+
+	HelloWorld* hw2 = new HelloWorld();
+	SN_LOG("MemoryPool Demo Test hw2:%p", hw2);
+	delete hw1;
+
+	HelloWorld* hw3 = new HelloWorld();
+	SN_LOG("MemoryPool Demo Test hw3:%p", hw3);
+
+	delete hw2;
+	delete hw3;
 	system("pause");
 	return 0;
 }

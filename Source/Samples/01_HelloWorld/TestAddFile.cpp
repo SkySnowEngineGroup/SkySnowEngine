@@ -24,7 +24,7 @@
 
 TestAddFile::TestAddFile()
 {
-	printf("TestAddFile printf Hello!\n");
+	//printf("TestAddFile printf Hello!\n");
 }
 
 TestAddFile::~TestAddFile()
