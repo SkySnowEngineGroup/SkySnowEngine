@@ -93,6 +93,7 @@ namespace SkySnow
 			alloc->m_End = alloc->m_End - size;
 			return alloc->m_End;
 		}
+
 		void Free(Allocator* alloc)
 		{
 			Block* block = alloc->m_BlockHeader;
@@ -102,9 +103,6 @@ namespace SkySnow
 				block = block->m_Next;
 				free(temp);
 			}
-		}
-	private:
-		
-		
+		}	
 	};
 }
