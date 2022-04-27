@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,40 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include <stdlib.h>
-#include <iostream>
-#include "TestAddFile.h"
-#include "HelloWorld.h"
-#include "LogAssert.h"
-int main()
+#pragma once
+
+//Linear memory allocation; it is linear growth, suitable for the processing of rendering state dataand skeletal animation data of each frame, 
+//							and it is easy to support lockfreeand index increment operations
+//微软中的mimalloc中的代码可以借鉴一下:https://github.com/microsoft/mimalloc
+namespace SkySnow
 {
-	SN_LOG("Hello World!\n");
+	class LinearAllocator
+	{
 
-	TestAddFile* td1 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td1:%p", td1);
-	TestAddFile* td2 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td2:%p", td2);
-	delete td1;
-	TestAddFile* td3 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td3:%p", td3);
-	delete td2;
-	TestAddFile* td4 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td3:%p", td4);
-	delete td3;
-	delete td4;
-
-	HelloWorld* hw1 = new HelloWorld();
-	SN_LOG("FreeListTest Demo Test hw1:%p",hw1);
-
-	HelloWorld* hw2 = new HelloWorld();
-	SN_LOG("FreeListTest Demo Test hw2:%p", hw2);
-	delete hw1;
-
-	HelloWorld* hw3 = new HelloWorld();
-	SN_LOG("FreeListTest Demo Test hw3:%p", hw3);
-
-	delete hw2;
-	delete hw3;
-	system("pause");
-	return 0;
+	};
 }

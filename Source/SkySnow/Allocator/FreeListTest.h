@@ -21,15 +21,30 @@
 // THE SOFTWARE.
 //
 
+//Note:这是一些需要考虑的实际问题，想要一个灵活及性能及内存都良好的内存管理，需要针对不同业务场景以及各种实现方式进行处理
 //This is an example of a memory pool. The real engine can't be so simple. 
 //It's just a simple review of some basic concepts of memory pools.
+//This is a simple freelist method. The real engine is definitely not such a simple method.
+//Multiple business scenarios must be considered
+//1. and multi-threaded access conflicts and efficiency issues (minimum locks and thread local variables) must be considered.
+//2. Address shaders Offset avoids the problem of inefficient cacheline (processing an offset during allocation),
+//3. considers the memory shrinking scheme (Slab processing method), 
+//4. and needs to deal with the situation where multiple CPUs access the same cache in the case of multi-core (paging processing)
+
+//According to the usage scenarios of the engine, various implementation schemes of memory allocation need to be considered.
+//1. Linear memory allocation; it is linear growth, suitable for the processing of rendering state dataand skeletal animation data of each frame, and it is easy to support lockfreeand index increment operations
+//2. Stack allocator; suitable for level resource loading, can be released on demand, as the backend of other allocators
+//3. Freelist allocation is suitable for particle effect buffer pool, but its memory is not continuous, which will cause cache_lineand multiple CPUs to access the same cached data, which should be considered
+//4. Buddy allocation(伙伴分配器), automatic merging, can handle continuous multi - frame GPU memory management
+//5. Thread - safe memory pool, suitable for multi - threaded processing
+//And so on, these situations need to be taken into account
 #pragma once
 #include <iostream>
 using namespace std;
 namespace SkySnow
 {
-	template<int ObjSize, int NumObj = 20>
-	class MemoryPool
+	template<int ObjSize, int NumObj = 10>
+	class FreeListTest
 	{
 	private:
 		struct FreeNode
@@ -45,13 +60,13 @@ namespace SkySnow
 		};
 
 	public:
-		MemoryPool()
+		FreeListTest()
 			: m_FreeNodeHeader(nullptr)
 			, m_MemoryBlockHeader(nullptr)
 		{
 		}
 
-		~MemoryPool()
+		~FreeListTest()
 		{
 			MemoryBlock* ptr;
 			while (m_MemoryBlockHeader)
@@ -69,7 +84,7 @@ namespace SkySnow
 	};
 
 	template<int ObjSize, int NumObj>
-	void* MemoryPool<ObjSize, NumObj>::Malloc()
+	void* FreeListTest<ObjSize, NumObj>::Malloc()
 	{
 		if (m_FreeNodeHeader == nullptr)
 		{
@@ -100,7 +115,7 @@ namespace SkySnow
 	}
 
 	template<int ObjSize, int NumObj>
-	void MemoryPool<ObjSize, NumObj>::Free(void* ptr)
+	void FreeListTest<ObjSize, NumObj>::Free(void* ptr)
 	{
 		FreeNode* pNode = (FreeNode*)ptr;
 		pNode->m_Next = m_FreeNodeHeader;

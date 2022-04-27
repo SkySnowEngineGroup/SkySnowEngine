@@ -22,7 +22,7 @@
 //
 
 #pragma once
-#include "MemoryPool.h"
+#include "FreeListTest.h"
 class HelloWorld 
 {
 
@@ -36,4 +36,4 @@ private:
 	float test;
 	float tes1;
 };
-extern SkySnow::MemoryPool<sizeof(HelloWorld), 2> m_MemPool;
+extern SkySnow::FreeListTest<sizeof(HelloWorld), 2> m_FreeList;
