@@ -22,7 +22,7 @@
 //
 #include "HelloWorld.h"
 
-SkySnow::FreeListTest<sizeof(HelloWorld), 2> m_MemPool;
+SkySnow::FreeListTest<sizeof(HelloWorld), 2> m_FreeList;
 HelloWorld::HelloWorld()
 {
 }

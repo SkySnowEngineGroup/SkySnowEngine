@@ -25,35 +25,55 @@
 #include "TestAddFile.h"
 #include "HelloWorld.h"
 #include "LogAssert.h"
+#include "LinearAllocatorTest.h"
 int main()
 {
 	SN_LOG("Hello World!\n");
 
-	TestAddFile* td1 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td1:%p", td1);
-	TestAddFile* td2 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td2:%p", td2);
-	delete td1;
-	TestAddFile* td3 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td3:%p", td3);
-	delete td2;
-	TestAddFile* td4 = new TestAddFile();
-	SN_LOG("No FreeListTest Demo Test td3:%p", td4);
-	delete td3;
-	delete td4;
+	//以下为基础知识的内存池测试用例
+	//测试不使用内存池的内存地址
+	{
+		TestAddFile* td1 = new TestAddFile();
+		SN_LOG("No FreeListTest Demo Test td1:%p", td1);
+		TestAddFile* td2 = new TestAddFile();
+		SN_LOG("No FreeListTest Demo Test td2:%p", td2);
+		delete td1;
+		TestAddFile* td3 = new TestAddFile();
+		SN_LOG("No FreeListTest Demo Test td3:%p", td3);
+		delete td2;
+		TestAddFile* td4 = new TestAddFile();
+		SN_LOG("No FreeListTest Demo Test td3:%p", td4);
+		delete td3;
+		delete td4;
+	}
+	//测试Freelist内存池，这是Demo级别
+	{
+		HelloWorld* hw1 = new HelloWorld();
+		SN_LOG("FreeListTest Demo Test hw1:%p", hw1);
+		HelloWorld* hw2 = new HelloWorld();
+		SN_LOG("FreeListTest Demo Test hw2:%p", hw2);
+		delete hw1;
+		HelloWorld* hw3 = new HelloWorld();
+		SN_LOG("FreeListTest Demo Test hw3:%p", hw3);
+		delete hw2;
+		delete hw3;
+	}
+	//测试线性分配器的正确性，这是Demo级别。
+	{
+		SkySnow::LinearAllocatorTest lat;
+		SkySnow::LinearAllocatorTest::Allocator alloc;
+		lat.Init(&alloc, sizeof(TestAddFile));
 
-	HelloWorld* hw1 = new HelloWorld();
-	SN_LOG("FreeListTest Demo Test hw1:%p",hw1);
+		void* test1 = lat.Malloc(&alloc, 16);
+		SN_LOG("LinearAllocator Test1:%p", test1);
 
-	HelloWorld* hw2 = new HelloWorld();
-	SN_LOG("FreeListTest Demo Test hw2:%p", hw2);
-	delete hw1;
+		void* test2 = lat.Malloc(&alloc, 8);
+		SN_LOG("LinearAllocator Test2:%p", test2);
 
-	HelloWorld* hw3 = new HelloWorld();
-	SN_LOG("FreeListTest Demo Test hw3:%p", hw3);
+		void* test3 = lat.Malloc(&alloc, 16);
+		SN_LOG("LinearAllocator Test3:%p", test3);
+	}
 
-	delete hw2;
-	delete hw3;
 	system("pause");
 	return 0;
 }
