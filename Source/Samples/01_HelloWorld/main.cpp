@@ -26,6 +26,10 @@
 #include "HelloWorld.h"
 #include "LogAssert.h"
 #include "LinearAllocatorTest.h"
+#include "FixedAllocatorTest.h"
+#include "SerializeTest.h"
+#include "RTTITest.h"
+using namespace SkySnow;
 int main()
 {
 	SN_LOG("Hello World!\n");
@@ -72,6 +76,38 @@ int main()
 
 		void* test3 = lat.Malloc(&alloc, 16);
 		SN_LOG("LinearAllocator Test3:%p", test3);
+	}
+	//测试固定内存分配器的正确性，这是Demo级别
+	{
+		SkySnow::FixedAllocator fixedAlloc(1024,sizeof(TestAddFile));
+
+		void* test1 = fixedAlloc.Malloc();
+		SN_LOG("FixedAllocator Test1:%p",test1);
+		fixedAlloc.Free(test1);
+
+		void* test2 = fixedAlloc.Malloc();
+		SN_LOG("FixedAllocator Test2:%p",test2);
+
+		void* test3 = fixedAlloc.Malloc();
+		SN_LOG("FixedAllocator Test2:%p", test3);
+
+		void* test4 = fixedAlloc.Malloc();
+		SN_LOG("FixedAllocator Test2:%p", test4);
+		
+	}
+
+	//测试序列化与反序列化的基础原理，这是Demo级别
+	{
+		SerializeTest* ser = new SerializeTest();
+		ser->TestDemo();
+		delete ser;
+	}
+	
+	//测试RTTI基础原理，这是demo级别
+	{
+		TestRTTI* testRtti = new TestRTTI();
+		const char* tname = testRtti->GetTypeName();
+		SN_LOG("TestRTTI Type Name:%s",tname);
 	}
 
 	system("pause");
