@@ -1,6 +1,7 @@
 #
-# Copyright (c) 2020-2022 the NuwaEngine project.
-# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)、wangcan(crygl)
+# Copyright (c) 2020-2022 the SkySnowEngine project.
+#
+# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,23 +21,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
+set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-set(FRAMEWORK_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Frameworks")
-file(GLOB Frameworks_lists  "${FRAMEWORK_DIR}/*.cpp"
-							"${FRAMEWORK_DIR}/*.h")
+file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
+file(GLOB Headers_lists "${SAMPLE_DIR}/*.h")
 
-foreach(source IN LISTS Frameworks_lists)
-	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
-	get_filename_component(source_path "${source_rel}" PATH)
-	string(REPLACE "/" "\\" source_path_dir "${source_path}")
-	source_group("${source_path_dir}" FILES "${source}")
-endforeach()
+add_executable(LearnTest ${Headers_lists} ${Sources_lists})
 
-file(GLOB Frameworks_lists  "${FRAMEWORK_DIR}/*.h")
-include_directories(PUBLIC $<BUILD_INTERFACE:${FRAMEWORK_DIR}/>)
-
-add_subdirectory(00_LearningTest)
-add_subdirectory(01_HelloWorld)
-add_subdirectory(02_Window)
-add_subdirectory(03_Triangles)
-add_subdirectory(04_MultiThreadTest)
+target_include_directories(LearnTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+					      )
+target_link_libraries(LearnTest SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty

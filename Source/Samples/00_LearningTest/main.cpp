@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,19 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-namespace SkySnow
+#include <stdlib.h>
+#include <iostream>
+#include "LogAssert.h"
+
+using namespace SkySnow;
+int main()
 {
-	/*
-		brief:	Remove the assignment copy function and apply to some superclasses 
-				of objects that do not want assignment copies
-	*/
-	class NonCopyable
-	{
-	public:
-		NonCopyable() {}
-	private:
-		NonCopyable(const NonCopyable&);
-		NonCopyable& operator=(const NonCopyable&);
-	};
+	SN_LOG("Learning KnowLedge!\n");
+
+	system("pause");
+	return 0;
 }
