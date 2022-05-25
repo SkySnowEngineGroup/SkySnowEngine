@@ -87,6 +87,7 @@ namespace SkySnow
 			break;
 		}
 		std::cout << buffer << std::endl;
+		SetConsoleTextAttribute(m_WinHandle, 7);
 #elif  PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_LINUX
 		switch (level)
 		{

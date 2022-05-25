@@ -20,25 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include <stdlib.h>
-#include <stdio.h>
+#pragma once
+#include <cstring>
 #include <iostream>
+#include <memory>
+#include <vector>
+#include <list>
 #include "LogAssert.h"
-#include "Tree.h"
-using namespace SkySnow;
-using namespace SkySnowLearning;
-int main()
+using namespace std;
+namespace SkySnowLearning
 {
-	SN_LOG("Learning KnowLedge!\n");
-
+	struct ListNode
 	{
-		BinaryTree* bt = new BinaryTree();
-		bt->VisitTree();
-		bt->TwoTreeEqual();
-		bt->ReverTree();
-	}
-	 
-	//system("pause");
-	getchar();
-	return 0;
+		ListNode()
+			: m_Data(0)
+			, m_Next(nullptr)
+		{
+		}
+		ListNode(int value,ListNode* next)
+			: m_Data(value)
+			, m_Next(next)
+		{
+		}
+		int m_Data;
+		ListNode* m_Next;
+	};
+
+	class ListAlgorithm
+	{
+	public:
+		ListAlgorithm()
+			: m_Head(nullptr)
+		{
+		}
+
+		~ListAlgorithm()
+		{
+		}
+
+	private:
+		ListNode* m_Head;
+	};
 }
+
