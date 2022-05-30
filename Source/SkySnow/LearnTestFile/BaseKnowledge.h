@@ -20,51 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include <stdlib.h>
-#include <stdio.h>
-#include <iostream>
+#pragma once
 #include "LogAssert.h"
-#include "Tree.h"
-#include "List.h"
-#include "BaseKnowledge.h"
-using namespace SkySnow;
-using namespace SkySnowLearning;
-int main()
+namespace SkySnowLearning
 {
-	SN_LOG("Learning KnowLedge!\n");
-
+	class Base
 	{
-		BinaryTree* bt = new BinaryTree();
-		bt->VisitTree();
-		bt->TwoTreeEqual();
-		bt->ReverTree();
+	public:
+		Base()
+			: m_Ia(0)
+		{
+			SN_LOG("Construct.");
+		}
+		~Base() 
+		{
+			SN_LOG("DesConstruct.");
+		}
 
-		delete bt;
-		bt = nullptr;
-	}
-	//Study ListNode
-	{
-		ListAlgorithm* la = new ListAlgorithm();
-		la->ReverseListNode();
+		Base(const Base& other)
+		{
+			m_Ia = other.m_Ia;
+			SN_LOG("Copy Construct.");	
+		}
 
-		la->IsExitisLoop();
-		delete la;
-		la = nullptr;
-	}
-	//Base KnowLedge
-	{
-		//Base tem1 = Base();
-		//Base tem2 = tem1;
-		//Base tem3;
-		//tem3 = tem1;
-		SN_LOG("==============");
-		Base* t1 = new Base();
-		Base* t2 = t1;
-
-		delete t1;
-
-	}
-	//system("pause");
-	getchar();
-	return 0;
+		Base& operator=(const Base& other)
+		{
+			//if (this != &other)
+			{
+				m_Ia = other.m_Ia;
+				SN_LOG("Copy operator Construct.");
+			}
+			return *this;
+		}
+	private:
+		int m_Ia;
+	};
 }
