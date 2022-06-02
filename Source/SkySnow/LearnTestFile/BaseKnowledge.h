@@ -52,6 +52,14 @@ namespace SkySnowLearning
 			}
 			return *this;
 		}
+
+		void BaseLD()
+		{
+			int* count = new int(1);
+
+			(*count)++;
+			SN_LOG("count int pointer value is:%d",*count);
+		}
 	private:
 		int m_Ia;
 	};
