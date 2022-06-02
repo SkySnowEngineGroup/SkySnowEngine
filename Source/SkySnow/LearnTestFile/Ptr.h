@@ -106,6 +106,13 @@ namespace SkySnowLearning
 	private:
 		T* m_Ptr;
 	};
-	//弱引用指针
+	//Share_ptr 引用计数智能指针
+	template<typename T>
+	class share_ptr
+	{
+	public:
+
+	private:
+	};
 
 }
