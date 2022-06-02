@@ -61,8 +61,8 @@ int main()
 		Base* t1 = new Base();
 		Base* t2 = t1;
 
+		t2->BaseLD();
 		delete t1;
-
 	}
 	//system("pause");
 	getchar();
