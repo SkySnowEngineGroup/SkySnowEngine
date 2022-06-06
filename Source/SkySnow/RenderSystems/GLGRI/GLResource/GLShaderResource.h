@@ -21,14 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIResource.h"
 namespace SkySnow
 {
-	template<typename GRIType,typename GLResourceType>
-	class GLResourceProxy :public GRIType
-	{
-
-	};
-
-	
+	 
 }

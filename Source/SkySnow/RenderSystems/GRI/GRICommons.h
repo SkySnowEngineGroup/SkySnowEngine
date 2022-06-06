@@ -42,4 +42,10 @@ namespace SkySnow
 		GRT_Buffer,
 		GRT_Num
 	};
+
+	enum ShaderFrequency
+	{
+		SF_Vertex		= 0,
+		SF_Fragement	= 1,
+	};
 }

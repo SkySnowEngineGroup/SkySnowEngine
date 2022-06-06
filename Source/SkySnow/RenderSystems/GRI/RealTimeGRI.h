@@ -34,9 +34,12 @@ namespace SkySnow
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		// Test:clear quad color
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
+		//Rendering Resource Create CMD
 		//Create Vertex Shader
-		//virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
+		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
 		//Create Fragment Shader
-		//virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) = 0;
+		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) = 0;
+
+		//
 	};
 };
