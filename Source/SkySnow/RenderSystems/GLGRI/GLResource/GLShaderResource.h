@@ -21,7 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLProfiles.h"
+#include "GRICommons.h"
 namespace SkySnow
 {
-	 
+	 //GLShader Resource
+	template<typename GRIResourceType,GLenum GLTypeEnum, ShaderFrequency shaderFrequency>
+	class GLShader : public GRIResourceType
+	{
+	public:
+
+	};
 }
