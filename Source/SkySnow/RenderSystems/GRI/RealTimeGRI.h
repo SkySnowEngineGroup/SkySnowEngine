@@ -39,7 +39,7 @@ namespace SkySnow
 		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
 		//Create Fragment Shader
 		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) = 0;
-
-		//
+		//Create Graphics Pipeline
+		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
 	};
 };

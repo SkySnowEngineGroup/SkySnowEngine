@@ -67,6 +67,15 @@ namespace SkySnow
 		}
 	};
 
+	class GRIGraphicsPipelineState : public GRIResource
+	{
+	public:
+		GRIGraphicsPipelineState()
+			: GRIResource(GRI_GraphicsPipelineState)
+		{
+		}
+	};
+
 	class GRIBuffer : public GRIResource
 	{
 	public:
@@ -75,4 +84,5 @@ namespace SkySnow
 	// Thread safe ref ptr
 	typedef RefCountPtr<GRIVertexShader> GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader> GRIFragmentShaderRef;
+	typedef RefCountPtr<GRIGraphicsPipelineState> GRIGraphicsPipelineStateRef;
 }

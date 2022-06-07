@@ -50,11 +50,13 @@ namespace SkySnow
 		~GLRealTimeGRI() {}
 
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetGRIFeatureType(); }
-
-		void GRIClearColor(float red, float green, float blue, float alpha) final override;
-
+		//Test Demo
+		virtual void GRIClearColor(float red, float green, float blue, float alpha) final override;
+		//Create Vertex Shader
 		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) final override;
-
+		//Create Fragment Shader
 		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) final override;
+		//Create Pipeline State
+		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
 	};
 }
