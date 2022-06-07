@@ -21,15 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
-#include "GRICommons.h"
+#include "GLRealTimeGRI.h"
 namespace SkySnow
 {
-	 //GLShader Resource
-	template<typename GRIResourceType,GLenum GLTypeEnum, ShaderFrequency shaderFrequency>
-	class GLShader : public GRIResourceType
+	//Create Shader about Resource
+	GRIVertexShaderRef GLRealTimeGRI::GRICreateVertexShader(const char* vsCode)
 	{
-	public:
 
-	};
+	}
+
+	GRIFragmentShaderRef GLRealTimeGRI::GRTCreateFragmentShader(const char* fsCode)
+	{
+
+	}
 }

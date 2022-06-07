@@ -22,7 +22,7 @@
 //
 
 #include "GLRealTimeGRI.h"
-
+#include "GLShader.h"
 namespace SkySnow
 {
 	GLRealTimeGRI::GLRealTimeGRI()
@@ -34,4 +34,5 @@ namespace SkySnow
 	{
 		glClearColor(red,green,blue,alpha);
 	}
+
 }
