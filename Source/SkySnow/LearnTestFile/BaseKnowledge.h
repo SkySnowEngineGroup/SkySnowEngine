@@ -24,6 +24,22 @@
 #include "LogAssert.h"
 namespace SkySnowLearning
 {
+	//std::move是右移操作符，将源对象的所有权转移到当前对象上
+	// 	   其是去掉引用的参数类型
+	//std::forward是完美转发，保持源对象的值属性不变
+	//	   其是强制类型转换，使用static_case去掉
+
+	/*
+		深拷贝&浅拷贝
+		浅拷贝
+		  对象包含成员类型:string\number\object\Array
+		  基本类型(string\number)，那么拷贝基本类型的值
+		  引用类型，拷贝的内存地址，与原对象同指一个内存地址
+		深拷贝
+		  对象包含成员类型:string\number\object\Array
+		  基本类型(string\number)，那么拷贝基本类型的值
+		  引用类型，拷贝的指针，并对指针指向内容进行拷贝，与原对象指向不同的内存地址
+	*/
 	class Base
 	{
 	public:
@@ -63,11 +79,31 @@ namespace SkySnowLearning
 	private:
 		int m_Ia;
 	};
-	//重写(覆盖): 要求基类方法前加上virtual，且返回值及参数列表均需和基类相同
-	//重载: 要求参数列表和原函数不同，仅有返回值不同不算重载，使用时需要注意二义性
-	//重定义: 要求方法名和父类相同，其余可以不同，且此时要调用父类方法时只能采用(基类名::函数名)来调用
-	//        派生类定义了与基类同名的成员，在派生类中访问同名成员时屏蔽了基类的同名
-	//        在派生类中使用基类的同名成员，显示的使用类名限定符--类名::成员
+	//面向对象编程的三个方式: 继承、封装、多态
+	//多态:(静态&动态多态)
+	//  重写(覆盖)<动态>: 要求基类方法前加上virtual，且返回值及参数列表均需和基类相同
+	//  重载<静态>: 要求参数列表和原函数不同，仅有返回值不同不算重载，使用时需要注意二义性
+	//  重定义<静态>: 要求方法名和父类相同，其余可以不同，且此时要调用父类方法时只能采用(基类名::函数名)来调用
+	//          派生类定义了与基类同名的成员，在派生类中访问同名成员时屏蔽了基类的同名
+	//          在派生类中使用基类的同名成员，显示的使用类名限定符--类名::成员
+	/*
+	面向对象的几个原则
+		1. 单一职责原则(Single Responsibility Principle)
+		   每一个类应该专注于做一件事情。 即：高内聚，低耦合
+		2. 开闭原则（Open Close Principle）
+		   一个对象对扩展开放，对修改关闭。即：对类的改动是通过增加代码进行的，而不是修改现有代码
+		3. 里氏替换原则（Liskov Substitution Principle）
+		   在任何父类出现的地方都可以用它的子类来替代
+		4. 依赖倒置原则（Dependence Inversion Principle）
+		   要依赖于抽象，不要依赖于具体实现
+		5. 接口隔离原则（Interface Segregation Principle）
+		   应当为客户端提供尽可能小的单独的接口，而不是提供大的总的接口
+		6. 迪米特原则（Law Of Demeter）
+		   一个对象应当尽量少地与其他对象之间发生相互作用，使得系统功能模块相对独立
+		7. 组合/聚合复用原则（Composite/Aggregate Reuse Principle）
+		   尽量使用组合/聚合的方式，而不是使用继承
+	
+	*/
 	class Parent
 	{
 	public:
@@ -85,7 +121,7 @@ namespace SkySnowLearning
 		{
 			SN_LOG("Parent Function A.");
 		}
-
+		//重载
 		void FunA(int vi)
 		{
 			SN_LOG("Parent Function A,But Overload.");
@@ -228,6 +264,51 @@ namespace SkySnowLearning
 		{
 			value.SetValue(3);
 			SN_LOG("传递值2:非指针传递");
+		}
+	};
+	/*
+	菱形继承，虚继承解决数据冗余和成员二义性
+	情景:
+		基类A，派生类B继承A，派生类C继承A，派生类D继承B与C
+		问题:
+			1. 数据冗余: 在D中保存两份A的数据
+			2. 二义性: D中调用函数，不清楚是用B还是C为中介来访问A(可以通过[父类::函数名]来确定)
+		规则:
+			1. D中要显示调用A的构造函数，否则会重复构造的二义性
+			2. 虚继承，在class后在继承中，加入virtual关键字
+		原理
+			1. 派生类B与C虚继承A，D继承B与C，类似通过[父类::函数名]，其中只有一份A的实例
+			2. 派生类D中继承B与C中的一份虚函数表，虚函数表指针
+	*/
+
+	class A
+	{
+	public:
+		A() 
+		{
+		}
+	};
+
+	class B : virtual public A
+	{
+	public:
+		B() :A()
+		{
+		}
+	};
+	class C : virtual public A
+	{
+	public:
+		C() :A()
+		{
+		}
+	};
+
+	class D : public B,public C
+	{
+	public:
+		D() : A(), B(), C()
+		{
 		}
 	};
 }

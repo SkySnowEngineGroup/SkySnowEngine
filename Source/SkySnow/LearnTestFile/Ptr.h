@@ -151,6 +151,7 @@ namespace SkySnowLearning
 				m_RefCount = other.m_RefCount;
 				Add();
 			}
+			return *this;
 		}
 
 		T* operator->() const noexcept
