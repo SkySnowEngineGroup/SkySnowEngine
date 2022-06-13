@@ -50,7 +50,8 @@ namespace SkySnowLearning
 		int m_Data;
 		ListNode* m_Next;
 	};
-
+	//链表无环:查找单向链表中的中间节点，可以使用快慢指针，当快指针走到结尾，那么慢指针则指向中间节点
+	//两条链表交于某个节点:可以将其中一个链表首尾相连，然后查找到链表环节点即为两条链表交叉点
 	class ListAlgorithm
 	{
 	public:
@@ -138,7 +139,7 @@ namespace SkySnowLearning
 			//假设节点头距离入口为len，入口点距离相交点x,环长度为r,n为倍数
 			//slow走的距离为: d = len + x;
 			//fast走的距离为: 2d = len + x + nr;
-			//带入计算得关系: len = nr - x;
+			//带入计算得关系: len = nr - x; 假设n=1，那么就是len = r - x;
 			//从头开始一步一步走，和从相遇点开始走，最终会相遇，相遇点即为入口点
 			slow = head;
 			while (slow != fast)

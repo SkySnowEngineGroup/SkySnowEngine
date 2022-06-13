@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 
+#pragma once
 //Note:这是一些需要考虑的实际问题，想要一个灵活及性能及内存都良好的内存管理，需要针对不同业务场景以及各种实现方式进行处理
 //This is an example of a memory pool. The real engine can't be so simple. 
 //It's just a simple review of some basic concepts of memory pools.
@@ -38,11 +39,44 @@
 //4. Buddy allocation(伙伴分配器), automatic merging, can handle continuous multi - frame GPU memory management
 //5. Thread - safe memory pool, suitable for multi - threaded processing
 //And so on, these situations need to be taken into account
-#pragma once
 #include <iostream>
 using namespace std;
 namespace SkySnow
 {
+	//operator new operator delete
+	//operator new[] operator delete[]
+	//malloc free
+	//new malloc的区别
+	//1. malloc与free是c\c++语言的标准库函数，new/delete是c++的运算符，都可以动摇申请和释放内存
+	//2. new是malloc与构造函数的结合体，new出来的指针带有类型信息，而malloc的指针是void类型，需要强转
+	//3. new申请内存失败，抛出异常，malloc返回NULL
+	//4. new和delete可以被重载，但malloc不可以
+	//5. new和delete会自动调用构造函数和析构函数，但是malloc与free不会
+	//6. malloc申请内存失败可realloc重新分配，但是new不可以
+	//7. new会检查类型是否对应，不对应会保存，malloc不进行类型判断
+	//8. new 内部实现了大小的计算、类型转换等工作，单malloc需要计算大小及类型转换
+	//底层逻辑
+	//1.new T类型
+	//	1.1. 调用operator new(sizeof(T))，该函数的函数原型为void* operator new(size_t size)
+	//	1.2. 调用operator new中的malloc(set_new_handle)，如果申请成功，返回；
+	//		 申请失败（可能原因是内存空间不足），采取应对措施set_new_handler，如果应对措施没有，抛出一个异常
+	//	1.3. 调用一个构造函数。构造函数显示给出，编译器自动合成
+	//2.delete p
+	//	2.1. 调用一个析构函数
+	//	2.2. 调用operator delete，释放空间地址
+	//	2.3. 调用free函数
+	//3.new T[N]
+	//	3.1. 调用operator new[] (N*sizeof(T))，会在申请的空间的头部多给4个字节的空间，用来存放N
+	//	3.2. 调用operator new函数
+	//	3.3. 调用malloc函数
+	//	3.4. 调用N次构造函数，构造出来N个对象
+	//	3.5. 返回第一个对象所在的首地址，不是原空间的地址，而是原空间的地址向后偏移4个位置
+	//4.delete[] p
+	//	4.1. 取出N（在空间的前四个字节中）{*((int*)P - 1) [(int*)((int)p - 4)]}
+	//	4.2. 调用N次析构函数
+	//	4.3. 调用operator delete[] (p)
+	//	4.4. 调用operator delete
+	//	4.5. 调用free函数
 	template<int ObjSize, int NumObj = 10>
 	class FreeListTest
 	{

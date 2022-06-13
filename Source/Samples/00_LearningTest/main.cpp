@@ -33,6 +33,28 @@ int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
 
+	//基础知识学习
+	{
+		ConstBase* cb1 = new ConstBase();
+		ConstBase2 cb2;
+		cb2.PrintValue();
+		
+		cb1->FunA(cb2);
+		cb2.PrintValue();
+		cb1->FunB(&cb2);
+		cb2.PrintValue();
+		cb1->FunC(cb2);
+		cb2.PrintValue();
+		delete cb1;
+	}
+	//redfine 重定义父类函数
+	{
+		Child* child = new Child();
+		child->FunA();
+		//如果调用父类函数，则需要类名::函数名调用
+		child->Parent::FunA();
+	}
+
 	{
 		BinaryTree* bt = new BinaryTree();
 		bt->VisitTree();

@@ -71,7 +71,7 @@ namespace SkySnow
 		{
 			if (m_Referenced)
 			{
-				m_Referenced->Release();
+				//m_Referenced->Release();
 			}
 		}
 

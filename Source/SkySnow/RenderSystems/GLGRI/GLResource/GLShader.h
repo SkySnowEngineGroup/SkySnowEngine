@@ -27,11 +27,13 @@ namespace SkySnow
 	//Create Shader about Resource
 	GRIVertexShaderRef GLRealTimeGRI::GRICreateVertexShader(const char* vsCode)
 	{
-
+		GRIVertexShaderRef temp;
+		return temp;
 	}
 
 	GRIFragmentShaderRef GLRealTimeGRI::GRTCreateFragmentShader(const char* fsCode)
 	{
-
+		GRIFragmentShaderRef temp;
+		return temp;
 	}
 }
