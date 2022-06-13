@@ -30,6 +30,19 @@
 using namespace std;
 namespace SkySnowLearning
 {
+	/*
+		List&Vector&Dequeue
+		vector
+		1. 底层实现为数组，在堆上分配
+		2. 如果内存不够使用，那么会分配两倍容量，将原空间的内存数据拷贝到新的内存空间，
+		   并将原空间的内存数据释放，将内存回收
+		特点
+		1. 随机访问时间复杂度为0(1)
+		2. 插入
+		   2.1 内存足够情况，在尾部插入，不需要拷贝
+		   2.2 内存不够情况，在尾部插入，需要拷贝
+		   2.3 内存足够情况，
+	*/
 	struct ListNode
 	{
 		ListNode()
