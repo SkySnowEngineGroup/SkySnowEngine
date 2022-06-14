@@ -55,6 +55,7 @@ namespace SkySnow
 
 	//==========safe thread RefCount
 	RefThreadSafeCounted::RefThreadSafeCounted()
+		: NonCopyable()
 	{
 		std::atomic_init(&m_refs, 0);
 	}

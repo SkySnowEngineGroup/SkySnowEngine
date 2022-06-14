@@ -28,8 +28,15 @@ namespace SkySnow
 	class GRIResource : public RefThreadSafeCounted
 	{
 	public:
+		GRIResource()
+			: RefThreadSafeCounted()
+			, m_GRIResourceType(GRT_None)
+		{
+
+		}
 		GRIResource(EGRIResourceType grit)
-			: m_GRIResourceType(grit)
+			: RefThreadSafeCounted()
+			, m_GRIResourceType(grit)
 		{
 		}
 		inline EGRIResourceType GetType() const

@@ -27,7 +27,6 @@ namespace SkySnow
 	template <typename Referenced>
 	class RefCountPtr
 	{
-		typedef Referenced* ReferencedPtr;
 	public:
 
 		RefCountPtr()
@@ -35,7 +34,7 @@ namespace SkySnow
 		{
 		}
 
-		RefCountPtr(RefCountPtr* inReference,bool isRef = true)
+		RefCountPtr(Referenced* inReference,bool isRef = true)
 		{
 			m_Referenced = inReference;
 			if (m_Referenced && isRef)
@@ -167,7 +166,7 @@ namespace SkySnow
 			inputPtr.m_Referenced = originRef;
 		}
 	private:
-		ReferencedPtr* m_Referenced;
+		Referenced* m_Referenced;
 		template <typename U> friend class RefCountPtr;
 	};
 

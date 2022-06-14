@@ -33,10 +33,24 @@ using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+
+	{
+		Move* test = new Move();
+		Move test2;
+		test2.Test(std::move(test));
+		if (test)
+		{
+			delete test;
+		}
+		//test2 = std::move(test);
+		SN_LOG("====================");
+	}
 	//引擎基础测试案例
 	{
 		//RefCountPtr<TestSkySnowPtr> test(new TestSkySnowPtr());
-		share_ptr<Base> test(new Base);
+		share_ptr<Base> test(new Base());
+
+		RefCountPtr<Test> test2(new Test());
 	}
 	//基础知识学习
 	{

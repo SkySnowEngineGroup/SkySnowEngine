@@ -41,16 +41,61 @@ namespace SkySnowLearning
 		  基本类型(string\number)，那么拷贝基本类型的值
 		  引用类型，拷贝的指针，并对指针指向内容进行拷贝，与原对象指向不同的内存地址
 	*/
+	class Move
+	{
+	public:
+		Move() 
+		{
+			SN_LOG("Move Construct.");
+		}
+		~Move() 
+		{
+			SN_LOG("Move DesConstruct.");
+		}
+
+		Move(const Move& input) 
+		{
+			SN_LOG("Move Copy Construct.");
+		}
+
+		Move& operator=(const Move& input)
+		{
+			SN_LOG("Move = operator.");
+		}
+		
+		Move(Move&& input) 
+		{
+			SN_LOG("Move Move Construct.");
+		}
+
+		Move& operator =(Move&& other)
+		{
+			SN_LOG("Move Move = operator.");
+			return *this;
+		}
+
+		void Test(Move* value)
+		{
+
+		}
+	};
 
 	/*
 	测试正式的智能指针的用法
 	*/
 
-	class TestSkySnowPtr : public RefThreadSafeCounted
+	class Test : public SkySnow::RefThreadSafeCounted
 	{
 	public:
-		TestSkySnowPtr()
+		Test()
+			: RefThreadSafeCounted()
 		{
+			SN_LOG("Test Construct.");
+		}
+
+		~Test()
+		{
+			SN_LOG("Test DesConstruct.");
 		}
 	};
 	class Base
@@ -59,11 +104,11 @@ namespace SkySnowLearning
 		Base()
 			: m_Ia(0)
 		{
-			SN_LOG("Construct.");
+			SN_LOG("Base Construct.");
 		}
 		~Base() 
 		{
-			SN_LOG("DesConstruct.");
+			SN_LOG("Base DesConstruct.");
 		}
 
 		Base(const Base& other)
