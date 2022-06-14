@@ -32,7 +32,11 @@ using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
-
+	//引擎基础测试案例
+	{
+		//RefCountPtr<TestSkySnowPtr> test(new TestSkySnowPtr());
+		share_ptr<Base> test(new Base);
+	}
 	//基础知识学习
 	{
 		ConstBase* cb1 = new ConstBase();

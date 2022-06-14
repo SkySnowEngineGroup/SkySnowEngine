@@ -20,9 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
+#include "GLShader.h"
 #include "GLRealTimeGRI.h"
+
 namespace SkySnow
 {
+	////Create Shader about Resource
+	//GRIVertexShaderRef GLRealTimeGRI::GRICreateVertexShader(const char* vsCode)
+	//{
+	//	GRIVertexShaderRef temp;
+	//	return temp;
+	//}
 
+	//GRIFragmentShaderRef GLRealTimeGRI::GRTCreateFragmentShader(const char* fsCode)
+	//{
+	//	GRIFragmentShaderRef temp;
+	//	return temp;
+	//}
 }

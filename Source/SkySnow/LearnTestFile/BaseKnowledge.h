@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "LogAssert.h"
+#include "RefCounted.h"
 namespace SkySnowLearning
 {
 	//std::move是右移操作符，将源对象的所有权转移到当前对象上
@@ -40,6 +41,18 @@ namespace SkySnowLearning
 		  基本类型(string\number)，那么拷贝基本类型的值
 		  引用类型，拷贝的指针，并对指针指向内容进行拷贝，与原对象指向不同的内存地址
 	*/
+
+	/*
+	测试正式的智能指针的用法
+	*/
+
+	class TestSkySnowPtr : public RefThreadSafeCounted
+	{
+	public:
+		TestSkySnowPtr()
+		{
+		}
+	};
 	class Base
 	{
 	public:

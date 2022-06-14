@@ -35,6 +35,15 @@ namespace SkySnow
 		{
 		}
 
+		RefCountPtr(RefCountPtr* inReference,bool isRef = true)
+		{
+			m_Referenced = inReference;
+			if (m_Referenced && isRef)
+			{
+				m_Referenced->Add();
+			}
+		}
+
 		RefCountPtr(const RefCountPtr& inputCopy)
 		{
 			m_Referenced = inputCopy;
@@ -71,7 +80,7 @@ namespace SkySnow
 		{
 			if (m_Referenced)
 			{
-				//m_Referenced->Release();
+				m_Referenced->Release();
 			}
 		}
 
