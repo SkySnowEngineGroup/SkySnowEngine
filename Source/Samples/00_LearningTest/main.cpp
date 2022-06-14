@@ -27,6 +27,7 @@
 #include "Tree.h"
 #include "List.h"
 #include "BaseKnowledge.h"
+#include "Ptr.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
