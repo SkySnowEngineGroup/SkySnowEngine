@@ -34,7 +34,20 @@ using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+	//LRUCache
+	{
+		LRU lru(5);
+;
+		lru.Put(1, 10);
+		lru.Put(2, 20);
+		lru.Put(3, 30);
+		lru.Put(4, 40);
 
+		lru.Put(2,200);
+		SN_LOG("LRU Value:%d",lru.Get(1));
+		SN_LOG("LRU Value:%d",lru.Get(2));
+	}
+	//ÓÒÒÆ²Ù×÷·û
 	{
 		Move* test = new Move();
 		Move test2;
