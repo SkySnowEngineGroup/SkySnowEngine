@@ -129,6 +129,11 @@ namespace SkySnow
 			return m_Referenced;
 		}
 
+		inline Referenced& operator*() const
+		{
+			return *m_Referenced;
+		}
+
 		inline operator Referenced() const
 		{
 			return m_Referenced;

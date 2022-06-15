@@ -28,6 +28,7 @@
 #include "List.h"
 #include "BaseKnowledge.h"
 #include "Ptr.h"
+#include "Cache.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
@@ -43,10 +44,12 @@ int main()
 			delete test;
 		}
 		//test2 = std::move(test);
-		SN_LOG("====================");
+		int a = (0x1 << 21) + 17;
+		SN_LOG("Value:%d",a);
 	}
 	//引擎基础测试案例
 	{
+		SN_LOG("====================");
 		//RefCountPtr<TestSkySnowPtr> test(new TestSkySnowPtr());
 		share_ptr<Base> test(new Base());
 
@@ -54,6 +57,7 @@ int main()
 	}
 	//基础知识学习
 	{
+		SN_LOG("====================");
 		ConstBase* cb1 = new ConstBase();
 		ConstBase2 cb2;
 		cb2.PrintValue();
@@ -68,6 +72,7 @@ int main()
 	}
 	//redfine 重定义父类函数
 	{
+		SN_LOG("====================");
 		Child* child = new Child();
 		child->FunA();
 		//如果调用父类函数，则需要类名::函数名调用
@@ -75,6 +80,7 @@ int main()
 	}
 
 	{
+		SN_LOG("====================");
 		BinaryTree* bt = new BinaryTree();
 		bt->VisitTree();
 		bt->TwoTreeEqual();
@@ -85,6 +91,7 @@ int main()
 	}
 	//Study ListNode
 	{
+		SN_LOG("====================");
 		ListAlgorithm* la = new ListAlgorithm();
 		la->ReverseListNode();
 
