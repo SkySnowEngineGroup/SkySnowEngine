@@ -24,6 +24,9 @@
 #include "GRIResource.h"
 namespace SkySnow
 {
+	//OpenGL相关的GPU资源的代理，将代理部分资源
+	//其中将保存GL具体相关的资源的智能指针，以与GRI
+	//层的资源进行映射绑定，智能指针是线程安全的。
 	template<typename GRIType,typename GLResourceType>
 	class GLResourceProxy :public GRIType
 	{

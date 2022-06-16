@@ -35,6 +35,11 @@ namespace SkySnow
 		// Test:clear quad color
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
 		//Rendering Resource Create CMD
+		/*
+			接口定义与现代渲染API保持一致，创建shader并不会编译着色器，在创建Pipeline的时候
+			将编译shader以及编译着色器程序对象(如果是OpenGL，将会检测是否支持BinaryShader、separateshader[Depend PipelineObject])
+			将对shader进一步封装为ShaderResourceView
+		*/
 		//Create Vertex Shader
 		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
 		//Create Fragment Shader

@@ -93,7 +93,7 @@ namespace SkySnowLearning
 			{
 				Node* target = dic[key];
 				target->value = value;
-
+				dic.erase(key);
 				//从当前节点摘除
 				target->pre->next = target->next;
 				target->next->pre = target->pre;
@@ -205,7 +205,7 @@ namespace SkySnowLearning
 			{
 				Node* target = dic[key];
 				target->value = value;
-
+				dic.erase(key);
 				//从当前节点摘除
 				target->pre->next = target->next;
 				target->next->pre = target->pre;

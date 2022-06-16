@@ -23,6 +23,7 @@
 #pragma once
 #include "GLProfiles.h"
 #include "GRICommons.h"
+#include "RefCounted.h"
 namespace SkySnow
 {
 	 //GLShader Resource
@@ -31,5 +32,17 @@ namespace SkySnow
 	{
 	public:
 
+	};
+	//Shader Resource,Thread Safe Count.
+	class GLShaderBase : public RefThreadSafeCounted
+	{
+	public:
+		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency);
+		virtual ~GLShaderBase();
+
+
+	private:
+		GLenum			m_GLTypeEnum;
+		ShaderFrequency m_ShaderFrequency;
 	};
 }
