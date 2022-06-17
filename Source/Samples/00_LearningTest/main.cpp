@@ -29,11 +29,19 @@
 #include "BaseKnowledge.h"
 #include "Ptr.h"
 #include "Cache.h"
+#include "DSA.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+	//Data structures and algorithms
+	{
+		DSA* dsa = new DSA();
+		dsa->TestTwoNumSum();
+		dsa->TestBigNumSum();
+		delete dsa;
+	}
 	//LRUCache
 	{
 		LRU lru(5);
