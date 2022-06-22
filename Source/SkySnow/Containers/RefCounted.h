@@ -166,7 +166,7 @@ namespace SkySnow
 
 		inline void Swap(RefCountPtr& inputPtr)
 		{
-			ReferencedPtr* originRef = m_Referenced;
+            Referenced* originRef = m_Referenced;
 			m_Referenced = inputPtr.m_Referenced;
 			inputPtr.m_Referenced = originRef;
 		}

@@ -25,6 +25,14 @@
 #include <iostream>
 namespace SkySnowLearning
 {
+    //std::exchange is c++14 api,so c++11 need override self
+    template<class T, class U = T>
+    T exchange(T& obj, U&& new_value)
+    {
+        T old_value = std::move(obj);
+        obj = std::forward<U>(new_value);
+        return old_value;
+    }
 	//独占指针
 	template<typename T>
 	class unique_ptr
@@ -76,7 +84,7 @@ namespace SkySnowLearning
 
 		T* Release() noexcept
 		{
-			return std::exchange(m_Ptr,nullptr);
+			return exchange(m_Ptr,nullptr);
 		}
 
 		T* Get() const noexcept
@@ -104,9 +112,10 @@ namespace SkySnowLearning
 		{
 			return *this->m_Ptr;
 		}
-	private:
+    private:
 		T* m_Ptr;
 	};
+    
 	//Share_ptr 引用计数智能指针
 	//1. 不要把一个源指针给多个share_ptr管理:会delete两次
 	//2. 不要把this指针给share_ptr管理:相当于条款1
