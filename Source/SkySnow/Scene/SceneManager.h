@@ -21,28 +21,16 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
-#include "GRICommons.h"
-#include "RefCounted.h"
+#include "Scene.h"
 namespace SkySnow
 {
-	 //GLShader Resource
-	template<typename GRIResourceType,GLenum GLTypeEnum, ShaderFrequency shaderFrequency>
-	class GLShader : public GRIResourceType
+	class SceneManager
 	{
 	public:
+		SceneManager();
 
-	};
-	//Shader Resource,Thread Safe Count.
-	class GLShaderBase : public RefThreadSafeCounted
-	{
-	public:
-		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency);
-		virtual ~GLShaderBase();
+		~SceneManager();
 
-
-	private:
-		GLenum			m_GLTypeEnum;
-		ShaderFrequency m_ShaderFrequency;
+		Scene* CreateScene();
 	};
 }

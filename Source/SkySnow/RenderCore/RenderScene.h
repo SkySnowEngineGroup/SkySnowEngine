@@ -20,15 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Componment.h"
+#pragma once
 namespace SkySnow
 {
-	class Camera : public Componment
+	class RenderScene
 	{
-		SkySnow_Object(Camera, Componment);
 	public:
-		Camera();
-		~Camera();
+		RenderScene();
+		~RenderScene();
 	};
 }

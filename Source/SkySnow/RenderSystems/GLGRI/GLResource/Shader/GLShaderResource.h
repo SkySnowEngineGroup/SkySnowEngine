@@ -20,15 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Componment.h"
+#pragma once
+#include "GLProfiles.h"
+#include "GRICommons.h"
+#include "RefCounted.h"
 namespace SkySnow
 {
-	class Camera : public Componment
+	//Shader Resource,Thread Safe Count.
+	class GLShaderBase : public RefThreadSafeCounted
 	{
-		SkySnow_Object(Camera, Componment);
 	public:
-		Camera();
-		~Camera();
+		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency);
+		virtual ~GLShaderBase();
+
+
+	private:
+		GLenum			m_GLTypeEnum;
+		ShaderFrequency m_ShaderFrequency;
+	};
+
+	class GLVertexShader : public GLShaderBase
+	{
+
+	};
+
+	class GLFragmentShader : public GLShaderBase
+	{
+
 	};
 }

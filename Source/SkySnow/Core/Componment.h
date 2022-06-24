@@ -19,16 +19,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-#pragma once 
-#include "Componment.h"
+#pragma once
+#include "Object.h"
 namespace SkySnow
 {
-	class Camera : public Componment
+	class Componment : public Object
 	{
-		SkySnow_Object(Camera, Componment);
+		SkySnow_Object(Componment,Object);
 	public:
-		Camera();
-		~Camera();
+		Componment();
+		virtual ~Componment();
+
 	};
 }
