@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "File.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
 	File::File()
@@ -41,11 +42,19 @@ namespace SkySnow
 	Status File::ReadData(const string& filePath, Data* data)
 	{
 		if (filePath.empty())
+		{
+			SN_ERR("FilePath:%s NotExists.", filePath.c_str());
 			return Status::NotExists;
+		}
+			
 		FILE* fp = fopen(filePath.c_str(),"rb");
 
 		if (!fp)
+		{
+			SN_ERR("FilePath:%s OpenFailed(fp is Null).", filePath.c_str());
 			return Status::OpenFailed;
+		}
+			
 #if defined(_MSC_VER_)
 		auto descriptor = _fileno(fp);
 #else
@@ -54,6 +63,7 @@ namespace SkySnow
 		struct stat statBuf;
 		if (fstat(descriptor, &statBuf) == -1) {
 			fclose(fp);
+			SN_ERR("FilePath:%s ReadFailed.", filePath.c_str());
 			return Status::ReadFailed;
 		}
 		size_t size = statBuf.st_size;
@@ -62,6 +72,7 @@ namespace SkySnow
 		fclose(fp);
 		if (readsize < size)
 		{
+			SN_ERR("FilePath:%s ReadFailed(readsize < size).", filePath.c_str());
 			return Status::ReadFailed;
 		}
 		data->SetBytes(bytes,size);
