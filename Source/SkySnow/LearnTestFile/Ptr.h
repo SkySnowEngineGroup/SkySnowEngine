@@ -69,7 +69,7 @@ namespace SkySnowLearning
 
 		unique_ptr(unique_ptr<T>&& other) noexcept
 		{
-			other.swap(*this);
+			swap(*other);
 		}
 
 		void swap(unique_ptr<T>& other) noexcept

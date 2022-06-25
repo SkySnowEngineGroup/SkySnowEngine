@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,23 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#pragma once 
+#include "Object.h"
+#include <string>
+#include "Data.h"
+using namespace std;
 namespace SkySnow
 {
-	class IWindow
+
+	enum Status
 	{
+		Ok = 0,
+		NotExists = 1,
+		OpenFailed = 2,
+		ReadFailed = 3,
+		NotInit	  = 4,
+		ToolLarge = 5,
+		ObtainSizeFailed = 6,
+	};
+	class File : public Object
+	{
+		SkySnow_Object(File, Object);
 	public:
-		IWindow()
-        {}
+		File();
+		//½ûÖ¹ÒþÊ½×ª»»
+		explicit File(const string& filePath);
 
-		virtual ~IWindow()
-        {}
-
+		~File();
 	public:
-		virtual void SNCreateWindow(unsigned int width, unsigned int height) = 0;
+		Status ReadData(const string& filePath,Data* data);
 
-		virtual bool SNIsCloseWindow() = 0;
-
-		virtual void SNShutDown() = 0;
-
+	private:
+		const string m_FilePath;
 	};
 }

@@ -45,8 +45,6 @@ namespace SkySnow
 
 		void GLFWSwapBuffer();
 
-		
-        
         GLFWwindow* GetWindow()
         {
             return m_Window;

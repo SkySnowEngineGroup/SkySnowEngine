@@ -24,6 +24,10 @@
 #include <iostream>
 #include "Application.h"
 #include "LogAssert.h"
+#include "GRIProfiles.h"
+#include "OSPlatform.h"
+#include "File.h"
+using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
 public:
@@ -42,12 +46,23 @@ public:
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
         SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
+		string vsShaderPath = "D:/StudyEnginer/SkySnowEngine/Script/Media/Material/Test/BaseVertex.sns";
+		string fsShaderPath = "D:/StudyEnginer/SkySnowEngine/Script/Media/Material/Test/BaseFragment.sns";
+		File* file = new File();
+		Data* vsData = new Data();
+		Data* fsData = new Data();
+		file->ReadData(vsShaderPath, vsData);
+		file->ReadData(fsShaderPath, fsData);
+
+		GRIVertexShaderRef vsRef = GRI->GRICreateVertexShader((char*)vsData->GetBytes());
+		GRIFragmentShaderRef fsRef = GRI->GRTCreateFragmentShader((char*)fsData->GetBytes());
 		return 0;
 	}
 
 	void Update()
 	{
-        SN_LOG("Trangle is Update.");
+		GRI->GRIClearColor(1.0, 0.0, 0.0, 1.0);
+		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
 private:

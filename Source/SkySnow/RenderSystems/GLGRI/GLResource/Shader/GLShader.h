@@ -24,5 +24,16 @@
 #include "GLRealTimeGRI.h"
 namespace SkySnow
 {
+	//可以看做是Shader的Util全局工具函数，但是使用OGLShader标记命名空间
+	//以此提醒该全局Util工具函数，是在Shader模块才可以调用的。
+	namespace OGLShader
+	{
+		template<typename GRIType,typename GOLProxy>
+		GRIType* CreateProxyShader(const char* shadercode);
 
+		template<typename ShaderType> 
+		ShaderType* CompileShader(const char* shadercode,GRIShader* GRIShader = nullptr);
+
+		bool CompileCurrentShader(const GLuint ShaderType,const char* shadercode);
+	}
 }

@@ -22,6 +22,8 @@
 //
 #include "Application.h"
 #include "LogAssert.h"
+#include "GRIProfiles.h"
+#include "OSPlatform.h"
 namespace SkySnow
 {
 	Application::Application(const char* name, const char* description)
@@ -30,8 +32,6 @@ namespace SkySnow
         , m_Window(nullptr)
         , m_ChildApp(nullptr)
         , m_IsInit(false)
-        , m_MainThread(nullptr)
-        , m_RenderThread(nullptr)
 	{
 
 	}
@@ -42,49 +42,30 @@ namespace SkySnow
             delete m_Window;
             m_Window = nullptr;
         }
-        if (m_MainThread)
-        {
-            delete m_MainThread;
-            m_MainThread = nullptr;
-        }
-        if (m_RenderThread)
-        {
-            delete m_RenderThread;
-            m_RenderThread = nullptr;
-        }
 	}
 
 	int Application::RunApplication(Application* app, int argc, const char* const* argv)
 	{
-        m_Window = new SN_GLFWWindow();
-        m_Window->SNCreateWindow(DEFAUT_WADTH,DEFAUT_HEIGHT);
-
-        //m_MainThread = new EngineMainThread();
-        //m_MainThread->AttactMainThread(&Application::EngineLoop,this);
-        //m_MainThread->StartEngineMainThread();
-        //如果是GLFW，GLFWSwapBuffer必须在主线程进行调用，因为SwapBuffer是交换后台缓冲到前台缓冲显示。
-        //如果想要单独起一个渲染线程，那么需要创建一个ShareContext给渲染线程，渲染到BackBuffer中，从BackBuffer
-        //可以使用像素解包缓冲区到纹理，给GLFW所在线程显示,或者是使用windowsurface，渲染到挂载到fbo的纹理上给GLFW所在线程显示
-        m_RenderThread = new RenderingThread();
-        m_RenderThread->SetSNWindow(m_Window);
-
         m_ChildApp = app;
         m_Argc = argc;
         m_Argv = argv;
-        
-        m_RenderThread->RenderOneFrame();
-
-        //m_MainThread->StopEngineMainThread();
+        LoopInRenderThread();
         return 0;
 	}
-
-    void Application::EngineLoop()
+    void Application::LoopInRenderThread()
     {
-        if (!m_IsInit)
+        m_Window = new SN_GLFWWindow();
+        m_Window->SNCreateWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
+        m_Window->MakeGLContext();
+        m_Window->LoadgladFun();
+        m_ChildApp->Init(m_Argc, m_Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
+        glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
+        while (!m_Window->SNIsCloseWindow())
         {
-            m_ChildApp->Init(m_Argc, m_Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
-            m_IsInit = true;
+            //SN_LOG("SkySnowEngine Rendering Thread Update.");
+            m_ChildApp->Update();
+            m_Window->GLFWSwapBuffer();
         }
-        m_ChildApp->Update();
+        m_Window->SNShutDown();
     }
 }

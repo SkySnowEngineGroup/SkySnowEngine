@@ -30,22 +30,50 @@ namespace SkySnow
 	class GLShaderBase : public RefThreadSafeCounted
 	{
 	public:
-		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency);
-		virtual ~GLShaderBase();
+		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency)
+			: m_GLTypeEnum(GLTypeEnum)
+			, m_ShaderFrequency(shaderFrequency)
+		{
+		}
+		virtual ~GLShaderBase()
+		{
+			SN_LOG("GLShaderBase DesConstruct.");
+		}
 
 
-	private:
+	public:
 		GLenum			m_GLTypeEnum;
 		ShaderFrequency m_ShaderFrequency;
+		GLuint			m_GpuHandle;
 	};
 
 	class GLVertexShader : public GLShaderBase
 	{
+	public:
+		GLVertexShader()
+			: GLShaderBase(GL_VERTEX_SHADER,SF_Vertex)
+		{
+		}
 
+		~GLVertexShader()
+		{
+			SN_LOG("GLVertexShader DesConstruct.");
+		}
+
+	private:
 	};
 
 	class GLFragmentShader : public GLShaderBase
 	{
+	public:
+		GLFragmentShader()
+			: GLShaderBase(GL_FRAGMENT_SHADER, SF_Fragement)
+		{
+		}
 
+		~GLFragmentShader()
+		{
+			SN_LOG("GLFragmentShader DesConstruct.");
+		}
 	};
 }

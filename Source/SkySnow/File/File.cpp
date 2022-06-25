@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,23 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#include "File.h"
 namespace SkySnow
 {
-	class IWindow
+	File::File()
 	{
-	public:
-		IWindow()
-        {}
 
-		virtual ~IWindow()
-        {}
+	}
 
-	public:
-		virtual void SNCreateWindow(unsigned int width, unsigned int height) = 0;
+	File::File(const string& filePath)
+	{
 
-		virtual bool SNIsCloseWindow() = 0;
+	}
 
-		virtual void SNShutDown() = 0;
+	File::~File()
+	{
 
-	};
+	}
+
+	Status File::ReadData(const string& filePath, Data* data)
+	{
+		if (filePath.empty())
+			return Status::NotExists;
+		FILE* fp = fopen(filePath.c_str(),"rb");
+
+		if (!fp)
+			return Status::OpenFailed;
+#if defined(_MSC_VER_)
+		auto descriptor = _fileno(fp);
+#else
+		auto descriptor = fileno(fp);
+#endif // defined(_MSC_VER_)
+		struct stat statBuf;
+		if (fstat(descriptor, &statBuf) == -1) {
+			fclose(fp);
+			return Status::ReadFailed;
+		}
+		size_t size = statBuf.st_size;
+		unsigned char* bytes = (unsigned char*)malloc(sizeof(unsigned char) * (size));
+		size_t readsize = fread(bytes,1,size,fp);
+		fclose(fp);
+		if (readsize < size)
+		{
+			return Status::ReadFailed;
+		}
+		data->SetBytes(bytes,size);
+		return Status::Ok;
+	}
 }

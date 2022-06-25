@@ -57,6 +57,6 @@ namespace SkySnow
 		//Create Fragment Shader
 		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) final override;
 		//Create Pipeline State
-		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
+		//virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
 	};
 }

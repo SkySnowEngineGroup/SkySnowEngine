@@ -34,7 +34,9 @@ namespace SkySnow
     {
         m_ExitRenderingThread = true;
     }
-
+    //如果是GLFW，GLFWSwapBuffer必须在主线程进行调用，因为SwapBuffer是交换后台缓冲到前台缓冲显示。
+    //如果想要单独起一个渲染线程，那么需要创建一个ShareContext给渲染线程，渲染到BackBuffer中，从BackBuffer
+    //可以使用像素解包缓冲区到纹理，给GLFW所在线程显示,或者是使用windowsurface，渲染到挂载到fbo的纹理上给GLFW所在线程显示
     //从Main函数中调用而来
     void RenderingThread::RenderOneFrame()
     {

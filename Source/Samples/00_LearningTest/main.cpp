@@ -30,11 +30,30 @@
 #include "Ptr.h"
 #include "Cache.h"
 #include "DSA.h"
+#include "File.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+
+	{
+		//string
+		string vsShaderPath = "D:/StudyEnginer/SkySnowEngine/Script/Media/Material/Test/BaseVertex.sns";
+		string fsShaderPath = "D:/StudyEnginer/SkySnowEngine/Script/Media/Material/Test/BaseFragment.sns";
+		File* file = new File();
+		Data* vsdata = new Data();
+		Data* fsdata = new Data();
+
+		file->ReadData(vsShaderPath, vsdata);
+		file->ReadData(fsShaderPath, fsdata);
+
+		SN_LOG("vsData:%s",vsdata->GetBytes());
+		SN_LOG("fsData:%s", fsdata->GetBytes());
+		delete file;
+		delete vsdata;
+		delete fsdata;
+	}
 	//Data structures and algorithms
 	{
 		DSA* dsa = new DSA();

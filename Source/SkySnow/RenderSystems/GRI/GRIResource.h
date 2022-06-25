@@ -23,6 +23,7 @@
 #pragma once
 #include "RefCounted.h"
 #include "GRICommons.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
 	class GRIResource : public RefThreadSafeCounted
@@ -39,6 +40,10 @@ namespace SkySnow
 			, m_GRIResourceType(grit)
 		{
 		}
+		virtual ~GRIResource()
+		{
+			SN_LOG("GRIResource DesConstruct.");
+		}
 		inline EGRIResourceType GetType() const
 		{
 			return m_GRIResourceType;
@@ -54,6 +59,11 @@ namespace SkySnow
 			: GRIResource(grit)
 		{
 		}
+
+		virtual ~GRIShader()
+		{
+			SN_LOG("GRIShader DesConstruct.");
+		}
 	};
 
 	class GRIVertexShader : public GRIShader
@@ -62,6 +72,10 @@ namespace SkySnow
 		GRIVertexShader()
 			: GRIShader(GRT_VertexShader)
 		{
+		}
+		~GRIVertexShader()
+		{
+			SN_LOG("GRIVertexShader DesConstruct.");
 		}
 	};
 
@@ -72,6 +86,10 @@ namespace SkySnow
 			: GRIShader(GRT_FragmentShader)
 		{
 		}
+		~GRIFragmentShader()
+		{
+			SN_LOG("GRIFragmentShader DesConstruct.");
+		}
 	};
 
 	class GRIGraphicsPipelineState : public GRIResource
@@ -79,6 +97,9 @@ namespace SkySnow
 	public:
 		GRIGraphicsPipelineState()
 			: GRIResource(GRI_GraphicsPipelineState)
+		{
+		}
+		~GRIGraphicsPipelineState()
 		{
 		}
 	};
@@ -89,7 +110,7 @@ namespace SkySnow
 
 	};
 	// Thread safe ref ptr
-	typedef RefCountPtr<GRIVertexShader> GRIVertexShaderRef;
-	typedef RefCountPtr<GRIFragmentShader> GRIFragmentShaderRef;
-	typedef RefCountPtr<GRIGraphicsPipelineState> GRIGraphicsPipelineStateRef;
+	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
+	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
+	typedef RefCountPtr<GRIGraphicsPipelineState>	GRIGraphicsPipelineStateRef;
 }

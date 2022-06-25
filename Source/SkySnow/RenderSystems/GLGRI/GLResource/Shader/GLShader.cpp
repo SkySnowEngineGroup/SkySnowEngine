@@ -22,19 +22,53 @@
 //
 #include "GLShader.h"
 #include "GLRealTimeGRI.h"
-
+#include "GLResource.h"
+#include "LogAssert.h"
+#include "GLShaderResource.h"
 namespace SkySnow
 {
+	using namespace OGLShader;
 	////Create Shader about Resource
 	GRIVertexShaderRef GLRealTimeGRI::GRICreateVertexShader(const char* vsCode)
 	{
-		GRIVertexShaderRef temp = new GRIVertexShader();
-		return temp;
+		return OGLShader::CreateProxyShader<GRIVertexShader,OGLVertexShaderProxy>(vsCode);
 	}
 
 	GRIFragmentShaderRef GLRealTimeGRI::GRTCreateFragmentShader(const char* fsCode)
 	{
-		GRIFragmentShaderRef temp(new GRIFragmentShader());
-		return temp;
+		return OGLShader::CreateProxyShader<GRIFragmentShader,OGLFragementShaderProxy>(fsCode);
 	}
+
+	//Shader 创建的模板类方法(公共方法)
+	//===============================================================================================
+	//在GLShader中声明全局函数，主要原因是为了代码清晰度
+	//其实可以在cpp文件中声明函数，使用static标记，进行隐藏，使此cpp可访问，对其它cpp文件进行隐藏
+	//然后针对于隐藏，加了一个明明空间OGLShader，依次来提醒后续拓展，不要将此命名空间的全局函数在其
+	//它命名空间下调用
+
+	template<typename GRIType, typename OGLProxy>
+	GRIType* OGLShader::CreateProxyShader(const char* shadercode)
+	{
+		OGLProxy* shaderProxy = new OGLProxy();
+		OGLProxy::OGLResourceType* shaderType = CompileShader<typename OGLProxy::OGLResourceType>(shadercode, shaderProxy);
+		shaderProxy->SetOGLResourceObject(shaderType);
+
+		return shaderProxy;
+	}
+
+	template<typename ShaderType>
+	ShaderType* OGLShader::CompileShader(const char* shadercode, GRIShader* GRIShader)
+	{
+		ShaderType* shader = new ShaderType();
+		CompileCurrentShader(shader->m_GLTypeEnum,shadercode);
+		return shader;
+	}
+
+	bool OGLShader::CompileCurrentShader(const GLuint ShaderType, const char* shadercode)
+	{
+
+		SN_LOG("OGL Shader Code:%s", shadercode);
+		return true;
+	}
+	//===============================================================================================
 }

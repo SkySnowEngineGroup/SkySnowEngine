@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -21,45 +21,42 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIProfiles.h"
-#include <stdlib.h>
-#include <iostream>
-#include "GLFWWindow.h"
-#include "RenderingThread.h"
-#include "EngineMainThread.h"
+#include <stdint.h>
+#include <string>
+using namespace std;
 namespace SkySnow
 {
-#if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
-#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)	\
-	int main(int argc, char** argv)			                \
-	{											            \
-			application app(__VA_ARGS__);				    \
-            app.RunApplication(&app,argc,argv);             \
-			return 0;	                                    \
-	}
-#endif
-	class Application
+	class Data
 	{
 	public:
-		Application(const char* name,const char* description);
-		virtual ~Application();
-		virtual bool Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
-		virtual void Update() = 0;
-    public:
-        //don't overload child
-        int RunApplication(Application* app, int argc, const char* const* argv);
-	private:
-		void LoopInRenderThread();
-	private:
-		bool				m_IsInit;
-		const char*			m_Name;
-		const char*			m_Description;
-		const char* const*	m_Argv;
-		int					m_Argc;
-        SN_GLFWWindow*		m_Window;
+		Data();
 
-		Application*		m_ChildApp;
+		~Data();
+
+		//拷贝构造函数
+		explicit Data(const Data& other);
+		//拷贝赋值函数
+		Data& operator=(const Data& other);
+
+		//右移构造函数
+		explicit Data(Data&& other) noexcept;
+		//右移赋值函数
+		Data& operator=(Data&& other) noexcept;
+
+		bool IsNull() const;
+
+		void SetBytes(unsigned char* bytes,const size_t size);
+
+		unsigned char* GetBytes() const;
+
+		size_t GetSize() const;
+	private:
+		void Clear();
+		void Move(Data& other);
+		void Copy(const unsigned char* bytes,const size_t size);
+	private:
+		unsigned char*	m_Bytes;
+		size_t			m_Size;
+
 	};
-	
 }
-
