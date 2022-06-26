@@ -37,6 +37,6 @@ namespace SkySnow
 		template<typename OGLShaderType>
 		OGLShaderType* CompileShader(const char* shadercode);
 
-		bool CompileCurrentShader(const GLuint ShaderType,const char* shadercode);
+		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
 	}
 }
