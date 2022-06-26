@@ -24,10 +24,11 @@
 #include "GLProfiles.h"
 #include "GRICommons.h"
 #include "RefCounted.h"
+#include "GRIResource.h"
 namespace SkySnow
 {
-	//Shader Resource,Thread Safe Count.
-	class GLShaderBase : public RefThreadSafeCounted
+	//Shader Resource
+	class GLShaderBase //: public RefThreadSafeCounted
 	{
 	public:
 		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency)
@@ -47,11 +48,12 @@ namespace SkySnow
 		GLuint			m_GpuHandle;
 	};
 
-	class GLVertexShader : public GLShaderBase
+	class GLVertexShader : public GLShaderBase , public GRIVertexShader
 	{
 	public:
 		GLVertexShader()
 			: GLShaderBase(GL_VERTEX_SHADER,SF_Vertex)
+			, GRIVertexShader()
 		{
 		}
 
@@ -59,15 +61,15 @@ namespace SkySnow
 		{
 			SN_LOG("GLVertexShader DesConstruct.");
 		}
-
 	private:
 	};
 
-	class GLFragmentShader : public GLShaderBase
+	class GLFragmentShader : public GLShaderBase , public GRIFragmentShader
 	{
 	public:
 		GLFragmentShader()
 			: GLShaderBase(GL_FRAGMENT_SHADER, SF_Fragement)
+			, GRIFragmentShader()
 		{
 		}
 

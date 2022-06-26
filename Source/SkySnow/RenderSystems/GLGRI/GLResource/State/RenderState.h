@@ -21,22 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLRealTimeGRI.h"
+
 namespace SkySnow
 {
-	//可以看做是Shader的Util全局工具函数，但是使用OGLShader标记命名空间
-	//以此提醒该全局Util工具函数，是在Shader模块才可以调用的。
-	namespace OGLShader
-	{
-		template<typename GRIShaderType, typename OGLShaderType>
-		GRIShaderType* CreateShader(const char* shadercode);
 
-		//关于这块，将会考虑二进制着色器文件缓存，单独的着色器对象搭配管道对象进行优化
-		//并且加入缓存hash机制，并不是所有的着色器程序对象中的顶点着色器是不一致的，有必要
-		//减少着色器对象在编译时耗费系统资源的问题。
-		template<typename OGLShaderType>
-		OGLShaderType* CompileShader(const char* shadercode);
-
-		bool CompileCurrentShader(const GLuint ShaderType,const char* shadercode);
-	}
 }

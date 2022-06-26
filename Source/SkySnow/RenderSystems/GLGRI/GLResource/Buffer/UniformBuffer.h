@@ -21,32 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIResource.h"
-#include "GLShaderResource.h"
+
 namespace SkySnow
 {
-	//OpenGL相关的GPU资源的代理，将代理部分资源
-	//其中将保存GL具体相关的资源的智能指针，以与GRI
-	//层的资源进行映射绑定，智能指针是线程安全的。
-	template<typename GRIType,typename GLResourceObject>
-	class GLResourceProxy :public GRIType
-	{
-	public:
-		GLResourceProxy(GLResourceObject* glro = nullptr)
-			: m_GLResourceObject(glro)
-		{
 
-		}
-
-		void SetOGLResourceObject(GLResourceObject* glro)
-		{
-			m_GLResourceObject = glro;
-		}
-		typedef GLResourceObject OGLResourceType;
-	private:
-		RefCountPtr<GLResourceObject> m_GLResourceObject;
-	};
-
-	typedef GLResourceProxy<GRIVertexShader, GLVertexShader>		OGLVertexShaderProxy;
-	typedef GLResourceProxy<GRIFragmentShader, GLFragmentShader>	OGLFragementShaderProxy;
 }

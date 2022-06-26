@@ -113,7 +113,7 @@ namespace SkySnow
 		{
 			if (this != &inputPtr)
 			{
-				Referenced originRef = m_Referenced;
+				Referenced* originRef = m_Referenced;
 				m_Referenced = inputPtr.m_Referenced;
 				inputPtr.m_Referenced = nullptr;
 				if (originRef)

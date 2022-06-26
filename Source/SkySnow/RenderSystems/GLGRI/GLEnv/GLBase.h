@@ -24,11 +24,14 @@
 #include "Imports_GL.h"
 #include "Imports_GLES.h"
 
+//关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
 namespace SkySnow
 {
 	class OpenGLBase
 	{
 	public:
 		static inline GRIFeature GetGRIFeatureType() { return ENone; }
+
+		static inline GLuint CreateShader(GLenum shadertype) { return glCreateShader(shadertype); }
 	};
 }

@@ -22,7 +22,6 @@
 //
 #include "GLShader.h"
 #include "GLRealTimeGRI.h"
-#include "GLResource.h"
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 namespace SkySnow
@@ -31,12 +30,12 @@ namespace SkySnow
 	////Create Shader about Resource
 	GRIVertexShaderRef GLRealTimeGRI::GRICreateVertexShader(const char* vsCode)
 	{
-		return OGLShader::CreateProxyShader<GRIVertexShader,OGLVertexShaderProxy>(vsCode);
+		return OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode);
 	}
 
 	GRIFragmentShaderRef GLRealTimeGRI::GRTCreateFragmentShader(const char* fsCode)
 	{
-		return OGLShader::CreateProxyShader<GRIFragmentShader,OGLFragementShaderProxy>(fsCode);
+		return OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode);
 	}
 
 	//Shader 创建的模板类方法(公共方法)
@@ -46,28 +45,28 @@ namespace SkySnow
 	//然后针对于隐藏，加了一个明明空间OGLShader，依次来提醒后续拓展，不要将此命名空间的全局函数在其
 	//它命名空间下调用
 
-	template<typename GRIType, typename OGLProxy>
-	GRIType* OGLShader::CreateProxyShader(const char* shadercode)
+	template<typename GRIShaderType,typename OGLShaderType>
+	GRIShaderType* OGLShader::CreateShader(const char* shadercode)
 	{
-		OGLProxy* shaderProxy = new OGLProxy();
-		OGLProxy::OGLResourceType* shaderType = CompileShader<typename OGLProxy::OGLResourceType>(shadercode, shaderProxy);
-		shaderProxy->SetOGLResourceObject(shaderType);
-
-		return shaderProxy;
+		GRIShaderType* shaderObject = CompileShader<OGLShaderType>(shadercode);
+		return shaderObject;
 	}
 
-	template<typename ShaderType>
-	ShaderType* OGLShader::CompileShader(const char* shadercode, GRIShader* GRIShader)
+	template<typename OGLShaderType>
+	OGLShaderType* OGLShader::CompileShader(const char* shadercode)
 	{
-		ShaderType* shader = new ShaderType();
-		CompileCurrentShader(shader->m_GLTypeEnum,shadercode);
+		OGLShaderType* shader = new OGLShaderType();
+		shader->m_GpuHandle = OpenGL::CreateShader(shader->m_GLTypeEnum);
+		CompileCurrentShader(shader->m_GpuHandle,shadercode);
 		return shader;
 	}
 
-	bool OGLShader::CompileCurrentShader(const GLuint ShaderType, const char* shadercode)
+	bool OGLShader::CompileCurrentShader(const GLuint shaderHandle, const char* shadercode)
 	{
 
 		SN_LOG("OGL Shader Code:%s", shadercode);
+		glShaderSource(shaderHandle,1 ,(const GLchar**)shadercode,nullptr);
+		glCompileShader(shaderHandle);
 		return true;
 	}
 	//===============================================================================================

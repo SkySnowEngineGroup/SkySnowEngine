@@ -54,8 +54,8 @@ public:
 		file->ReadData(vsShaderPath, vsData);
 		file->ReadData(fsShaderPath, fsData);
 
-		GRIVertexShaderRef vsRef = GRI->GRICreateVertexShader((char*)vsData->GetBytes());
-		GRIFragmentShaderRef fsRef = GRI->GRTCreateFragmentShader((char*)fsData->GetBytes());
+		m_vsRef = GRI->GRICreateVertexShader((char*)vsData->GetBytes());
+		m_fsRef = GRI->GRTCreateFragmentShader((char*)fsData->GetBytes());
 		return 0;
 	}
 
@@ -66,7 +66,8 @@ public:
 	}
 
 private:
-    
+	GRIVertexShaderRef m_vsRef;
+	GRIFragmentShaderRef m_fsRef;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(
