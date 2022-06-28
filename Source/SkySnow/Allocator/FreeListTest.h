@@ -77,6 +77,45 @@ namespace SkySnow
 	//	4.3. 调用operator delete[] (p)
 	//	4.4. 调用operator delete
 	//	4.5. 调用free函数
+
+	//这是一个stl内部的allocator的类似实现方式，将内存空间的申请与构造函数的调用分开
+	//也是上面所描述的new的内置的两个操作。
+	//这在stl的容器源码中常常能看到的概念，其简单来说，其将new T底层的操作拆分开来了
+	//但是其调用顺序是上面所说的。
+	//针对于vector容器来说，其Reserve函数，是调用的Allocator，但并未调用构造函数
+	//其Resize函数，是顺讯调用了Reserve函数，并调用了Construct函数，这就是Reserve与Resize底层的区别
+	//Resize后的vector容器，是有初始化初值的，改变的是size，不能用push_back函数，用这个是在容器末尾添加，只能用[]操作符
+	//Reserve后的vector容器，是只申请了内存，改变的是Capacity，不能用[]访问，只能用push_back及instert插入
+	//push_back() 向容器尾部添加元素时，首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）；
+	//c++11中 emplace_back() 在实现时，则是直接在容器尾部创建这个元素，省去了拷贝或移动元素的过程
+	template<typename T>
+	struct Stl_Allocator
+	{
+		T* Allocator(size_t size)
+		{
+			//new T操作，调用operator new，operator new 调用malloc
+			return (T*)::operator new(sizeof(T) * size);
+		}
+
+		void Deallocator(void* ptr,size_t size)
+		{
+			//释放对象内存
+			::operator delete(ptr, sizeof(T) * size);
+		}
+
+		void Construct(T* ptr,const T& val)
+		{
+			//用定位new在指定内存上构建对象
+			new ((void*)ptr) T(val);
+		}
+
+		void Destroy(T* ptr)
+		{
+			//显示的调用对象的析构函数
+			ptr->~T();
+		}
+	};
+
 	template<int ObjSize, int NumObj = 10>
 	class FreeListTest
 	{
