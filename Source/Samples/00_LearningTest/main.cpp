@@ -31,11 +31,19 @@
 #include "Cache.h"
 #include "DSA.h"
 #include "File.h"
+#include "SingletonBase.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+	{
+		LazySingleton* instance = LazySingleton::GetInstance();
+		instance->Release();
+		LazySingletonLocal* instance1 = LazySingletonLocal::GetInstance();
+
+		HungrySingleton* instance2 = HungrySingleton::GetInstance();
+	}
 	//Data structures and algorithms
 	{
 		DSA* dsa = new DSA();

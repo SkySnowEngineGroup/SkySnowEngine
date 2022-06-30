@@ -33,9 +33,11 @@
 //4. and needs to deal with the situation where multiple CPUs access the same cache in the case of multi-core (paging processing)
 
 //According to the usage scenarios of the engine, various implementation schemes of memory allocation need to be considered.
-//1. Linear memory allocation; it is linear growth, suitable for the processing of rendering state dataand skeletal animation data of each frame, and it is easy to support lockfreeand index increment operations
+//1. Linear memory allocation; it is linear growth, suitable for the processing of rendering state dataand skeletal animation data of each frame, 
+//   and it is easy to support lockfreeand index increment operations
 //2. Stack allocator; suitable for level resource loading, can be released on demand, as the backend of other allocators
-//3. Freelist allocation is suitable for particle effect buffer pool, but its memory is not continuous, which will cause cache_lineand multiple CPUs to access the same cached data, which should be considered
+//3. Freelist allocation is suitable for particle effect buffer pool, but its memory is not continuous, which will cause cache_lineand multiple 
+//   CPUs to access the same cached data, which should be considered
 //4. Buddy allocation(伙伴分配器), automatic merging, can handle continuous multi - frame GPU memory management
 //5. Thread - safe memory pool, suitable for multi - threaded processing
 //And so on, these situations need to be taken into account
@@ -105,7 +107,7 @@ namespace SkySnow
 
 		void Construct(T* ptr,const T& val)
 		{
-			//用定位new在指定内存上构建对象
+			//用定位new在指定内存上构建对象,调用T的拷贝构造函数
 			new ((void*)ptr) T(val);
 		}
 

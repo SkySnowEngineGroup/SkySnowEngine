@@ -23,6 +23,9 @@
 #include "Object.h"
 namespace SkySnow
 {
+	//注意RTTI与RTTR的区别
+	//RTTI是实时运行时的TypeInfo信息
+	//而RTTR是反射，是序列化的重要组成部分
 	class TestRTTI : public SkySnow::Object
 	{
 		SkySnow_Object(TestRTTI, Object);
