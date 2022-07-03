@@ -43,9 +43,13 @@ namespace SkySnow
 
 
 	public:
-		GLenum			m_GLTypeEnum;
+		GLenum			m_GLTypeEnum;//Shader Type at OGL
 		ShaderFrequency m_ShaderFrequency;
 		GLuint			m_GpuHandle;
+#if Debug_Shader
+		const char*		m_ShaderCode;
+		std::string		mShaderName;
+#endif
 	};
 
 	class GLVertexShader : public GLShaderBase , public GRIVertexShader
@@ -77,5 +81,20 @@ namespace SkySnow
 		{
 			SN_LOG("GLFragmentShader DesConstruct.");
 		}
+	};
+
+	class GLPipelineShaderState : public GRIPipelineShaderState
+	{
+	public:
+		GLPipelineShaderState()
+			: GRIPipelineShaderState()
+		{
+		}
+		~GLPipelineShaderState()
+		{
+		}
+	public:
+		RefCountPtr<GLVertexShader>		m_VertexShader;
+		RefCountPtr<GLFragmentShader>	m_FragmentShader;
 	};
 }

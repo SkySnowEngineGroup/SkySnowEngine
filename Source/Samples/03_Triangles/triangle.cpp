@@ -27,6 +27,7 @@
 #include "GRIProfiles.h"
 #include "OSPlatform.h"
 #include "File.h"
+
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -56,6 +57,7 @@ public:
 
 		m_vsRef = GRI->GRICreateVertexShader((char*)vsData->GetBytes());
 		m_fsRef = GRI->GRTCreateFragmentShader((char*)fsData->GetBytes());
+		GRI->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
 		return 0;
 	}
 

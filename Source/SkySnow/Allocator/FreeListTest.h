@@ -85,7 +85,7 @@ namespace SkySnow
 	//这在stl的容器源码中常常能看到的概念，其简单来说，其将new T底层的操作拆分开来了
 	//但是其调用顺序是上面所说的。
 	//针对于vector容器来说，其Reserve函数，是调用的Allocator，但并未调用构造函数
-	//其Resize函数，是顺讯调用了Reserve函数，并调用了Construct函数，这就是Reserve与Resize底层的区别
+	//其Resize函数，是顺序调用了Reserve函数，并调用了Construct函数，这就是Reserve与Resize底层的区别
 	//Resize后的vector容器，是有初始化初值的，改变的是size，不能用push_back函数，用这个是在容器末尾添加，只能用[]操作符
 	//Reserve后的vector容器，是只申请了内存，改变的是Capacity，不能用[]访问，只能用push_back及instert插入
 	//push_back() 向容器尾部添加元素时，首先会创建这个元素，然后再将这个元素拷贝或者移动到容器中（如果是拷贝的话，事后会自行销毁先前创建的这个元素）；

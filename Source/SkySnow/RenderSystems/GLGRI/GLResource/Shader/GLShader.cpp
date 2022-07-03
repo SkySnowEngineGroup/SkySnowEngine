@@ -38,6 +38,11 @@ namespace SkySnow
 		return OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode);
 	}
 
+	GRIPipelineShaderStateRef GLRealTimeGRI::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	{
+		return GRIPipelineShaderStateRef(new GRIPipelineShaderState());
+	}
+
 	//Shader 创建的模板类方法(公共方法)
 	//===============================================================================================
 	//在GLShader中声明全局函数，主要原因是为了代码清晰度
@@ -65,7 +70,8 @@ namespace SkySnow
 	{
 
 		SN_LOG("OGL Shader Code:%s", shadercode);
-		glShaderSource(shaderHandle,1 ,(const GLchar**)shadercode,nullptr);
+		int codeLength = strlen(shadercode);
+		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);
 		return true;
 	}

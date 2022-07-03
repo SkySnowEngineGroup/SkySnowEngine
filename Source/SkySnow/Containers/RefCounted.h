@@ -124,6 +124,19 @@ namespace SkySnow
 			return *this;
 		}
 
+		template<typename MoveReferenced>
+		RefCountPtr& operator=(RefCountPtr<MoveReferenced>&& inPtr)
+		{
+			Referenced* originRef = m_Referenced;
+			m_Referenced = inPtr.m_Referenced;
+			inPtr.m_Referenced = nullptr;
+			if (originRef)
+			{
+				originRef->Release();
+			}
+			return *this;
+		}
+
 		inline Referenced* operator->()const
 		{
 			return m_Referenced;
@@ -134,7 +147,7 @@ namespace SkySnow
 			return *m_Referenced;
 		}
 
-		inline operator Referenced() const
+		inline operator Referenced*() const
 		{
 			return m_Referenced;
 		}

@@ -67,7 +67,7 @@ namespace SkySnow
 			return Status::ReadFailed;
 		}
 		size_t size = statBuf.st_size;
-		unsigned char* bytes = (unsigned char*)malloc(sizeof(unsigned char) * (size));
+		unsigned char* bytes = (unsigned char*)malloc(sizeof(unsigned char) * (size + 1));
 		size_t readsize = fread(bytes,1,size,fp);
 		fclose(fp);
 		if (readsize < size)
@@ -75,7 +75,9 @@ namespace SkySnow
 			SN_ERR("FilePath:%s ReadFailed(readsize < size).", filePath.c_str());
 			return Status::ReadFailed;
 		}
-		data->SetBytes(bytes,size);
+		bytes[size] = '\0';
+		//SN_LOG("File Load Source:%s", bytes);
+		data->SetBytes(bytes,(size + 1));
 		return Status::Ok;
 	}
 }

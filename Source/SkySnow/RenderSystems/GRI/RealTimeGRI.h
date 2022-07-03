@@ -26,6 +26,7 @@
 namespace SkySnow
 {
 	//根据不同平台创建不同的渲染API
+	//渲染系统的接口将与Vulkan保持大体框架的一致，具体可看:vulkan_core.h
 	class RealTimeGRI
 	{
 	public:
@@ -36,7 +37,7 @@ namespace SkySnow
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
 		//Rendering Resource Create CMD
 		/*
-			接口定义与现代渲染API保持一致，创建shader并不会编译着色器，在创建Pipeline的时候
+			接口定义与现代渲染API保持一致，创建shader并不会编译着色器，在创建ShaderPipelineState的时候
 			将编译shader以及编译着色器程序对象(如果是OpenGL，将会检测是否支持BinaryShader、separateshader[Depend PipelineObject])
 			将对shader进一步封装为ShaderResourceView
 		*/
@@ -44,6 +45,8 @@ namespace SkySnow
 		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
 		//Create Fragment Shader
 		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) = 0;
+		//Create Pipeline Shader Stage State
+		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 		//Create Graphics Pipeline
 		//virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
 	};

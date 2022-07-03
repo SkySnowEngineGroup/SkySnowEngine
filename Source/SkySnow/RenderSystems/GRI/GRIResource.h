@@ -92,6 +92,19 @@ namespace SkySnow
 		}
 	};
 
+	class GRIPipelineShaderState : public GRIResource
+	{
+	public:
+		GRIPipelineShaderState()
+			: GRIResource(GRT_PipelineShaderState)
+		{
+		}
+		~GRIPipelineShaderState()
+		{
+			SN_LOG("GRIPipelineShaderState Destruct.");
+		}
+	};
+
 	class GRIGraphicsPipelineState : public GRIResource
 	{
 	public:
@@ -101,6 +114,7 @@ namespace SkySnow
 		}
 		~GRIGraphicsPipelineState()
 		{
+			SN_LOG("GRIGraphicsPipelineState Destruct.");
 		}
 	};
 
@@ -112,5 +126,6 @@ namespace SkySnow
 	// Thread safe ref ptr
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
+	typedef RefCountPtr<GRIPipelineShaderState>		GRIPipelineShaderStateRef;
 	typedef RefCountPtr<GRIGraphicsPipelineState>	GRIGraphicsPipelineStateRef;
 }

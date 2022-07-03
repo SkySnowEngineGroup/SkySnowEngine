@@ -30,6 +30,9 @@
 #define PLATFORM_LINUX 5
 
 #define DEBUG 1
+//Debug Shader
+#define Debug_Shader 0
+
 #define DEFAUT_WADTH 800
 #define DEFAUT_HEIGHT 600
 #define SkySnow_LOG_TAG "SkySnow:"
@@ -66,4 +69,11 @@
 #	include <fcntl.h>
 #	include <io.h>
 #endif
+
+//Shader是否debug的标记
+#if DEBUG
+#	undef Debug_Shader
+#	define Debug_Shader 1
+#endif // DEBUG
+
 
