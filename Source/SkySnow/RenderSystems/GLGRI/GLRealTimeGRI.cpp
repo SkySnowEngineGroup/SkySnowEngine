@@ -35,9 +35,6 @@ namespace SkySnow
 		glClearColor(red,green,blue,alpha);
 	}
 
-	GRIPipelineShaderStateRef GLRealTimeGRI::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
-	{
-		return GRIPipelineShaderStateRef(new GRIPipelineShaderState());
-	}
+
 
 }
