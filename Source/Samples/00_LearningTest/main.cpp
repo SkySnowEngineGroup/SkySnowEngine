@@ -37,6 +37,11 @@ using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+	//测试虚析构函数作用及顺序
+	{
+		TestChildCon();
+	}
+	//测试多种单例类
 	{
 		LazySingleton* instance = LazySingleton::GetInstance();
 		instance->Release();

@@ -41,6 +41,35 @@ namespace SkySnowLearning
 		  基本类型(string\number)，那么拷贝基本类型的值
 		  引用类型，拷贝的指针，并对指针指向内容进行拷贝，与原对象指向不同的内存地址
 	*/
+
+	//四种cast的用处
+	/*	1. dynamic_cast<T>
+	 *	   不但会检查继承树，还会在运行时检查TypeInfo(RTTI)，检查是否有纯虚函数未被子类重写
+	 *     用处
+	 *         1.1 基类与子类之间转换:上转下装是类型安全的
+	 *         1.2 类与类之间的交叉转换
+	 *	2. static_cast<T>
+	 *     会在编译器检查继承树，但是不会在运行期检查TypeInfo(RTTI)
+	 *     用处
+	 *		   2.1 基类与子类之间转换:子类转父类是类型安全，反之类型不安全
+	 *		   2.2 基本数据转换，无运行期检查，类型不安全
+	 *         2.3 空指针转换为目标类型空指针
+	 *         2.4 任何类型转换为void类型
+	 *	3. reinterpret_cast<T>
+	 *     运算符用来将目标对象类型转为指定对象类型(对象包含:变量及指针)
+	 *     只是改变数据的二进制格式，但是并不改变数据值
+	 *     用处
+	 *		   3.1 将指针转为目标指针类型，只改变指针类型，并不改变指针数据
+	 *         3.2 将变量转为目标变量类型，只改变变量类型，并不改变变量数据
+	 *     注意点
+	 *         3.2.1 变量如果是低精度转高精度，问题不太大，但是如果高精度转低精度，会被截断
+	 *         3.2.2 指针指向的对象大小大于目标类型指向的对象，那么会精度截断，出现不可预料问题
+	 *	4. cons_cast<T>
+	 *     运算符用来转换类型的const或volatile属性
+	 *     用处
+	 *         4.1 将常量指针转为非常量指针，但还是指向原来的对象
+	 *         4.2 将常量引用转为非常量引用，但还是指向原来的对象
+	 */
 	class Move
 	{
 	public:
@@ -369,4 +398,87 @@ namespace SkySnowLearning
 		{
 		}
 	};
+
+	class BaseCon
+	{
+	public:
+		BaseCon() 
+		{
+			SN_LOG("BaseCon Construct.");
+		}
+		~BaseCon()
+		{
+			SN_LOG("BaseCon Destruct.");
+		}
+	};
+
+	class BaseCon1
+	{
+	public:
+		BaseCon1()
+		{
+			SN_LOG("BaseCon1 Construct.");
+		}
+		virtual ~BaseCon1()
+		{
+			SN_LOG("BaseCon1 Destruct.");
+		}
+	};
+
+	class ChildCon : public BaseCon
+	{
+	public:
+		ChildCon()
+		{
+			SN_LOG("ChildCon Construct.");
+		}
+
+		~ChildCon()
+		{
+			SN_LOG("ChildCon Destruct.");
+		}
+	};
+
+	class ChildCon1 : public BaseCon1
+	{
+	public:
+		ChildCon1()
+		{
+			SN_LOG("ChildCon1 Construct.");
+		}
+		~ChildCon1()
+		{
+			SN_LOG("ChildCon1 Destruct.");
+		}
+	};
+	//构造函数顺序：先父类，后子类  
+	//析构函数顺序：先子类，后父类
+	//内存会泄漏的情况
+	//如果父类析构函数不为虚函数
+	//那么析构函数，在Parent* parent = new Child()，
+	//              这种情况:会只调用父类的析构函数，而不调用子类的析构函数
+	static void TestChildCon()
+	{
+		SN_LOG("=====================Test1==");
+		//test1
+		BaseCon* b1 = new BaseCon();
+		delete b1;
+		SN_LOG("=====================");
+		BaseCon* c1 = new ChildCon();
+		delete c1;
+		SN_LOG("=====================");
+		ChildCon* c2 = new ChildCon();
+		delete c2;
+		SN_LOG("=====================Test2==");
+		//test2
+		BaseCon1* b11 = new BaseCon1();
+		delete b11;
+		SN_LOG("=====================");
+		BaseCon1* c11 = new ChildCon1();
+		delete c11;
+		SN_LOG("=====================");
+		ChildCon1* c22 = new ChildCon1();
+		delete c22;
+		SN_LOG("=====================");
+	}
 }

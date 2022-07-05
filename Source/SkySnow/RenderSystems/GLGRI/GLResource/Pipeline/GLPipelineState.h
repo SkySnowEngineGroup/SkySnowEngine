@@ -21,8 +21,58 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GRIResource.h"
+#include "GLShaderResource.h"
 namespace SkySnow
 {
+	class GLPipelineShaderState : public GRIPipelineShaderState
+	{
+	public:
+		GLPipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+			: GRIPipelineShaderState()
+			, m_OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
+			, m_OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
+		{
+		}
 
+		inline GLVertexShader* GetVertexShader() { return m_OGLVertexShader; }
+		inline GLFragmentShader* GetFragmentShader() { return m_OGLFragmentShader; }
+
+		const GLShaderBase* GetShader(ShaderFrequency sf)
+		{
+			switch (sf)
+			{
+			case SkySnow::SF_Vertex:
+				return GetVertexShader();
+				break;
+			case SkySnow::SF_Fragement:
+				return GetFragmentShader();
+				break;
+			default:
+				break;
+			}
+			return nullptr;
+		}
+
+	private:
+		//Cache Array or LRUCache
+		//temp is ptr
+		GLVertexShader* m_OGLVertexShader;
+		GLFragmentShader* m_OGLFragmentShader;
+	};
+
+	class GLGraphicPipelineState : public GRIGraphicsPipelineState
+	{
+	public:
+		GLGraphicPipelineState()
+			: GRIGraphicsPipelineState()
+		{
+		}
+
+		virtual ~GLGraphicPipelineState()
+		{
+		}
+	private:
+
+	};
 }

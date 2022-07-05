@@ -83,18 +83,5 @@ namespace SkySnow
 		}
 	};
 
-	class GLPipelineShaderState : public GRIPipelineShaderState
-	{
-	public:
-		GLPipelineShaderState()
-			: GRIPipelineShaderState()
-		{
-		}
-		~GLPipelineShaderState()
-		{
-		}
-	public:
-		RefCountPtr<GLVertexShader>		m_VertexShader;
-		RefCountPtr<GLFragmentShader>	m_FragmentShader;
-	};
+	
 }

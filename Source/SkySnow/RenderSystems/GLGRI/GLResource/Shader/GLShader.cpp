@@ -24,6 +24,7 @@
 #include "GLRealTimeGRI.h"
 #include "LogAssert.h"
 #include "GLShaderResource.h"
+#include "GLPipelineState.h"
 namespace SkySnow
 {
 	using namespace OGLShader;
@@ -40,7 +41,7 @@ namespace SkySnow
 
 	GRIPipelineShaderStateRef GLRealTimeGRI::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
-		return GRIPipelineShaderStateRef(new GRIPipelineShaderState());
+		return GRIPipelineShaderStateRef(new GLPipelineShaderState(vs, fs));
 	}
 
 	//Shader 创建的模板类方法(公共方法)

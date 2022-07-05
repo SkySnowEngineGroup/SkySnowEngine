@@ -73,7 +73,7 @@ namespace SkySnow
 			: GRIShader(GRT_VertexShader)
 		{
 		}
-		~GRIVertexShader()
+		virtual ~GRIVertexShader()
 		{
 			SN_LOG("GRIVertexShader DesConstruct.");
 		}
@@ -86,7 +86,7 @@ namespace SkySnow
 			: GRIShader(GRT_FragmentShader)
 		{
 		}
-		~GRIFragmentShader()
+		virtual ~GRIFragmentShader()
 		{
 			SN_LOG("GRIFragmentShader DesConstruct.");
 		}
@@ -99,7 +99,7 @@ namespace SkySnow
 			: GRIResource(GRT_PipelineShaderState)
 		{
 		}
-		~GRIPipelineShaderState()
+		virtual ~GRIPipelineShaderState()
 		{
 			SN_LOG("GRIPipelineShaderState Destruct.");
 		}
@@ -112,7 +112,7 @@ namespace SkySnow
 			: GRIResource(GRI_GraphicsPipelineState)
 		{
 		}
-		~GRIGraphicsPipelineState()
+		virtual ~GRIGraphicsPipelineState()
 		{
 			SN_LOG("GRIGraphicsPipelineState Destruct.");
 		}
