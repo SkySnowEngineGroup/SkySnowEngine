@@ -60,7 +60,7 @@ namespace SkySnow
 		GLVertexShader* m_OGLVertexShader;
 		GLFragmentShader* m_OGLFragmentShader;
 	};
-
+	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路
 	class GLGraphicPipelineState : public GRIGraphicsPipelineState
 	{
 	public:

@@ -26,6 +26,7 @@
 #include "LogAssert.h"
 namespace SkySnow
 {
+	//渲染资源基类
 	class GRIResource : public RefThreadSafeCounted
 	{
 	public:
@@ -51,7 +52,7 @@ namespace SkySnow
 	private:
 		const EGRIResourceType m_GRIResourceType;
 	};
-
+	//Shader渲染资源基类
 	class GRIShader : public GRIResource
 	{
 	public:
@@ -91,7 +92,7 @@ namespace SkySnow
 			SN_LOG("GRIFragmentShader DesConstruct.");
 		}
 	};
-
+	//渲染PipelineShader资源基类
 	class GRIPipelineShaderState : public GRIResource
 	{
 	public:
@@ -104,12 +105,12 @@ namespace SkySnow
 			SN_LOG("GRIPipelineShaderState Destruct.");
 		}
 	};
-
+	//渲染Pipeline资源基类
 	class GRIGraphicsPipelineState : public GRIResource
 	{
 	public:
 		GRIGraphicsPipelineState()
-			: GRIResource(GRI_GraphicsPipelineState)
+			: GRIResource(GRT_GraphicsPipelineState)
 		{
 		}
 		virtual ~GRIGraphicsPipelineState()
@@ -121,11 +122,65 @@ namespace SkySnow
 	class GRIBuffer : public GRIResource
 	{
 	public:
+		GRIBuffer()
+			: GRIResource(GRT_Buffer)
+		{
+		}
+		GRIBuffer(int size, BufferUsageType usage, int offset)
+			: GRIResource(GRT_GraphicsPipelineState)
+			, m_UsageType(usage)
+			, m_Size(size)
+			, m_Offset(offset)
+			, m_BufferName(nullptr)
+		{
+		}
+		virtual ~GRIBuffer()
+		{
+			SN_LOG("GRIBuffer Destruct.");
+		}
 
+		BufferUsageType GetBufferUsageType()
+		{
+			return m_UsageType;
+		}
+
+		int GetOffset()
+		{
+			return m_Offset;
+		}
+
+		int GetSize()
+		{
+			return m_Size;
+		}
+
+		void SetBufferName(const std::string bufferName)
+		{
+			m_BufferName = bufferName;
+		}
+
+		std::string GetBufferName()
+		{
+			return m_BufferName;
+		}
+
+	private:
+		BufferUsageType m_UsageType;
+		int m_Size;
+		int m_Offset;
+		std::string m_BufferName;
 	};
-	// Thread safe ref ptr
+	// Shader相关资源的智能指针
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
 	typedef RefCountPtr<GRIPipelineShaderState>		GRIPipelineShaderStateRef;
+	//在Draw之前，无GPU句柄及带GPU句柄的需进行资源设置或绑定
 	typedef RefCountPtr<GRIGraphicsPipelineState>	GRIGraphicsPipelineStateRef;
+	//Buffer相关的智能指针
+	typedef class GRIBuffer							GRIIndexBuffer;
+	typedef class GRIBuffer							GRIVertexBUffer;
+	typedef RefCountPtr<GRIVertexBUffer>			GRIVertexBufferRef;
+	typedef RefCountPtr<GRIIndexBuffer>				GRIIndexBufferRef;
+	typedef RefCountPtr<GRIBuffer>					GRIBufferRef;
+
 }

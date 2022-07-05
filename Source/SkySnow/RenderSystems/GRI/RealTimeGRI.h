@@ -49,5 +49,7 @@ namespace SkySnow
 		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 		//Create Graphics Pipeline
 		//virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
+		//Create Buffer:index vertex SSBO
+		virtual GRIBufferRef GRICreateBuffer(int size, BufferUsageType usageType,int offset,void* data) = 0;
 	};
 };

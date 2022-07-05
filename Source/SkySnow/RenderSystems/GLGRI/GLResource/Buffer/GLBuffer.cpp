@@ -20,16 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-
+#include "GLBuffer.h"
+#include "GLRealTimeGRI.h"
 namespace SkySnow
 {
-	//2D、2DArray纹理
-	//3D、3DArray纹理
-	//CubeMap纹理
-	//Npot不可变纹理
-	//mipmap纹理
-	//srgb纹理
-	//压缩纹理:ASTC、ETC1、EAC、ETC2
-	//采样器对象
+	//创建IndexBuffer、vertexBuffer、SSBO
+	GRIBufferRef GLRealTimeGRI::GRICreateBuffer(int size, BufferUsageType usageType, int offset, void* data)
+	{
+		return GRIBufferRef(new GRIBuffer);
+	}
 }

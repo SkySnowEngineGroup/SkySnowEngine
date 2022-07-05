@@ -21,15 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRIResource.h"
 
 namespace SkySnow
 {
-	//2D、2DArray纹理
-	//3D、3DArray纹理
-	//CubeMap纹理
-	//Npot不可变纹理
-	//mipmap纹理
-	//srgb纹理
-	//压缩纹理:ASTC、ETC1、EAC、ETC2
-	//采样器对象
+	//IndexBuffer
+	//VertexBuffer
+	//UniformBuffer
+	//SSBO
+	//MapBuffer&unMapBuffer
+	//TranstBuffer
+	//PackPixelBuffer&unPackPixelBuffer
 }

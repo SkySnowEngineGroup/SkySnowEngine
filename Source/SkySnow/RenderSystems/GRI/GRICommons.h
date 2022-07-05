@@ -40,7 +40,7 @@ namespace SkySnow
 		GRT_VertexShader,
 		GRT_FragmentShader,
 		GRT_PipelineShaderState,
-		GRI_GraphicsPipelineState,
+		GRT_GraphicsPipelineState,
 		GRT_Buffer,
 		GRT_Num
 	};
@@ -49,5 +49,12 @@ namespace SkySnow
 	{
 		SF_Vertex		= 0,
 		SF_Fragement	= 1,
+	};
+
+	enum BufferUsageType
+	{
+		None			= 0,
+		VertexBuffer	= 1 << 0,
+		IndexBuffer		= 1 << 1,
 	};
 }
