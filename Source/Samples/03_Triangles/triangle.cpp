@@ -27,6 +27,7 @@
 #include "GRIProfiles.h"
 #include "OSPlatform.h"
 #include "File.h"
+#include "SkySnowConfigInfo.h"
 
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
@@ -47,8 +48,8 @@ public:
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
         SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
-		string vsShaderPath = "D:/StudyEnginer/SkySnowEngine/Script/Media/Material/Test/BaseVertex.sns";
-		string fsShaderPath = "D:/StudyEnginer/SkySnowEngine/Script/Media/Material/Test/BaseFragment.sns";
+		string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
+		string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
 		File* file = new File();
 		Data* vsData = new Data();
 		Data* fsData = new Data();
