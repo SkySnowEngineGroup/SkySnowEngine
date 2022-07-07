@@ -32,4 +32,16 @@ namespace SkySnow
 	//MapBuffer&unMapBuffer
 	//TranstBuffer
 	//PackPixelBuffer&unPackPixelBuffer
+
+	class OGLBuffer : public GRIBuffer
+	{
+	public:
+		OGLBuffer()
+			: GRIBuffer()
+		{
+		}
+		void CreateBuffer()
+		{
+		}
+	};
 }

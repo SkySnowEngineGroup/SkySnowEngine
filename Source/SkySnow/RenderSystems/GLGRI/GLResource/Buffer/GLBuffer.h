@@ -21,13 +21,28 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GLRealTimeGRI.h"
 namespace SkySnow
 {
 
 
 	namespace OGLBuffer
 	{
-
+		void BindBuffer(GLenum type,GLuint buffer);
+		//卷绕法绑定
+		inline void BindArrayBuffer(GLuint buffer)
+		{
+			glBindBuffer(GL_ARRAY_BUFFER, buffer);
+		}
+		//索引法绑定
+		inline void BindElementArrayBuffer(GLuint buffer)
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
+		}
+		//SSBO的绑定
+		inline void BindStorageBuffer(GLuint buffer)
+		{
+			//glBindBuffer(GL_SHADER_STORAGE_BUFFER, buffer);
+		}
 	}
 }

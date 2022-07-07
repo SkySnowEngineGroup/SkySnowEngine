@@ -61,6 +61,7 @@ namespace SkySnow
 		//Create Pipeline State
 		//virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
 		virtual GRIBufferRef GRICreateBuffer(int size, BufferUsageType usageType, int offset, void* data) final override;
-
+		//Call Draw,that draw primitive
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 	};
 }

@@ -33,5 +33,10 @@ namespace SkySnow
 		static inline GRIFeature GetGRIFeatureType() { return ENone; }
 
 		static inline GLuint CreateShader(GLenum shadertype) { return glCreateShader(shadertype); }
+
+		static inline void BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
+		{
+			glBufferSubData(target,offset,size,data);
+		}
 	};
 }

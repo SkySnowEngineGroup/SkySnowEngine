@@ -178,8 +178,8 @@ namespace SkySnow
 	typedef RefCountPtr<GRIGraphicsPipelineState>	GRIGraphicsPipelineStateRef;
 	//Buffer相关的智能指针
 	typedef class GRIBuffer							GRIIndexBuffer;
-	typedef class GRIBuffer							GRIVertexBUffer;
-	typedef RefCountPtr<GRIVertexBUffer>			GRIVertexBufferRef;
+	typedef class GRIBuffer							GRIVertexBuffer;
+	typedef RefCountPtr<GRIVertexBuffer>			GRIVertexBufferRef;
 	typedef RefCountPtr<GRIIndexBuffer>				GRIIndexBufferRef;
 	typedef RefCountPtr<GRIBuffer>					GRIBufferRef;
 
