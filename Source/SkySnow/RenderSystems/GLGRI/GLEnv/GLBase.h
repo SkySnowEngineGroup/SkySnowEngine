@@ -38,5 +38,9 @@ namespace SkySnow
 		{
 			glBufferSubData(target,offset,size,data);
 		}
+		static inline void BufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage)
+		{
+			glBufferData(target,size,data,usage);
+		}
 	};
 }

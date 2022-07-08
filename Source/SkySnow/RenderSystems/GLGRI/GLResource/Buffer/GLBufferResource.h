@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "GRIResource.h"
-
+#include "GLRealTimeGRI.h"
 namespace SkySnow
 {
 	//IndexBuffer
@@ -40,8 +40,28 @@ namespace SkySnow
 			: GRIBuffer()
 		{
 		}
+
+		OGLBuffer(GLenum target,GLuint size,int stride,const void* data,bool streamDraw = false)
+			: m_Target(target)
+			, m_Size(size)
+			, m_Data(data)
+			, b_StreamDraw(streamDraw)
+		{
+
+		}
+
+		~OGLBuffer()
+		{
+		}
 		void CreateBuffer()
 		{
 		}
+	private:
+		bool b_StreamDraw;
+		GLenum m_Target;
+		int m_Size;
+		int m_Stride;
+		const void* m_Data;
+		
 	};
 }

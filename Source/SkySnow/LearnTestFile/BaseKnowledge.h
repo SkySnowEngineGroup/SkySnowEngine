@@ -46,7 +46,7 @@ namespace SkySnowLearning
 	/*	1. dynamic_cast<T>
 	 *	   不但会检查继承树，还会在运行时检查TypeInfo(RTTI)，检查是否有纯虚函数未被子类重写
 	 *     用处
-	 *         1.1 基类与子类之间转换:上转下装是类型安全的
+	 *         1.1 基类与子类之间转换:上转下转是类型安全的
 	 *         1.2 类与类之间的交叉转换
 	 *	2. static_cast<T>
 	 *     会在编译器检查继承树，但是不会在运行期检查TypeInfo(RTTI)
