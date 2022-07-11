@@ -48,10 +48,12 @@ namespace SkySnow
 		//Create Pipeline Shader Stage State
 		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 		//Create Graphics Pipeline
-		//virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
+		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
 		//Create Buffer:index vertex SSBO
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int offset,void* data) = 0;
 		//numPrimitive: trangle point and line is Primitive.
 		virtual void GRIDrawPrimitive(int numPrimitive,int numInstance) = 0;
+		//vulkan is submit,metal is commit
+		//virtual void Commit() = 0;
 	};
 };
