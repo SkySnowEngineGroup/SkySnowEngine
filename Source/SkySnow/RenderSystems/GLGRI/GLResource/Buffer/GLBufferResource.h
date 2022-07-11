@@ -33,34 +33,51 @@ namespace SkySnow
 	//TranstBuffer
 	//PackPixelBuffer&unPackPixelBuffer
 
-	class OGLBuffer : public GRIBuffer
+	class GLBuffer : public GRIBuffer
 	{
 	public:
-		OGLBuffer()
+		GLBuffer()
 			: GRIBuffer()
 		{
 		}
 
-		OGLBuffer(GLenum target,GLuint size,int stride,const void* data,bool streamDraw = false)
+		GLBuffer(GLenum target,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: m_Target(target)
 			, m_Size(size)
 			, m_Data(data)
 			, b_StreamDraw(streamDraw)
 		{
-
+			CreateBuffer(target,size);
 		}
 
-		~OGLBuffer()
+		~GLBuffer()
 		{
 		}
-		void CreateBuffer()
+		void CreateBuffer(GLenum target,GLuint size)
 		{
+			OpenGL::GenBuffers(1,&m_GPUHandle);
+			OpenGL::GenBuffers(1,&m_Vao);
+			//OGLBuffer::BindBuffer(GL_ARRAY_BUFFER,m_GPUHandle);
+			glBindVertexArray( m_Vao);
+			glBindBuffer(GL_ARRAY_BUFFER, m_GPUHandle);
+			OpenGL::BufferData(GL_ARRAY_BUFFER, size, m_Data,GL_STATIC_DRAW);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+			glEnableVertexAttribArray(0);
+			glBindBuffer(GL_ARRAY_BUFFER,0);
+			glBindVertexArray(0);
+		}
+
+		void Bind()
+		{
+			glBindVertexArray(m_Vao);
 		}
 	private:
 		bool b_StreamDraw;
 		GLenum m_Target;
 		int m_Size;
 		int m_Stride;
+		GLuint m_GPUHandle;
+		GLuint m_Vao;
 		const void* m_Data;
 		
 	};

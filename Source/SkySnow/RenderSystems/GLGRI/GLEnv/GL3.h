@@ -26,6 +26,7 @@ namespace SkySnow
 {
 	class OpenGL3 : public OpenGLBase
 	{
+	public:
 		static void inline GenBuffers(GLsizei size, GLuint* buffer)
 		{
 			glGenBuffers(size,buffer);

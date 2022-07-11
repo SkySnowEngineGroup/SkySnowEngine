@@ -22,12 +22,13 @@
 //
 #include "GLBuffer.h"
 #include "GLRealTimeGRI.h"
+#include "GLBufferResource.h"
 namespace SkySnow
 {
 	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
-	GRIBufferRef GLRealTimeGRI::GRICreateBuffer(int size, BufferUsageType usageType, int offset, void* data)
+	GRIBufferRef GLRealTimeGRI::GRICreateBuffer(BufferUsageType usageType, int size,int offset, void* data)
 	{
-		return GRIBufferRef(new GRIBuffer);
+		return GRIBufferRef(new GLBuffer(usageType ,size, offset,data));
 	}
 
 

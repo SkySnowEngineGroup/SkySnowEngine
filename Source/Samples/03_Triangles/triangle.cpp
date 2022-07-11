@@ -59,6 +59,11 @@ public:
 		m_vsRef = GRI->GRICreateVertexShader((char*)vsData->GetBytes());
 		m_fsRef = GRI->GRTCreateFragmentShader((char*)fsData->GetBytes());
 		GRI->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
+		float vertices[] = { -0.5f, -0.5f, 0.0f,
+							 0.5f, -0.5f, 0.0f,
+							 0.0f,  0.5f, 0.0f};
+		SN_LOG("Vertex Size:%d",sizeof(vertices));
+		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::VertexBuffer, sizeof(vertices),0, vertices);
 		return 0;
 	}
 
@@ -71,6 +76,7 @@ public:
 private:
 	GRIVertexShaderRef m_vsRef;
 	GRIFragmentShaderRef m_fsRef;
+	GRIBufferRef m_VertexBufferRef;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

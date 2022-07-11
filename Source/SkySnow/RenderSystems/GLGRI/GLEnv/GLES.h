@@ -29,7 +29,7 @@ namespace SkySnow
 {
 	class GLES :public OpenGLBase
 	{
-
+	public:
 	};
 }
 

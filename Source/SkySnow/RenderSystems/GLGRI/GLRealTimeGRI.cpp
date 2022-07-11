@@ -36,5 +36,8 @@ namespace SkySnow
 	}
 
 
-
+	void GLRealTimeGRI::GRIDrawPrimitive(int numPrimitive, int numInstance)
+	{
+		//return 
+	}
 }

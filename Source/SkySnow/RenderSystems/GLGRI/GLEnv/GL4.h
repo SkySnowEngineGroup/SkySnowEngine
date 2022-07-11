@@ -26,6 +26,6 @@ namespace SkySnow
 {
 	class OpenGL4 : public OpenGL3
 	{
-
+	public:
 	};
 }
