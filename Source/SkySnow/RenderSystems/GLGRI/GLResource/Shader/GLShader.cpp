@@ -24,7 +24,7 @@
 #include "GLRealTimeGRI.h"
 #include "LogAssert.h"
 #include "GLShaderResource.h"
-#include "GLPipelineState.h"
+#include "GLPipelineResource.h"
 namespace SkySnow
 {
 	using namespace OGLShader;

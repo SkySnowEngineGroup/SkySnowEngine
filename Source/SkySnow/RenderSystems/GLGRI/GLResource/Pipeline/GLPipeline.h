@@ -21,8 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-
 namespace SkySnow
 {
 
+
+
+	namespace OGLPipeline
+	{
+
+	}
 }

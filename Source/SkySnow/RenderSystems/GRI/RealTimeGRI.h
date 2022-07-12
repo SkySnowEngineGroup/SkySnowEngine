@@ -40,6 +40,7 @@ namespace SkySnow
 			接口定义与现代渲染API保持一致，创建shader并不会编译着色器，在创建ShaderPipelineState的时候
 			将编译shader以及编译着色器程序对象(如果是OpenGL，将会检测是否支持BinaryShader、separateshader[Depend PipelineObject])
 			将对shader进一步封装为ShaderResourceView
+			bgfx中有一个思路是，将drawcall按照view进行区分，每一个view包含自己的一些drawcall处理
 		*/
 		//Create Vertex Shader
 		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;

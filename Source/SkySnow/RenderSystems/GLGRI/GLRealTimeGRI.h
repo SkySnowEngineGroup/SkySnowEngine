@@ -93,5 +93,17 @@ namespace SkySnow
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int offset, void* data) final override;
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
+
+	private:
+		//ContextState渲染上下文状态，其内保留一次Drawcall的状态
+		//ContextState中将有一个LRU的缓存机制，ContextState另外一个作用是串联起pipeline
+		//功能属性有点类似于vulkan&metal的pipelinecache的概念；因此丢弃ContextState命名
+		//改为PipelineCache命名，以与vulkan&metal的pipelinecache对齐
+		GLGraphicPipelineStateCache m_PipelineCache;
+
+		//已经设置，将提交到GPU执行的pipelinestate
+		GLGraphicPipelineState m_PendingState;
+		//已经存在于GPU中的pipelinestate
+		GLGraphicPipelineState  m_ExistingState;
 	};
 }
