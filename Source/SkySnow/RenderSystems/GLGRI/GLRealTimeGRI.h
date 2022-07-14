@@ -47,12 +47,13 @@ namespace SkySnow
 					vulkan及metal中可以在多个CMDPool分配多个Encoder并行编码，并行提交
 					不会触发不是一个context而导致崩溃问题，那么该处如何兼容这两个框架？
 					1.解决思路一
-					  对外GRI统一提供标准接口，并添加Encoder层进行封装处理，换句话说，即
-					  用Encoder层对GRI进行封装，针对OGL实行一套仿照vulkan&metal的Encoder机制
-					  这种机制，需要对GLGRI进行处理，其不能单单继承GRI，还需继承Encoder的接口概念
+					  对外GRI统一提供标准接口，并添加Command层进行封装处理，换句话说，即
+					  用Command层对GRI进行封装，针对OGL实行一套仿照vulkan&metal的Command机制
+					  这种机制，需要对GLGRI进行处理，其不能单单继承GRI，还需继承GLCommand的接口概念
 					  方便后面Encoder层对其使用；那么这种处理方式，就要考虑针对OGL的处理不能污染
-					  vulkan&metal的Encoder的概念，此处需谨慎考虑(核心是Encoder需要有类型区分)
-					  可以让GLGRI在继承一个Encoder的思路，将之与vulkan&metal原生的Encoder拆分独立
+					  vulkan&metal的Encoder的概念，此处需谨慎考虑(核心是Command需要有类型区分)
+					  可以让GLGRI在继承一个Command(比如说RenderCommand、ComputeCommand)的思路，
+					  将之与vulkan&metal原生的Encoder拆分独立
 					  需要后面主要思考的问题
 					2.在OGL的Pipeline中进行处理
 					  这种思路将是单独针对OGL进行Encoder特殊逻辑收缩到GLGRI中，但是此种方式中一些
@@ -69,6 +70,8 @@ namespace SkySnow
 					  结果又可能是行不通(暂未看到有人在这方面进行论述过)
 					  曾看到过，按照OGL的接口标准，去替换成vulkan&metal的论述，但是个人认为这种方式属于
 					  饮鸩止渴，如果渲染压力在GPU，那么这种处理方式在处理起细小颗粒的优化，就有点力不从心
+				    final
+					  最终决定使用第一种方式。
 	
 	*/
 	class GLRealTimeGRI :public RealTimeGRI
@@ -88,7 +91,7 @@ namespace SkySnow
 		//如果是使用第一种方案思路，这个接口在GRI层保留，但不能是纯虚函数，是虚函数
 		//GLGRI在继承GLEncoder，在GLEncoder中进行纯虚函数声明，方便上层调度Encoder的类型
 		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
-		//Create Pipeline State 此处同上所述
+		//Create Pipeline State 此处同上所述--暂时不处理PipelineCache的方式，并且OGL不要调用此接口，回头统一思路
 		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int offset, void* data) final override;
 		//Call Draw,that draw primitive
@@ -102,6 +105,7 @@ namespace SkySnow
 		GLGraphicPipelineStateCache m_PipelineCache;
 
 		//已经设置，将提交到GPU执行的pipelinestate
+		//当使用PipelineCache时，该对象从外部设置，即从GRISetGraphicsPipelineState进行赋值
 		GLGraphicPipelineState m_PendingState;
 		//已经存在于GPU中的pipelinestate
 		GLGraphicPipelineState  m_ExistingState;
