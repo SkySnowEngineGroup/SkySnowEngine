@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -21,41 +21,14 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
-namespace SkySnow
-{
-	//Buffer Desicr infor：vertex index SSBO
-	struct GLBufferInfor
-	{
-		GLBufferInfor()
-			: gpuHandle(0)
-			, stride(0)
-			, offset(0)
-		{
-		}
-		GLuint gpuHandle;
-		int stride;
-		int offset;
-	};
-
-
-	namespace OGLBuffer
-	{
-		void BindBuffer(GLenum type,GLuint buffer);
-		//卷绕法绑定
-		inline void BindArrayBuffer(GLuint buffer)
-		{
-			glBindBuffer(GL_ARRAY_BUFFER, buffer);
-		}
-		//索引法绑定
-		inline void BindElementArrayBuffer(GLuint buffer)
-		{
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffer);
-		}
-		//SSBO的绑定
-		inline void BindStorageBuffer(GLuint buffer)
-		{
-			//glBindBuffer(GL_SHADER_STORAGE_BUFFER, buffer);
-		}
-	}
-}
+#include "PlatformProfiles.h"
+//The rendering API allocates different API header imports depending on the platform
+#if PLATFORM == PLATFORM_ANDROID
+#	include "GLESAndroid.h"
+#elif PLATFORM == PLATFORM_IOS
+#	include "GLESIos.h"
+#elif PLATFORM == PLATFORM_WINDOW
+#	include "GLWindow.h"
+#elif PLATFORM == PLATFORM_MAC
+#	include "GLMac.h"
+#endif

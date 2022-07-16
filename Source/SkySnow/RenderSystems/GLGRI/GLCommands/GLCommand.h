@@ -21,8 +21,20 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GRIResource.h"
 namespace SkySnow
 {
+	class GLCommandBase
+	{
+	public:
+		GLCommandBase()
+		{
+		}
 
+		virtual ~GLCommandBase()
+		{
+		}
+
+		virtual void GRISetBuffer(GRIBuffer* buffer) = 0;
+	};
 }

@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,27 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "Imports_GL.h"
-#include "Imports_GLES.h"
-
-//关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
+#include "GLCommand.h"
+#include "GLRealTimeGRI.h"
+#include "GLBufferResource.h"
+#include "GLPipelineResource.h"
 namespace SkySnow
 {
-	class OpenGLBase
+	void GLRealTimeGRI::GRISetBuffer(GRIBuffer* buffer)
 	{
-	public:
-		static inline GRIFeature GetGRIFeatureType() { return ENone; }
-
-		static inline GLuint CreateShader(GLenum shadertype) { return glCreateShader(shadertype); }
-
-		static inline void BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
-		{
-			glBufferSubData(target,offset,size,data);
-		}
-		static inline void BufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage)
-		{
-			glBufferData(target,size,data,usage);
-		}
-	};
+		GLBuffer* vertexBuffer = dynamic_cast<GLBuffer*>(buffer);
+		m_PendingState.vertexBufferInfor.gpuHandle = vertexBuffer->m_Vao;
+		m_PendingState.vertexBufferInfor.offset = vertexBuffer->GetOffset();
+		m_PendingState.vertexBufferInfor.stride = 0;
+	}
 }

@@ -28,7 +28,7 @@
 #include "OSPlatform.h"
 #include "File.h"
 #include "SkySnowConfigInfo.h"
-
+#include "GLRealTimeGRI.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -64,6 +64,7 @@ public:
 							 0.0f,  0.5f, 0.0f};
 		SN_LOG("Vertex Size:%d",sizeof(vertices));
 		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::VertexBuffer, sizeof(vertices),0, vertices);
+		((GLRealTimeGRI*)(GRI))->GRISetBuffer(m_VertexBufferRef);
 		return 0;
 	}
 
@@ -71,6 +72,7 @@ public:
 	{
 		GRI->GRIClearColor(1.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
+		GRI->GRIDrawPrimitive(3,1);
 	}
 
 private:

@@ -29,7 +29,7 @@ namespace SkySnow
 	class GLMac : public OpenGL4
 	{
 	public:
-		static inline GRIFeature GetGRIFeatureType()
+		static inline GRIFeature GetFeatureType()
 		{
 			return EOpenGL;
 		}

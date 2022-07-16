@@ -20,22 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-//IOS支持的Api是GLES3.0,GLES3.0以下不支持
+//Android支持的Api是GLES3.0以上，GLES3.0以下不支持
 #pragma once
 #include "GLES.h"
-#if PLATFORM == PLATFORM_IOS
+#if PLATFORM == PLATFORM_ANDROID
 
 namespace SkySnow
 {
-	class GLESIos : public GLES
+	class GLESAndroid : public GLES
 	{
 	public:
-		static inline GRIFeature GetGRIFeatureType()
+		static inline GRIFeature GetFeatureType()
 		{
 			return EGLES;
 		}
 	};
+	
 }
-typedef SkySnow::GLESIos OpenGL;
+typedef Nuwa::GLESAndroid OpenGL;
 
 #endif

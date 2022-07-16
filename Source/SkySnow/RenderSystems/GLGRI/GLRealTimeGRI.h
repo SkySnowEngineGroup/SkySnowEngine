@@ -21,19 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLPlatformProfiles.h"
 #include "RealTimeGRI.h"
-#include "PlatformProfiles.h"
+#include "GLCommand.h"
+#include "GLPipelineResource.h"
 
-//The rendering API allocates different API header imports depending on the platform
-#if PLATFORM == PLATFORM_ANDROID
-#	include "GLESAndroid.h"
-#elif PLATFORM == PLATFORM_IOS
-#	include "GLESIos.h"
-#elif PLATFORM == PLATFORM_WINDOW
-#	include "GLWindow.h"
-#elif PLATFORM == PLATFORM_MAC
-#	include "GLMac.h"
-#endif
 
 namespace SkySnow
 {
@@ -74,14 +66,14 @@ namespace SkySnow
 					  最终决定使用第一种方式。
 	
 	*/
-	class GLRealTimeGRI :public RealTimeGRI
+	class GLRealTimeGRI :public RealTimeGRI , public GLCommandBase
 	{
 	public:
 		GLRealTimeGRI();
 
 		~GLRealTimeGRI() {}
 
-		GRIFeature GetGRIFeatureType() override { return OpenGL::GetGRIFeatureType(); }
+		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
 		//Test Demo
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) final override;
 		//Create Vertex Shader
@@ -94,6 +86,8 @@ namespace SkySnow
 		//Create Pipeline State 此处同上所述--暂时不处理PipelineCache的方式，并且OGL不要调用此接口，回头统一思路
 		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int offset, void* data) final override;
+		
+		virtual void GRISetBuffer(GRIBuffer* buffer) final override;
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 

@@ -21,8 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLPlatformProfiles.h"
 #include "GRIResource.h"
 #include "GLShaderResource.h"
+#include "GLBufferResource.h"
+#include "GLBuffer.h"
+
 namespace SkySnow
 {
 	class GLPipelineShaderState : public GRIPipelineShaderState
@@ -53,12 +57,12 @@ namespace SkySnow
 			}
 			return nullptr;
 		}
-
 	private:
 		//Cache Array or LRUCache
 		//temp is ptr
 		GLVertexShader* m_OGLVertexShader;
 		GLFragmentShader* m_OGLFragmentShader;
+		GLuint m_ProgramId;
 	};
 	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路
 	class GLGraphicPipelineState : public GRIGraphicsPipelineState
@@ -72,7 +76,8 @@ namespace SkySnow
 		virtual ~GLGraphicPipelineState()
 		{
 		}
-	private:
+	public:
+		GLBufferInfor	vertexBufferInfor;
 
 	};
 	//该能力对齐vulkan&metal的pipelinecache

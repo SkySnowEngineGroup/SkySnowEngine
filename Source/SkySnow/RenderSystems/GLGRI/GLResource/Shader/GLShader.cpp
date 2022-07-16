@@ -25,6 +25,7 @@
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 #include "GLPipelineResource.h"
+
 namespace SkySnow
 {
 	using namespace OGLShader;

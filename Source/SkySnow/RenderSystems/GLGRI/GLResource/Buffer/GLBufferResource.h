@@ -21,8 +21,9 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLPlatformProfiles.h"
 #include "GRIResource.h"
-#include "GLRealTimeGRI.h"
+
 namespace SkySnow
 {
 	//IndexBuffer
@@ -71,13 +72,15 @@ namespace SkySnow
 		{
 			glBindVertexArray(m_Vao);
 		}
+	public:
+		GLuint m_Vao;
 	private:
 		bool b_StreamDraw;
 		GLenum m_Target;
 		int m_Size;
 		int m_Stride;
 		GLuint m_GPUHandle;
-		GLuint m_Vao;
+		
 		const void* m_Data;
 		
 	};

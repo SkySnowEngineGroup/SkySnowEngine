@@ -38,6 +38,15 @@ namespace SkySnow
 
 	void GLRealTimeGRI::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
-		//return 
+		if (numInstance > 1)
+		{
+
+		}
+		else
+		{
+			glBindVertexArray(m_PendingState.vertexBufferInfor.gpuHandle);
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			glBindVertexArray(0);
+		}
 	}
 }

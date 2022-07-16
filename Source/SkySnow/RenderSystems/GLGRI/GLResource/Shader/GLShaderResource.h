@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
+#include "GLPlatformProfiles.h"
 #include "GRICommons.h"
 #include "RefCounted.h"
 #include "GRIResource.h"
