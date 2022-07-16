@@ -26,6 +26,7 @@
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
 #include "GLBuffer.h"
+#include "GLShader.h"
 
 namespace SkySnow
 {
@@ -77,7 +78,8 @@ namespace SkySnow
 		{
 		}
 	public:
-		GLBufferInfor	vertexBufferInfor;
+		GLBufferInfor			vertexBufferInfor;
+		GLShaderStateInfor		shaderStateInfor;
 
 	};
 	//该能力对齐vulkan&metal的pipelinecache

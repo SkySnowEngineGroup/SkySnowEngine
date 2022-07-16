@@ -70,7 +70,7 @@ public:
 
 	void Update()
 	{
-		GRI->GRIClearColor(1.0, 0.0, 0.0, 1.0);
+		GRI->GRIClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		GRI->GRIDrawPrimitive(3,1);
 	}

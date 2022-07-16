@@ -36,7 +36,7 @@ namespace SkySnow
 
 	File::~File()
 	{
-
+		SN_LOG("File Destruct.");
 	}
 
 	Status File::ReadData(const string& filePath, Data* data)

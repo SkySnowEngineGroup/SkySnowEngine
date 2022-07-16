@@ -42,7 +42,13 @@ namespace SkySnow
 
 	GRIPipelineShaderStateRef GLRealTimeGRI::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
-		return GRIPipelineShaderStateRef(new GLPipelineShaderState(vs, fs));
+		GRIPipelineShaderStateRef temp = new GLPipelineShaderState(vs, fs);
+		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);
+		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
+		OGLShader::CreateProgram(glvs->m_GpuHandle, 
+								 glfs->m_GpuHandle,
+								 m_PendingState.shaderStateInfor.gpuHandle);
+		return temp;
 	}
 
 	//Shader 创建的模板类方法(公共方法)
@@ -75,6 +81,15 @@ namespace SkySnow
 		int codeLength = strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);
+		return true;
+	}
+
+	bool OGLShader::CreateProgram(const GLuint vshandle, const GLuint fshandle, GLuint& program)
+	{
+		program = glCreateProgram();
+		glAttachShader(program, vshandle);
+		glAttachShader(program, fshandle);
+		glLinkProgram(program);
 		return true;
 	}
 	//===============================================================================================

@@ -23,6 +23,7 @@
 #pragma once
 #include "GLPlatformProfiles.h"
 #include "GRIResource.h"
+#include "GLBuffer.h"
 
 namespace SkySnow
 {
@@ -56,14 +57,16 @@ namespace SkySnow
 		}
 		void CreateBuffer(GLenum target,GLuint size)
 		{
+			glGenVertexArrays(1,&m_Vao);
+			glBindVertexArray(m_Vao);
+
 			OpenGL::GenBuffers(1,&m_GPUHandle);
-			OpenGL::GenBuffers(1,&m_Vao);
-			//OGLBuffer::BindBuffer(GL_ARRAY_BUFFER,m_GPUHandle);
-			glBindVertexArray( m_Vao);
-			glBindBuffer(GL_ARRAY_BUFFER, m_GPUHandle);
-			OpenGL::BufferData(GL_ARRAY_BUFFER, size, m_Data,GL_STATIC_DRAW);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+			OGLBuffer::BindBuffer(GL_ARRAY_BUFFER,m_GPUHandle);
+			OpenGL::BufferData(GL_ARRAY_BUFFER, size, m_Data, GL_STATIC_DRAW);
+
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GLfloat), (GLvoid*)0);
 			glEnableVertexAttribArray(0);
+			
 			glBindBuffer(GL_ARRAY_BUFFER,0);
 			glBindVertexArray(0);
 		}

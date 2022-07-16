@@ -44,9 +44,10 @@ namespace SkySnow
 		}
 		else
 		{
+			glUseProgram(m_PendingState.shaderStateInfor.gpuHandle);
 			glBindVertexArray(m_PendingState.vertexBufferInfor.gpuHandle);
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-			glBindVertexArray(0);
+			glDrawArrays(GL_TRIANGLES, 0, numPrimitive);
+			//glBindVertexArray(0);
 		}
 	}
 }

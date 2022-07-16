@@ -24,6 +24,18 @@
 #include "GLPlatformProfiles.h"
 namespace SkySnow
 {
+
+	struct GLShaderStateInfor
+	{
+		GLShaderStateInfor()
+			: gpuHandle(0)
+		{
+
+		}
+
+		GLuint gpuHandle;
+	};
+
 	//可以看做是Shader的Util全局工具函数，但是使用OGLShader标记命名空间
 	//以此提醒该全局Util工具函数，是在Shader模块才可以调用的。
 	namespace OGLShader
@@ -37,5 +49,8 @@ namespace SkySnow
 		OGLShaderType* CompileShader(const char* shadercode);
 
 		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
+
+		bool CreateProgram(const GLuint vshandle,const GLuint fshandle,GLuint& program);
+
 	}
 }
