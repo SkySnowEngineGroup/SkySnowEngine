@@ -35,6 +35,6 @@ namespace SkySnow
 		{
 		}
 
-		virtual void GRISetBuffer(GRIBuffer* buffer) = 0;
+		virtual void GRISetBuffer(int BufferInfoId,GRIBuffer* buffer, int offset) = 0;
 	};
 }

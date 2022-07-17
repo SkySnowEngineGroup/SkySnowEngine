@@ -32,3 +32,5 @@
 #elif PLATFORM == PLATFORM_MAC
 #	include "GLMac.h"
 #endif
+
+#define Num_GL_Vertex_Attribute 16

@@ -78,8 +78,8 @@ namespace SkySnow
 		{
 		}
 	public:
-		GLBufferInfor			vertexBufferInfor;
-		GLShaderStateInfor		shaderStateInfor;
+		GLBufferInfo			vertexBufferInfo[Num_GL_Vertex_Attribute];
+		GLShaderStateInfo		shaderStateInfo;
 
 	};
 	//该能力对齐vulkan&metal的pipelinecache

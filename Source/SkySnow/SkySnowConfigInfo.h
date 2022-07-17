@@ -34,4 +34,11 @@ namespace SkySnow
 	{
 		return g_MediaPath + g_RelativeMaterialPath + mpath;
 	}
+
+#define Delete_Object(object) \
+		if(object) \
+		{ \
+			delete object; \
+			object = nullptr; \
+		}
 }

@@ -47,7 +47,7 @@ namespace SkySnow
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
 		OGLShader::CreateProgram(glvs->m_GpuHandle, 
 								 glfs->m_GpuHandle,
-								 m_PendingState.shaderStateInfor.gpuHandle);
+								 m_PendingState.shaderStateInfo.gpuHandle);
 		return temp;
 	}
 

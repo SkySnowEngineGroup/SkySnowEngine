@@ -25,9 +25,9 @@
 namespace SkySnow
 {
 
-	struct GLShaderStateInfor
+	struct GLShaderStateInfo
 	{
-		GLShaderStateInfor()
+		GLShaderStateInfo()
 			: gpuHandle(0)
 		{
 

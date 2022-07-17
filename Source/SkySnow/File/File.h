@@ -28,7 +28,7 @@ using namespace std;
 namespace SkySnow
 {
 
-	enum Status
+	enum class Status
 	{
 		Ok = 0,
 		NotExists = 1,

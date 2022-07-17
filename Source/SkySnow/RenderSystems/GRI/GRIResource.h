@@ -126,12 +126,12 @@ namespace SkySnow
 			: GRIResource(GRT_Buffer)
 		{
 		}
-		GRIBuffer(int size, BufferUsageType usage, int offset)
+		GRIBuffer(BufferUsageType usage, int size, int stride)
 			: GRIResource(GRT_GraphicsPipelineState)
 			, m_UsageType(usage)
 			, m_Size(size)
-			, m_Offset(offset)
-			, m_BufferName(nullptr)
+			, m_Stride(stride)
+			, m_BufferName("")
 		{
 		}
 		virtual ~GRIBuffer()
@@ -144,9 +144,9 @@ namespace SkySnow
 			return m_UsageType;
 		}
 
-		int GetOffset()
+		int GetStride()
 		{
-			return m_Offset;
+			return m_Stride;
 		}
 
 		int GetSize()
@@ -164,11 +164,11 @@ namespace SkySnow
 			return m_BufferName;
 		}
 
-	private:
+	protected:
 		BufferUsageType m_UsageType;
-		int m_Size;
-		int m_Offset;
-		std::string m_BufferName;
+		int				m_Size;
+		int				m_Stride;
+		std::string		m_BufferName;
 	};
 	// Shader相关资源的智能指针
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;

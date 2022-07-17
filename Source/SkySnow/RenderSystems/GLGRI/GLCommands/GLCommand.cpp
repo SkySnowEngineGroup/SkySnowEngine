@@ -26,11 +26,11 @@
 #include "GLPipelineResource.h"
 namespace SkySnow
 {
-	void GLRealTimeGRI::GRISetBuffer(GRIBuffer* buffer)
+	void GLRealTimeGRI::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset)
 	{
 		GLBuffer* vertexBuffer = dynamic_cast<GLBuffer*>(buffer);
-		m_PendingState.vertexBufferInfor.gpuHandle = vertexBuffer->m_Vao;
-		m_PendingState.vertexBufferInfor.offset = vertexBuffer->GetOffset();
-		m_PendingState.vertexBufferInfor.stride = 0;
+		m_PendingState.vertexBufferInfo[BufferInfoId].gpuHandle = vertexBuffer->m_Vao;
+		m_PendingState.vertexBufferInfo[BufferInfoId].stride = vertexBuffer->GetStride();
+		m_PendingState.vertexBufferInfo[BufferInfoId].offset = offset;
 	}
 }

@@ -26,9 +26,9 @@
 namespace SkySnow
 {
 	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
-	GRIBufferRef GLRealTimeGRI::GRICreateBuffer(BufferUsageType usageType, int size,int offset, void* data)
+	GRIBufferRef GLRealTimeGRI::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
 	{
-		return GRIBufferRef(new GLBuffer(usageType ,size, offset,data));
+		return GRIBufferRef(new GLBuffer(usageType ,size, stride,data));
 	}
 
 

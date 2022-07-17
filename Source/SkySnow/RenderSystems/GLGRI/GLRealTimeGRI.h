@@ -85,9 +85,9 @@ namespace SkySnow
 		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
 		//Create Pipeline State 此处同上所述--暂时不处理PipelineCache的方式，并且OGL不要调用此接口，回头统一思路
 		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
-		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int offset, void* data) final override;
+		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data) final override;
 		
-		virtual void GRISetBuffer(GRIBuffer* buffer) final override;
+		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset) final override;
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 

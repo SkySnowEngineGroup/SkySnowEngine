@@ -25,17 +25,17 @@
 namespace SkySnow
 {
 	//Buffer Desicr infor£ºvertex index SSBO
-	struct GLBufferInfor
+	struct GLBufferInfo
 	{
-		GLBufferInfor()
+		GLBufferInfo()
 			: gpuHandle(0)
 			, stride(0)
 			, offset(0)
 		{
 		}
-		GLuint gpuHandle;
-		int stride;
-		int offset;
+		GLuint		gpuHandle;
+		int			stride;
+		int			offset;
 	};
 
 
