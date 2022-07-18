@@ -53,8 +53,10 @@ namespace SkySnow
 
 	enum BufferUsageType
 	{
-		None			= 0,
-		VertexBuffer	= 1 << 0,
-		IndexBuffer		= 1 << 1,
+		BUT_None			= 0,
+
+		BUT_VertexBuffer	= 1 << 0,
+		BUT_IndexBuffer		= 1 << 1,
+		BUT_DynamicBuffer   = 1 << 2,
 	};
 }

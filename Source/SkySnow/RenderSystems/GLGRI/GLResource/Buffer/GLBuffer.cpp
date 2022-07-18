@@ -30,7 +30,7 @@ namespace SkySnow
 	{
 
 		GLenum bufferType = GL_ARRAY_BUFFER;
-		if (usageType == IndexBuffer)
+		if (usageType == BUT_IndexBuffer)
 		{
 			bufferType = GL_ELEMENT_ARRAY_BUFFER;
 		}

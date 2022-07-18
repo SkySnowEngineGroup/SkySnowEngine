@@ -42,7 +42,14 @@ namespace SkySnow
 			: GRIBuffer()
 		{
 		}
-
+		//streamDraw 暂时不用
+		//Static 表示VBO中的数据将不会被改动（一次指定多次使用）
+		//Dynamic 表示数据将会被频繁改动（反复指定与使用）
+		//Stream 表示每帧数据都要改变（一次指定一次使用）
+		//draw 表示数据将被发送到GPU以待绘制（应用程序到GL）
+		//read 表示数据将被客户端程序读取（GL到应用程序）
+		//copy 表示数据可用于绘制与读取（GL到GL）
+		//针对于indexBuffer  vertexBuffer  SSBO，即使用Draw即可
 		GLBuffer(GLenum bufferType,BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride)
 			, m_BufferType(bufferType)
@@ -65,8 +72,8 @@ namespace SkySnow
 
 			OpenGL::GenBuffers(1,&m_GPUHandle);
 			OGLBuffer::BindBuffer(m_BufferType,m_GPUHandle);
-			OpenGL::BufferData(m_BufferType, size, m_Data, GL_STATIC_DRAW);
-
+			OpenGL::BufferData(m_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+			//该函数会移动到DrawPrimitive函数中，根据PipelineState进行处理，数据设置来源是GRISetBuffer
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride*sizeof(GLfloat), (GLvoid*)0);
 			glEnableVertexAttribArray(0);
 			

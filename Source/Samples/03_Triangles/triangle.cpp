@@ -69,7 +69,7 @@ public:
 							 0.5f,  -0.5f, 0.0f,
 							 0.0f,  0.5f,  0.0f};
 		SN_LOG("Vertex Size:%d",sizeof(vertices));
-		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::VertexBuffer, 
+		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
 												sizeof(vertices),
 												3, 
 												vertices);

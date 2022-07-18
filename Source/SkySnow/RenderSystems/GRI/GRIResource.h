@@ -159,6 +159,11 @@ namespace SkySnow
 			m_BufferName = bufferName;
 		}
 
+		bool IsDynamic() const
+		{
+			return (m_UsageType & BUT_DynamicBuffer) != 0;
+		}
+
 		std::string GetBufferName()
 		{
 			return m_BufferName;
