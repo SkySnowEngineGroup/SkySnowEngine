@@ -28,7 +28,15 @@ namespace SkySnow
 	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
 	GRIBufferRef GLRealTimeGRI::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
 	{
-		return GRIBufferRef(new GLBuffer(usageType ,size, stride,data));
+
+		GLenum bufferType = GL_ARRAY_BUFFER;
+		if (usageType == IndexBuffer)
+		{
+			bufferType = GL_ELEMENT_ARRAY_BUFFER;
+		}
+
+		GRIBufferRef griBuffer = new GLBuffer(bufferType,usageType, size, stride, data);
+		return griBuffer;
 	}
 
 

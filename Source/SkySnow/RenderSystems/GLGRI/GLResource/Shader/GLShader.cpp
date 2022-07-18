@@ -76,7 +76,11 @@ namespace SkySnow
 
 	bool OGLShader::CompileCurrentShader(const GLuint shaderHandle, const char* shadercode)
 	{
-
+		if (shadercode != nullptr && shadercode[0] == '\0')
+		{
+			SN_ERR("ShaderCode is nullptr.");
+			return false;
+		}
 		SN_LOG("OGL Shader Code:%s", shadercode);
 		int codeLength = strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);

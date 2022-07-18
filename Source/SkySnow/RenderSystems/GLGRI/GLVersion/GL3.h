@@ -27,6 +27,7 @@ namespace SkySnow
 	class OpenGL3 : public OpenGLBase
 	{
 	public:
+		//后面将在这里进行BufferCache的优化操作
 		static void inline GenBuffers(GLsizei size, GLuint* buffer)
 		{
 			glGenBuffers(size,buffer);

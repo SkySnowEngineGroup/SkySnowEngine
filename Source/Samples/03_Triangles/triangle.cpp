@@ -66,14 +66,27 @@ public:
 		m_fsRef = GRI->GRTCreateFragmentShader((char*)m_FsData->GetBytes());
 		GRI->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
 		float vertices[] = { -0.5f, -0.5f, 0.0f,
-							 0.5f, -0.5f, 0.0f,
-							 0.0f,  0.5f, 0.0f};
+							 0.5f,  -0.5f, 0.0f,
+							 0.0f,  0.5f,  0.0f};
 		SN_LOG("Vertex Size:%d",sizeof(vertices));
 		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::VertexBuffer, 
 												sizeof(vertices),
 												3, 
 												vertices);
-		
+		int a = 0x0002;
+		int b = 0x0004;
+		SN_LOG("0x0002 is:%d", 0x0002);
+		SN_LOG("0x0004 is:%d", 0x0004);
+		int c = a | b;
+		SN_LOG("c is:%d",( 0x0002 | 0x0004 ));
+		int d = 0x10000;
+		SN_LOG("d is:%d", 0x10000);
+		int e = d & c;
+		SN_LOG("e is:%d", (0x0004 | 0x0004) & 0x10000);
+		if (((0x0004 | 0x0004) & 0x10000) != 0)
+		{
+			SN_LOG("isDynamic.");
+		}
 		return 0;
 	}
 

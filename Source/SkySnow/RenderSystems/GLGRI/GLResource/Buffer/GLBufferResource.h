@@ -43,8 +43,9 @@ namespace SkySnow
 		{
 		}
 
-		GLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
+		GLBuffer(GLenum bufferType,BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride)
+			, m_BufferType(bufferType)
 			, m_Data(data)
 			, b_StreamDraw(streamDraw)
 		{
@@ -54,24 +55,28 @@ namespace SkySnow
 		~GLBuffer()
 		{
 		}
+		//在GLES3.1及GL4.3以上，将顶点类型，顶点数据获取拆分为两个部分
+		//因此这里只是单独的创建Buffer即可，在DrawPrimitive的时候，在根据
+		//SetBuffer设置的类型进行<数据类型指定>与<数据类型如何获取>的设置
 		void CreateBuffer(GLenum usageType,GLuint size)
 		{
 			glGenVertexArrays(1,&m_Vao);
 			glBindVertexArray(m_Vao);
 
 			OpenGL::GenBuffers(1,&m_GPUHandle);
-			OGLBuffer::BindBuffer(GL_ARRAY_BUFFER,m_GPUHandle);
-			OpenGL::BufferData(GL_ARRAY_BUFFER, size, m_Data, GL_STATIC_DRAW);
+			OGLBuffer::BindBuffer(m_BufferType,m_GPUHandle);
+			OpenGL::BufferData(m_BufferType, size, m_Data, GL_STATIC_DRAW);
 
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride*sizeof(GLfloat), (GLvoid*)0);
 			glEnableVertexAttribArray(0);
 			
-			glBindBuffer(GL_ARRAY_BUFFER,0);
+			glBindBuffer(m_BufferType,0);
 			glBindVertexArray(0);
 		}
 
 	public:
 		GLuint		m_Vao;
+		GLenum		m_BufferType;
 	private:
 		bool		b_StreamDraw;
 		GLuint		m_GPUHandle;

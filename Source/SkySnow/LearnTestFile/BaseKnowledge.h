@@ -25,6 +25,10 @@
 #include "RefCounted.h"
 namespace SkySnowLearning
 {
+
+	//进制&位操作
+
+
 	//std::move是右移操作符，将源对象的所有权转移到当前对象上
 	// 	   其是去掉引用的参数类型
 	//std::forward是完美转发，保持源对象的值属性不变
