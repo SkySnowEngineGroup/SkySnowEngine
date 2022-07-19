@@ -45,9 +45,15 @@ namespace SkySnow
 		else
 		{
 			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
+			SetupVertexFormatBinding();
 			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
 			glDrawArrays(GL_TRIANGLES, 0, numPrimitive);
 			//glBindVertexArray(0);
 		}
+	}
+
+	void GLRealTimeGRI::SetupVertexFormatBinding()
+	{
+
 	}
 }

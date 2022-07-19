@@ -43,16 +43,6 @@ namespace SkySnow
 
 	namespace OGLBuffer
 	{
-		void OGLBuffer::BindBuffer(GLenum type,GLuint buffer)
-		{
-			if (type == GL_ARRAY_BUFFER)
-			{
-				BindArrayBuffer(buffer);
-			}
-			else if (type == GL_ELEMENT_ARRAY_BUFFER)
-			{
-				BindElementArrayBuffer(buffer);
-			}
-		}
+		
 	}
 }

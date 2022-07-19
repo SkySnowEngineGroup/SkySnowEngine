@@ -92,6 +92,10 @@ namespace SkySnow
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 
 	private:
+		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
+		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
+		void SetupVertexFormatBinding();
+	private:
 		//ContextState渲染上下文状态，其内保留一次Drawcall的状态
 		//ContextState中将有一个LRU的缓存机制，ContextState另外一个作用是串联起pipeline
 		//功能属性有点类似于vulkan&metal的pipelinecache的概念；因此丢弃ContextState命名

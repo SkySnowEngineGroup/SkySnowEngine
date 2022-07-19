@@ -52,7 +52,7 @@ namespace SkySnow
 		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
 		//Create Buffer:index vertex SSBO
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data) = 0;
-		//numPrimitive: trangle point and line is Primitive.
+		//numPrimitive: trangle point and line is Primitive.后续将该接口移到GLCommand中去，vulkan有些情况不需要每帧调用vkDraw
 		virtual void GRIDrawPrimitive(int numPrimitive,int numInstance) = 0;
 		//vulkan is submit,metal is commit
 		//virtual void Commit() = 0;

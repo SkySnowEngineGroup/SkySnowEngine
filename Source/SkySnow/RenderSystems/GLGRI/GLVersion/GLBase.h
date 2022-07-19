@@ -25,6 +25,8 @@
 #include "Imports_GLES.h"
 
 //关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
+//这里关于核心标准的API将不会在在重定义，只是在这里会进行一些拓展函数支持函数判断
+//由Import_GL&Import_GLES修改支持的标志位，并将函数重定义到Import_GL&Import_GLES中
 namespace SkySnow
 {
 	class OpenGLBase
@@ -32,7 +34,10 @@ namespace SkySnow
 	public:
 		//static inline GRIFeature GetFeatureType() { return ENone; }
 
-		static inline GLuint CreateShader(GLenum shadertype) { return glCreateShader(shadertype); }
+		static inline GLuint CreateShader(GLenum shadertype) 
+		{ 
+			return glCreateShader(shadertype); 
+		}
 
 		static inline void BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
 		{
@@ -41,6 +46,11 @@ namespace SkySnow
 		static inline void BufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage)
 		{
 			glBufferData(target,size,data,usage);
+		}
+		//卷绕法绑定\索引法绑定\SSBO的绑定
+		static inline void BindBuffer(GLenum type,GLuint buffer)
+		{
+			glBindBuffer(type, buffer);
 		}
 	};
 }

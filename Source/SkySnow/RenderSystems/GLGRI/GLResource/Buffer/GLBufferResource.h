@@ -35,6 +35,8 @@ namespace SkySnow
 	//TranstBuffer
 	//PackPixelBuffer&unPackPixelBuffer
 
+
+	//GLBuffer其处理的主要对象为IndexBuffer、VertexBuffer、StructureBuffer(SSBO)
 	class GLBuffer : public GRIBuffer
 	{
 	public:
@@ -65,13 +67,20 @@ namespace SkySnow
 		//在GLES3.1及GL4.3以上，将顶点类型，顶点数据获取拆分为两个部分
 		//因此这里只是单独的创建Buffer即可，在DrawPrimitive的时候，在根据
 		//SetBuffer设置的类型进行<数据类型指定>与<数据类型如何获取>的设置
+		//对于数据的类型，一种是结构数组SOA，一种是数组结构AOS
+		//对于AOS来说，VBO1对应Position，VBO2对应法线......
+		//对于SOA来说，VBO中的数据对应有V/N/T(顶点、法线、uv等)，其组装格式有
+		//V/N/UV/V/N/UV 或者 V/V/V/N/N/N/UV/UV/UV 对于此种需要计算offset，即计算layout布局
+		//从性能上来讲，AOS是优于SOA的，但是Mali显卡有IDVS架构，在显卡级别处理将SOA处理为AOS的操作(这个操作也会浪费一部分GPU的资源)
+		//glBufferData的作用是初始化数据，而glBufferSubData的作用是初始化或更新数据
+		//因此可以使用glBufferSubData代替glBufferData，其基础功能一样，但是glBufferSubData功能多一些，其处理非交叉的SOA数据更简单快捷一些
 		void CreateBuffer(GLenum usageType,GLuint size)
 		{
 			glGenVertexArrays(1,&m_Vao);
 			glBindVertexArray(m_Vao);
 
 			OpenGL::GenBuffers(1,&m_GPUHandle);
-			OGLBuffer::BindBuffer(m_BufferType,m_GPUHandle);
+			OpenGL::BindBuffer(m_BufferType,m_GPUHandle);
 			OpenGL::BufferData(m_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 			//该函数会移动到DrawPrimitive函数中，根据PipelineState进行处理，数据设置来源是GRISetBuffer
 			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride*sizeof(GLfloat), (GLvoid*)0);
