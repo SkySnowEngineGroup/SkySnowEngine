@@ -40,6 +40,7 @@ namespace SkySnow
 		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) = 0;
 		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
+		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
 	};
 }
 

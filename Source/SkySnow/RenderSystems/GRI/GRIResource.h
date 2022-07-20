@@ -92,6 +92,19 @@ namespace SkySnow
 			SN_LOG("GRIFragmentShader DesConstruct.");
 		}
 	};
+
+	//class GRIAssembly : public GRIResource
+	//{
+	//public:
+	//	GRIAssembly()
+	//		: GRIResource(GRI_Assembly)
+	//	{
+	//	}
+	//	virtual ~GRIAssembly()
+	//	{
+	//		SN_LOG("GRIAssembly DesConstruct.");
+	//	}
+	//};
 	//渲染PipelineShader资源基类
 	class GRIPipelineShaderState : public GRIResource
 	{

@@ -20,54 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#include "GRIResource.h"
 #pragma once
-
 namespace SkySnow
 {
-	enum GRIFeature
-	{
-		ENone,
-		EVulkan,
-		EMetal,
-		EGLES,
-		EOpenGL,
-		ENum
-	};
 
-	enum EGRIResourceType
-	{
-		GRT_None,
-		GRT_VertexShader,
-		GRT_FragmentShader,
-		GRT_PipelineShaderState,
-		GRT_GraphicsPipelineState,
-		GRT_Buffer,
-		//GRI_Assembly,
-		GRT_Num
-	};
-
-	enum ShaderFrequency
-	{
-		SF_Vertex		= 0,
-		SF_Fragement	= 1,
-	};
-
-	enum BufferUsageType
-	{
-		BUT_None				= 0,
-
-		BUT_VertexBuffer		= 1 << 0,
-		BUT_IndexBuffer			= 1 << 1,
-		BUT_DynamicBuffer		= 1 << 2,
-		BUT_StructuredBuffer	= 1 << 3,
-	};
-
-	enum class PrimitiveType
-	{
-		PT_Lines,
-		PT_Point_Strip,
-		PT_Trangles,
-		PT_Trangle_Strip,
-		PT_Num,
-	};
 }

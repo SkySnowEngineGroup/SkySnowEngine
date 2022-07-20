@@ -42,6 +42,7 @@ namespace SkySnow
 		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
+		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
 		
 	private:
 		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)

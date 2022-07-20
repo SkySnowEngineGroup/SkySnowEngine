@@ -23,8 +23,9 @@
 #pragma once
 namespace SkySnow
 {
+	//function call back GRICommands and RealTimeGRL
 	//command encoder
-	class GRICommandBuffers
+	class GRICommandBuffer
 	{
 
 	};

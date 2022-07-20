@@ -39,6 +39,11 @@ namespace SkySnow
 		m_PendingState.shaderStateInfo.gpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->m_ProgramId;
 	}
 
+	void GLCommands::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	{
+
+	}
+
 	void GLCommands::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
 		if (numInstance > 1)
