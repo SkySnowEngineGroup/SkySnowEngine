@@ -28,7 +28,6 @@
 #include "OSPlatform.h"
 #include "File.h"
 #include "SkySnowConfigInfo.h"
-#include "GLRealTimeGRI.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -62,40 +61,28 @@ public:
 		m_File->ReadData(vsShaderPath, m_VsData);
 		m_File->ReadData(fsShaderPath, m_FsData);
 
-		m_vsRef = GRI->GRICreateVertexShader((char*)m_VsData->GetBytes());
-		m_fsRef = GRI->GRTCreateFragmentShader((char*)m_FsData->GetBytes());
-		GRI->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
+		m_vsRef = GRC->GRICreateVertexShader((char*)m_VsData->GetBytes());
+		m_fsRef = GRC->GRTCreateFragmentShader((char*)m_FsData->GetBytes());
+		m_PipelineShaderStateRef = GRC->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
 		float vertices[] = { -0.5f, -0.5f, 0.0f,
 							 0.5f,  -0.5f, 0.0f,
 							 0.0f,  0.5f,  0.0f};
 		SN_LOG("Vertex Size:%d",sizeof(vertices));
-		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
+		m_VertexBufferRef = GRC->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
 												sizeof(vertices),
 												3, 
 												vertices);
-		int a = 0x0002;
-		int b = 0x0004;
-		SN_LOG("0x0002 is:%d", 0x0002);
-		SN_LOG("0x0004 is:%d", 0x0004);
-		int c = a | b;
-		SN_LOG("c is:%d",( 0x0002 | 0x0004 ));
-		int d = 0x10000;
-		SN_LOG("d is:%d", 0x10000);
-		int e = d & c;
-		SN_LOG("e is:%d", (0x0004 | 0x0004) & 0x10000);
-		if (((0x0004 | 0x0004) & 0x10000) != 0)
-		{
-			SN_LOG("isDynamic.");
-		}
 		return 0;
 	}
 
 	void Update()
 	{
-		GRI->GRIClearColor(0.0, 0.0, 0.0, 1.0);
+		GRC->GRIClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
-		((GLRealTimeGRI*)(GRI))->GRISetBuffer(0,m_VertexBufferRef,0);
-		GRI->GRIDrawPrimitive(3,1);
+		//这些接口是GRICommands中的渲染接口
+		GRS->GRISetBuffer(0,m_VertexBufferRef,0);
+		GRS->GRISetPipelineShaderState(m_PipelineShaderStateRef);
+		GRS->GRIDrawPrimitive(3,1);
 	}
 
 private:
@@ -105,6 +92,7 @@ private:
 	GRIVertexShaderRef		m_vsRef;
 	GRIFragmentShaderRef	m_fsRef;
 	GRIBufferRef			m_VertexBufferRef;
+	GRIPipelineShaderStateRef m_PipelineShaderStateRef;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

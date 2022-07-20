@@ -27,6 +27,8 @@ namespace SkySnow
 {
 	//根据不同平台创建不同的渲染API
 	//渲染系统的接口将与Vulkan保持大体框架的一致，具体可看:vulkan_core.h
+	//该部门接口主要为资源的创建&资源的重创建
+	//渲染同步及锁机制，将在CommandBuffer&CommandBufferPool中实现
 	class RealTimeGRI
 	{
 	public:
@@ -52,8 +54,7 @@ namespace SkySnow
 		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
 		//Create Buffer:index vertex SSBO
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data) = 0;
-		//numPrimitive: trangle point and line is Primitive.后续将该接口移到GLCommand中去，vulkan有些情况不需要每帧调用vkDraw
-		virtual void GRIDrawPrimitive(int numPrimitive,int numInstance) = 0;
+
 		//vulkan is submit,metal is commit
 		//virtual void Commit() = 0;
 	};

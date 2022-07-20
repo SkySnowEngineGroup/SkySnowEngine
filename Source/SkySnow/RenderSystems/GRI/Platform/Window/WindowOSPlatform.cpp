@@ -28,6 +28,7 @@ namespace SkySnow
 	WindowOSPlatform::WindowOSPlatform()
 		: m_TypeGRI(nullptr)
 		, m_RealTimeGRI(nullptr)
+		, m_Commands(nullptr)
 	{
 
 	}
@@ -43,6 +44,11 @@ namespace SkySnow
 		{
 			delete m_RealTimeGRI;
 			m_RealTimeGRI = nullptr;
+		}
+		if (m_Commands)
+		{
+			delete m_Commands;
+			m_Commands = nullptr;
 		}
 	}
 
@@ -60,5 +66,16 @@ namespace SkySnow
 			m_RealTimeGRI = m_TypeGRI->CreateGRI();
 		}
 		return m_RealTimeGRI;
+	}
+
+	GRICommands* WindowOSPlatform::OSPlatformCreateGRICommands()
+	{
+		if (m_TypeGRI && m_RealTimeGRI)
+		{
+			m_Commands = m_TypeGRI->CreateCommands();
+			return m_Commands;
+		}
+		SN_ERR("Please Fast Call OSPlatformCreateRealTimeGRI Function.");
+		return nullptr;
 	}
 }

@@ -61,4 +61,15 @@ namespace SkySnow
         }
         return m_RealTimeGRI;
     }
+
+    GRICommands* MacOSPlatform::OSPlatformCreateGRICommands()
+    {
+        if (m_TypeGRI && m_RealTimeGRI)
+        {
+            m_Commands = m_TypeGRI->CreateCommands();
+            return m_Commands;
+        }
+        SN_ERR("Please Fast Call OSPlatformCreateRealTimeGRI Function.");
+        return nullptr;
+    }
 }

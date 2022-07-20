@@ -22,19 +22,37 @@
 //
 #pragma once
 #include "GRIResource.h"
+#include "GRICommands.h"
+#include "GRICommons.h"
+#include "GLPipelineResource.h"
 namespace SkySnow
 {
-	class GLCommandBase
+	class GLCommands : public GRICommands
 	{
 	public:
-		GLCommandBase()
+		GLCommands()
 		{
 		}
-
-		virtual ~GLCommandBase()
+		virtual ~GLCommands()
 		{
 		}
-
-		virtual void GRISetBuffer(int BufferInfoId,GRIBuffer* buffer, int offset) = 0;
+		//Set Buffer
+		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
+		//set ShaderPipelineState
+		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
+		//Call Draw,that draw primitive
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
+		
+	private:
+		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
+		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
+		void SetupVertexFormatBinding();
+	private:
+		//已经设置，将提交到GPU执行的pipelinestate
+		//当使用PipelineCache时，该对象从外部设置，即从GRISetGraphicsPipelineState进行赋值
+		GLGraphicPipelineState		m_PendingState;
+		//已经存在于GPU中的pipelinestate
+		GLGraphicPipelineState		m_ExistingState;
+		PrimitiveType				m_PrimitiveType = PrimitiveType::PT_Num;
 	};
 }

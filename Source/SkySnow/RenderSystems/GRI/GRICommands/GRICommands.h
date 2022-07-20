@@ -1,6 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -21,20 +21,27 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "OSPlatform.h"
-#include "GRICommands.h"
+#include "GRIResource.h"
+//Commandbuffer encoding render commands are encoded in units of one pipeline and submitted in units of one pipeline 
+//Command commit to CommandBuffers,CommandBuffer commit to CommandQueue
+//CommandBufferPool alloc CommandBuffer
+//Commandbuffers are synchronized through events or memory barriers
+//Commandqueues are synchronized between semaphores
+//The CPU and GPU are synchronized through a fence
+//If the same thread has more than one encoder encoding it can have a CommandBufferPool of its own
+
+//一次Drawcall的所需要的渲染接口(用Vulkan&Metal的定义为一个Pipeline的渲染接口)
 namespace SkySnow
 {
-	class MacOSPlatform : public OSPlatform
+	class GRICommands
 	{
 	public:
-        MacOSPlatform();
-        ~MacOSPlatform();
-		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
-		virtual GRICommands* OSPlatformCreateGRICommands() override;
-    private:
-		GRIType*		m_TypeGRI;
-        RealTimeGRI*    m_RealTimeGRI;
-		GRICommands*	m_Commands;
+		virtual ~GRICommands(){}
+		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) = 0;
+		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
 	};
 }
+
+
+

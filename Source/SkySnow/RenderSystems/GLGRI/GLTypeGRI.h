@@ -30,5 +30,7 @@ namespace SkySnow
 	public:
 		virtual bool IsSupport() override;
 		virtual RealTimeGRI* CreateGRI() override;
+
+		virtual GRICommands* CreateCommands() override;
 	};
 }

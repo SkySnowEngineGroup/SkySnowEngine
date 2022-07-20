@@ -127,7 +127,7 @@ namespace SkySnow
 		{
 		}
 		GRIBuffer(BufferUsageType usage, int size, int stride)
-			: GRIResource(GRT_GraphicsPipelineState)
+			: GRIResource(GRT_Buffer)
 			, m_UsageType(usage)
 			, m_Size(size)
 			, m_Stride(stride)

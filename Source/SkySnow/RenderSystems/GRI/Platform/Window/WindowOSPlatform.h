@@ -31,8 +31,10 @@ namespace SkySnow
 		WindowOSPlatform();
 		~WindowOSPlatform();
 		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
+		virtual GRICommands* OSPlatformCreateGRICommands() override;
 	private:
 		GRIType*		m_TypeGRI;
 		RealTimeGRI*	m_RealTimeGRI;
+		GRICommands*	m_Commands;
 	};
 }

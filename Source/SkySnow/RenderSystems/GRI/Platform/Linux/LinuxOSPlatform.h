@@ -30,5 +30,6 @@ namespace SkySnow
 		LinuxOSPlatform() {}
 		~LinuxOSPlatform() {}
 		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
+		virtual GRICommands* OSPlatformCreateGRICommands() override;
 	};
 }

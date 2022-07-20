@@ -32,6 +32,8 @@ namespace SkySnow
 		virtual ~OSPlatform() {}
 
 		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() = 0;
+
+		virtual GRICommands* OSPlatformCreateGRICommands() = 0;
 	};
 
 	class GRTCreate : public NonCopyable
@@ -43,9 +45,15 @@ namespace SkySnow
 		static GRTCreate* Instance();
 
 		RealTimeGRI* GetRealTimeGRI();
+
+		GRICommands* GetCommands();
 	private:
 		OSPlatform*		m_OSPlatform;
 		RealTimeGRI*	m_GRI;
+		GRICommands*	m_Commands;
 	};
 }
-#define GRI SkySnow::GRTCreate::Instance()->GetRealTimeGRI()
+//GRC: Graphics Render Create
+//GRS: Graphics Render Set
+#define GRC SkySnow::GRTCreate::Instance()->GetRealTimeGRI()
+#define GRS SkySnow::GRTCreate::Instance()->GetCommands()

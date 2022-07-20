@@ -60,4 +60,13 @@ namespace SkySnow
 		BUT_DynamicBuffer		= 1 << 2,
 		BUT_StructuredBuffer	= 1 << 3,
 	};
+
+	enum class PrimitiveType
+	{
+		PT_Lines,
+		PT_Point_Strip,
+		PT_Trangles,
+		PT_Trangle_Strip,
+		PT_Num,
+	};
 }

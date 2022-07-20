@@ -42,12 +42,12 @@ namespace SkySnow
 
 	GRIPipelineShaderStateRef GLRealTimeGRI::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
-		GRIPipelineShaderStateRef temp = new GLPipelineShaderState(vs, fs);
+		GLPipelineShaderState* temp = new GLPipelineShaderState(vs, fs);
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
 		OGLShader::CreateProgram(glvs->m_GpuHandle, 
 								 glfs->m_GpuHandle,
-								 m_PendingState.shaderStateInfo.gpuHandle);
+								 temp->m_ProgramId);
 		return temp;
 	}
 

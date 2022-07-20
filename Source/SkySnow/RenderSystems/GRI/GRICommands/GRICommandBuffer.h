@@ -21,33 +21,25 @@
 // THE SOFTWARE.
 //
 #pragma once
-//Commandbuffer encoding render commands are encoded in units of one pipeline and submitted in units of one pipeline 
-//Command commit to CommandBuffers,CommandBuffer commit to CommandQueue
-//CommandBufferPool alloc CommandBuffer
-//Commandbuffers are synchronized through events or memory barriers
-//Commandqueues are synchronized between semaphores
-//The CPU and GPU are synchronized through a fence
-//If the same thread has more than one encoder encoding it can have a CommandBufferPool of its own
-class GRICommand
+namespace SkySnow
 {
+	//command encoder
+	class GRICommandBuffers
+	{
 
-};
+	};
 
-//command encoder
-class GRICommandBuffers
-{
+	//Alloc CommandBuffers
+	class GRICommandBufferPool
+	{
 
-};
-//Alloc CommandBuffers
-class GRICommandBufferPool
-{
+	};
+	//CommandBuufer commit command to commandQueue
+	//Abstract a set of such concepts for OpengL, and some encapsulation for OpengL,
+	//so that in the future compatible with Vulkan and Metal, also easier 
+	//
+	class GRICommandQueue
+	{
 
-};
-//CommandBuufer commit command to commandQueue
-//Abstract a set of such concepts for OpengL, and some encapsulation for OpengL,
-//so that in the future compatible with Vulkan and Metal, also easier 
-//
-class GRICommandQueue
-{
-
-};
+	};
+}

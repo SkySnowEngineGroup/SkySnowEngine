@@ -58,12 +58,14 @@ namespace SkySnow
 			}
 			return nullptr;
 		}
+	public:
+		GLuint m_ProgramId;
 	private:
 		//Cache Array or LRUCache
 		//temp is ptr
 		GLVertexShader* m_OGLVertexShader;
 		GLFragmentShader* m_OGLFragmentShader;
-		GLuint m_ProgramId;
+		
 	};
 	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路
 	class GLGraphicPipelineState : public GRIGraphicsPipelineState
@@ -80,7 +82,9 @@ namespace SkySnow
 	public:
 		GLBufferInfo			vertexBufferInfo[Num_GL_Vertex_Attribute];
 		GLShaderStateInfo		shaderStateInfo;
-
+		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
+		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。
+		PrimitiveType			primitiveType;
 	};
 	//该能力对齐vulkan&metal的pipelinecache
 	//在UE5中有类似的概念，但是从其代码来看

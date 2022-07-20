@@ -20,17 +20,44 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GLCommand.h"
+#include "GLCommands.h"
 #include "GLRealTimeGRI.h"
 #include "GLBufferResource.h"
 #include "GLPipelineResource.h"
 namespace SkySnow
 {
-	void GLRealTimeGRI::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset)
+	void GLCommands::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset)
 	{
 		GLBuffer* vertexBuffer = dynamic_cast<GLBuffer*>(buffer);
 		m_PendingState.vertexBufferInfo[BufferInfoId].gpuHandle = vertexBuffer->m_Vao;
 		m_PendingState.vertexBufferInfo[BufferInfoId].stride = vertexBuffer->GetStride();
 		m_PendingState.vertexBufferInfo[BufferInfoId].offset = offset;
+	}
+
+	void  GLCommands::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	{
+		m_PendingState.shaderStateInfo.gpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->m_ProgramId;
+	}
+
+	void GLCommands::GRIDrawPrimitive(int numPrimitive, int numInstance)
+	{
+		if (numInstance > 1)
+		{
+
+		}
+		else
+		{
+			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
+			SetupVertexFormatBinding();
+			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
+			glDrawArrays(GL_TRIANGLES, 0, numPrimitive);
+			//glBindVertexArray(0);
+		}
+	}
+
+
+	void GLCommands::SetupVertexFormatBinding()
+	{
+
 	}
 }

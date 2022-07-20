@@ -30,5 +30,6 @@ namespace SkySnow
 		IOSOSPlatform() {}
 		~IOSOSPlatform() {}
 		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
+		virtual GRICommands* OSPlatformCreateGRICommands() override;
 	};
 }

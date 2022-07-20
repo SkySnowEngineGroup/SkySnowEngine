@@ -35,6 +35,7 @@ namespace SkySnow
 	GRTCreate::GRTCreate()
 		: m_GRI(nullptr)
 		, m_OSPlatform(nullptr)
+		, m_Commands(nullptr)
 	{
 		griCreateInstance = this;
 	}
@@ -78,5 +79,15 @@ namespace SkySnow
 		m_GRI = m_OSPlatform->OSPlatformCreateRealTimeGRI();
 #endif
 		return m_GRI;
+	}
+
+	GRICommands* GRTCreate::GetCommands()
+	{
+		if (nullptr != m_Commands)
+		{
+			return m_Commands;
+		}
+		m_Commands = m_OSPlatform->OSPlatformCreateGRICommands();
+		return m_Commands;
 	}
 }

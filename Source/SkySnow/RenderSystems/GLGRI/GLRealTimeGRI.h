@@ -23,7 +23,6 @@
 #pragma once
 #include "GLPlatformProfiles.h"
 #include "RealTimeGRI.h"
-#include "GLCommand.h"
 #include "GLPipelineResource.h"
 
 
@@ -46,7 +45,7 @@ namespace SkySnow
 					  vulkan&metal的Encoder的概念，此处需谨慎考虑(核心是Command需要有类型区分)
 					  可以让GLGRI在继承一个Command(比如说RenderCommand、ComputeCommand)的思路，
 					  将之与vulkan&metal原生的Encoder拆分独立
-					  需要后面主要思考的问题
+					  需要后面主要思考的问题 ****** <不使用这种方式>
 					2.在OGL的Pipeline中进行处理
 					  这种思路将是单独针对OGL进行Encoder特殊逻辑收缩到GLGRI中，但是此种方式中一些
 					  CMDlist(双向链表处理)思路将特别不友好，需要用到大量的proxy(代理)思路，并且可
@@ -64,9 +63,15 @@ namespace SkySnow
 					  饮鸩止渴，如果渲染压力在GPU，那么这种处理方式在处理起细小颗粒的优化，就有点力不从心
 				    final
 					  最终决定使用第一种方式。
+		final最终解决方式
+			拆分资源创建为RealTimeGRI
+			拆分资源设置(Drawcall一次的渲染状态)为GRICommands
+			对CommandBuffer层将分为GRC&GRS方式
+			GRC: Graphics Render Create
+			GRS: Graphics Render Set
 	
 	*/
-	class GLRealTimeGRI :public RealTimeGRI , public GLCommandBase
+	class GLRealTimeGRI : public RealTimeGRI
 	{
 	public:
 		GLRealTimeGRI();
@@ -86,26 +91,12 @@ namespace SkySnow
 		//Create Pipeline State 此处同上所述--暂时不处理PipelineCache的方式，并且OGL不要调用此接口，回头统一思路
 		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data) final override;
-		
-		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset) final override;
-		//Call Draw,that draw primitive
-		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 
-	private:
-		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
-		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
-		void SetupVertexFormatBinding();
 	private:
 		//ContextState渲染上下文状态，其内保留一次Drawcall的状态
 		//ContextState中将有一个LRU的缓存机制，ContextState另外一个作用是串联起pipeline
 		//功能属性有点类似于vulkan&metal的pipelinecache的概念；因此丢弃ContextState命名
 		//改为PipelineCache命名，以与vulkan&metal的pipelinecache对齐
 		GLGraphicPipelineStateCache m_PipelineCache;
-
-		//已经设置，将提交到GPU执行的pipelinestate
-		//当使用PipelineCache时，该对象从外部设置，即从GRISetGraphicsPipelineState进行赋值
-		GLGraphicPipelineState m_PendingState;
-		//已经存在于GPU中的pipelinestate
-		GLGraphicPipelineState  m_ExistingState;
 	};
 }
