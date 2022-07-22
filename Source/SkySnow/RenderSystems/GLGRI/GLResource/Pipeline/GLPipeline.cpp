@@ -1,6 +1,7 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
+//							 liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -28,7 +29,7 @@ namespace SkySnow
 	//后期在抽象Encoder的时，会将此Interface接口归属与RenderEncoder编码器处理
 	//RenderEncoder从EncoderPool申请，单独处理该接口，如果加载数据压力较大的情况
 	//下可以异步处理，即可以在一根线程单独持有pipeline的处理，而进行事件或者内存屏障进行同步
-	GRIGraphicsPipelineStateRef GLRealTimeGRI::GRICreateGraphicsPipelineState()
+	GRIGraphicsPipelineStateRef GLRealTimeGRI::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
 	{
 		//next GraphicsPipelineStateCache find ,not find then create new state
 		return GRIGraphicsPipelineStateRef(new GLGraphicPipelineState());

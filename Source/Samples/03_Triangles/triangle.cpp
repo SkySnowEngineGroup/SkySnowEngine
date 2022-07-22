@@ -1,6 +1,7 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
+//							 liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -82,7 +83,7 @@ public:
 		//这些接口是GRICommands中的渲染接口
 		GRS->GRISetBuffer(0,m_VertexBufferRef,0);
 		GRS->GRISetPipelineShaderState(m_PipelineShaderStateRef);
-		GRS->GRIDrawPrimitive(3,1);
+		GRS->GRIDrawPrimitive(1,1);
 	}
 
 private:

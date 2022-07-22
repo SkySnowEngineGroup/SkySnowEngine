@@ -20,15 +20,13 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
+//风险指针,关于该能力的论文地址，英文原文为:https://ieeexplore.ieee.org/document/1291819
+//中文翻译地址为:https://sites.google.com/site/lishuo02wiki/programming/lockfree/safememoryreclamation/hazard-pointer
 namespace SkySnow
 {
 
 
 
-	namespace OGLPipeline
-	{
-
-	}
+	//Study HazardPointer Base Knowledge.
 }

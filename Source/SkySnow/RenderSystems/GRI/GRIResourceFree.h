@@ -25,10 +25,4 @@
 namespace SkySnow
 {
 
-
-
-	namespace OGLPipeline
-	{
-
-	}
 }

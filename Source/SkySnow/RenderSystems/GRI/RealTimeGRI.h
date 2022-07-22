@@ -1,6 +1,7 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
+//							 liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -23,6 +24,7 @@
 #pragma once
 #include "GRICommons.h"
 #include "GRIResource.h"
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
 	//根据不同平台创建不同的渲染API
@@ -51,7 +53,7 @@ namespace SkySnow
 		//Create Pipeline Shader Stage State
 		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 		//Create Graphics Pipeline
-		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() = 0;
+		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
 		//Create Buffer:index vertex SSBO
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data) = 0;
 

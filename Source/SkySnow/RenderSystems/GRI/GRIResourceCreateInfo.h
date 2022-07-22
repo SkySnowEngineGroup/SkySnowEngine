@@ -1,6 +1,7 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
+//							 liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,9 +21,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GRIResource.h"
 #pragma once
 namespace SkySnow
 {
+	class GRICreateGraphicsPipelineStateInfo
+	{
+	public:
 
+	};
 }

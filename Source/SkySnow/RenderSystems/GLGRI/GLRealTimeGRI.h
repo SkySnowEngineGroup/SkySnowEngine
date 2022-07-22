@@ -1,6 +1,7 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by wangcan(crygl),liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
+//							 liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -63,7 +64,7 @@ namespace SkySnow
 					  饮鸩止渴，如果渲染压力在GPU，那么这种处理方式在处理起细小颗粒的优化，就有点力不从心
 				    final
 					  最终决定使用第一种方式。
-		final最终解决方式
+		final最终解决方式(采用第一种解决方式的部分思路，但是不完全，拆分后架构层级及后续CommandBuffer对其进行封装会更清晰更容易拓展)
 			拆分资源创建为RealTimeGRI
 			拆分资源设置(Drawcall一次的渲染状态)为GRICommands
 			对CommandBuffer层将分为GRC&GRS方式
@@ -89,7 +90,7 @@ namespace SkySnow
 		//GLGRI在继承GLEncoder，在GLEncoder中进行纯虚函数声明，方便上层调度Encoder的类型
 		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
 		//Create Pipeline State 此处同上所述--暂时不处理PipelineCache的方式，并且OGL不要调用此接口，回头统一思路
-		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState() final override;
+		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) final override;
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data) final override;
 
 	private:

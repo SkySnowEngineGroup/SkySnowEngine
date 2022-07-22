@@ -1,6 +1,7 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
+//							 liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -55,7 +56,7 @@ namespace SkySnow
 			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
 			SetupVertexFormatBinding();
 			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
-			glDrawArrays(GL_TRIANGLES, 0, numPrimitive);
+			glDrawArrays(GL_TRIANGLES, 0, numPrimitive * 3);
 			//glBindVertexArray(0);
 		}
 	}
