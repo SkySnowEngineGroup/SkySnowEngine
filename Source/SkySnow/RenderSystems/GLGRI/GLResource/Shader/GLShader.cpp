@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 //
 #include "GLShader.h"
-#include "GLRealTimeGRI.h"
+#include "GRIGLCommandsCreate.h"
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 #include "GLPipelineResource.h"
@@ -31,17 +31,17 @@ namespace SkySnow
 {
 	using namespace OGLShader;
 	////Create Shader about Resource
-	GRIVertexShaderRef GLRealTimeGRI::GRICreateVertexShader(const char* vsCode)
+	GRIVertexShaderRef GRIGLCommandsCreate::GRICreateVertexShader(const char* vsCode)
 	{
 		return OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode);
 	}
 
-	GRIFragmentShaderRef GLRealTimeGRI::GRTCreateFragmentShader(const char* fsCode)
+	GRIFragmentShaderRef GRIGLCommandsCreate::GRTCreateFragmentShader(const char* fsCode)
 	{
 		return OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode);
 	}
 
-	GRIPipelineShaderStateRef GLRealTimeGRI::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	GRIPipelineShaderStateRef GRIGLCommandsCreate::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
 		GLPipelineShaderState* temp = new GLPipelineShaderState(vs, fs);
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);

@@ -23,7 +23,7 @@
 //
 #pragma once
 #include "OSPlatform.h"
-#include "GLRealTimeGRI.h"
+#include "GRICommandsCreate.h"
 namespace SkySnow
 {
 	class WindowOSPlatform : public OSPlatform
@@ -31,11 +31,11 @@ namespace SkySnow
 	public:
 		WindowOSPlatform();
 		~WindowOSPlatform();
-		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
-		virtual GRICommands* OSPlatformCreateGRICommands() override;
+		virtual GRICommandsCreate* OSPlatformCreateGRC() override;
+		virtual GRICommandsSet* OSPlatformCreateGRS() override;
 	private:
-		GRIType*		m_TypeGRI;
-		RealTimeGRI*	m_RealTimeGRI;
-		GRICommands*	m_Commands;
+		GRIType*			m_TypeGRI;
+		GRICommandsCreate*	m_RealTimeGRI;
+		GRICommandsSet*		m_Commands;
 	};
 }

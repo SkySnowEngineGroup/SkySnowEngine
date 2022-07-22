@@ -31,10 +31,10 @@ namespace SkySnow
 	//渲染系统的接口将与Vulkan保持大体框架的一致，具体可看:vulkan_core.h
 	//该部门接口主要为资源的创建&资源的重创建
 	//渲染同步及锁机制，将在CommandBuffer&CommandBufferPool中实现
-	class RealTimeGRI
+	class GRICommandsCreate
 	{
 	public:
-		virtual ~RealTimeGRI() {}
+		virtual ~GRICommandsCreate() {}
 
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		// Test:clear quad color

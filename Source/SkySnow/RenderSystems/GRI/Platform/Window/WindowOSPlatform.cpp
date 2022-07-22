@@ -53,7 +53,7 @@ namespace SkySnow
 		}
 	}
 
-	RealTimeGRI* WindowOSPlatform::OSPlatformCreateRealTimeGRI()
+	GRICommandsCreate* WindowOSPlatform::OSPlatformCreateGRC()
 	{ 
 		if (m_TypeGRI && m_RealTimeGRI)
 		{
@@ -64,16 +64,16 @@ namespace SkySnow
 		//Windows platform can support OpenGL, Vulakn GRI
 		if (m_TypeGRI->IsSupport())
 		{
-			m_RealTimeGRI = m_TypeGRI->CreateGRI();
+			m_RealTimeGRI = m_TypeGRI->CreateGRC();
 		}
 		return m_RealTimeGRI;
 	}
 
-	GRICommands* WindowOSPlatform::OSPlatformCreateGRICommands()
+	GRICommandsSet* WindowOSPlatform::OSPlatformCreateGRS()
 	{
 		if (m_TypeGRI && m_RealTimeGRI)
 		{
-			m_Commands = m_TypeGRI->CreateCommands();
+			m_Commands = m_TypeGRI->CreateGRS();
 			return m_Commands;
 		}
 		SN_ERR("Please Fast Call OSPlatformCreateRealTimeGRI Function.");

@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 //
 #include "GLTypeGRI.h"
-#include "GLCommands.h"
+#include "GLCommandsSet.h"
 namespace SkySnow
 {
 	bool GLTypeGRI::IsSupport()
@@ -30,14 +30,14 @@ namespace SkySnow
 		return true;
 	}
 
-	RealTimeGRI* GLTypeGRI::CreateGRI()
+	GRICommandsCreate* GLTypeGRI::CreateGRC()
 	{
 		//这里将OpenGL、OpenGLES2.0、ES3.x归结到一起
-		return new GLRealTimeGRI();
+		return new GRIGLCommandsCreate();
 	}
 
-	GRICommands* GLTypeGRI::CreateCommands()
+	GRICommandsSet* GLTypeGRI::CreateGRS()
 	{
-		return new GLCommands();
+		return new GLCommandsSet();
 	}
 }

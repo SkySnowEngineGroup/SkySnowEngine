@@ -22,21 +22,9 @@
 // THE SOFTWARE.
 //
 
-#include "GLRealTimeGRI.h"
-#include "GLShader.h"
+#include "GRICommandsCreate.h"
+
 namespace SkySnow
 {
-	GLRealTimeGRI::GLRealTimeGRI()
-	{
-
-	}
-
-	void GLRealTimeGRI::GRIClearColor(float red, float green, float blue, float alpha)
-	{
-		glClearColor(red,green,blue,alpha);
-	}
-
-
-
 
 }

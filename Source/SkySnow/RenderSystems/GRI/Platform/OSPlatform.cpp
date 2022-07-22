@@ -57,7 +57,7 @@ namespace SkySnow
 		return &instance;
 	}
 
-	RealTimeGRI* GRTCreate::GetRealTimeGRI()
+	GRICommandsCreate* GRTCreate::GetGRICommandsCreate()
 	{
 		if (nullptr != m_GRI)
 		{
@@ -65,30 +65,30 @@ namespace SkySnow
 		}
 #if PLATFORM == PLATFORM_WINDOW
 		m_OSPlatform = new WindowOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateRealTimeGRI();
+		m_GRI = m_OSPlatform->OSPlatformCreateGRC();
 #elif PLATFORM == PLATFORM_IOS
 		m_OSPlatform = new IOSOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateRealTimeGRI();
+		m_GRI = m_OSPlatform->OSPlatformCreateGRC();
 #elif PLATFORM == PLATFORM_MAC
 		m_OSPlatform = new MacOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateRealTimeGRI();
+		m_GRI = m_OSPlatform->OSPlatformCreateGRC();
 #elif PLATFORM == PLATFORM_ANDROID
 		m_OSPlatform = new AndroidOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateRealTimeGRI();
+		m_GRI = m_OSPlatform->OSPlatformCreateGRC();
 #elif  PLATFORM == PLATFORM_LINUX
 		m_OSPlatform = new LinuxOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateRealTimeGRI();
+		m_GRI = m_OSPlatform->OSPlatformCreateGRC();
 #endif
 		return m_GRI;
 	}
 
-	GRICommands* GRTCreate::GetCommands()
+	GRICommandsSet* GRTCreate::GetGRICommandsSet()
 	{
 		if (nullptr != m_Commands)
 		{
 			return m_Commands;
 		}
-		m_Commands = m_OSPlatform->OSPlatformCreateGRICommands();
+		m_Commands = m_OSPlatform->OSPlatformCreateGRS();
 		return m_Commands;
 	}
 }

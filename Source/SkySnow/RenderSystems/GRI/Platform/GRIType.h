@@ -22,9 +22,9 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRICommands.h"
 #include "GRICommons.h"
-#include "GLRealTimeGRI.h"
+#include "GRICommandsSet.h"
+#include "GRICommandsCreate.h"
 //brief:Create different Real-Time Rendering API (GRI) interface objects based on 
 //		platform support and default configuration 
 namespace SkySnow
@@ -35,8 +35,8 @@ namespace SkySnow
 	public:
 		virtual ~GRIType() {}
 		virtual bool IsSupport() = 0;
-		virtual RealTimeGRI* CreateGRI() = 0;
+		virtual GRICommandsCreate* CreateGRC() = 0;
 
-		virtual GRICommands* CreateCommands() = 0;
+		virtual GRICommandsSet* CreateGRS() = 0;
 	};
 }

@@ -34,10 +34,10 @@
 //一次Drawcall的所需要的渲染接口(用Vulkan&Metal的定义为一个Pipeline的渲染接口)
 namespace SkySnow
 {
-	class GRICommands
+	class GRICommandsSet
 	{
 	public:
-		virtual ~GRICommands(){}
+		virtual ~GRICommandsSet(){}
 		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) = 0;
 		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;

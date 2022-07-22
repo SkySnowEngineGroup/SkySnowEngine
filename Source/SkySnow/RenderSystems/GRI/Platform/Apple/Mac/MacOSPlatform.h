@@ -23,7 +23,7 @@
 //
 #pragma once
 #include "OSPlatform.h"
-#include "GRICommands.h"
+#include "GRICommandsSet.h"
 namespace SkySnow
 {
 	class MacOSPlatform : public OSPlatform
@@ -31,11 +31,11 @@ namespace SkySnow
 	public:
         MacOSPlatform();
         ~MacOSPlatform();
-		virtual RealTimeGRI* OSPlatformCreateRealTimeGRI() override;
-		virtual GRICommands* OSPlatformCreateGRICommands() override;
+		virtual GRICommandsCreate* OSPlatformCreateGRC() override;
+		virtual GRICommandsSet* OSPlatformCreateGRS() override;
     private:
-		GRIType*		m_TypeGRI;
-        RealTimeGRI*    m_RealTimeGRI;
-		GRICommands*	m_Commands;
+		GRIType*			m_TypeGRI;
+		GRICommandsCreate*  m_RealTimeGRI;
+		GRICommandsSet*		m_Commands;
 	};
 }

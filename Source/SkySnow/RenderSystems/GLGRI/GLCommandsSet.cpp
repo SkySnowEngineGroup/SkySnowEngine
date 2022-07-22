@@ -21,40 +21,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GRIResource.h"
-#include "GRICommands.h"
-#include "GRICommons.h"
+#include "GLCommandsSet.h"
+#include "GLBufferResource.h"
 #include "GLPipelineResource.h"
 namespace SkySnow
 {
-	class GLCommands : public GRICommands
+	void GLCommandsSet::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset)
 	{
-	public:
-		GLCommands()
+		GLBuffer* vertexBuffer = dynamic_cast<GLBuffer*>(buffer);
+		m_PendingState.vertexBufferInfo[BufferInfoId].gpuHandle = vertexBuffer->m_Vao;
+		m_PendingState.vertexBufferInfo[BufferInfoId].stride = vertexBuffer->GetStride();
+		m_PendingState.vertexBufferInfo[BufferInfoId].offset = offset;
+	}
+
+	void  GLCommandsSet::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	{
+		m_PendingState.shaderStateInfo.gpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->m_ProgramId;
+	}
+
+	void GLCommandsSet::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	{
+
+	}
+
+	void GLCommandsSet::GRIDrawPrimitive(int numPrimitive, int numInstance)
+	{
+		if (numInstance > 1)
 		{
+
 		}
-		virtual ~GLCommands()
+		else
 		{
+			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
+			SetupVertexFormatBinding();
+			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
+			glDrawArrays(GL_TRIANGLES, 0, numPrimitive * 3);
+			//glBindVertexArray(0);
 		}
-		//Set Buffer
-		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
-		//set ShaderPipelineState
-		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
-		//Call Draw,that draw primitive
-		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
-		
-	private:
-		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
-		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
-		void SetupVertexFormatBinding();
-	private:
-		//已经设置，将提交到GPU执行的pipelinestate
-		//当使用PipelineCache时，该对象从外部设置，即从GRISetGraphicsPipelineState进行赋值
-		GLGraphicPipelineState		m_PendingState;
-		//已经存在于GPU中的pipelinestate
-		GLGraphicPipelineState		m_ExistingState;
-		PrimitiveType				m_PrimitiveType = PrimitiveType::PT_Num;
-	};
+	}
+
+
+	void GLCommandsSet::SetupVertexFormatBinding()
+	{
+
+	}
 }

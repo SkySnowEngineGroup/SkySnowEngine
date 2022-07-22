@@ -23,7 +23,7 @@
 //
 #pragma once
 #include "GLPlatformProfiles.h"
-#include "RealTimeGRI.h"
+#include "GRICommandsCreate.h"
 #include "GLPipelineResource.h"
 
 
@@ -72,12 +72,12 @@ namespace SkySnow
 			GRS: Graphics Render Set
 	
 	*/
-	class GLRealTimeGRI : public RealTimeGRI
+	class GRIGLCommandsCreate : public GRICommandsCreate
 	{
 	public:
-		GLRealTimeGRI();
+		GRIGLCommandsCreate();
 
-		~GLRealTimeGRI() {}
+		~GRIGLCommandsCreate() {}
 
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
 		//Test Demo
