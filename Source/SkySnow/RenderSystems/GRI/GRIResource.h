@@ -51,6 +51,8 @@ namespace SkySnow
 		{
 			return m_GRIResourceType;
 		}
+	public:
+		static void FlushResourceRelease();
 	private:
 		const EGRIResourceType m_GRIResourceType;
 	};
