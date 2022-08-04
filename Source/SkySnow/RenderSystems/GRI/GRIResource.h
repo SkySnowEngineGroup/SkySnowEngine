@@ -62,7 +62,12 @@ namespace SkySnow
 		//该处将使用风险指针进行内存管理
 		int Release()
 		{
-
+			int newCount = m_Atomic.Release(std::memory_order_release);
+			if (newCount == 0)
+			{
+				ReclaimResource();
+			}
+			return newCount;
 		}
 		int GetRefCount()
 		{
@@ -75,6 +80,11 @@ namespace SkySnow
 		//-----------------------------------------------------------
 	public:
 		static void FlushResourceRelease();
+	private:
+		void ReclaimResource()
+		{
+
+		}
 	private:
 		const EGRIResourceType m_GRIResourceType;
 		mutable AtomicCount m_Atomic;

@@ -69,7 +69,6 @@ namespace SkySnow
 	void RefThreadSafeCounted::Add()
 	{
 		m_refs.fetch_add(1, std::memory_order_acquire);
-
 	}
 
 	void RefThreadSafeCounted::Release()
