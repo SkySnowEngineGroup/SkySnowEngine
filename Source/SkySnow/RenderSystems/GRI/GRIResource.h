@@ -26,21 +26,22 @@
 #include "GRICommons.h"
 #include "LogAssert.h"
 #include "GRIResourceFree.h"
+#include "SNAtomicVar.h"
 namespace SkySnow
 {
 	//渲染资源基类
-	class GRIResource : public RefThreadSafeCounted
+	class GRIResource //: public RefThreadSafeCounted
 	{
 	public:
 		GRIResource()
-			: RefThreadSafeCounted()
-			, m_GRIResourceType(GRT_None)
+			//: RefThreadSafeCounted()
+			: m_GRIResourceType(GRT_None)
 		{
 
 		}
 		GRIResource(EGRIResourceType grit)
-			: RefThreadSafeCounted()
-			, m_GRIResourceType(grit)
+			//: RefThreadSafeCounted()
+			: m_GRIResourceType(grit)
 		{
 		}
 		virtual ~GRIResource()
@@ -51,10 +52,32 @@ namespace SkySnow
 		{
 			return m_GRIResourceType;
 		}
+		//计数器相关方法
+		//-----------------------------------------------------------
+		int Add()
+		{
+			int newCount = m_Atomic.Add(std::memory_order_acquire);
+			return newCount;
+		}
+		//该处将使用风险指针进行内存管理
+		int Release()
+		{
+
+		}
+		int GetRefCount()
+		{
+			return m_Atomic.GetCountRef(std::memory_order_relaxed);
+		}
+		bool IsValid()
+		{
+			return m_Atomic.IsValid(std::memory_order_relaxed);
+		}
+		//-----------------------------------------------------------
 	public:
 		static void FlushResourceRelease();
 	private:
 		const EGRIResourceType m_GRIResourceType;
+		mutable AtomicCount m_Atomic;
 	};
 	//Shader渲染资源基类
 	class GRIShader : public GRIResource
