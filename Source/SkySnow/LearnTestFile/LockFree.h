@@ -32,6 +32,17 @@ namespace SkySnowLearning
 	private:
 		struct Node
 		{
+			Node()
+				: value(nullptr)
+				, next(nullptr)
+			{
+			}
+			Node(T& v,Node* n)
+				: value(v)
+				, next(n)
+			{}
+			~Node()
+			{}
 			T value;
 			Node* next;
 		};
@@ -43,10 +54,8 @@ namespace SkySnowLearning
 		void Push(const T& value)
 		{
 			Node* node = new Node{ value, m_Head.load()};
-
-			while (!m_Head.compare_exchange_strong(node->next, node))
-			{
-			}
+			node->next = m_Head.load();
+			while (!m_Head.compare_exchange_strong(node->next, node))；
 		}
 
 		void Pop()
@@ -61,8 +70,34 @@ namespace SkySnowLearning
 				node = nullptr;
 			}
 		}
+	private:
+		void TryReclaim(Node* head)
+		{
+
+		}
 
 	private:
 		std::atomic<Node*> m_Head;
+	};
+
+	//简单实现一个自旋锁
+	class SpinMutex
+	{
+	public:
+		SpinMutex()
+			: flag(ATOMIC_FLAG_INIT)
+		{
+		}
+		void Lock()
+		{
+			while (flag.test_and_set(std::memory_order_acquire));
+		}
+
+		void UnLock()
+		{
+			flag.clear(std::memory_order_release);
+		}
+	private:
+		std::atomic_flag flag;
 	};
 }
