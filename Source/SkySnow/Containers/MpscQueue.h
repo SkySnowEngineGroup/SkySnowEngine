@@ -20,84 +20,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
+
+/*
+	M：Multiple，多个的
+	S：Single，单个的
+	P：Producer，生产者
+	C：Consumer，消费者
+	Netty没有使用JDK的阻塞队列，使用了Lock-freeMpscqueue
+*/
 #pragma once
-#include <atomic>
-#include <memory>
-namespace SkySnowLearning
+namespace SkySnow
 {
-	//此方式会存在ABA问题
+	//不允许被继承，也不继承任何基类
 	template<typename T>
-	class LockFreeStack
-	{
-	private:
-		struct Node
-		{
-			Node()
-				: value(nullptr)
-				, next(nullptr)
-			{
-			}
-			Node(T& v, Node* n)
-				: value(v)
-				, next(n)
-			{}
-			~Node()
-			{}
-			T value;
-			Node* next;
-		};
-	public:
-		LockFreeStack()
-			: m_Head(nullptr)
-		{
-		}
-		void Push(const T& value)
-		{
-			Node* node = new Node{ value, m_Head.load() };
-			node->next = m_Head.load();
-			while (!m_Head.compare_exchange_strong(node->next, node));
-		}
-
-		void Pop()
-		{
-			Node* node = m_Head.load();
-			while (node && !m_Head.compare_exchange_strong(node, node->next));
-			if (node)
-			{
-				delete node;
-				node = nullptr;
-			}
-		}
-	private:
-		void TryReclaim(Node* head)
-		{
-
-		}
-
-
-	private:
-		std::atomic<Node*> m_Head;
-	};
-
-	//简单实现一个自旋锁
-	class SpinMutex
+	class MpscQueue final
 	{
 	public:
-		SpinMutex()
-			: flag(ATOMIC_FLAG_INIT)
-		{
-		}
-		void Lock()
-		{
-			while (flag.test_and_set(std::memory_order_acquire));
-		}
-
-		void UnLock()
-		{
-			flag.clear(std::memory_order_release);
-		}
-	private:
-		std::atomic_flag flag;
+		//遵循std::atomic<T>的对象标准，pod类型
+		MpscQueue() = default;
 	};
 }
