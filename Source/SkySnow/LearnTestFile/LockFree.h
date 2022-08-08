@@ -70,13 +70,6 @@ namespace SkySnowLearning
 			}
 		}
 	private:
-		void TryReclaim(Node* head)
-		{
-
-		}
-
-
-	private:
 		std::atomic<Node*> m_Head;
 	};
 

@@ -21,6 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+
+#pragma once
+#include <atomic>
 /*
 	M：Multiple，多个的
 	S：Single，单个的
@@ -28,9 +31,14 @@
 	C：Consumer，消费者
 	Netty没有使用JDK的阻塞队列，使用了Lock-freeMpscqueue
 */
-#pragma once
 namespace SkySnow
 {
+	template<typename T>
+	struct QNode
+	{
+		std::atomic<QNode*> next{nullptr};
+		T value;
+	};
 	//不允许被继承，也不继承任何基类
 	template<typename T>
 	class MpscQueue final
@@ -38,5 +46,14 @@ namespace SkySnow
 	public:
 		//遵循std::atomic<T>的对象标准，pod类型
 		MpscQueue() = default;
+
+		template<typename... Args>
+		bool Enqueue(Args&&... args)
+		{
+			return false;
+		}
+	private:
+		QNode m_Curr;
+		std::atomic<QNode*> m_Pre{ &m_Curr };
 	};
 }
