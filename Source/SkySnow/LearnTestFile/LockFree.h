@@ -24,8 +24,32 @@
 #pragma once
 #include <atomic>
 #include <memory>
+#include "LogAssert.h"
 namespace SkySnowLearning
 {
+
+	struct TNode
+	{
+		std::atomic<TNode*> next{ nullptr };
+		int value;
+	};
+	class TestTNode
+	{
+	public:
+		TestTNode() {}
+		~TestTNode() {}
+
+		void Print()
+		{
+			SN_LOG("m_Cur:%p",&m_Cur);
+			SN_LOG("m_Head:%p",(m_Head.load(std::memory_order_relaxed)));
+			SN_LOG("m_Head->next:%p",m_Head.load(std::memory_order_relaxed)->next.load(std::memory_order_relaxed));
+		}
+	private:
+		TNode m_Cur;
+		std::atomic<TNode*> m_Head{ &m_Cur };
+	};
+
 	//此方式会存在ABA问题
 	template<typename T>
 	class LockFreeStack
@@ -78,7 +102,6 @@ namespace SkySnowLearning
 	{
 	public:
 		SpinMutex()
-			: flag(ATOMIC_FLAG_INIT)
 		{
 		}
 		void Lock()
@@ -91,6 +114,6 @@ namespace SkySnowLearning
 			flag.clear(std::memory_order_release);
 		}
 	private:
-		std::atomic_flag flag;
+		std::atomic_flag flag = ATOMIC_FLAG_INIT;
 	};
 }

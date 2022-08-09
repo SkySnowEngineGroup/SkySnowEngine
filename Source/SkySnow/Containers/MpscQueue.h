@@ -37,7 +37,7 @@ namespace SkySnow
 	struct QNode
 	{
 		std::atomic<QNode*> next{nullptr};
-		T value;
+		T* value;
 	};
 	//不允许被继承，也不继承任何基类
 	template<typename T>
@@ -47,13 +47,66 @@ namespace SkySnow
 		//遵循std::atomic<T>的对象标准，pod类型
 		MpscQueue() = default;
 
+		~MpscQueue()
+		{
+			//MpscQueue is Empty
+			if (m_Head.load(std::memory_order_relaxed) == nullptr)
+			{
+				return;
+			}
+			//QNode* curr = m_Curr
+		}
+		/**
+						   |-------------有效数据区--------------------|
+			(栈上)QNode -> |QNode -> QNode -> QNode -> QNode -> nullptr|
+			     m_Head
+				 m_Curr
+				 mHead 指向头结点
+				 m_Curr指向头结点
+		**/
 		template<typename... Args>
 		bool Enqueue(Args&&... args)
 		{
+			QNode* head = m_Head.load(std::memory_order_acquire);
+			if (head == nullptr)//MpscQueue already Empty
+			{
+				return false;
+			}
+
+			QNode* newNode = new QNode;
+			//构造函数的调用
+			new (&newNode->value) T(std::forward<Args>(args)...);
+
+			while (head != nullptr && !m_Head.compare_exchange_weak(head,newNode,std::memory_order_release));
+
+			if (head == nullptr)//MpscQueue is Empty
+			{
+				((T*)(&newNode->value))->~T();
+				delete newNode;
+				newNode = nullptr;
+				return false;
+			}
+			head->next.store(newNode,std::memory_order_release);
 			return false;
 		}
+
+
+
+		bool IsEmpty() const
+		{
+			return m_Head.load(std::memory_order_relaxed) == nullptr;
+		}
 	private:
+		QNode* GetNext(QNode* node)
+		{
+			QNode* next;
+			do 
+			{
+				next = node->next.load(std::memory_order_relaxed);
+			} while (next == nullptr);
+			return QNode;
+		}
 		QNode m_Curr;
-		std::atomic<QNode*> m_Pre{ &m_Curr };
+		std::atomic<QNode*> m_Head{ &m_Curr };
 	};
 }

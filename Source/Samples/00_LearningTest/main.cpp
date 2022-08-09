@@ -33,11 +33,17 @@
 #include "DSA.h"
 #include "File.h"
 #include "SingletonBase.h"
+#include "LockFree.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
+
+	{
+		TestTNode* tN = new TestTNode();
+		tN->Print();
+	}
 	//测试虚析构函数作用及顺序
 	{
 		TestChildCon();
