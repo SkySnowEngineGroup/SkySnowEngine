@@ -22,7 +22,10 @@
 // THE SOFTWARE.
 //
 #pragma once
+//#include "GRIResource.h"
 namespace SkySnow
 {
-
+	//void GRIResource::FlushResourceRelease()
+	//{
+	//}
 }

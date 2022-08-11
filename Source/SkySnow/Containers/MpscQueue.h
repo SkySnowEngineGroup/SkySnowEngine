@@ -35,16 +35,16 @@
 */
 namespace SkySnow
 {
-	template<typename T>
-	struct QNode
-	{
-		std::atomic<QNode*> next{nullptr};
-		T* value;
-	};
 	//不允许被继承，也不继承任何基类
 	template<typename T>
 	class MpscQueue final
 	{
+	private:
+		struct QNode
+		{
+			std::atomic<QNode*> next{ nullptr };
+			T* value;
+		};
 	public:
 		//遵循std::atomic<T>的对象标准，pod类型
 		MpscQueue() = default;
@@ -98,17 +98,17 @@ namespace SkySnow
 				return false;
 			}
 			curr->next.store(newNode,std::memory_order_release);
-			return false;
+			return true;
 		}
 		//一次性全出队列，适用于整帧中数据的处理
-		void Dequeue(std::vector<T*>& popData)
+		void Dequeue(std::vector<T>& popData)
 		{
 			QNode* head = &m_Head;
 			QNode* const curr = m_Curr.exchange(nullptr,std::memory_order_acq_rel);
 
 			if (head == curr || curr == nullptr)
 			{
-				return nullptr;
+				return;
 			}
 
 			QNode* nextNode = GetNext(head);
@@ -145,6 +145,7 @@ namespace SkySnow
 			} while (next == nullptr);
 			return next;
 		}
+
 
 	private:
 		QNode m_Head;

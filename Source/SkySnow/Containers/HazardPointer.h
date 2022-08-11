@@ -25,8 +25,7 @@
 //中文翻译地址为:https://sites.google.com/site/lishuo02wiki/programming/lockfree/safememoryreclamation/hazard-pointer
 namespace SkySnow
 {
-
-
-
 	//Study HazardPointer Base Knowledge.
+
+
 }

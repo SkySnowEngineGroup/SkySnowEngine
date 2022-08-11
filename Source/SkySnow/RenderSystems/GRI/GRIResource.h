@@ -86,8 +86,8 @@ namespace SkySnow
 
 		}
 	private:
-		const EGRIResourceType m_GRIResourceType;
-		mutable AtomicCount m_Atomic;
+		const EGRIResourceType	m_GRIResourceType;
+		mutable AtomicCount		m_Atomic;
 	};
 	//Shader渲染资源基类
 	class GRIShader : public GRIResource

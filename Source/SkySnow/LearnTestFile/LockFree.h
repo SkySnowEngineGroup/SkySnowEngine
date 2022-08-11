@@ -30,39 +30,43 @@ namespace SkySnowLearning
 {
 	class TestMpscQueue
 	{
-	private:
-		struct ATest
-		{
-			ATest() 
-			{
-				SN_LOG("Construct ATest.");
-			}
-			~ATest() 
-			{
-				SN_LOG("DeConstruct ATest.");
-			}
-
-		};
 	public:
 		TestMpscQueue()
+			: a(10)
 		{
+			SN_LOG("Construct TestMpscQueue.");
 		}
 		~TestMpscQueue()
 		{
+			SN_LOG("DeConstruct TestMpscQueue.");
 		}
 
 		void TestFun()
 		{
-
+			int atest = TestCa(1);
+			SN_LOG("atest:%d", atest);
+			int value = 1;
+			int v1 = (value >> 16) ^ value;
+			SN_LOG("atest:%d", v1);
 			mpscQueue.store(new SkySnow::MpscQueue<TestMpscQueue*>(),std::memory_order_release);
 			SkySnow::MpscQueue<TestMpscQueue*>* mpq = mpscQueue.load(std::memory_order_relaxed);
 			mpq->Enqueue(const_cast<TestMpscQueue*>(this));
 
 			std::vector<TestMpscQueue*> popData;
-			//mpq->Dequeue(popData);
+			mpq->Dequeue(popData);
+			int aa = 10;
+		}
+
+		int TestCa(int value)
+		{
+			value = ((value >> 16) ^ value) * 0x45d9f3b;
+			value = ((value >> 16) ^ value) * 0x45d9f3b;
+			value = (value >> 16) ^ value;
+			return value;
 		}
 	private:
 		std::atomic<SkySnow::MpscQueue<TestMpscQueue*>*> mpscQueue;
+		int a;
 	};
 	struct TNode
 	{
@@ -80,7 +84,7 @@ namespace SkySnowLearning
 			SN_LOG("***************************");
 			SN_LOG("m_Cur:%p", &m_Cur);
 			SN_LOG("m_Head:%p", (m_Head.load(std::memory_order_relaxed)));
-			SN_LOG("m_Head->next:%p", (m_Head.load(std::memory_order_relaxed)->next.load(memory_order_relaxed)));
+			SN_LOG("m_Head->next:%p", (m_Head.load(std::memory_order_relaxed)->next.load(std::memory_order_relaxed)));
 			SN_LOG("---------------------------");
 			TNode* Prev = m_Head.load(std::memory_order_acquire);
 
@@ -111,25 +115,28 @@ namespace SkySnowLearning
 
 		void Print()
 		{
-			Enqueue();
-			Enqueue();
+			TestMpscQueue* tq = new TestMpscQueue();
+			tq->TestFun();
+			//Enqueue();
+			//Enqueue();
 			//Dequeue();
-			SN_LOG("+++++++++++++++++++++++++");
-			SN_LOG("m_Cur:%p",&m_Cur);
-			SN_LOG("m_Head:%p",(m_Head.load(std::memory_order_relaxed)));
-			SN_LOG("m_Head->next:%p",m_Head.load(std::memory_order_relaxed)->next.load(std::memory_order_relaxed));
-			SN_LOG("+++++++++++++++++++++++++");
+			//SN_LOG("+++++++++++++++++++++++++");
+			//SN_LOG("m_Cur:%p",&m_Cur);
+			//SN_LOG("m_Head:%p",(m_Head.load(std::memory_order_relaxed)));
+			//SN_LOG("m_Head->next:%p",m_Head.load(std::memory_order_relaxed)->next.load(std::memory_order_relaxed));
+			//SN_LOG("+++++++++++++++++++++++++");
 
-			TNode* nextNode = m_Cur.next.load(std::memory_order_relaxed);
-			while (nextNode != nullptr)
-			{
-				TNode* nn = nextNode->next.load(std::memory_order_relaxed);
-				SN_LOG("All Node Address:%p", nextNode);
-				nextNode = nn;
-			}
+			//TNode* nextNode = m_Cur.next.load(std::memory_order_relaxed);
+			//while (nextNode != nullptr)
+			//{
+			//	TNode* nn = nextNode->next.load(std::memory_order_relaxed);
+			//	SN_LOG("All Node Address:%p", nextNode);
+			//	nextNode = nn;
+			//}
 		}
 	private:
 		TNode m_Cur;
+		int a{ 1 };
 		std::atomic<TNode*> m_Head{ &m_Cur };
 	};
 
