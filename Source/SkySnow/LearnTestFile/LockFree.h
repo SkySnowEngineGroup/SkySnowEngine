@@ -25,9 +25,45 @@
 #include <atomic>
 #include <memory>
 #include "LogAssert.h"
+#include "MpscQueue.h"
 namespace SkySnowLearning
 {
+	class TestMpscQueue
+	{
+	private:
+		struct ATest
+		{
+			ATest() 
+			{
+				SN_LOG("Construct ATest.");
+			}
+			~ATest() 
+			{
+				SN_LOG("DeConstruct ATest.");
+			}
 
+		};
+	public:
+		TestMpscQueue()
+		{
+		}
+		~TestMpscQueue()
+		{
+		}
+
+		void TestFun()
+		{
+
+			mpscQueue.store(new SkySnow::MpscQueue<TestMpscQueue*>(),std::memory_order_release);
+			SkySnow::MpscQueue<TestMpscQueue*>* mpq = mpscQueue.load(std::memory_order_relaxed);
+			mpq->Enqueue(const_cast<TestMpscQueue*>(this));
+
+			std::vector<TestMpscQueue*> popData;
+			//mpq->Dequeue(popData);
+		}
+	private:
+		std::atomic<SkySnow::MpscQueue<TestMpscQueue*>*> mpscQueue;
+	};
 	struct TNode
 	{
 		std::atomic<TNode*> next{ nullptr };
@@ -39,11 +75,58 @@ namespace SkySnowLearning
 		TestTNode() {}
 		~TestTNode() {}
 
+		void Enqueue()
+		{
+			SN_LOG("***************************");
+			SN_LOG("m_Cur:%p", &m_Cur);
+			SN_LOG("m_Head:%p", (m_Head.load(std::memory_order_relaxed)));
+			SN_LOG("m_Head->next:%p", (m_Head.load(std::memory_order_relaxed)->next.load(memory_order_relaxed)));
+			SN_LOG("---------------------------");
+			TNode* Prev = m_Head.load(std::memory_order_acquire);
+
+			TNode* nNode = new TNode;
+			nNode->value = 10;
+
+			SN_LOG("temp:%p", nNode);
+
+			
+
+			while (Prev != nullptr && !m_Head.compare_exchange_weak(Prev, nNode, std::memory_order_release))
+			{
+			}
+
+			Prev->next.store(nNode,std::memory_order_release);
+			SN_LOG("head->next:%p", Prev->next.load(std::memory_order_relaxed));
+			SN_LOG("m_Cur->next:%p", m_Cur.next.load(std::memory_order_relaxed));
+		}
+		void Dequeue()
+		{
+			TNode* tail = &m_Cur;
+			TNode* const head = m_Head.exchange(nullptr,std::memory_order_acq_rel);
+			if (tail == head || head == nullptr)
+			{
+				return;
+			}
+		}
+
 		void Print()
 		{
+			Enqueue();
+			Enqueue();
+			//Dequeue();
+			SN_LOG("+++++++++++++++++++++++++");
 			SN_LOG("m_Cur:%p",&m_Cur);
 			SN_LOG("m_Head:%p",(m_Head.load(std::memory_order_relaxed)));
 			SN_LOG("m_Head->next:%p",m_Head.load(std::memory_order_relaxed)->next.load(std::memory_order_relaxed));
+			SN_LOG("+++++++++++++++++++++++++");
+
+			TNode* nextNode = m_Cur.next.load(std::memory_order_relaxed);
+			while (nextNode != nullptr)
+			{
+				TNode* nn = nextNode->next.load(std::memory_order_relaxed);
+				SN_LOG("All Node Address:%p", nextNode);
+				nextNode = nn;
+			}
 		}
 	private:
 		TNode m_Cur;

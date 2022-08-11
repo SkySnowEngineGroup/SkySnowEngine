@@ -23,7 +23,9 @@
 
 
 #pragma once
+#include <vector>
 #include <atomic>
+#include "LogAssert.h"
 /*
 	M：Multiple，多个的
 	S：Single，单个的
@@ -50,25 +52,32 @@ namespace SkySnow
 		~MpscQueue()
 		{
 			//MpscQueue is Empty
-			if (m_Head.load(std::memory_order_relaxed) == nullptr)
+			if (m_Curr.load(std::memory_order_relaxed) == nullptr)
 			{
 				return;
 			}
-			//QNode* curr = m_Curr
+			QNode* nextNode = m_Head.next.load(std::memory_order_relaxed);
+			while (nextNode != nullptr)
+			{
+				QNode* NN = nextNode->next.load(std::memory_order_relaxed);
+				((T*)(&nextNode->value))->~T();
+				delete nextNode;
+				nextNode = NN;
+			}
 		}
 		/**
-						   |-------------有效数据区--------------------|
-			(栈上)QNode -> |QNode -> QNode -> QNode -> QNode -> nullptr|
+						   |---有效数据区---|
+			(栈上)QNode -> |QNode -> nullptr|
 			     m_Head
-				 m_Curr
+							m_Curr
 				 mHead 指向头结点
-				 m_Curr指向头结点
+				 m_Curr指向有效数据
 		**/
 		template<typename... Args>
 		bool Enqueue(Args&&... args)
 		{
-			QNode* head = m_Head.load(std::memory_order_acquire);
-			if (head == nullptr)//MpscQueue already Empty
+			QNode* curr = m_Curr.load(std::memory_order_acquire);
+			if (curr == nullptr)//MpscQueue already Empty
 			{
 				return false;
 			}
@@ -77,24 +86,54 @@ namespace SkySnow
 			//构造函数的调用
 			new (&newNode->value) T(std::forward<Args>(args)...);
 
-			while (head != nullptr && !m_Head.compare_exchange_weak(head,newNode,std::memory_order_release));
+			while (curr != nullptr && !m_Curr.compare_exchange_weak(curr, newNode, std::memory_order_release))
+			{
+			}
 
-			if (head == nullptr)//MpscQueue is Empty
+			if (curr == nullptr)//MpscQueue is Empty
 			{
 				((T*)(&newNode->value))->~T();
 				delete newNode;
 				newNode = nullptr;
 				return false;
 			}
-			head->next.store(newNode,std::memory_order_release);
+			curr->next.store(newNode,std::memory_order_release);
 			return false;
 		}
+		//一次性全出队列，适用于整帧中数据的处理
+		void Dequeue(std::vector<T*>& popData)
+		{
+			QNode* head = &m_Head;
+			QNode* const curr = m_Curr.exchange(nullptr,std::memory_order_acq_rel);
 
+			if (head == curr || curr == nullptr)
+			{
+				return nullptr;
+			}
+
+			QNode* nextNode = GetNext(head);
+
+			while (nextNode != curr)
+			{
+				QNode* temp = GetNext(nextNode);
+
+				T* valuePtr = (T*)&nextNode->value;
+				popData.emplace_back(*valuePtr);
+				valuePtr->~T();
+				delete nextNode;
+				nextNode = temp;
+			}
+			//处理当前节点
+			T* vPtr = (T*)&curr->value;
+			popData.emplace_back(*vPtr);
+			vPtr->~T();
+			delete curr;
+		}
 
 
 		bool IsEmpty() const
 		{
-			return m_Head.load(std::memory_order_relaxed) == nullptr;
+			return m_Curr.load(std::memory_order_relaxed) == nullptr;
 		}
 	private:
 		QNode* GetNext(QNode* node)
@@ -104,9 +143,11 @@ namespace SkySnow
 			{
 				next = node->next.load(std::memory_order_relaxed);
 			} while (next == nullptr);
-			return QNode;
+			return next;
 		}
-		QNode m_Curr;
-		std::atomic<QNode*> m_Head{ &m_Curr };
+
+	private:
+		QNode m_Head;
+		std::atomic<QNode*> m_Curr{ &m_Head };
 	};
 }
