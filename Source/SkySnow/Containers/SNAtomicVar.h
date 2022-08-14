@@ -26,6 +26,9 @@
 namespace SkySnow
 {
 	//原子操作计数器
+	//原子载入是acquire操作memory_order_acquire，
+	//原子存储是release操作memory_order_release，原子的读，修改，写操作是获取，
+	//释放或者两者兼有memory_order_acq_rel
 	class AtomicCount
 	{
 	public:
