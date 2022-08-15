@@ -26,8 +26,46 @@
 #include <memory>
 #include "LogAssert.h"
 #include "MpscQueue.h"
+#include "GRIResource.h"
 namespace SkySnowLearning
 {
+
+	class HazardPointerMap
+	{
+	public:
+		HazardPointerMap() {}
+
+		void AddHazardPointer();
+		void DeleteHazardPointer();
+	};
+	template<typename T>
+	class HazardPointer
+	{
+		HazardPointer(const HazardPointer& copy) = delete;
+		HazardPointer& operator=(const HazardPointer& other) = delete;
+	public:
+		HazardPointer() = default;
+		HazardPointer(std::atomic<T*>& hazard, HazardPointerMap& hpMap)
+		{
+			SN_LOG("HazardPointer Construct.");
+		}
+
+		HazardPointer(HazardPointer&& other)
+		{
+			SN_LOG("HazardPointer Move Construct.");
+		}
+
+		HazardPointer& operator=(HazardPointer&& other)
+		{
+			SN_LOG("HazardPointer Move =.");
+		}
+	};
+
+	template<typename T>
+	HazardPointer<T> MakeHazardPointer(std::atomic<T*>& hazard, HazardPointerMap& hpMap)
+	{
+		return { hazard ,hpMap };
+	}
 	class TestMpscQueue
 	{
 	public:
@@ -206,4 +244,14 @@ namespace SkySnowLearning
 	private:
 		std::atomic_flag flag = ATOMIC_FLAG_INIT;
 	};
+
+
+
+
+	static void TestFunctionAboutLockFree()
+	{
+		static HazardPointerMap hpMap;
+		static std::atomic<SkySnow::MpscQueue<SkySnow::GRIResource*>*> mpscQueue;
+		auto hp = MakeHazardPointer(mpscQueue, hpMap);
+	}
 }
