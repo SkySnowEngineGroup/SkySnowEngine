@@ -41,11 +41,14 @@ namespace SkySnow
 
 	void GLCommandsSet::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
-
+		m_PendingState.primitiveType = (PrimitiveType)static_cast<GRIGraphicsPipelineState*>(pipelineState)->_PrimitiveType;
 	}
 
 	void GLCommandsSet::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
+		GLenum DrawMode = GL_TRIANGLES;
+		CheckPrimitiveType();
+		SetupVertexFormatBinding();
 		if (numInstance > 1)
 		{
 
@@ -53,15 +56,19 @@ namespace SkySnow
 		else
 		{
 			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
-			SetupVertexFormatBinding();
 			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
-			glDrawArrays(GL_TRIANGLES, 0, numPrimitive * 3);
+			glDrawArrays(DrawMode, 0, numPrimitive * 3);
 			//glBindVertexArray(0);
 		}
 	}
 
-
+	//privateFunction ==============================================================
 	void GLCommandsSet::SetupVertexFormatBinding()
+	{
+
+	}
+
+	void GLCommandsSet::CheckPrimitiveType()
 	{
 
 	}

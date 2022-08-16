@@ -27,6 +27,7 @@
 #include "LogAssert.h"
 #include "MpscQueue.h"
 #include "GRIResource.h"
+#include <thread>
 namespace SkySnowLearning
 {
 
@@ -35,8 +36,34 @@ namespace SkySnowLearning
 	public:
 		HazardPointerMap() {}
 
-		void AddHazardPointer();
-		void DeleteHazardPointer();
+		void AddHazardPointer()
+		{
+
+		}
+		void DeleteHazardPointer()
+		{
+
+		}
+
+		void Acquire()
+		{
+			struct Pseudo
+			{
+				static inline uint32_t GetThread()
+				{
+					static std::atomic_uint counter{ 0 };
+					uint32_t value = counter.fetch_add(1, std::memory_order_relaxed);
+					SN_LOG("===value:%d\n", value);
+					value = ((value >> 16) ^ value) * 0x45d9f3b;
+					value = ((value >> 16) ^ value) * 0x45d9f3b;
+					value = (value >> 16) ^ value;
+					//SN_LOG("value:%d\n", value);
+					return value;
+				}
+			};
+			static thread_local uint32_t startIndex = Pseudo::GetThread();
+			SN_LOG("startIndex:%d\n", startIndex);
+		}
 	};
 	template<typename T>
 	class HazardPointer
@@ -245,13 +272,29 @@ namespace SkySnowLearning
 		std::atomic_flag flag = ATOMIC_FLAG_INIT;
 	};
 
-
+	static void TestThreadFun()
+	{
+		static HazardPointerMap hpMap;
+		hpMap.Acquire();
+	}
 
 
 	static void TestFunctionAboutLockFree()
 	{
-		static HazardPointerMap hpMap;
-		static std::atomic<SkySnow::MpscQueue<SkySnow::GRIResource*>*> mpscQueue;
-		auto hp = MakeHazardPointer(mpscQueue, hpMap);
+		//static HazardPointerMap hpMap;
+		//static std::atomic<SkySnow::MpscQueue<SkySnow::GRIResource*>*> mpscQueue;
+		//auto hp = MakeHazardPointer(mpscQueue, hpMap);
+
+		//std::thread  t1(TestThreadFun);
+		//std::thread  t2(TestThreadFun);
+		//std::thread  t3(TestThreadFun);
+		//std::thread  t4(TestThreadFun);
+		int a = (10 + 2) % 32;
+		int b = a;
+
+		//t1.join();
+		//t2.join();
+		//t3.join();
+		//t4.join();
 	}
 }

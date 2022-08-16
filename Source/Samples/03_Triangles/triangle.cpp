@@ -62,6 +62,8 @@ public:
 		m_File->ReadData(vsShaderPath, m_VsData);
 		m_File->ReadData(fsShaderPath, m_FsData);
 
+		GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+		
 		m_vsRef = GRC->GRICreateVertexShader((char*)m_VsData->GetBytes());
 		m_fsRef = GRC->GRTCreateFragmentShader((char*)m_FsData->GetBytes());
 		m_PipelineShaderStateRef = GRC->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
@@ -69,20 +71,24 @@ public:
 							 0.5f,  -0.5f, 0.0f,
 							 0.0f,  0.5f,  0.0f};
 		SN_LOG("Vertex Size:%d",sizeof(vertices));
+		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
 		m_VertexBufferRef = GRC->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
 												sizeof(vertices),
 												3, 
 												vertices);
+		m_PSORef = GRC->GRICreateGraphicsPipelineState(psoCreateInfo);
 		return 0;
 	}
 
 	void Update()
 	{
+		GRIResource::FlushResourceRelease();
 		GRC->GRIClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT);
 		//这些接口是GRICommands中的渲染接口
 		GRS->GRISetBuffer(0,m_VertexBufferRef,0);
 		GRS->GRISetPipelineShaderState(m_PipelineShaderStateRef);
+		GRS->GRISetGraphicsPipelineState(m_PSORef);
 		GRS->GRIDrawPrimitive(1,1);
 	}
 
@@ -94,6 +100,7 @@ private:
 	GRIFragmentShaderRef	m_fsRef;
 	GRIBufferRef			m_VertexBufferRef;
 	GRIPipelineShaderStateRef m_PipelineShaderStateRef;
+	GRIGraphicsPipelineStateRef m_PSORef;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

@@ -36,7 +36,10 @@ namespace SkySnow
 		glClearColor(red,green,blue,alpha);
 	}
 
-
+	GRIGraphicsPipelineStateRef GRIGLCommandsCreate::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	{
+		return new GLGraphicPipelineState(createInfo);
+	}
 
 
 }

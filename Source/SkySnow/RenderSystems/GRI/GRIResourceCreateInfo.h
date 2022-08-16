@@ -27,6 +27,6 @@ namespace SkySnow
 	class GRICreateGraphicsPipelineStateInfo
 	{
 	public:
-
+		PrimitiveType _PrimitiveType;
 	};
 }

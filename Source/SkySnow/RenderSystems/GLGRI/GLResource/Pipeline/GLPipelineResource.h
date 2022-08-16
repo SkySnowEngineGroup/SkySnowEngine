@@ -28,7 +28,7 @@
 #include "GLBufferResource.h"
 #include "GLBuffer.h"
 #include "GLShader.h"
-
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
 	class GLPipelineShaderState : public GRIPipelineShaderState
@@ -73,6 +73,11 @@ namespace SkySnow
 	{
 	public:
 		GLGraphicPipelineState()
+			: GRIGraphicsPipelineState()
+		{
+		}
+
+		GLGraphicPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
 			: GRIGraphicsPipelineState()
 		{
 		}

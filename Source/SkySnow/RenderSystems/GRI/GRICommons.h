@@ -43,7 +43,7 @@ namespace SkySnow
 		GRT_PipelineShaderState,
 		GRT_GraphicsPipelineState,
 		GRT_Buffer,
-		//GRI_Assembly,
+		GRI_Assembly,
 		GRT_Num
 	};
 
