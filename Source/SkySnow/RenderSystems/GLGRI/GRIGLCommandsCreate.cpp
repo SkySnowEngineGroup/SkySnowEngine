@@ -40,6 +40,4 @@ namespace SkySnow
 	{
 		return new GLGraphicPipelineState(createInfo);
 	}
-
-
 }

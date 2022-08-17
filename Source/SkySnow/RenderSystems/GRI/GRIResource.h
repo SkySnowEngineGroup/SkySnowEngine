@@ -167,8 +167,6 @@ namespace SkySnow
 		{
 			SN_LOG("GRIGraphicsPipelineState Destruct.");
 		}
-
-		int		_PrimitiveType;
 	};
 
 	class GRIBuffer : public GRIResource

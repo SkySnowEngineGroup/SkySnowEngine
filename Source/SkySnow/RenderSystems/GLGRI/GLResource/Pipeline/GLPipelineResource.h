@@ -79,6 +79,7 @@ namespace SkySnow
 
 		GLGraphicPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
 			: GRIGraphicsPipelineState()
+			, _PrimitiveType(createInfo._PrimitiveType)
 		{
 		}
 
@@ -90,7 +91,7 @@ namespace SkySnow
 		GLShaderStateInfo		shaderStateInfo;
 		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
 		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。
-		PrimitiveType			primitiveType;
+		PrimitiveType			_PrimitiveType;
 	};
 	//该能力对齐vulkan&metal的pipelinecache
 	//在UE5中有类似的概念，但是从其代码来看

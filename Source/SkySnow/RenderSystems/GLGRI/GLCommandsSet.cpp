@@ -41,14 +41,16 @@ namespace SkySnow
 
 	void GLCommandsSet::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
-		m_PendingState.primitiveType = (PrimitiveType)static_cast<GRIGraphicsPipelineState*>(pipelineState)->_PrimitiveType;
+		m_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipelineState*>(pipelineState)->_PrimitiveType;
 	}
 
 	void GLCommandsSet::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
 		GLenum DrawMode = GL_TRIANGLES;
-		CheckPrimitiveType();
-		SetupVertexFormatBinding();
+		int numElements;
+		CheckPrimitiveType(m_PendingState._PrimitiveType,numPrimitive,DrawMode,numElements);
+		
+		//SetupVertexFormatBinding();
 		if (numInstance > 1)
 		{
 
@@ -57,19 +59,42 @@ namespace SkySnow
 		{
 			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
 			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
-			glDrawArrays(DrawMode, 0, numPrimitive * 3);
+			glDrawArrays(DrawMode, 0, numElements);
 			//glBindVertexArray(0);
 		}
 	}
 
 	//privateFunction ==============================================================
-	void GLCommandsSet::SetupVertexFormatBinding()
+	void GLCommandsSet::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
 	{
 
 	}
 
-	void GLCommandsSet::CheckPrimitiveType()
+	void GLCommandsSet::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)
 	{
-
+		glPrimitiveType = GL_TRIANGLES;
+		numElements = numPrimitives;
+		switch (primitiveType)
+		{
+		case PrimitiveType::PT_Lines:
+			glPrimitiveType = GL_LINES;
+			numElements = numPrimitives * 2;
+			break;
+		case PrimitiveType::PT_Point_Strip:
+			glPrimitiveType = GL_POINTS;
+			numElements = numPrimitives;
+			break;
+		case PrimitiveType::PT_Trangles:
+			glPrimitiveType = GL_TRIANGLES;
+			numElements = numPrimitives * 3;
+			break;
+		case PrimitiveType::PT_Trangle_Strip:
+			glPrimitiveType = GL_TRIANGLE_STRIP;
+			numElements = numPrimitives + 2;
+			break;
+		default:
+			SN_LOG("There is no primitive matching type:%d",primitiveType);
+			break;
+		}
 	}
 }

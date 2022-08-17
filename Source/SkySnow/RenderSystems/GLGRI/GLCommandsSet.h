@@ -49,7 +49,7 @@ namespace SkySnow
 		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
 		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
 		void SetupVertexFormatBinding();
-		void CheckPrimitiveType();
+		void CheckPrimitiveType(PrimitiveType primitiveType,int numPrimitives,GLenum& glPrimitiveType,int& numElements);
 	private:
 		//已经设置，将提交到GPU执行的pipelinestate
 		//当使用PipelineCache时，该对象从外部设置，即从GRISetGraphicsPipelineState进行赋值
