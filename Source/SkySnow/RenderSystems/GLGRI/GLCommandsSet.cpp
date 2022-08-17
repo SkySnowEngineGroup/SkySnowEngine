@@ -28,10 +28,11 @@ namespace SkySnow
 {
 	void GLCommandsSet::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset)
 	{
-		GLBuffer* vertexBuffer = dynamic_cast<GLBuffer*>(buffer);
-		m_PendingState.vertexBufferInfo[BufferInfoId].gpuHandle = vertexBuffer->m_Vao;
-		m_PendingState.vertexBufferInfo[BufferInfoId].stride = vertexBuffer->GetStride();
-		m_PendingState.vertexBufferInfo[BufferInfoId].offset = offset;
+		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
+		m_PendingState._BufferInfo[BufferInfoId]._GpuHandle = bufferGL->_GpuHandle;
+		m_PendingState._BufferInfo[BufferInfoId]._Stride = bufferGL->GetStride();
+		m_PendingState._BufferInfo[BufferInfoId]._Offset = offset;
+		m_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
 	}
 
 	void  GLCommandsSet::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
@@ -49,16 +50,15 @@ namespace SkySnow
 		GLenum DrawMode = GL_TRIANGLES;
 		int numElements;
 		CheckPrimitiveType(m_PendingState._PrimitiveType,numPrimitive,DrawMode,numElements);
-		
-		//SetupVertexFormatBinding();
+		glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
+		SetupVertexFormatBinding(m_PendingState, m_PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
 
 		}
 		else
 		{
-			glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
-			glBindVertexArray(m_PendingState.vertexBufferInfo[0].gpuHandle);
+			
 			glDrawArrays(DrawMode, 0, numElements);
 			//glBindVertexArray(0);
 		}
@@ -67,7 +67,14 @@ namespace SkySnow
 	//privateFunction ==============================================================
 	void GLCommandsSet::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
 	{
-
+		GLBufferInfo& bufferI = bufferInfo[0];
+		glBindBuffer(bufferI._BufferType, bufferI._GpuHandle);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3,
+							  GL_FLOAT, GL_FALSE, 
+							  bufferI._Stride * sizeof(GLfloat),
+			                  (GLvoid*)bufferI._Offset);
+		
 	}
 
 	void GLCommandsSet::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)

@@ -55,7 +55,7 @@ namespace SkySnow
 		//针对于indexBuffer  vertexBuffer  SSBO，即使用Draw即可
 		GLBuffer(GLenum bufferType,BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride)
-			, m_BufferType(bufferType)
+			, _BufferType(bufferType)
 			, m_Data(data)
 			, b_StreamDraw(streamDraw)
 		{
@@ -77,26 +77,18 @@ namespace SkySnow
 		//因此可以使用glBufferSubData代替glBufferData，其基础功能一样，但是glBufferSubData功能多一些，其处理非交叉的SOA数据更简单快捷一些
 		void CreateBuffer(GLenum usageType,GLuint size)
 		{
-			glGenVertexArrays(1,&m_Vao);
-			glBindVertexArray(m_Vao);
-
-			OpenGL::GenBuffers(1,&m_GPUHandle);
-			OpenGL::BindBuffer(m_BufferType,m_GPUHandle);
-			OpenGL::BufferData(m_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-			//该函数会移动到DrawPrimitive函数中，根据PipelineState进行处理，数据设置来源是GRISetBuffer
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride*sizeof(GLfloat), (GLvoid*)0);
-			glEnableVertexAttribArray(0);
-			
-			glBindBuffer(m_BufferType,0);
-			glBindVertexArray(0);
+			OpenGL::GenBuffers(1,&_GpuHandle);
+			OpenGL::BindBuffer(_BufferType, _GpuHandle);
+			OpenGL::BufferData(_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+			//glVertexAttribPointer(0, 3,GL_FLOAT, GL_FALSE,m_Stride * sizeof(GLfloat),(GLvoid*)0);
+			//glBindBuffer(_BufferType,0);
 		}
 
 	public:
-		GLuint		m_Vao;
-		GLenum		m_BufferType;
+		GLuint		_GpuHandle;
+		GLenum		_BufferType;
 	private:
 		bool		b_StreamDraw;
-		GLuint		m_GPUHandle;
 		const void* m_Data;
 		
 	};

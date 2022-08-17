@@ -87,7 +87,7 @@ namespace SkySnow
 		{
 		}
 	public:
-		GLBufferInfo			vertexBufferInfo[Num_GL_Vertex_Attribute];
+		GLBufferInfo			_BufferInfo[Num_GL_Vertex_Attribute];
 		GLShaderStateInfo		shaderStateInfo;
 		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
 		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。

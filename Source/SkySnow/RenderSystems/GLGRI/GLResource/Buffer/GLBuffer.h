@@ -29,14 +29,16 @@ namespace SkySnow
 	struct GLBufferInfo
 	{
 		GLBufferInfo()
-			: gpuHandle(0)
-			, stride(0)
-			, offset(0)
+			: _GpuHandle(0)
+			, _BufferType(0)
+			, _Stride(0)
+			, _Offset(0)
 		{
 		}
-		GLuint		gpuHandle;
-		int			stride;
-		int			offset;
+		GLuint		_GpuHandle;
+		GLenum		_BufferType;
+		int			_Stride;
+		int			_Offset;
 	};
 
 
