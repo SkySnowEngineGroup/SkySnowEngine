@@ -35,7 +35,7 @@ namespace SkySnow
 	public:
 		GRIResource()
 			//: RefThreadSafeCounted()
-			: m_GRIResourceType(GRT_None)
+			: m_GRIResourceType(EGRIResourceType::GRT_None)
 		{
 
 		}
@@ -108,7 +108,7 @@ namespace SkySnow
 	{
 	public:
 		GRIVertexShader()
-			: GRIShader(GRT_VertexShader)
+			: GRIShader(EGRIResourceType::GRT_VertexShader)
 		{
 		}
 		virtual ~GRIVertexShader()
@@ -121,7 +121,7 @@ namespace SkySnow
 	{
 	public:
 		GRIFragmentShader()
-			: GRIShader(GRT_FragmentShader)
+			: GRIShader(EGRIResourceType::GRT_FragmentShader)
 		{
 		}
 		virtual ~GRIFragmentShader()
@@ -134,7 +134,7 @@ namespace SkySnow
 	{
 	public:
 		GRIAssembly()
-			: GRIResource(GRI_Assembly)
+			: GRIResource(EGRIResourceType::GRI_Assembly)
 		{
 		}
 		virtual ~GRIAssembly()
@@ -147,7 +147,7 @@ namespace SkySnow
 	{
 	public:
 		GRIPipelineShaderState()
-			: GRIResource(GRT_PipelineShaderState)
+			: GRIResource(EGRIResourceType::GRT_PipelineShaderState)
 		{
 		}
 		virtual ~GRIPipelineShaderState()
@@ -160,7 +160,7 @@ namespace SkySnow
 	{
 	public:
 		GRIGraphicsPipelineState()
-			: GRIResource(GRT_GraphicsPipelineState)
+			: GRIResource(EGRIResourceType::GRT_GraphicsPipelineState)
 		{
 		}
 		virtual ~GRIGraphicsPipelineState()
@@ -173,11 +173,15 @@ namespace SkySnow
 	{
 	public:
 		GRIBuffer()
-			: GRIResource(GRT_Buffer)
+			: GRIResource(EGRIResourceType::GRT_Buffer)
+			, m_UsageType(BufferUsageType::BUT_None)
+			, m_Size(0)
+			, m_Stride(0)
+			, m_BufferName("")
 		{
 		}
 		GRIBuffer(BufferUsageType usage, int size, int stride)
-			: GRIResource(GRT_Buffer)
+			: GRIResource(EGRIResourceType::GRT_Buffer)
 			, m_UsageType(usage)
 			, m_Size(size)
 			, m_Stride(stride)
@@ -211,7 +215,7 @@ namespace SkySnow
 
 		bool IsDynamic() const
 		{
-			return (m_UsageType & BUT_DynamicBuffer) != 0;
+			return (m_UsageType & BufferUsageType::BUT_DynamicBuffer) != 0;
 		}
 
 		std::string GetBufferName()

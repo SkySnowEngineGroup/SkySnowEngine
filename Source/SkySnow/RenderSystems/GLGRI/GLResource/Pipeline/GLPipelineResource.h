@@ -36,6 +36,7 @@ namespace SkySnow
 	public:
 		GLPipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 			: GRIPipelineShaderState()
+			, _ProgramId(0)
 			, m_OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
 			, m_OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
 		{
@@ -60,7 +61,7 @@ namespace SkySnow
 			return nullptr;
 		}
 	public:
-		GLuint m_ProgramId;
+		GLuint _ProgramId;
 	private:
 		//Cache Array or LRUCache
 		//temp is ptr
@@ -74,6 +75,7 @@ namespace SkySnow
 	public:
 		GLGraphicPipelineState()
 			: GRIGraphicsPipelineState()
+			, _PrimitiveType(PrimitiveType::PT_Num)
 		{
 		}
 
@@ -88,7 +90,7 @@ namespace SkySnow
 		}
 	public:
 		GLBufferInfo			_BufferInfo[Num_GL_Vertex_Attribute];
-		GLShaderStateInfo		shaderStateInfo;
+		GLShaderStateInfo		_ShaderStateInfo;
 		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
 		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。
 		PrimitiveType			_PrimitiveType;

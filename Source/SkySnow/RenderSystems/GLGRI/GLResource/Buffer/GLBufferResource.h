@@ -43,6 +43,10 @@ namespace SkySnow
 	public:
 		GLBuffer()
 			: GRIBuffer()
+			, _BufferType(0)
+			, _GpuHandle(0)
+			, b_StreamDraw(false)
+			, m_Data(nullptr)
 		{
 		}
 		//streamDraw ‘› ±≤ª”√
@@ -80,6 +84,7 @@ namespace SkySnow
 			OpenGL::GenBuffers(1,&_GpuHandle);
 			OpenGL::BindBuffer(_BufferType, _GpuHandle);
 			OpenGL::BufferData(_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+
 			//glVertexAttribPointer(0, 3,GL_FLOAT, GL_FALSE,m_Stride * sizeof(GLfloat),(GLvoid*)0);
 			//glBindBuffer(_BufferType,0);
 		}

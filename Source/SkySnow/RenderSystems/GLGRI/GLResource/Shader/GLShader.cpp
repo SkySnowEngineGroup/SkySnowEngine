@@ -46,9 +46,9 @@ namespace SkySnow
 		GLPipelineShaderState* temp = new GLPipelineShaderState(vs, fs);
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
-		OGLShader::CreateProgram(glvs->m_GpuHandle, 
-								 glfs->m_GpuHandle,
-								 temp->m_ProgramId);
+		OGLShader::CreateProgram(glvs->_GpuHandle, 
+								 glfs->_GpuHandle,
+								 temp->_ProgramId);
 		return temp;
 	}
 
@@ -70,8 +70,8 @@ namespace SkySnow
 	OGLShaderType* OGLShader::CompileShader(const char* shadercode)
 	{
 		OGLShaderType* shader = new OGLShaderType();
-		shader->m_GpuHandle = OpenGL::CreateShader(shader->m_GLTypeEnum);
-		CompileCurrentShader(shader->m_GpuHandle,shadercode);
+		shader->_GpuHandle = OpenGL::CreateShader(shader->m_GLTypeEnum);
+		CompileCurrentShader(shader->_GpuHandle,shadercode);
 		return shader;
 	}
 

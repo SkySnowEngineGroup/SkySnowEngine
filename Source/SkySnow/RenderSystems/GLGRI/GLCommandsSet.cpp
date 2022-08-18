@@ -37,7 +37,7 @@ namespace SkySnow
 
 	void  GLCommandsSet::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
 	{
-		m_PendingState.shaderStateInfo.gpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->m_ProgramId;
+		m_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
 	}
 
 	void GLCommandsSet::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
@@ -47,10 +47,10 @@ namespace SkySnow
 
 	void GLCommandsSet::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
-		GLenum DrawMode = GL_TRIANGLES;
+		GLenum drawMode = GL_TRIANGLES;
 		int numElements;
-		CheckPrimitiveType(m_PendingState._PrimitiveType,numPrimitive,DrawMode,numElements);
-		glUseProgram(m_PendingState.shaderStateInfo.gpuHandle);
+		CheckPrimitiveType(m_PendingState._PrimitiveType,numPrimitive, drawMode,numElements);
+		
 		SetupVertexFormatBinding(m_PendingState, m_PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
@@ -58,22 +58,22 @@ namespace SkySnow
 		}
 		else
 		{
-			
-			glDrawArrays(DrawMode, 0, numElements);
-			//glBindVertexArray(0);
+			glUseProgram(m_PendingState._ShaderStateInfo._GpuHandle);
+			glDrawArrays(drawMode, 0, numElements);
+			glDisableVertexAttribArray(0);
 		}
 	}
 
 	//privateFunction ==============================================================
 	void GLCommandsSet::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
 	{
-		GLBufferInfo& bufferI = bufferInfo[0];
-		glBindBuffer(bufferI._BufferType, bufferI._GpuHandle);
+		GLBufferInfo& bInfo = bufferInfo[0];
+		glBindBuffer(bInfo._BufferType, bInfo._GpuHandle);
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3,
+		glVertexAttribPointer(0, bInfo._Stride,
 							  GL_FLOAT, GL_FALSE, 
-							  bufferI._Stride * sizeof(GLfloat),
-			                  (GLvoid*)bufferI._Offset);
+							  bInfo._Stride * sizeof(GLfloat),
+			                  (GLvoid*)bInfo._Offset);
 		
 	}
 

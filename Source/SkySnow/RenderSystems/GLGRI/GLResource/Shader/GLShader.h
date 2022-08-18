@@ -29,12 +29,12 @@ namespace SkySnow
 	struct GLShaderStateInfo
 	{
 		GLShaderStateInfo()
-			: gpuHandle(0)
+			: _GpuHandle(0)
 		{
 
 		}
 
-		GLuint gpuHandle;
+		GLuint _GpuHandle;
 	};
 
 	//可以看做是Shader的Util全局工具函数，但是使用OGLShader标记命名空间
