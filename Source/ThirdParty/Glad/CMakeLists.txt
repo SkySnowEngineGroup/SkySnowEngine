@@ -24,6 +24,7 @@
 set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 file(GLOB Sources_lists "${SOURCES_DIR}/glad/*.h"
+						"${SOURCES_DIR}/KHR/*.h"
 		                "${SOURCES_DIR}/glad/*.c"
 						"${SOURCES_DIR}/*.c")
 
@@ -31,4 +32,5 @@ add_library(glad ${Sources_lists})
 
 target_include_directories(glad PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>
 								PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/glad/
+								PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/KHR/
 						  )

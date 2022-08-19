@@ -46,6 +46,6 @@
 #	define GLFW_INCLUDE_NONE
 #	include <stdarg.h>
 #	include <stdio.h>
-#	include <glad/gl.h>
+#	include <glad/glad.h>
 #	include <GLFW/glfw3.h>
 #endif // 0

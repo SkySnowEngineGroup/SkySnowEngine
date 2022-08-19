@@ -60,7 +60,7 @@ namespace SkySnow
 		{
 			glUseProgram(m_PendingState._ShaderStateInfo._GpuHandle);
 			glDrawArrays(drawMode, 0, numElements);
-			glDisableVertexAttribArray(0);
+			//glDisableVertexAttribArray(0);
 		}
 	}
 
