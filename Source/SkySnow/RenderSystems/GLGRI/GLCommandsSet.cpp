@@ -74,6 +74,28 @@ namespace SkySnow
 							  GL_FLOAT, GL_FALSE, 
 							  bInfo._Stride * sizeof(GLfloat),
 			                  (GLvoid*)bInfo._Offset);
+		//glVertexAttribPointer
+		/*
+			缺陷1: offset为指针非整数，cpu侧进行整数到指针的转换，GPU侧进行指针到整数的转换(这是一个糟糕的设计思路)
+			缺陷2: 合并两个逻辑上完全独立的操作: 1. 如何从内存提取数据 2. 数据是什么样的
+		OpenGL的4.3和OpenGL ES 3.1添加若干替代功能用于指定顶点数组:glVertexAttribFormat,glBindVertexBuffers等
+			单独的glVertexAttribPointer函数，类似一下伪代码功能
+			void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid * pointer)
+			{
+				glVertexAttrib*Format(index, size, type, normalized, 0);
+				glVertexAttribBinding(index, index);
+				GLuint buffer;
+				glGetIntegerv(GL_ARRAY_BUFFER_BINDING, buffer);
+				if(buffer == 0)
+					glErrorOut(GL_INVALID_OPERATION); //Give an error.
+
+				if(stride == 0)
+					stride = CalcStride(size, type);
+
+				GLintptr offset = reinterpret_cast<GLintptr>(pointer);
+				glBindVertexBuffer(index, buffer, offset, stride);
+			}
+		*/
 		
 	}
 

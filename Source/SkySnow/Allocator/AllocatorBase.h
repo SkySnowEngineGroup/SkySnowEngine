@@ -20,26 +20,9 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include <string>
+
 namespace SkySnow
 {
-	//声明全局变量，并用extern标记，即声明又定义，保证定义
-	//只在该处进行定义初始化，别的地方定义初始化会报错
-	//extern const std::string g_MediaPath = "D:/StudyEnginer/";//Home Path
-	extern const std::string g_MediaPath = "D:/"; //Company Path
-	extern const std::string g_RelativeMaterialPath = "SkySnowEngine/Script/Media/Material/";
-	//globle Function
-	std::string GetMaterialAllPath(const std::string mpath)
-	{
-		return g_MediaPath + g_RelativeMaterialPath + mpath;
-	}
 
-#define Delete_Object(object) \
-		if(object) \
-		{ \
-			delete object; \
-			object = nullptr; \
-		}
 }

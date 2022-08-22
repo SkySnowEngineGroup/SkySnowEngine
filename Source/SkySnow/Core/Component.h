@@ -24,12 +24,12 @@
 #include "Object.h"
 namespace SkySnow
 {
-	class Componment : public Object
+	class Component : public Object
 	{
-		SkySnow_Object(Componment,Object);
+		SkySnow_Object(Component,Object);
 	public:
-		Componment();
-		virtual ~Componment();
+		Component();
+		virtual ~Component();
 
 	};
 }
