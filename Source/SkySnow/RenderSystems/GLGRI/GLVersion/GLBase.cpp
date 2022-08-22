@@ -21,25 +21,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GL4.h"
-#if PLATFORM == PLATFORM_WINDOW
-
+#include "GLBase.h"
 namespace SkySnow
 {
-	class GLWindow : public OpenGL4
-	{
-	public:
-		static inline GRIFeature GetFeatureType()
-		{
-			return EOpenGL;
-		}
+	bool	OpenGLBase::b_SupportVertexFormatBinding = false;
+	GLuint	OpenGLBase::ui_MajorVersion = 0;
+	GLuint	OpenGLBase::ui_MinorVersion = 0;
 
-		static void InitialExtensions(const std::string& allExtStr)
-		{
-			OpenGL4::InitialExtensions(allExtStr);
-		}
-	};
+	void OpenGLBase::InitialExtensions(const std::string& allExtStr)
+	{
+
+	}
+
+	void OpenGLBase::CheckExtensions(const std::string& targetStr)
+	{
+
+	}
 }
-typedef SkySnow::GLWindow OpenGL;
-#endif

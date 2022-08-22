@@ -28,5 +28,8 @@ namespace SkySnow
 	class OpenGL4 : public OpenGL3
 	{
 	public:
+
+
+		static void InitialExtensions(const std::string& allExtStr);
 	};
 }

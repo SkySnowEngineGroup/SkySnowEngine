@@ -21,25 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GL4.h"
-#if PLATFORM == PLATFORM_WINDOW
-
+#include "GL3.h"
 namespace SkySnow
 {
-	class GLWindow : public OpenGL4
+	void OpenGL3::InitialExtensions(const std::string& allExtStr)
 	{
-	public:
-		static inline GRIFeature GetFeatureType()
-		{
-			return EOpenGL;
-		}
-
-		static void InitialExtensions(const std::string& allExtStr)
-		{
-			OpenGL4::InitialExtensions(allExtStr);
-		}
-	};
+		OpenGLBase::InitialExtensions(allExtStr);
+	}
 }
-typedef SkySnow::GLWindow OpenGL;
-#endif

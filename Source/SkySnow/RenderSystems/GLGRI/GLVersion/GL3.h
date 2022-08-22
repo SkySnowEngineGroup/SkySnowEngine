@@ -33,5 +33,7 @@ namespace SkySnow
 		{
 			glGenBuffers(size,buffer);
 		}
+
+		static void InitialExtensions(const std::string& allExtStr);
 	};
 }

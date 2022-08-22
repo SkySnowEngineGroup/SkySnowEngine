@@ -24,7 +24,7 @@
 #pragma once
 #include "Imports_GL.h"
 #include "Imports_GLES.h"
-
+#include <string>
 //关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
 //这里关于核心标准的API将不会在在重定义，只是在这里会进行一些拓展函数支持函数判断
 //由Import_GL&Import_GLES修改支持的标志位，并将函数重定义到Import_GL&Import_GLES中
@@ -53,5 +53,22 @@ namespace SkySnow
 		{
 			glBindBuffer(type, buffer);
 		}
+		static inline void InitialTest()
+		{
+			ui_MajorVersion = 3;
+			ui_MinorVersion = 2;
+		}
+		
+		static inline bool SupportVertexFormatBinding() { return b_SupportVertexFormatBinding; };
+		static inline GLuint GetMajorVersion() { return ui_MajorVersion; };
+		static inline GLuint GetMinorVersion() { return ui_MinorVersion; };
+		static void InitialExtensions(const std::string& allExtStr);
+	protected:
+		static void CheckExtensions(const std::string& targetStr);
+
+	protected:
+		static bool		b_SupportVertexFormatBinding;
+		static GLuint	ui_MajorVersion;
+		static GLuint	ui_MinorVersion;
 	};
 }

@@ -29,6 +29,7 @@
 #include "OSPlatform.h"
 #include "File.h"
 #include "SkySnowConfigInfo.h"
+#include "GLWindow.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -77,6 +78,11 @@ public:
 												3, 
 												vertices);
 		m_PSORef = GRC->GRICreateGraphicsPipelineState(psoCreateInfo);
+
+		OpenGL::InitialTest();
+
+		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
+		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 		return 0;
 	}
 

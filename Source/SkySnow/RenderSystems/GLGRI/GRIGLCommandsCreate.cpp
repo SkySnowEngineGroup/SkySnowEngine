@@ -28,7 +28,7 @@ namespace SkySnow
 {
 	GRIGLCommandsCreate::GRIGLCommandsCreate()
 	{
-
+		OpenGL::InitialExtensions();
 	}
 
 	void GRIGLCommandsCreate::GRIClearColor(float red, float green, float blue, float alpha)
