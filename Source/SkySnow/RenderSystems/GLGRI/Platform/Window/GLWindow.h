@@ -24,6 +24,7 @@
 #pragma once
 #include "GL4.h"
 #include "LogAssert.h"
+#include "UString.h"
 #if PLATFORM == PLATFORM_WINDOW
 
 namespace SkySnow
@@ -38,10 +39,10 @@ namespace SkySnow
 
 		static void InitialExtensions()
 		{
-			const char* version = (const char*)glGetString(GL_VERSION);
-			SN_LOG("version:%s\n", version);
-			const char* extensions = (const char*)glGetString(GL_EXTENSIONS);
-			SN_LOG("Extensions:%s",extensions);
+			UString version = (const char*)glGetString(GL_VERSION);
+			SN_LOG("version:%s\n", version.C_Str());
+			UString extensions = (const char*)glGetString(GL_EXTENSIONS);
+			SN_LOG("Extensions:%s",extensions.C_Str());
 			OpenGL4::InitialExtensions();
 		}
 	};

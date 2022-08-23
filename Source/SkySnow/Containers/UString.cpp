@@ -74,4 +74,85 @@ namespace SkySnow
 		Swap(_Capacity,other._Capacity);
 		Swap(_Buffer,other._Buffer);
 	}
+	std::vector<UString> UString::Split(const char* src, char* split, bool keepEmpty) const
+	{
+		std::vector<UString> res;
+		const char* srcEnd = src + strlen(src);
+		for (const char* curr = src; curr != srcEnd; curr ++)
+		{
+			const long long offset_v = curr - src;
+			if (offset_v > 0 || keepEmpty)
+				res.emplace_back(UString(src,offset_v));
+			src = curr + 1;
+		}
+		const long long offset_v = srcEnd - src;
+		if (offset_v > 0 || keepEmpty)
+			res.emplace_back(UString(src, offset_v));
+		return res;
+	}
+	unsigned UString::Find(const UString& source, unsigned start, bool isCs) const
+	{
+		if (!source._Length || source._Length > _Length)
+			return NPOS;
+		char first = source._Buffer[0];
+		//two way
+		if (!isCs)
+			first = (char)tolower(first);
+		for (unsigned i = start;i <= _Length - source._Length; i++)
+		{
+			char lc = _Buffer[i];
+			if (!isCs)
+				lc = (char)tolower(lc);
+			if (lc == first)
+			{
+				unsigned skip = NPOS;
+				bool found = true;
+				for (unsigned j = 1; j < source._Length; j ++)
+				{
+					lc = _Buffer[i + j];
+					char tc = source._Buffer[j];
+					if (!isCs)
+					{
+						lc = (char)tolower(lc);
+						tc = (char)tolower(tc);
+					}
+					if (skip == NPOS && lc == first)
+						skip = i + j - 1;
+					if (lc != tc)
+					{
+						found = false;
+						if (skip != NPOS)
+							i = skip;
+						break;
+					}
+				}
+				if (found)
+					return i;
+			}
+		}
+		return NPOS;
+	}
+
+	unsigned UString::Find(char source, unsigned start, bool isCs) const
+	{
+		if (isCs)
+		{
+			for (unsigned i = start;i < _Length; i ++)
+			{
+				if (_Buffer[i] == source)
+					return i;
+			}
+		}
+		else
+		{
+			source = (char)tolower(source);
+			for (unsigned i = start;i < _Length; i++)
+			{
+				if (_Buffer[i] == source)
+					return i;
+			}
+		}
+		return NPOS;
+	}
+
 }

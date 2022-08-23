@@ -33,8 +33,6 @@ namespace SkySnow
 		virtual ~OSPlatform() {}
 
 		virtual GRIDrive* OSPlatformCreateGRI() = 0;
-
-		//virtual GRICommandsSet* OSPlatformCreateGRS() = 0;
 	};
 
 	class GRTCreate : public NonCopyable

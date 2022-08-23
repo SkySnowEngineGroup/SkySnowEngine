@@ -24,6 +24,7 @@
 #include "SkySnowConfigInfo.h"
 #include <stdlib.h>
 #include <string>
+#include <vector>
 namespace SkySnow
 {
 	//U is Util
@@ -41,6 +42,51 @@ namespace SkySnow
 		{
 			if (_Capacity)
 				delete[] _Buffer;
+		}
+		//Construct From A Char Pointer
+		UString(const char* value)
+			: _Length(0)
+			, _Capacity(0)
+			, _Buffer(&g_Null_Char)
+		{
+			*this = value;
+		}
+		explicit UString(char* value)
+			: _Length(0)
+			, _Capacity(0)
+			, _Buffer(0)
+		{
+			*this = (const char*)value;
+		}
+		//Construct from a char array
+		UString(const char* value,unsigned length)
+			: _Length(0)
+			, _Capacity(0)
+			, _Buffer(&g_Null_Char)
+		{
+			Resize(length);
+			CopyData(_Buffer,value,length);
+		}
+		//Construct From A Char
+		explicit UString(char value)
+			: _Length(0)
+			, _Capacity(0)
+			, _Buffer(&g_Null_Char)
+		{
+			Resize(1);
+			_Buffer[0] = value;
+		}
+
+		UString(char value,unsigned length)
+			: _Length(0)
+			, _Capacity(0)
+			, _Buffer(0)
+		{
+			Resize(length);
+			for (int i = 0; i < length;i ++)
+			{
+				_Buffer[i] = value;
+			}
 		}
 		//Copy Construct
 		UString(const UString& other)
@@ -102,6 +148,15 @@ namespace SkySnow
 		void Reserve(unsigned capacity);
 		//Swap Two String
 		void Swap(UString& other);
+		//Split by a separator char
+		std::vector<UString> Split(const char* src,char* split,bool keepEmpty = false) const;
+		//Search Target UString
+		unsigned Find(const UString& source, unsigned start = 0, bool isCs = true) const;
+		//Search Target UString
+		unsigned Find(char source, unsigned start = 0, bool isCs = true) const;
+		//Return char pointer
+		const char* C_Str() const { return _Buffer; }
+		char* C_Str() { return _Buffer; }
 	private:
 		template<typename T>
 		inline void Swap(T& lhs,T& rhs)

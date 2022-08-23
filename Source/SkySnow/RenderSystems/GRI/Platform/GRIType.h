@@ -35,6 +35,5 @@ namespace SkySnow
 		virtual ~GRIType() {}
 		virtual bool IsSupport() = 0;
 		virtual GRIDrive* CreateGRI() = 0;
-
 	};
 }
