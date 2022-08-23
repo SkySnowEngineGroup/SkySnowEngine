@@ -30,6 +30,6 @@ namespace SkySnow
 	public:
 
 
-		static void InitialExtensions(const std::string& allExtStr);
+		static void InitialExtensions();
 	};
 }

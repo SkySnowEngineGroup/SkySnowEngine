@@ -24,8 +24,8 @@
 #include "GL3.h"
 namespace SkySnow
 {
-	void OpenGL3::InitialExtensions(const std::string& allExtStr)
+	void OpenGL3::InitialExtensions()
 	{
-		OpenGLBase::InitialExtensions(allExtStr);
+		OpenGLBase::InitialExtensions();
 	}
 }

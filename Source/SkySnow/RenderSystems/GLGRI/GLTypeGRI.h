@@ -23,15 +23,14 @@
 //
 #pragma once
 #include "GRIType.h"
-#include "GRIGLCommandsCreate.h"
+#include "GRIDrive.h"
 namespace SkySnow
 {
 	class GLTypeGRI : public GRIType
 	{
 	public:
 		virtual bool IsSupport() override;
-		virtual GRICommandsCreate* CreateGRC() override;
+		virtual GRIDrive* CreateGRI() override;
 
-		virtual GRICommandsSet* CreateGRS() override;
 	};
 }

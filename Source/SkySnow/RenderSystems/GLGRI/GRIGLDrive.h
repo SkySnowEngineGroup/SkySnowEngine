@@ -22,21 +22,40 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIResource.h"
-#include "GRICommandsSet.h"
-#include "GRICommons.h"
+#include "GLPlatformProfiles.h"
+#include "GRIDrive.h"
 #include "GLPipelineResource.h"
+
+
 namespace SkySnow
 {
-	class GLCommandsSet : public GRICommandsSet
+	/*
+		brief: Each real-time rendering API (GRI) unifies the base class of the external interface. 
+			   Different rendering APIs inherit from this class and implement the functions of 
+			   different APIs with the same capability
+	*/
+	class GRIGLDrive : public GRIDrive
 	{
 	public:
-		GLCommandsSet()
-		{
-		}
-		virtual ~GLCommandsSet()
-		{
-		}
+		GRIGLDrive();
+
+		~GRIGLDrive() {}
+		//GRICreate=================================================================================================================================
+		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
+		//Test Demo
+		virtual void GRIClearColor(float red, float green, float blue, float alpha) final override;
+		//Create Vertex Shader
+		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) final override;
+		//Create Fragment Shader
+		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) final override;
+		//Create Shader State
+		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
+		//Create Pipeline State 
+		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) final override;
+		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data) final override;
+		//GRICreate=================================================================================================================================
+
+		//GRISet====================================================================================================================================
 		//Set Buffer
 		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
 		//set ShaderPipelineState
@@ -44,18 +63,21 @@ namespace SkySnow
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
-		
+		//GRISet====================================================================================================================================
+
 	private:
 		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
 		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
 		void SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount);
-		void CheckPrimitiveType(PrimitiveType primitiveType,int numPrimitives,GLenum& glPrimitiveType,int& numElements);
+		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
 	private:
-		//已经设置，将提交到GPU执行的pipelinestate
-		//当使用PipelineCache时，该对象从外部设置，即从GRISetGraphicsPipelineState进行赋值
+		//将要提交到GPU执行的pipelinestate
 		GLGraphicPipelineState		m_PendingState;
 		//已经存在于GPU中的pipelinestate
 		GLGraphicPipelineState		m_ExistingState;
+		//图元绘制类型
 		PrimitiveType				m_PrimitiveType = PrimitiveType::PT_Num;
+		//Cache中有相关状态的缓存
+		GLGraphicPipelineStateCache m_PipelineCache;
 	};
 }

@@ -30,7 +30,6 @@ namespace SkySnow
 	public:
 		AndroidOSPlatform() {}
 		~AndroidOSPlatform() {}
-		virtual GRICommandsCreate* OSPlatformCreateGRC() override;
-		virtual GRICommandsSet* OSPlatformCreateGRS() override;
+		virtual GRIDrive* OSPlatformCreateGRI() override;
 	};
 }

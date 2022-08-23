@@ -46,7 +46,7 @@ namespace SkySnow
         }
     }
 
-    GRICommandsCreate* MacOSPlatform::OSPlatformCreateGRC()
+    GRIDrive* MacOSPlatform::OSPlatformCreateGRI()
     {
         if (m_TypeGRI && m_RealTimeGRI)
         {
@@ -58,19 +58,8 @@ namespace SkySnow
         //Windows platform can support OpenGL, Vulakn GRI
         if (m_TypeGRI->IsSupport())
         {
-            m_RealTimeGRI = m_TypeGRI->CreateGRC();
+            m_RealTimeGRI = m_TypeGRI->CreateGRI();
         }
         return m_RealTimeGRI;
-    }
-
-    GRICommandsSet* MacOSPlatform::OSPlatformCreateGRS()
-    {
-        if (m_TypeGRI && m_RealTimeGRI)
-        {
-            m_Commands = m_TypeGRI->CreateGRS();
-            return m_Commands;
-        }
-        SN_ERR("Please Fast Call OSPlatformCreateRealTimeGRI Function.");
-        return nullptr;
     }
 }

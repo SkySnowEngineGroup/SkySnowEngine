@@ -29,7 +29,8 @@ namespace SkySnow
 {
 	class Imports_GLES
 	{
-
+	public:
+		static void GetProcAddress(const std::string& targetStr);
 	};
 }
 

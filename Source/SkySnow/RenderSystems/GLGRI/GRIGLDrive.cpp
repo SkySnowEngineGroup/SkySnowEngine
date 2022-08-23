@@ -21,12 +21,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GLCommandsSet.h"
-#include "GLBufferResource.h"
-#include "GLPipelineResource.h"
+
+#include "GRIGLDrive.h"
+#include "GLShader.h"
 namespace SkySnow
 {
-	void GLCommandsSet::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer,int offset)
+	GRIGLDrive::GRIGLDrive()
+	{
+
+		OpenGL::InitialExtensions();
+	}
+	//GRICreate===============================================================================================================================
+	void GRIGLDrive::GRIClearColor(float red, float green, float blue, float alpha)
+	{
+		glClearColor(red,green,blue,alpha);
+	}
+
+	GRIGraphicsPipelineStateRef GRIGLDrive::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	{
+		return new GLGraphicPipelineState(createInfo);
+	}
+	//GRICreate===============================================================================================================================
+
+	//GRISet==================================================================================================================================
+	void GRIGLDrive::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
 	{
 		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
 		m_PendingState._BufferInfo[BufferInfoId]._GpuHandle = bufferGL->_GpuHandle;
@@ -35,22 +53,22 @@ namespace SkySnow
 		m_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
 	}
 
-	void  GLCommandsSet::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	void  GRIGLDrive::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
 	{
 		m_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
 	}
 
-	void GLCommandsSet::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	void GRIGLDrive::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
 		m_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipelineState*>(pipelineState)->_PrimitiveType;
 	}
 
-	void GLCommandsSet::GRIDrawPrimitive(int numPrimitive, int numInstance)
+	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
 		GLenum drawMode = GL_TRIANGLES;
 		int numElements;
-		CheckPrimitiveType(m_PendingState._PrimitiveType,numPrimitive, drawMode,numElements);
-		
+		CheckPrimitiveType(m_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
+
 		SetupVertexFormatBinding(m_PendingState, m_PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
@@ -63,43 +81,22 @@ namespace SkySnow
 			//glDisableVertexAttribArray(0);
 		}
 	}
+	//GRISet==================================================================================================================================
 
-	//privateFunction ==============================================================
-	void GLCommandsSet::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
+	//GRIprivate==============================================================================================================================
+	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
 	{
 		GLBufferInfo& bInfo = bufferInfo[0];
 		glBindBuffer(bInfo._BufferType, bInfo._GpuHandle);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, bInfo._Stride,
-							  GL_FLOAT, GL_FALSE, 
-							  bInfo._Stride * sizeof(GLfloat),
-			                  (GLvoid*)bInfo._Offset);
+			GL_FLOAT, GL_FALSE,
+			bInfo._Stride * sizeof(GLfloat),
+			(GLvoid*)bInfo._Offset);
 		//glVertexAttribPointer
-		/*
-			缺陷1: offset为指针非整数，cpu侧进行整数到指针的转换，GPU侧进行指针到整数的转换(这是一个糟糕的设计思路)
-			缺陷2: 合并两个逻辑上完全独立的操作: 1. 如何从内存提取数据 2. 数据是什么样的
-		OpenGL的4.3和OpenGL ES 3.1添加若干替代功能用于指定顶点数组:glVertexAttribFormat,glBindVertexBuffers等
-			单独的glVertexAttribPointer函数，类似一下伪代码功能
-			void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const GLvoid * pointer)
-			{
-				glVertexAttrib*Format(index, size, type, normalized, 0);
-				glVertexAttribBinding(index, index);
-				GLuint buffer;
-				glGetIntegerv(GL_ARRAY_BUFFER_BINDING, buffer);
-				if(buffer == 0)
-					glErrorOut(GL_INVALID_OPERATION); //Give an error.
 
-				if(stride == 0)
-					stride = CalcStride(size, type);
-
-				GLintptr offset = reinterpret_cast<GLintptr>(pointer);
-				glBindVertexBuffer(index, buffer, offset, stride);
-			}
-		*/
-		
 	}
-
-	void GLCommandsSet::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)
+	void GRIGLDrive::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)
 	{
 		glPrimitiveType = GL_TRIANGLES;
 		numElements = numPrimitives;
@@ -122,8 +119,9 @@ namespace SkySnow
 			numElements = numPrimitives + 2;
 			break;
 		default:
-			SN_LOG("There is no primitive matching type:%d",primitiveType);
+			SN_LOG("There is no primitive matching type:%d", primitiveType);
 			break;
 		}
 	}
+	//GRIprivate==============================================================================================================================
 }

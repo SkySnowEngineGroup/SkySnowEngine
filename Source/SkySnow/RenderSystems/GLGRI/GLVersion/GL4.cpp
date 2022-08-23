@@ -24,8 +24,8 @@
 #include "GL4.h"
 namespace SkySnow
 {
-	void OpenGL4::InitialExtensions(const std::string& allExtStr)
+	void OpenGL4::InitialExtensions()
 	{
-		OpenGL3::InitialExtensions(allExtStr);
+		OpenGL3::InitialExtensions();
 	}
 }

@@ -47,7 +47,7 @@ namespace SkySnow
         while (!m_SNWindow->SNIsCloseWindow())
         {
             SN_LOG("SkySnowEngine Rendering Thread Update.");
-            GRC->GRIClearColor(1.0,0.0,0.0,1.0);
+            GRI->GRIClearColor(1.0,0.0,0.0,1.0);
             glClear(GL_COLOR_BUFFER_BIT);
             m_SNWindow->GLFWSwapBuffer();
         }

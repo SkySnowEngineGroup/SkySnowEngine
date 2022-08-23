@@ -23,6 +23,7 @@
 //
 #pragma once
 #include "GL4.h"
+#include "LogAssert.h"
 #if PLATFORM == PLATFORM_WINDOW
 
 namespace SkySnow
@@ -35,9 +36,13 @@ namespace SkySnow
 			return EOpenGL;
 		}
 
-		static void InitialExtensions(const std::string& allExtStr)
+		static void InitialExtensions()
 		{
-			OpenGL4::InitialExtensions(allExtStr);
+			const char* version = (const char*)glGetString(GL_VERSION);
+			SN_LOG("version:%s\n", version);
+			const char* extensions = (const char*)glGetString(GL_EXTENSIONS);
+			SN_LOG("Extensions:%s",extensions);
+			OpenGL4::InitialExtensions();
 		}
 	};
 }

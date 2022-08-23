@@ -31,21 +31,22 @@ namespace SkySnow
 	//渲染系统的接口将与Vulkan保持大体框架的一致，具体可看:vulkan_core.h
 	//该部门接口主要为资源的创建&资源的重创建
 	//渲染同步及锁机制，将在CommandBuffer&CommandBufferPool中实现
-	class GRICommandsCreate
+	//Commandbuffer encoding render commands are encoded in units of one pipeline and submitted in units of one pipeline 
+	//Command commit to CommandBuffers,CommandBuffer commit to CommandQueue
+	//CommandBufferPool alloc CommandBuffer
+	//Commandbuffers are synchronized through events or memory barriers
+	//Commandqueues are synchronized between semaphores
+	//The CPU and GPU are synchronized through a fence
+	//If the same thread has more than one encoder encoding it can have a CommandBufferPool of its own
+	class GRIDrive
 	{
 	public:
-		virtual ~GRICommandsCreate() {}
+		virtual ~GRIDrive() {}
 
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		// Test:clear quad color
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
-		//Rendering Resource Create CMD
-		/*
-			接口定义与现代渲染API保持一致，创建shader并不会编译着色器，在创建ShaderPipelineState的时候
-			将编译shader以及编译着色器程序对象(如果是OpenGL，将会检测是否支持BinaryShader、separateshader[Depend PipelineObject])
-			将对shader进一步封装为ShaderResourceView
-			bgfx中有一个思路是，将drawcall按照view进行区分，每一个view包含自己的一些drawcall处理
-		*/
+		//GRICreate=======================================================================================================================
 		//Create Vertex Shader
 		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
 		//Create Fragment Shader
@@ -59,5 +60,13 @@ namespace SkySnow
 
 		//vulkan is submit,metal is commit
 		//virtual void Commit() = 0;
+		//GRICreate=======================================================================================================================
+
+		//GRISet==========================================================================================================================
+		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) = 0;
+		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
+		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
+		//GRISet==========================================================================================================================
 	};
 };

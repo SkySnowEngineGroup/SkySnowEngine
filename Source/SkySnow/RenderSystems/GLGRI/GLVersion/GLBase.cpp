@@ -28,7 +28,7 @@ namespace SkySnow
 	GLuint	OpenGLBase::ui_MajorVersion = 0;
 	GLuint	OpenGLBase::ui_MinorVersion = 0;
 
-	void OpenGLBase::InitialExtensions(const std::string& allExtStr)
+	void OpenGLBase::InitialExtensions()
 	{
 
 	}

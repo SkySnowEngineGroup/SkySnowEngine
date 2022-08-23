@@ -23,8 +23,7 @@
 //
 #pragma once
 #include "GRICommons.h"
-#include "GRICommandsSet.h"
-#include "GRICommandsCreate.h"
+#include "GRIDrive.h"
 //brief:Create different Real-Time Rendering API (GRI) interface objects based on 
 //		platform support and default configuration 
 namespace SkySnow
@@ -35,8 +34,7 @@ namespace SkySnow
 	public:
 		virtual ~GRIType() {}
 		virtual bool IsSupport() = 0;
-		virtual GRICommandsCreate* CreateGRC() = 0;
+		virtual GRIDrive* CreateGRI() = 0;
 
-		virtual GRICommandsSet* CreateGRS() = 0;
 	};
 }

@@ -22,12 +22,12 @@
 // THE SOFTWARE.
 //
 #include "GLBuffer.h"
-#include "GRIGLCommandsCreate.h"
+#include "GRIGLDrive.h"
 #include "GLBufferResource.h"
 namespace SkySnow
 {
 	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
-	GRIBufferRef GRIGLCommandsCreate::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
+	GRIBufferRef GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
 	{
 
 		GLenum bufferType = GL_ARRAY_BUFFER;

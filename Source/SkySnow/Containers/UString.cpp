@@ -20,24 +20,58 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 
-#include "GRIGLCommandsCreate.h"
-#include "GLShader.h"
+#include "UString.h"
+
 namespace SkySnow
 {
-	GRIGLCommandsCreate::GRIGLCommandsCreate()
+	void UString::Resize(unsigned length)
 	{
-		OpenGL::InitialExtensions();
+		if (_Capacity)
+		{
+			if (length && _Capacity < (length+1))
+			{
+				//每次增加原来内存大小的一半
+				while (_Capacity < (length + 1))
+					_Capacity += (_Capacity + 1) >> 1u;
+				char* nBuffer = new char[_Capacity];
+				if (_Length)
+					CopyData(nBuffer, _Buffer, _Length);
+				delete[] _Buffer;
+				_Buffer = nBuffer;
+			}
+		}
+		else
+		{
+			if (!length)
+				return;
+			_Capacity = length + 1;
+			if (_Capacity < g_Min_Capacity)
+				_Capacity = g_Min_Capacity;
+			_Buffer = new char[_Capacity];
+			
+		}
+		_Buffer[length] = '\0';
+		_Length = length;
 	}
 
-	void GRIGLCommandsCreate::GRIClearColor(float red, float green, float blue, float alpha)
+	void UString::Reserve(unsigned capacity)
 	{
-		glClearColor(red,green,blue,alpha);
+		if (capacity < _Length + 1)
+			capacity = _Length + 1;
+		if (capacity == _Capacity)
+			return;
+		char* nBuffer = new char[capacity];
+		CopyData(nBuffer,_Buffer,_Length + 1);
+		if (_Capacity)
+			delete[] _Buffer;
+		_Capacity = capacity;
+		_Buffer = nBuffer;
 	}
-
-	GRIGraphicsPipelineStateRef GRIGLCommandsCreate::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	void UString::Swap(UString& other)
 	{
-		return new GLGraphicPipelineState(createInfo);
+		Swap(_Length,other._Length);
+		Swap(_Capacity,other._Capacity);
+		Swap(_Buffer,other._Buffer);
 	}
 }

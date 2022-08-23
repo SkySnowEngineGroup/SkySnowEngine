@@ -62,10 +62,9 @@ namespace SkySnow
 		static inline bool SupportVertexFormatBinding() { return b_SupportVertexFormatBinding; };
 		static inline GLuint GetMajorVersion() { return ui_MajorVersion; };
 		static inline GLuint GetMinorVersion() { return ui_MinorVersion; };
-		static void InitialExtensions(const std::string& allExtStr);
+		static void InitialExtensions();
 	protected:
 		static void CheckExtensions(const std::string& targetStr);
-
 	protected:
 		static bool		b_SupportVertexFormatBinding;
 		static GLuint	ui_MajorVersion;

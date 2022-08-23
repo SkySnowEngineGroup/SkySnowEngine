@@ -30,7 +30,6 @@ namespace SkySnow
 	public:
 		LinuxOSPlatform() {}
 		~LinuxOSPlatform() {}
-		virtual GRICommandsCreate* OSPlatformCreateGRC() override;
-		virtual GRICommandsSet* OSPlatformCreateGRS() override;
+		virtual GRIDrive* OSPlatformCreateGRI() override;
 	};
 }
