@@ -148,12 +148,22 @@ namespace SkySnow
 		void Reserve(unsigned capacity);
 		//Swap Two String
 		void Swap(UString& other);
+		std::vector<UString> Split(char split, bool keepEmpty = false) const;
 		//Split by a separator char
-		std::vector<UString> Split(const char* src,char* split,bool keepEmpty = false) const;
+		static std::vector<UString> Split(const char* src,char split,bool keepEmpty = false);
 		//Search Target UString
 		unsigned Find(const UString& source, unsigned start = 0, bool isCs = true) const;
 		//Search Target UString
 		unsigned Find(char source, unsigned start = 0, bool isCs = true) const;
+		//is Contains Split char
+		bool Contains(const UString& source, unsigned start = 0, bool isCs = true) const 
+		{
+			return Find(source,start,isCs) != NPOS;
+		}
+		bool Contains(char source, unsigned start = 0, bool isCs = true) const
+		{
+			return Find(source,start,isCs) != NPOS;
+		}
 		//Return char pointer
 		const char* C_Str() const { return _Buffer; }
 		char* C_Str() { return _Buffer; }

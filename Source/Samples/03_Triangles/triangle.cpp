@@ -79,8 +79,6 @@ public:
 												vertices);
 		m_PSORef = GRI->GRICreateGraphicsPipelineState(psoCreateInfo);
 
-		OpenGL::InitialTest();
-
 		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 		return 0;

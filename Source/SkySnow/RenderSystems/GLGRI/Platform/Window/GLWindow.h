@@ -40,9 +40,14 @@ namespace SkySnow
 		static void InitialExtensions()
 		{
 			UString version = (const char*)glGetString(GL_VERSION);
-			SN_LOG("version:%s\n", version.C_Str());
-			UString extensions = (const char*)glGetString(GL_EXTENSIONS);
-			SN_LOG("Extensions:%s",extensions.C_Str());
+			std::vector<UString> res = version.Split('.');
+			if (res.size() > 1)
+			{
+				_MajorVersion = atoi(res[0].C_Str());
+				_MinorVersion = atoi(res[1].C_Str());
+			}
+			_ExtensionsStr = (const char*)glGetString(GL_EXTENSIONS);
+			wglGetProcAddress("");
 			OpenGL4::InitialExtensions();
 		}
 	};

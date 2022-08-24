@@ -24,9 +24,10 @@
 #include "GLBase.h"
 namespace SkySnow
 {
-	bool	OpenGLBase::b_SupportVertexFormatBinding = false;
-	GLuint	OpenGLBase::ui_MajorVersion = 0;
-	GLuint	OpenGLBase::ui_MinorVersion = 0;
+	bool	OpenGLBase::_SupportVertexFormatBinding = false;
+	GLuint	OpenGLBase::_MajorVersion = 0;
+	GLuint	OpenGLBase::_MinorVersion = 0;
+	UString OpenGLBase::_ExtensionsStr = "";
 
 	void OpenGLBase::InitialExtensions()
 	{

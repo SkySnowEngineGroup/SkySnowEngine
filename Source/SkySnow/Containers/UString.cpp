@@ -74,16 +74,24 @@ namespace SkySnow
 		Swap(_Capacity,other._Capacity);
 		Swap(_Buffer,other._Buffer);
 	}
-	std::vector<UString> UString::Split(const char* src, char* split, bool keepEmpty) const
+	std::vector<UString> UString::Split(char split, bool keepEmpty) const
+	{
+		return Split(C_Str(), split, keepEmpty);
+	}
+	std::vector<UString> UString::Split(const char* src, char split, bool keepEmpty)
 	{
 		std::vector<UString> res;
 		const char* srcEnd = src + strlen(src);
 		for (const char* curr = src; curr != srcEnd; curr ++)
 		{
-			const long long offset_v = curr - src;
-			if (offset_v > 0 || keepEmpty)
-				res.emplace_back(UString(src,offset_v));
-			src = curr + 1;
+			if (*curr == split)
+			{
+				const long long offset_v = curr - src;
+				if (offset_v > 0 || keepEmpty)
+					res.emplace_back(UString(src, offset_v));
+				src = curr + 1;
+			}
+
 		}
 		const long long offset_v = srcEnd - src;
 		if (offset_v > 0 || keepEmpty)
