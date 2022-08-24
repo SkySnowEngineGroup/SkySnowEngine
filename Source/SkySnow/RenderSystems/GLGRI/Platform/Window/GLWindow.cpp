@@ -21,51 +21,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GL4.h"
-#include "LogAssert.h"
-#include "UString.h"
-#if PLATFORM == PLATFORM_WINDOW
-
+#include "GLWindow.h"
 namespace SkySnow
 {
-#define APIENTRY_POINTER(Macro)\
-		Macro(PFNGLBINDVERTEXBUFFERPROC, glBindVertexBuffer)\
-		Macro(PFNGLVERTEXATTRIBFORMATPROC, glVertexAttribFormat)\
-		Macro(PFNGLVERTEXATTRIBIFORMATPROC, glVertexAttribIFormat)\
-		Macro(PFNGLVERTEXATTRIBBINDINGPROC, glVertexAttribBinding)\
-		Macro(PFNGLVERTEXBINDINGDIVISORPROC, glVertexBindingDivisor)
-
-	class GLWindow : public OpenGL4
+	void GLWindow::GetAPIEntryPointer()
 	{
-	public:
-		static inline GRIFeature GetFeatureType()
-		{
-			return EOpenGL;
-		}
-
-		static void InitialExtensions()
-		{
-			UString version = (const char*)glGetString(GL_VERSION);
-			std::vector<UString> res = version.Split('.');
-			if (res.size() > 1)
-			{
-				_MajorVersion = atoi(res[0].C_Str());
-				_MinorVersion = atoi(res[1].C_Str());
-			}
-			_ExtensionsStr = (const char*)glGetString(GL_EXTENSIONS);
-
-			GetAPIEntryPointer();
-			OpenGL4::InitialExtensions();
-			if (_SupportVertexFormatBinding)
-			{
-				SN_LOG("Support VFB");
-			}
-		}
-
-	private:
-		static void GetAPIEntryPointer();
-	};
+		//获取拓展的函数指针
+		#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
+		APIENTRY_POINTER(GET_APIENTRY_POINTER);
+	}
 }
-typedef SkySnow::GLWindow OpenGL;
-#endif

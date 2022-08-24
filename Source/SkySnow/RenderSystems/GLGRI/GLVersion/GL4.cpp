@@ -26,6 +26,8 @@ namespace SkySnow
 {
 	void OpenGL4::InitialExtensions()
 	{
+		_SupportVertexFormatBinding = _ExtensionsStr.Contains("GL_ARB_vertex_attrib_binding") || (_MajorVersion == 4 && _MinorVersion >= 3);
+
 		OpenGL3::InitialExtensions();
 	}
 }
