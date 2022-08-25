@@ -34,15 +34,20 @@
 #include "File.h"
 #include "SingletonBase.h"
 #include "LockFree.h"
+#include "FunCb.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
-
-	{
-		TestFunctionAboutLockFree();
-	}
+	CommandBuffer* cb = new CommandBuffer();
+	//±àÂëÃüÁî
+	cb->EncoderTestFun();
+	//Ö´ÐÐäÖÈ¾ÃüÁî
+	cb->RenderCmd();
+	//{
+	//	TestFunctionAboutLockFree();
+	//}
 	//{
 	//	TestTNode* tN = new TestTNode();
 	//	tN->Print();

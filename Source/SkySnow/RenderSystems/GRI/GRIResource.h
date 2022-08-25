@@ -230,6 +230,19 @@ namespace SkySnow
 		std::string		_BufferName;
 	};
 
+	class GRIVertexBindingDesc : public GRIResource
+	{
+	public:
+		GRIVertexBindingDesc()
+			: GRIResource(GRI_VertexBindingDesc)
+		{
+		}
+		virtual ~GRIVertexBindingDesc()
+		{
+			SN_LOG("GRIVertexBindingDesc Destruct.");
+		}
+	};
+
 
 	// Shader相关资源的智能指针
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
@@ -243,5 +256,6 @@ namespace SkySnow
 	typedef RefCountPtr<GRIVertexBuffer>			GRIVertexBufferRef;
 	typedef RefCountPtr<GRIIndexBuffer>				GRIIndexBufferRef;
 	typedef RefCountPtr<GRIBuffer>					GRIBufferRef;
+	typedef RefCountPtr<GRIVertexBindingDesc>		GRIVertexBindingDescRef;
 
 }

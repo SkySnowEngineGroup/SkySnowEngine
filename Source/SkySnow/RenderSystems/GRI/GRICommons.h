@@ -44,6 +44,7 @@ namespace SkySnow
 		GRT_GraphicsPipelineState,
 		GRT_Buffer,
 		GRI_Assembly,
+		GRI_VertexBindingDesc,
 		GRT_Num
 	};
 

@@ -58,6 +58,7 @@ namespace SkySnow
 		//Create Buffer:index vertex SSBO
 		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data) = 0;
 
+		//virtual GRIVertexBindingDescRef GRICreateVertexBindingDesc() = 0;
 		//vulkan is submit,metal is commit
 		//virtual void Commit() = 0;
 		//GRICreate=======================================================================================================================

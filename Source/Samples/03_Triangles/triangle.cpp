@@ -72,7 +72,7 @@ public:
 							 0.5f,  -0.5f, 0.0f,
 							 0.0f,  0.5f,  0.0f};
 		SN_LOG("Vertex Size:%d",sizeof(vertices));
-		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
+		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
 		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
 												sizeof(vertices),
 												3, 
@@ -93,7 +93,7 @@ public:
 		GRI->GRISetBuffer(0,m_VertexBufferRef,0);
 		GRI->GRISetPipelineShaderState(m_PipelineShaderStateRef);
 		GRI->GRISetGraphicsPipelineState(m_PSORef);
-		GRI->GRIDrawPrimitive(1,1);
+		GRI->GRIDrawPrimitive(3,1);
 	}
 
 private:

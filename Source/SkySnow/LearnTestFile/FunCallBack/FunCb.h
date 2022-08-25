@@ -22,28 +22,80 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include <string>
-namespace SkySnow
+#include "LogAssert.h"
+using namespace std;
+using namespace SkySnow;
+namespace SkySnowLearning
 {
-	//声明全局变量，并用extern标记，即声明又定义，保证定义
-	//只在该处进行定义初始化，别的地方定义初始化会报错
-	static const std::string g_MediaPath = "D:/StudyEnginer/";//Home Path
-	//static const std::string g_MediaPath = "D:/"; //Company Path
-	static const std::string g_RelativeMaterialPath = "SkySnowEngine/Script/Media/Material/";
-	static const int g_String_Buffer_MaxLength = 128;
-	static char g_Null_Char = 0;
-	static const int g_Min_Capacity = 8;//最小8byte
-	static const unsigned NPOS = 0xffffffff;
-	//globle Function
-	static std::string GetMaterialAllPath(const std::string mpath)
+	class CommandBuffer;
+
+	void TestFun() 
 	{
-		return g_MediaPath + g_RelativeMaterialPath + mpath;
+		SN_LOG("Call this TestFun.");
 	}
 
-#define Delete_Object(object) \
-		if(object) \
-		{ \
-			delete object; \
-			object = nullptr; \
+	class GRICommandBase
+	{
+	private:
+		using CMDExeAndDes = void(*)(CommandBuffer& commandBuffer, GRICommandBase* cmd);
+	public:
+		GRICommandBase(CMDExeAndDes cmdFun)
+			: _CallBackFun(cmdFun)
+			, _Next(nullptr)
+		{
 		}
+
+		void ExecuteCmd(CommandBuffer& commandBuffer)
+		{
+			_CallBackFun(commandBuffer,this);
+		}
+	public:
+		GRICommandBase* _Next;
+	private:
+		CMDExeAndDes _CallBackFun;
+	};
+	template<typename Cmd>
+	class GRICommand : public GRICommandBase
+	{
+	public:
+		GRICommand()
+			: GRICommandBase(CMDExeAndDes)
+		{
+		}
+		static void CMDExeAndDes(CommandBuffer& commandBuffer, GRICommandBase* cmd)
+		{
+			Cmd* t_cmd = (Cmd*)cmd;
+			t_cmd->Execute(commandBuffer);
+			t_cmd->~Cmd();
+		}
+	};
+
+	struct TestFunA : public GRICommand<TestFunA>
+	{
+		TestFunA()
+		{
+		}
+		void Execute(CommandBuffer& commandBuffer)
+		{
+			TestFun();
+		}
+	}; 
+
+	class CommandBuffer
+	{
+	public:
+		void EncoderTestFun()
+		{
+			TestFunA* ca = new TestFunA();
+			root = ca;
+		}
+
+		void RenderCmd()
+		{
+			GRICommandBase* cmd = root;
+			cmd->ExecuteCmd(*this);
+		}
+	private:
+		GRICommandBase* root;
+	};
 }
