@@ -174,18 +174,18 @@ namespace SkySnow
 	public:
 		GRIBuffer()
 			: GRIResource(EGRIResourceType::GRT_Buffer)
-			, m_UsageType(BufferUsageType::BUT_None)
-			, m_Size(0)
-			, m_Stride(0)
-			, m_BufferName("")
+			, _UsageType(BufferUsageType::BUT_None)
+			,_Size(0)
+			, _Stride(0)
+			, _BufferName("")
 		{
 		}
 		GRIBuffer(BufferUsageType usage, int size, int stride)
 			: GRIResource(EGRIResourceType::GRT_Buffer)
-			, m_UsageType(usage)
-			, m_Size(size)
-			, m_Stride(stride)
-			, m_BufferName("")
+			, _UsageType(usage)
+			, _Size(size)
+			, _Stride(stride)
+			, _BufferName("")
 		{
 		}
 		virtual ~GRIBuffer()
@@ -195,40 +195,42 @@ namespace SkySnow
 
 		BufferUsageType GetBufferUsageType()
 		{
-			return m_UsageType;
+			return _UsageType;
 		}
 
 		int GetStride()
 		{
-			return m_Stride;
+			return _Stride;
 		}
 
 		int GetSize()
 		{
-			return m_Size;
+			return _Size;
 		}
 
 		void SetBufferName(const std::string bufferName)
 		{
-			m_BufferName = bufferName;
+			_BufferName = bufferName;
 		}
 
 		bool IsDynamic() const
 		{
-			return (m_UsageType & BufferUsageType::BUT_DynamicBuffer) != 0;
+			return (_UsageType & BufferUsageType::BUT_DynamicBuffer) != 0;
 		}
 
 		std::string GetBufferName()
 		{
-			return m_BufferName;
+			return _BufferName;
 		}
 
 	protected:
-		BufferUsageType m_UsageType;
-		int				m_Size;
-		int				m_Stride;
-		std::string		m_BufferName;
+		BufferUsageType _UsageType;
+		int				_Size;
+		int				_Stride;
+		std::string		_BufferName;
 	};
+
+
 	// Shader相关资源的智能指针
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;

@@ -29,6 +29,7 @@
 
 namespace SkySnow
 {
+	//该处，未来将区分从oopengl32.dll导入的与直接导入的拓展函数
 #define APIENTRY_POINTER(Macro)\
 		Macro(PFNGLBINDVERTEXBUFFERPROC, glBindVertexBuffer)\
 		Macro(PFNGLVERTEXATTRIBFORMATPROC, glVertexAttribFormat)\

@@ -28,7 +28,27 @@ namespace SkySnow
 	class OpenGL4 : public OpenGL3
 	{
 	public:
-
+		//OpenGLµÄ4.3ºÍOpenGL ES 3.1ÐÂAPI
+		static inline void BindVertexBuffer(GLuint bindingIndex, GLuint buffer, GLintptr offset, GLsizei stride)
+		{
+			glBindVertexBuffer(bindingIndex, buffer, offset, stride);
+		}
+		static inline void VertexAttribFormat(GLuint attribIndex, GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset)
+		{
+			glVertexAttribFormat(attribIndex, size, type, normalized, relativeOffset);
+		}
+		static inline void VertexAttribIFormat(GLuint attribIndex, GLint size, GLenum type, GLuint relativeOffset)
+		{
+			glVertexAttribIFormat(attribIndex, size, type, relativeOffset);
+		}
+		static inline void VertexAttribBinding(GLuint attribIndex, GLuint bindingIndex)
+		{
+			glVertexAttribBinding(attribIndex, bindingIndex);
+		}
+		static inline void VertexBindingDivisor(GLuint bindingIndex, GLuint divisor)
+		{
+			glVertexBindingDivisor(bindingIndex, divisor);
+		}
 
 		static void InitialExtensions();
 	};

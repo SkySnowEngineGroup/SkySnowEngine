@@ -37,10 +37,7 @@ namespace SkySnow
 		glClearColor(red,green,blue,alpha);
 	}
 
-	GRIGraphicsPipelineStateRef GRIGLDrive::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
-	{
-		return new GLGraphicPipelineState(createInfo);
-	}
+
 	//GRICreate===============================================================================================================================
 
 	//GRISet==================================================================================================================================
@@ -78,7 +75,6 @@ namespace SkySnow
 		{
 			glUseProgram(m_PendingState._ShaderStateInfo._GpuHandle);
 			glDrawArrays(drawMode, 0, numElements);
-			//glDisableVertexAttribArray(0);
 		}
 	}
 	//GRISet==================================================================================================================================
@@ -90,15 +86,13 @@ namespace SkySnow
 		{
 
 		}
-		GLBufferInfo& bInfo = bufferInfo[0];
-		glBindBuffer(bInfo._BufferType, bInfo._GpuHandle);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, bInfo._Stride,
-			GL_FLOAT, GL_FALSE,
-			bInfo._Stride * sizeof(GLfloat),
-			(GLvoid*)bInfo._Offset);
-		//glVertexAttribPointer
-
+		else
+		{
+			GLBufferInfo& bInfo = bufferInfo[0];
+			glBindBuffer(bInfo._BufferType, bInfo._GpuHandle);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, bInfo._Stride,GL_FLOAT, GL_FALSE,bInfo._Stride * sizeof(GLfloat),(GLvoid*)bInfo._Offset);
+		}
 	}
 	void GRIGLDrive::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)
 	{

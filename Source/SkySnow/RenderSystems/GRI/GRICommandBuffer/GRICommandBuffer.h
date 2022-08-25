@@ -39,7 +39,6 @@ namespace SkySnow
 	//CommandBuufer commit command to commandQueue
 	//Abstract a set of such concepts for OpengL, and some encapsulation for OpengL,
 	//so that in the future compatible with Vulkan and Metal, also easier 
-	//
 	class GRICommandQueue
 	{
 

@@ -51,13 +51,11 @@ namespace SkySnow
 		{
 			glBindBuffer(type, buffer);
 		}
-		
+
 		static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
 		static inline GLuint GetMajorVersion() { return _MajorVersion; };
 		static inline GLuint GetMinorVersion() { return _MinorVersion; };
 		static void InitialExtensions();
-	protected:
-		static void CheckExtensions(const std::string& targetStr);
 	protected:
 		static bool		_SupportVertexFormatBinding;
 		static GLuint	_MajorVersion;

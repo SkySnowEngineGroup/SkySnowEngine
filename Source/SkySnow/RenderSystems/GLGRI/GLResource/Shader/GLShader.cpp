@@ -46,9 +46,7 @@ namespace SkySnow
 		GLPipelineShaderState* temp = new GLPipelineShaderState(vs, fs);
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
-		OGLShader::CreateProgram(glvs->_GpuHandle, 
-								 glfs->_GpuHandle,
-								 temp->_ProgramId);
+		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle,temp->_ProgramId);
 		return temp;
 	}
 
@@ -82,7 +80,7 @@ namespace SkySnow
 			SN_ERR("ShaderCode is nullptr.");
 			return false;
 		}
-		SN_LOG("OGL Shader Code:%s", shadercode);
+		//SN_LOG("OGL Shader Code:%s", shadercode);
 		int codeLength = strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);

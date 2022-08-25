@@ -89,7 +89,7 @@ public:
 		GRIResource::FlushResourceRelease();
 		GRI->GRIClearColor(0.0, 0.0, 0.0, 1.0);
 		glClear(GL_COLOR_BUFFER_BIT||GL_DEPTH_BUFFER_BIT);
-		//这些接口是GRICommands中的渲染接口
+		
 		GRI->GRISetBuffer(0,m_VertexBufferRef,0);
 		GRI->GRISetPipelineShaderState(m_PipelineShaderStateRef);
 		GRI->GRISetGraphicsPipelineState(m_PSORef);

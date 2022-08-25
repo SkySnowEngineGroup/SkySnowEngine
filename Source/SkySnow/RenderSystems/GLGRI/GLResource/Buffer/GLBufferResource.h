@@ -45,8 +45,8 @@ namespace SkySnow
 			: GRIBuffer()
 			, _BufferType(0)
 			, _GpuHandle(0)
-			, b_StreamDraw(false)
-			, m_Data(nullptr)
+			, _StreamDraw(false)
+			, _Data(nullptr)
 		{
 		}
 		//streamDraw 暂时不用
@@ -60,8 +60,8 @@ namespace SkySnow
 		GLBuffer(GLenum bufferType,BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride)
 			, _BufferType(bufferType)
-			, m_Data(data)
-			, b_StreamDraw(streamDraw)
+			, _Data(data)
+			, _StreamDraw(streamDraw)
 		{
 			CreateBuffer(usageType,size);
 		}
@@ -72,29 +72,19 @@ namespace SkySnow
 		//在GLES3.1及GL4.3以上，将顶点类型，顶点数据获取拆分为两个部分
 		//因此这里只是单独的创建Buffer即可，在DrawPrimitive的时候，在根据
 		//SetBuffer设置的类型进行<数据类型指定>与<数据类型如何获取>的设置
-		//对于数据的类型，一种是结构数组SOA，一种是数组结构AOS
-		//对于AOS来说，VBO1对应Position，VBO2对应法线......
-		//对于SOA来说，VBO中的数据对应有V/N/T(顶点、法线、uv等)，其组装格式有
-		//V/N/UV/V/N/UV 或者 V/V/V/N/N/N/UV/UV/UV 对于此种需要计算offset，即计算layout布局
-		//从性能上来讲，AOS是优于SOA的，但是Mali显卡有IDVS架构，在显卡级别处理将SOA处理为AOS的操作(这个操作也会浪费一部分GPU的资源)
-		//glBufferData的作用是初始化数据，而glBufferSubData的作用是初始化或更新数据
-		//因此可以使用glBufferSubData代替glBufferData，其基础功能一样，但是glBufferSubData功能多一些，其处理非交叉的SOA数据更简单快捷一些
 		void CreateBuffer(GLenum usageType,GLuint size)
 		{
 			OpenGL::GenBuffers(1,&_GpuHandle);
 			OpenGL::BindBuffer(_BufferType, _GpuHandle);
-			OpenGL::BufferData(_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-
-			//glVertexAttribPointer(0, 3,GL_FLOAT, GL_FALSE,m_Stride * sizeof(GLfloat),(GLvoid*)0);
-			//glBindBuffer(_BufferType,0);
+			OpenGL::BufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 		}
 
 	public:
 		GLuint		_GpuHandle;
 		GLenum		_BufferType;
 	private:
-		bool		b_StreamDraw;
-		const void* m_Data;
+		bool		_StreamDraw;
+		const void* _Data;
 		
 	};
 }

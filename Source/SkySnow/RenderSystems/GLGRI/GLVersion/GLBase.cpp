@@ -33,9 +33,4 @@ namespace SkySnow
 	{
 
 	}
-
-	void OpenGLBase::CheckExtensions(const std::string& targetStr)
-	{
-
-	}
 }

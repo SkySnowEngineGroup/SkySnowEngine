@@ -149,7 +149,7 @@ namespace SkySnow
 		//Swap Two String
 		void Swap(UString& other);
 		std::vector<UString> Split(char split, bool keepEmpty = false) const;
-		//Split by a separator char
+		//****** Split by a separator char
 		static std::vector<UString> Split(const char* src,char split,bool keepEmpty = false);
 		//Search Target UString
 		unsigned Find(const UString& source, unsigned start = 0, bool isCs = true) const;
