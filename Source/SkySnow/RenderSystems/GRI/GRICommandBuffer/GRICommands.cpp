@@ -21,8 +21,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-class GRIHandle
+#include "GRICommands.h"
+#include "GRICommandBuffer.h"
+namespace SkySnow
 {
 
-};
+}
