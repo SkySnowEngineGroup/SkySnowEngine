@@ -42,9 +42,12 @@ int main()
 	SN_LOG("Learning KnowLedge!\n");
 	CommandBuffer* cb = new CommandBuffer();
 	//±àÂëÃüÁî
-	cb->EncoderTestFun();
+	CreateHandle handle = cb->EncoderCreateBuffer();
+	
+	cb->EncoderSetBuffer(handle);
 	//Ö´ÐÐäÖÈ¾ÃüÁî
 	cb->RenderCmd();
+	handle._Data->Log();
 	//{
 	//	TestFunctionAboutLockFree();
 	//}

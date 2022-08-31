@@ -28,11 +28,52 @@ using namespace SkySnow;
 namespace SkySnowLearning
 {
 	class CommandBuffer;
-
-	void TestFun() 
+	class BufferT;
+	template<typename T>
+	class Handle
 	{
-		SN_LOG("Call this TestFun.");
+	public:
+		Handle()
+			: _Data(nullptr)
+		{
+		}
+		Handle(T* data)
+			: _Data(data)
+		{
+		}
+	public:
+		//这里可以是指针，也可以是智能指针
+		//如果是智能指针，驱动层就需要考虑风险指针的回收机制
+		//如果是指针，那么对应的可以将Destroy函数也作为命令，回收机制放到RenderGraph中
+		T* _Data;
+	};
+	//此处为GPUResource的封装抽象，这里是示例
+	class BufferT
+	{
+	public:
+		BufferT()
+		{
+			SN_LOG("BufferT Construct.");
+		}
+
+		void Log()
+		{
+			SN_LOG("BufferT Log Function.");
+		}
+	};
+	using CreateHandle = Handle<BufferT>;
+	//该函数对应驱动层的具体接口，这里是示例
+	void SetBufferD(BufferT* buffer)
+	{
+		SN_LOG("Call SetBufferD.");
 	}
+	//该函数对应驱动层的具体接口，这里是示例
+	BufferT* CreateBufferD()
+	{
+		SN_LOG("Call CreateBufferD.");
+		return new BufferT();
+	}
+	
 
 	class GRICommandBase
 	{
@@ -70,32 +111,83 @@ namespace SkySnowLearning
 		}
 	};
 
-	struct TestFunA : public GRICommand<TestFunA>
+	struct SetBuffer : public GRICommand<SetBuffer>
 	{
-		TestFunA()
+		SetBuffer(CreateHandle handle)
+			: _Handle(handle)
 		{
 		}
 		void Execute(CommandBuffer& commandBuffer)
 		{
-			TestFun();
+			SetBufferD(_Handle._Data);
 		}
+	public:
+		CreateHandle _Handle;
 	}; 
+
+	struct CreateBuffer :public GRICommand<CreateBuffer>
+	{
+	public:
+		CreateBuffer(CreateHandle handle)
+			: _Handle(handle)
+		{
+		}
+
+		void Execute(CommandBuffer& commandBuffer)
+		{
+			_Handle._Data = CreateBufferD();
+		}
+	public:
+		CreateHandle _Handle;
+	};
 
 	class CommandBuffer
 	{
 	public:
-		void EncoderTestFun()
+		CommandBuffer()
+			: _Head(new GRICommandBase(nullptr))
 		{
-			TestFunA* ca = new TestFunA();
-			root = ca;
+		}
+
+		~CommandBuffer()
+		{
+			if (_Head)
+			{
+				delete _Head;
+				_Head = nullptr;
+			}
+		}
+		void EncoderSetBuffer(CreateHandle ch)
+		{
+			SetBuffer* sb = new SetBuffer(ch);
+			_Curr->_Next = sb;
+			_Curr = _Curr->_Next;
+		}
+		CreateHandle EncoderCreateBuffer()
+		{
+			Handle<BufferT> handle;
+			if (handle._Data == nullptr)
+			{
+				SN_LOG("Data is Null.");
+			}
+			CreateBuffer* cb = new CreateBuffer(handle);
+			_Curr->_Next = cb;
+			_Curr = _Curr->_Next;
+			return handle;
 		}
 
 		void RenderCmd()
 		{
-			GRICommandBase* cmd = root;
-			cmd->ExecuteCmd(*this);
+			GRICommandBase* cmdTemp;
+			cmdTemp = _Head->_Next;
+			while (cmdTemp)
+			{
+				cmdTemp->ExecuteCmd(*this);
+				cmdTemp = cmdTemp->_Next;
+			}
 		}
 	private:
-		GRICommandBase* root;
+		GRICommandBase* _Head;
+		GRICommandBase* _Curr{ _Head };
 	};
 }
