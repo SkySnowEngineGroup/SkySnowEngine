@@ -25,5 +25,8 @@
 #include "GRICommandBuffer.h"
 namespace SkySnow
 {
-
+	void GRICreateVertexShaderCMD::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		_Handle = GRI->GRICreateVertexShader(_VsCode);
+	}
 }

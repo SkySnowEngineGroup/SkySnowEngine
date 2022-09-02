@@ -20,48 +20,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include "GRIResource.h"
-#include "OSPlatform.h"
+#include "AllocatorBase.h"
 namespace SkySnow
 {
-	class GRICommandBuffer;
-	struct GRICommandBase
-	{
-		virtual void ExecuteCMD(GRICommandBuffer& cmdBuffer) = 0;
-		GRICommandBase* _Next = nullptr;
-	};
-
+	//该内存分配器属于CustomAllocator(定制分配器)，
+	//为什么要继承AllocatorBase，是为了更好的使用，也可以不继承
 	template<typename T>
-	struct GRICommand : public GRICommandBase
+	class StackAllocator : public AllocatorBase
 	{
 	public:
-		void ExecuteCMD(GRICommandBuffer& cmdBuffer) override final
-		{
-			T* cmd = static_cast<T*>(this);
-			cmd->Execute(cmdBuffer);
-			cmd->~T();
-		}
-	};
-	//======================================================================================================================
-	struct GRINullCMD : public GRICommand<GRINullCMD>
-	{
-		void Execute(GRICommandBuffer& cmdBuffer) {}
-	};
-	//CreateVertexShader
-	struct GRICreateVertexShaderCMD : public GRICommand<GRICreateVertexShaderCMD>
-	{
-		GRICreateVertexShaderCMD(GRIVertexShaderRef handle,const char* vsCode)
-			: _VsCode(vsCode)
-			, _Handle(handle)
-		{
-		}
-		void Execute(GRICommandBuffer& cmdBuffer);
 
-		const char*			_VsCode;
-		GRIVertexShaderRef	_Handle;
 	};
-
-
 }

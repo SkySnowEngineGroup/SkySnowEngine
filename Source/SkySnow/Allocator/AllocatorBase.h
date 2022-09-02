@@ -24,5 +24,14 @@
 
 namespace SkySnow
 {
-
+	class AllocatorBase
+	{
+	public:
+		AllocatorBase()
+		{
+		}
+		virtual ~AllocatorBase()
+		{
+		}
+	};
 }
