@@ -22,25 +22,28 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRICommands.h"
 namespace SkySnow
 {
 	//function call back GRICommands and RealTimeGRL
 	//command encoder
 	class GRICommandBuffer
 	{
+	public:
+		GRICommandBuffer()
+			: _Head(new GRINullCMD())
+		{
+		}
 
-	};
-
-	//Alloc CommandBuffers
-	class GRICommandBufferPool
-	{
-
-	};
-	//CommandBuufer commit command to commandQueue
-	//Abstract a set of such concepts for OpengL, and some encapsulation for OpengL,
-	//so that in the future compatible with Vulkan and Metal, also easier 
-	class GRICommandQueue
-	{
-
+		GRIVertexShaderRef CMBCreateVertexShader(const char* vsCode)
+		{
+			GRIVertexShaderRef _VsHandle;
+			_Curr->_Next = new GRICreateVertexShaderCMD(_VsHandle, vsCode);
+			_Curr = _Curr->_Next;
+			return _VsHandle;
+		}
+	private:
+		GRICommandBase* _Head;
+		GRICommandBase* _Curr{ _Head };
 	};
 }
