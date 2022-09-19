@@ -29,7 +29,6 @@
 #include "OSPlatform.h"
 #include "File.h"
 #include "SkySnowConfigInfo.h"
-#include "GLWindow.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -88,7 +87,7 @@ public:
 	{
 		GRIResource::FlushResourceRelease();
 		GRI->GRIClearColor(0.0, 0.0, 0.0, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT||GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 		
 		GRI->GRISetBuffer(0,m_VertexBufferRef,0);
 		GRI->GRISetPipelineShaderState(m_PipelineShaderStateRef);

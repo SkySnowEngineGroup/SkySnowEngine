@@ -22,6 +22,8 @@
 // THE SOFTWARE.
 //
 #include "GLWindow.h"
+
+#if PLATFORM == PLATFORM_WINDOW
 namespace SkySnow
 {
 	void GLWindow::GetAPIEntryPointer()
@@ -31,3 +33,4 @@ namespace SkySnow
 		APIENTRY_POINTER(GET_APIENTRY_POINTER);
 	}
 }
+#endif

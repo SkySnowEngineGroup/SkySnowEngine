@@ -103,7 +103,7 @@ namespace SkySnow
 		void Deallocator(void* ptr,size_t size)
 		{
 			//释放对象内存
-			::operator delete(ptr, sizeof(T) * size);
+			//::operator delete(ptr, sizeof(T) * size);
 		}
 
 		void Construct(T* ptr,const T& val)

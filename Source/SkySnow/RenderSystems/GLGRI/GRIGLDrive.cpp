@@ -82,7 +82,7 @@ namespace SkySnow
 	//GRIprivate==============================================================================================================================
 	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
 	{
-		if (!OpenGL::SupportVertexFormatBinding())
+		if (OpenGL::SupportVertexFormatBinding())
 		{
 
 		}

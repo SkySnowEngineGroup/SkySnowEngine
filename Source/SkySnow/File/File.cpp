@@ -23,6 +23,8 @@
 //
 #include "File.h"
 #include "LogAssert.h"
+#include <sys/types.h>
+#include <sys/stat.h>
 namespace SkySnow
 {
 	File::File()
