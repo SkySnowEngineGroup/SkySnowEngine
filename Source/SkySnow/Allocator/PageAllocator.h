@@ -21,17 +21,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #pragma once
-
+#include "AllocMacros.h"
 namespace SkySnow
 {
-	class AllocatorBase
+	//It's in bytes
+	enum PageSize
+	{
+		Normal_Size = 32 * 1024,//1024byte & 32 = 32MB
+		Small_Size = 1024 - 16,//
+	};
+	class PageAllocator
 	{
 	public:
-		AllocatorBase()
-		{
-		}
-		virtual ~AllocatorBase()
-		{
-		}
+
 	};
 }

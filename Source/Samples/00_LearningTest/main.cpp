@@ -40,14 +40,23 @@ using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
-	CommandBuffer* cb = new CommandBuffer();
-	//±àÂëÃüÁî
-	CreateHandle handle = cb->EncoderCreateBuffer();
-	
-	cb->EncoderSetBuffer(handle);
-	//Ö´ÐÐäÖÈ¾ÃüÁî
-	cb->RenderCmd();
-	handle._Data->Log();
+
+	{
+		int a = 1;
+		int b = a & (~a);
+		SN_LOG("Value:%d", b);
+	}
+
+	//{
+	//	CommandBuffer* cb = new CommandBuffer();
+	//	//±àÂëÃüÁî
+	//	CreateHandle handle = cb->EncoderCreateBuffer();
+
+	//	cb->EncoderSetBuffer(handle);
+	//	//Ö´ÐÐäÖÈ¾ÃüÁî
+	//	cb->RenderCmd();
+	//	handle._Data->Log();
+	//}
 	//{
 	//	TestFunctionAboutLockFree();
 	//}
