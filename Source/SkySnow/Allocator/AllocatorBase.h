@@ -21,27 +21,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #pragma once
+
 namespace SkySnow
 {
-//Mainstream cpus currently have a cache_line of 64 bytes
-#define Cache_Line_Size 64
-
-	template<typename T>
-	inline constexpr T AlignPointer(T ptr,size_t alignSize)
+	class MemBase
 	{
-		size_t align = alignSize - 1;
-		return (T)(((size_t)&ptr + align) & (~align));
-	}
 
-	inline void* AlignPointer(void* ptr, size_t alignSize)
-	{
-		size_t align = alignSize - 1;
-		return (void*)(((size_t)ptr + align) & (~align));
-	}
-
-	template<typename T>
-	inline constexpr T AlignSize(T size, size_t alignSize)
-	{
-		return ((size + (alignSize - 1)) & ~(alignSize - 1));
-	}
+	};
 }

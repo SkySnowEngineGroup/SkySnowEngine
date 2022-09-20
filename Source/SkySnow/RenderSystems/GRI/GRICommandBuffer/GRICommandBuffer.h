@@ -34,27 +34,34 @@ namespace SkySnow
     class GRICommandBufferBase
     {
     public:
-        
+        GRICommandBufferBase();
+
+    protected:
+        void AllocCommand()
+        {
+
+        }
+        //reset this commandbuffer command to init
+        void Reset()
+        {
+
+        }
+    protected:
+        GRICommandBase* _Head;
+        GRICommandBase* _Curr{ _Head};
+    private:
+        MemStack*       _StackMem;
     };
 	//function call back GRICommands and RealTimeGRL
-	//type: RenderCommandBuffer ComputeCommandBuffer BiltCommandBuffer
+	//type: RenderCommandBuffer ComputeCommandBuffer ext
 	class GRICommandBuffer : public GRICommandBufferBase
 	{
 	public:
 		GRICommandBuffer()
-			: _Head(new GRINullCMD())
-            , _StackMem(nullptr)
+            : GRICommandBufferBase()
 		{
 		}
-        
-        void Reset()
-        {
-            
-        }
-        void AllocCommand()
-        {
-            
-        }
+
 		GRIVertexShaderRef CMBCreateVertexShader(const char* vsCode)
 		{
 			GRIVertexShaderRef _VsHandle;
@@ -62,10 +69,6 @@ namespace SkySnow
 			_Curr = _Curr->_Next;
 			return _VsHandle;
 		}
-	private:
-		GRICommandBase* _Head;
-		GRICommandBase* _Curr{ _Head };
-        MemStack* _StackMem;
 	};
 
     class GRICommandBufferPool
@@ -77,6 +80,7 @@ namespace SkySnow
         
         ~GRICommandBufferPool()
         {
+            ReleasePool();
         }
         
         GRICommandBuffer* AllocCommandBuffer()
@@ -106,7 +110,11 @@ namespace SkySnow
         {
            
         }
-        
+
+        void FlushResource()
+        {
+
+        }
         void PresentQueue()
         {
             
