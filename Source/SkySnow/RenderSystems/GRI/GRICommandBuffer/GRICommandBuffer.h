@@ -23,18 +23,38 @@
 //
 #pragma once
 #include "GRICommands.h"
+#include "StackAllocator.h"
+#include <vector>
 namespace SkySnow
 {
+    class GRICommandBufferQueue;
+    class GRICommandBufferPool;
+    class GRICommandBufferBase;
+    
+    class GRICommandBufferBase
+    {
+    public:
+        
+    };
 	//function call back GRICommands and RealTimeGRL
-	//command encoder
-	class GRICommandBuffer
+	//type: RenderCommandBuffer ComputeCommandBuffer BiltCommandBuffer
+	class GRICommandBuffer : public GRICommandBufferBase
 	{
 	public:
 		GRICommandBuffer()
 			: _Head(new GRINullCMD())
+            , _StackMem(nullptr)
 		{
 		}
-
+        
+        void Reset()
+        {
+            
+        }
+        void AllocCommand()
+        {
+            
+        }
 		GRIVertexShaderRef CMBCreateVertexShader(const char* vsCode)
 		{
 			GRIVertexShaderRef _VsHandle;
@@ -45,5 +65,65 @@ namespace SkySnow
 	private:
 		GRICommandBase* _Head;
 		GRICommandBase* _Curr{ _Head };
+        MemStack* _StackMem;
 	};
+
+    class GRICommandBufferPool
+    {
+    public:
+        GRICommandBufferPool()
+        {
+        }
+        
+        ~GRICommandBufferPool()
+        {
+        }
+        
+        GRICommandBuffer* AllocCommandBuffer()
+        {
+            GRICommandBuffer* newComBuf = new GRICommandBuffer();
+            _CommandBufferList.emplace_back(newComBuf);
+            return newComBuf;
+        }
+        
+        void ReleasePool()
+        {
+            for (std::vector<GRICommandBuffer*>::const_iterator itr=_CommandBufferList.begin(); itr!=_CommandBufferList.end(); ++itr)
+            {
+              delete *itr;
+            }
+            _CommandBufferList.clear();
+        }
+    private:
+        std::vector<GRICommandBuffer*> _CommandBufferList;
+    };
+
+    class GRICommandBufferQueue
+    {
+    public:
+        
+        void SubmitQueue(GRICommandBuffer* comBuf)
+        {
+           
+        }
+        
+        void PresentQueue()
+        {
+            
+        }
+        //call by renderthread at gl,other vulkan&metal also will create renderthread
+        //curr frame has result
+        void ImmediatelyExecuteCommandBuffer()
+        {
+            
+        }
+        //call by renderthread at gl,other vulkan&metal also will create renderthread
+        //next frame has result
+        void DeferredExecuteCommandBuffer()
+        {
+            
+        }
+    };
+
+    GRICommandBufferQueue _GlobleComBufQueue;
 }

@@ -1,9 +1,0 @@
-diff a/Source/SkySnow/Allocator/StatckAllocator.h b/Source/SkySnow/Allocator/StatckAllocator.h	(rejected hunks)
-@@ -34,6 +34,7 @@
- +		virtual ~AllocatorBase()
- +		{
- +		}
-++=======
-  	class MemStack
-  	{
-  

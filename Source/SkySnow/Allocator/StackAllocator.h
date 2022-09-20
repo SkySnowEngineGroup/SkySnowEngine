@@ -21,15 +21,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #pragma once
-#include "AllocatorBase.h"
+#include "StackAllocator.h"
 namespace SkySnow
 {
 	//该内存分配器属于CustomAllocator(定制分配器)，
 	//为什么要继承AllocatorBase，是为了更好的使用，也可以不继承
 	template<typename T>
-	class StackAllocator : public AllocatorBase
+	class MemStack
 	{
 	public:
-
+        
 	};
 }
