@@ -19,28 +19,17 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
-#include "AllocMacros.h"
+#include "AllocatorBase.h"
+
 namespace SkySnow
 {
-	//It's in bytes
-	enum PageSize
+	MemBase::MemBase(const char* name, bool threadSafe)
+		: _Name(name)
+		, _IsThreadSafe(threadSafe)
 	{
-		Normal_Size = 32 * 1024,//1024byte & 32 = 32MB
-		Small_Size = 1024 - 16,//
-	};
-	class PageAllocator
+	}
+
+	MemBase::~MemBase()
 	{
-	private:
-		PageAllocator();
-	public:
-		~PageAllocator();
-
-		void* Alloc();
-		void Free(void* mem);
-
-		static PageAllocator& Insance();
-	private:
-		static PageAllocator* _Instance;
-	};
+	}
 }

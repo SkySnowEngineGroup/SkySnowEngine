@@ -85,7 +85,8 @@ public:
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 		//m_ComBuf = m_ComBufPool->AllocCommandBuffer();
 		//m_vsRef = m_ComBuf->CMBCreateVertexShader((char*)m_VsData->GetBytes());
-		
+		MemStack* m_MemStack = new MemStack("Test");
+		void* memory = m_MemStack->Alloc(20,4);
 		return 0;
 	}
 

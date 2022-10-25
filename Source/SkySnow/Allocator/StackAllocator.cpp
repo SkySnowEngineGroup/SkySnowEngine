@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -20,12 +19,44 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
-
+#include "StackAllocator.h"
 namespace SkySnow
 {
-	class MemBase
+	//=============================================================
+	MemStack::MemStack(const char* name, bool threadSafe)
+		: MemBase(name, threadSafe)
+		, _Top(nullptr)
+		, _End(nullptr)
+		, _TopChunk(nullptr)
 	{
 
-	};
+	}
+	//=============================================================
+	MemStack::~MemStack()
+	{
+		FreeChunks(nullptr);
+	}
+	//=============================================================
+	void* MemStack::Alloc(size_t size, int align)
+	{
+		int alignS = AlignSize(align,DefaultAlignment);
+		int i = 0;
+		return nullptr;
+	}
+	//=============================================================
+	void MemStack::Free(void* pointer)
+	{
+
+	}
+	//=============================================================
+	void MemStack::AllocNewChunk(int32_t minSize)
+	{
+
+	}
+	//=============================================================
+	void MemStack::FreeChunks(Chunk* chunk)
+	{
+
+	}
+	//=============================================================
 }

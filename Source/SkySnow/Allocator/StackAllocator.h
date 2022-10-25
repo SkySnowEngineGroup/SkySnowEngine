@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -25,11 +24,50 @@
 #include "PageAllocator.h"
 namespace SkySnow
 {
-	//该内存分配器属于CustomAllocator(定制分配器)，
-	//为什么要继承AllocatorBase，是为了更好的使用，也可以不继承
+	/*
+	*	Base Key Introduce	
+	* 	MemoryPool
+	*		Block:指针，指向第一个memoryblock
+	*		UnitSize:整型，表示每个unit 的尺寸
+	*		InitSize:整型，表示第一个block的unit个数
+	*		GrowSize:整型，表示在第一个block之外再继续增加的每个block的unit个数
+	*	MemoryBlock
+	*		Size:整型数据，表示该block在内存中的大小
+	*		Free:整型，表示剩下有几个unit未被分配
+	*		First:整型，表示下一个可供分配的unit的标识号
+	*		Next:指针，指向下一个memory block
+	*	MemoryUnit<或者叫Chunk>
+	*		Next:整型数据，表示下一个可供分配的unit的标识号
+	*		Data[]:实际的内存区域，其大小在创建时由调用方指定
+	*
+	*/
 	class MemStack : public MemBase
 	{
+	private:
+		struct Chunk
+		{
+			Chunk*		_Next;//4byte
+			int32_t		_DataSize;//4byte
+
+			uint8_t* Data() const
+			{
+				return ((uint8_t*)this + sizeof(Chunk));
+			}
+		};
 	public:
-        
+		MemStack(const char* name, bool threadSafe = false);
+
+		virtual ~MemStack();
+
+		virtual void* Alloc(size_t size, int align) override;
+
+		virtual void Free(void* pointer = nullptr) override;
+	private:
+		void AllocNewChunk(int32_t minSize);
+		void FreeChunks(Chunk* chunk);
+	private:
+		uint8_t*		_Top;
+		uint8_t*		_End;
+		Chunk*			_TopChunk;
 	};
 }

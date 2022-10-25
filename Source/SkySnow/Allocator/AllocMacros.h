@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -25,6 +24,7 @@ namespace SkySnow
 {
 //Mainstream cpus currently have a cache_line of 64 bytes
 #define Cache_Line_Size 64
+#define DefaultAlignment 16
 
 	template<typename T>
 	inline constexpr T AlignPointer(T ptr,size_t alignSize)
