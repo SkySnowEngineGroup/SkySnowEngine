@@ -56,7 +56,7 @@ namespace SkySnow
 	class GMalloc
 	{
 	public:
-		static inline void* Alloc(size_t size, size_t alignedSize = 0);
+		static inline void* Alloc(size_t size, size_t alignedSize = 16);
 		static inline void Free(void* mem, bool isAligned = false);
 	};
 #if PLATFORM == PLATFORM_WINDOW

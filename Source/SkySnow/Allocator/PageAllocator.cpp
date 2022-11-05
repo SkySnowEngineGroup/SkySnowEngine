@@ -22,18 +22,13 @@
 #include "PageAllocator.h"
 namespace SkySnow
 {
-	PageAllocator* PageAllocator::_Instance = nullptr;
-	PageAllocator::PageAllocator()
+	PageAllocator::PageAllocator(const char* name)
 	{
-		_Instance = this;
+
 	}
 	PageAllocator::~PageAllocator()
 	{
-		_Instance = nullptr;
+
 	}
-	PageAllocator& PageAllocator::Insance()
-	{
-		static PageAllocator pageAlloc;
-		return pageAlloc;
-	}
+
 }

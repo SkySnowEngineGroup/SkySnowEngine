@@ -85,8 +85,16 @@ public:
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 		//m_ComBuf = m_ComBufPool->AllocCommandBuffer();
 		//m_vsRef = m_ComBuf->CMBCreateVertexShader((char*)m_VsData->GetBytes());
-		MemStack* m_MemStack = new MemStack("Test");
-		void* memory = m_MemStack->Alloc(20,4);
+
+		//void* pt1 = m_MemStack.Alloc(4);
+		//void* pt2 = m_MemStack.Alloc(4);
+		//void* pt3 = m_MemStack.Alloc(4);
+		//void* pt4 = m_MemStack.Alloc(4);
+		//SN_LOG("pt1:%p", pt1);
+		//SN_LOG("pt2:%p", pt2);
+		//SN_LOG("pt3:%p", pt3);
+		//SN_LOG("pt4:%p", pt4);
+		//m_MemStack.Flush();
 		return 0;
 	}
 
@@ -107,6 +115,7 @@ public:
 	}
 
 private:
+	MemStack				m_MemStack;
 	File*					m_File;
 	Data*					m_VsData;
 	Data*					m_FsData;

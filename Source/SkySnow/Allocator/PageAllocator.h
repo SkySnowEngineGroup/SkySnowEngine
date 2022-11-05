@@ -23,24 +23,30 @@
 #include "AllocMacros.h"
 namespace SkySnow
 {
+	//https://zhuanlan.zhihu.com/p/551379952
 	//It's in bytes
-	enum PageSize
+	enum PageProperty
 	{
-		Normal_Size = 32 * 1024,//1024byte & 32 = 32MB
-		Small_Size = 1024 - 16,//
+		MaxSize = 1024 * 1024 * 256,//256MB
+		PageSize = 32 * 1024,
+		PageCount = MaxSize/ PageSize
 	};
 	class PageAllocator
 	{
 	private:
-		PageAllocator();
+		PageAllocator(const char* name = "DefaultPage");
 	public:
 		~PageAllocator();
 
 		void* Alloc();
 		void Free(void* mem);
 
-		static PageAllocator& Insance();
 	private:
-		static PageAllocator* _Instance;
+
+	private:
+		const char*			_Name;
+		void*				_Pages[PageCount];
+		volatile int		_ActivePages;
+
 	};
 }

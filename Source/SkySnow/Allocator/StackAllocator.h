@@ -55,14 +55,19 @@ namespace SkySnow
 			}
 		};
 	public:
+		MemStack();
 		MemStack(const char* name, bool threadSafe = false);
+
+		MemStack(const MemStack& other) = delete;
 
 		virtual ~MemStack();
 
-		virtual void* Alloc(size_t size, int align) override;
+		virtual void* Alloc(size_t size, int align = DefaultAlignment) override;
 
 		virtual void Free(void* pointer = nullptr) override;
+		void Flush();
 	private:
+		void* ContainsPointer(const void* pointer);
 		void AllocNewChunk(int32_t minSize);
 		void FreeChunks(Chunk* chunk);
 	private:

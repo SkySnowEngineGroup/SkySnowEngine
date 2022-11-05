@@ -27,8 +27,8 @@ namespace SkySnow
 {
 	//声明全局变量，并用extern标记，即声明又定义，保证定义
 	//只在该处进行定义初始化，别的地方定义初始化会报错
-	//static const std::string g_MediaPath = "D:/StudyEnginer/";//Home Path
-	static const std::string g_MediaPath = "/Users/SS3D/"; //Mac Path
+	static const std::string g_MediaPath = "D:/StudyEnginer/";//Home Path
+	//static const std::string g_MediaPath = "/Users/SS3D/"; //Mac Path
 	static const std::string g_RelativeMaterialPath = "SkySnowEngine/Script/Media/Material/";
 	static const int g_String_Buffer_MaxLength = 128;
 	static char g_Null_Char = 0;

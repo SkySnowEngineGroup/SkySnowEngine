@@ -23,6 +23,15 @@
 namespace SkySnow
 {
 	//=============================================================
+	MemStack::MemStack()
+		: MemBase("StackAllocator", false)
+		, _Top(nullptr)
+		, _End(nullptr)
+		, _TopChunk(nullptr)
+	{
+
+	}
+	//=============================================================
 	MemStack::MemStack(const char* name, bool threadSafe)
 		: MemBase(name, threadSafe)
 		, _Top(nullptr)
@@ -39,24 +48,84 @@ namespace SkySnow
 	//=============================================================
 	void* MemStack::Alloc(size_t size, int align)
 	{
-		int alignS = AlignSize(align,DefaultAlignment);
-		int i = 0;
-		return nullptr;
+		uint8_t* result = AlignSize(_Top, align);
+		uint8_t* newTop = result + size;
+		if (newTop <= _End)
+		{
+			_Top = newTop;
+		}
+		else
+		{
+			AllocNewChunk(size + align);
+			result = AlignSize(_Top, align);
+			newTop = result + size;
+			_Top = newTop;
+		}
+		return result;
 	}
 	//=============================================================
 	void MemStack::Free(void* pointer)
 	{
-
+		Chunk* chunk = (Chunk*)ContainsPointer(pointer);
+		if (chunk)
+		{
+			FreeChunks(chunk);
+		}
+	}
+	//=============================================================
+	void MemStack::Flush()
+	{
+		FreeChunks(nullptr);
 	}
 	//=============================================================
 	void MemStack::AllocNewChunk(int32_t minSize)
 	{
+		Chunk* chunk = nullptr;
+		int32_t allSize = minSize + (int32_t)sizeof(Chunk);
+		//uint32_t allocSize;
+		////todo .
+		//if (_TopChunk || allSize > PageProperty::PageSize)
+		//{
+		//	
+		//}
+		chunk = (Chunk*)GMalloc::Alloc(allSize);
+		chunk->_DataSize = allSize - (int32_t)sizeof(Chunk);
 
+		chunk->_Next = _TopChunk;
+		_TopChunk	 = chunk;
+		_Top		 = chunk->Data();
+		_End		 = _Top + chunk->_DataSize;
 	}
 	//=============================================================
 	void MemStack::FreeChunks(Chunk* chunk)
 	{
-
+		while (_TopChunk != chunk)
+		{
+			Chunk* removeChunk = _TopChunk;
+			_TopChunk = _TopChunk->_Next;
+			GMalloc::Free(removeChunk);
+		}
+		_Top = nullptr;
+		_End = nullptr;
+		if (_TopChunk)
+		{
+			_Top = _TopChunk->Data();
+			_End = _Top + _TopChunk->_DataSize;
+		}
+	}
+	//=============================================================
+	void* MemStack::ContainsPointer(const void* pointer)
+	{
+		const uint8_t* ptr = (uint8_t*)pointer;
+		Chunk* chunk = nullptr;
+		for (chunk = _TopChunk; chunk; chunk = chunk->_Next)
+		{
+			if (ptr >= chunk->Data() && ptr < chunk->Data() + chunk->_DataSize)
+			{
+				return chunk;
+			}
+		}
+		return nullptr;
 	}
 	//=============================================================
 }

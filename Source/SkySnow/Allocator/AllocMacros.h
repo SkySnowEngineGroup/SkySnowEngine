@@ -40,8 +40,8 @@ namespace SkySnow
 	}
 
 	template<typename T>
-	inline constexpr T AlignSize(T size, size_t alignSize)
+	inline constexpr T AlignSize(T val, size_t alignSize)
 	{
-		return ((size + (alignSize - 1)) & ~(alignSize - 1));
+		return (T)(((uint64_t)val + (alignSize - 1)) & ~(alignSize - 1));
 	}
 }
