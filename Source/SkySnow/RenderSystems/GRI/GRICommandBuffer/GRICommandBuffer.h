@@ -23,114 +23,69 @@
 #pragma once
 #include "GRICommands.h"
 #include "StackAllocator.h"
+#include "CommandBufferMacro.h"
 #include <vector>
 namespace SkySnow
 {
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
-    class GRICommandBufferBase;
+    class GRICommandBuffer;
     
-    class GRICommandBufferBase
+    class GRICommandBuffer
     {
     public:
-        GRICommandBufferBase();
-
-    protected:
-        void AllocCommand()
+        GRICommandBuffer(CBExecuteType exeType = Render);
+        virtual ~GRICommandBuffer()
         {
+            _StackMem.Flush();
+        }
 
+        inline void* AllocCommand(int64_t cmdSize,int32_t cmdAlign)
+        {
+            GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize,cmdAlign);
+            _NumCommands ++;
+            _Curr = cmd;
+            _Curr = cmd->_Next;
+            return cmd;
+        }
+
+        template<typename CMD>
+        inline void* AllocCommand()
+        {
+            return AllocCommand(sizeof(CMD),alignof(CMD));
         }
         //reset this commandbuffer command to init
         void Reset()
         {
-
         }
+    protected:
+
     protected:
         GRICommandBase* _Head;
         GRICommandBase* _Curr{ _Head};
+        CBExecuteType   _ExecuteType;
     private:
-        MemStack*       _StackMem;
+        int             _NumCommands;
+        MemStack        _StackMem;
     };
+#define Alloc_Command(...) new(AllocCommand(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__
 	//function call back GRICommands and RealTimeGRL
 	//type: RenderCommandBuffer ComputeCommandBuffer ext
-	class GRICommandBuffer : public GRICommandBufferBase
+	class GRIRenderCommandBuffer : public GRICommandBuffer
 	{
 	public:
-		GRICommandBuffer()
-            : GRICommandBufferBase()
+        GRIRenderCommandBuffer()
+            : GRICommandBuffer(Render)
 		{
 		}
 
 		GRIVertexShaderRef CMBCreateVertexShader(const char* vsCode)
 		{
 			GRIVertexShaderRef _VsHandle;
-			_Curr->_Next = new GRICreateVertexShaderCMD(_VsHandle, vsCode);
-			_Curr = _Curr->_Next;
+            Alloc_Command(GRICreateVertexShaderCMD)(_VsHandle, vsCode);
 			return _VsHandle;
 		}
 	};
 
-    class GRICommandBufferPool
-    {
-    public:
-        GRICommandBufferPool()
-        {
-        }
-        
-        ~GRICommandBufferPool()
-        {
-            ReleasePool();
-        }
-        
-        GRICommandBuffer* AllocCommandBuffer()
-        {
-            GRICommandBuffer* newComBuf = new GRICommandBuffer();
-            _CommandBufferList.emplace_back(newComBuf);
-            return newComBuf;
-        }
-        
-        void ReleasePool()
-        {
-            for (std::vector<GRICommandBuffer*>::const_iterator itr=_CommandBufferList.begin(); itr!=_CommandBufferList.end(); ++itr)
-            {
-              delete *itr;
-            }
-            _CommandBufferList.clear();
-        }
-    private:
-        std::vector<GRICommandBuffer*> _CommandBufferList;
-    };
 
-    class GRICommandBufferQueue
-    {
-    public:
-        
-        void SubmitQueue(GRICommandBuffer* comBuf)
-        {
-           
-        }
-
-        void FlushResource()
-        {
-
-        }
-        void PresentQueue()
-        {
-            
-        }
-        //call by renderthread at gl,other vulkan&metal also will create renderthread
-        //curr frame has result
-        void ImmediatelyExecuteCommandBuffer()
-        {
-            
-        }
-        //call by renderthread at gl,other vulkan&metal also will create renderthread
-        //next frame has result
-        void DeferredExecuteCommandBuffer()
-        {
-            
-        }
-    };
-
-    GRICommandBufferQueue _GlobleComBufQueue;
 }

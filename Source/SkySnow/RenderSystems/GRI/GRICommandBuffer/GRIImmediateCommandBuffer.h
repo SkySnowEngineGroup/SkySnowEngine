@@ -20,16 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#pragma once
 #include "GRICommandBuffer.h"
-
 namespace SkySnow
 {
-	GRICommandBuffer::GRICommandBuffer(CBExecuteType exeType)
-		: _Head(new GRINullCMD())
-		, _StackMem(nullptr)
-		, _ExecuteType(exeType)
-		, _NumCommands(0)
+	//If it is an OpenGL context, you must ensure that the calling thread is the rendering thread
+	class GRIImmediateCommandBuffer: public GRICommandBuffer
 	{
+	public:
+		GRIImmediateCommandBuffer()
+			: GRICommandBuffer(Immediate)
+		{
+		}
+		~GRIImmediateCommandBuffer()
+		{
+		}
 
-	}
+		GRIBufferRef CMBCreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
+	};
 }

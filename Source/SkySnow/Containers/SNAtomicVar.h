@@ -58,7 +58,7 @@ namespace SkySnow
 		//load读取原子变量的值，operator T是load的简化版本，内部调用的是load(memory_order_seq_cst)形式
 		bool IsCanDelete()
 		{
-			if (m_Count.load(std::memory_order_relaxed) == 0)
+			if (m_Count.load(std::memory_order_seq_cst) == 0)
 			{
 				return true;
 			}

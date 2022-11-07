@@ -49,7 +49,12 @@ namespace SkySnow
 	{
 		void Execute(GRICommandBuffer& cmdBuffer) {}
 	};
-	//CreateVertexShader
+	//======================================================================================================================
+	// RenderResource Set 
+	
+	//======================================================================================================================
+	// RenderResource Create
+	// CreateVertexShader
 	struct GRICreateVertexShaderCMD : public GRICommand<GRICreateVertexShaderCMD>
 	{
 		GRICreateVertexShaderCMD(GRIVertexShaderRef handle,const char* vsCode)

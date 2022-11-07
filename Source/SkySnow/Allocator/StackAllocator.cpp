@@ -88,7 +88,12 @@ namespace SkySnow
 		//{
 		//	
 		//}
-		chunk = (Chunk*)GMalloc::Alloc(allSize);
+		if (allSize < PageProperty::PageSize)
+		{
+			chunk = (Chunk*)GMalloc::Alloc(PageProperty::PageSize);
+			allSize = PageProperty::PageSize;
+		}
+		
 		chunk->_DataSize = allSize - (int32_t)sizeof(Chunk);
 
 		chunk->_Next = _TopChunk;

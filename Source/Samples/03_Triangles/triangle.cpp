@@ -30,6 +30,7 @@
 #include "File.h"
 #include "SkySnowConfigInfo.h"
 #include "GRICommandBuffer.h"
+#include "GRICommandBufferPool.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -83,8 +84,8 @@ public:
 
 		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
-		//m_ComBuf = m_ComBufPool->AllocCommandBuffer();
-		//m_vsRef = m_ComBuf->CMBCreateVertexShader((char*)m_VsData->GetBytes());
+		m_ComBuf = m_ComBufPool->AllocCommandBuffer<GRIRenderCommandBuffer>();
+		m_vsRef = m_ComBuf->CMBCreateVertexShader((char*)m_VsData->GetBytes());
 
 		//void* pt1 = m_MemStack.Alloc(4);
 		//void* pt2 = m_MemStack.Alloc(4);
@@ -125,7 +126,7 @@ private:
 	GRIPipelineShaderStateRef m_PipelineShaderStateRef;
 	GRIGraphicsPipelineStateRef m_PSORef;
 	GRICommandBufferPool*	m_ComBufPool;
-	GRICommandBuffer*		m_ComBuf;
+	GRIRenderCommandBuffer*	m_ComBuf;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

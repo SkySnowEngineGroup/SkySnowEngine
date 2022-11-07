@@ -20,16 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GRICommandBuffer.h"
-
+#pragma once
 namespace SkySnow
 {
-	GRICommandBuffer::GRICommandBuffer(CBExecuteType exeType)
-		: _Head(new GRINullCMD())
-		, _StackMem(nullptr)
-		, _ExecuteType(exeType)
-		, _NumCommands(0)
+	enum CBExecuteType
 	{
-
-	}
+		Render = 1,
+		Compute,
+		Blit,
+		Immediate ,
+	};
 }

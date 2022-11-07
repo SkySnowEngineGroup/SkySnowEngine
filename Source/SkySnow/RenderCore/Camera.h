@@ -22,12 +22,12 @@
 // THE SOFTWARE.
 //
 #pragma once 
-#include "Componment.h"
+#include "Component.h"
 namespace SkySnow
 {
-	class Camera : public Componment
+	class Camera : public Component
 	{
-		SkySnow_Object(Camera, Componment);
+		SkySnow_Object(Camera, Component);
 	public:
 		Camera();
 		~Camera();
