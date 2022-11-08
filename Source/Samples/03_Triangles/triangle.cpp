@@ -85,7 +85,7 @@ public:
 		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 		m_ComBuf = m_ComBufPool->AllocCommandBuffer<GRIRenderCommandBuffer>();
-		m_vsRef = m_ComBuf->CMBCreateVertexShader((char*)m_VsData->GetBytes());
+//		m_vsRef = m_ComBuf->CreateVertexShaderCommand((char*)m_VsData->GetBytes());
 
 		//void* pt1 = m_MemStack.Alloc(4);
 		//void* pt2 = m_MemStack.Alloc(4);

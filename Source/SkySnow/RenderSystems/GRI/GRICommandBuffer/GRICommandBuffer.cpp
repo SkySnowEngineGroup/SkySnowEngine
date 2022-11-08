@@ -25,7 +25,7 @@
 namespace SkySnow
 {
 	GRICommandBuffer::GRICommandBuffer(CBExecuteType exeType)
-		: _Head(new GRINullCMD())
+		: _Head(new GRINullCommand())
 		, _StackMem(nullptr)
 		, _ExecuteType(exeType)
 		, _NumCommands(0)

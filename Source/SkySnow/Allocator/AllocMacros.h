@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #pragma once
+#include <stdio.h>
+#include <stdint.h>
 namespace SkySnow
 {
 //Mainstream cpus currently have a cache_line of 64 bytes

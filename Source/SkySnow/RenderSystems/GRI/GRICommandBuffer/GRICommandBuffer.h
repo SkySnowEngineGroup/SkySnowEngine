@@ -38,6 +38,12 @@ namespace SkySnow
         virtual ~GRICommandBuffer()
         {
             _StackMem.Flush();
+            if(_Head)
+            {
+                delete _Head;
+                _Head = nullptr;
+            }
+            
         }
 
         inline void* AllocCommand(int64_t cmdSize,int32_t cmdAlign)
@@ -78,13 +84,8 @@ namespace SkySnow
             : GRICommandBuffer(Render)
 		{
 		}
-
-		GRIVertexShaderRef CMBCreateVertexShader(const char* vsCode)
-		{
-			GRIVertexShaderRef _VsHandle;
-            Alloc_Command(GRICreateVertexShaderCMD)(_VsHandle, vsCode);
-			return _VsHandle;
-		}
+        
+        
 	};
 
 

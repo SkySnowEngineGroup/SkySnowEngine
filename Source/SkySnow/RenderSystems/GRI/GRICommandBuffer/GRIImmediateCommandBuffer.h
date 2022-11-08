@@ -36,6 +36,6 @@ namespace SkySnow
 		{
 		}
 
-		GRIBufferRef CMBCreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
+		GRIBufferRef CMBCreateBufferCommand(BufferUsageType usageType, int size, int stride, void* data);
 	};
 }

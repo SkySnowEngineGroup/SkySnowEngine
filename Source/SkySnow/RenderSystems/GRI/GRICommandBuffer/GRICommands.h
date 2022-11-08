@@ -28,7 +28,7 @@ namespace SkySnow
 	class GRICommandBuffer;
 	struct GRICommandBase
 	{
-		virtual void ExecuteCMD(GRICommandBuffer& cmdBuffer) = 0;
+		virtual void ExecuteCommand(GRICommandBuffer& cmdBuffer) = 0;
 		GRICommandBase* _Next = nullptr;
 	};
 
@@ -36,7 +36,7 @@ namespace SkySnow
 	struct GRICommand : public GRICommandBase
 	{
 	public:
-		void ExecuteCMD(GRICommandBuffer& cmdBuffer) override final
+		void ExecuteCommand(GRICommandBuffer& cmdBuffer) override final
 		{
 			T* cmd = static_cast<T*>(this);
 			cmd->Execute(cmdBuffer);
@@ -45,7 +45,7 @@ namespace SkySnow
 	};
     //RenderDrive Interface
 	//======================================================================================================================
-	struct GRINullCMD : public GRICommand<GRINullCMD>
+	struct GRINullCommand : public GRICommand<GRINullCommand>
 	{
 		void Execute(GRICommandBuffer& cmdBuffer) {}
 	};
@@ -55,9 +55,9 @@ namespace SkySnow
 	//======================================================================================================================
 	// RenderResource Create
 	// CreateVertexShader
-	struct GRICreateVertexShaderCMD : public GRICommand<GRICreateVertexShaderCMD>
+	struct GRICreateVertexShaderCommand : public GRICommand<GRICreateVertexShaderCommand>
 	{
-		GRICreateVertexShaderCMD(GRIVertexShaderRef handle,const char* vsCode)
+        GRICreateVertexShaderCommand(GRIVertexShaderRef handle,const char* vsCode)
 			: _VsCode(vsCode)
 			, _Handle(handle)
 		{

@@ -24,7 +24,7 @@
 
 namespace SkySnow
 {
-	GRIBufferRef GRIImmediateCommandBuffer::CMBCreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
+	GRIBufferRef GRIImmediateCommandBuffer::CMBCreateBufferCommand(BufferUsageType usageType, int size, int stride, void* data)
 	{
 		return GRI->GRICreateBuffer(usageType, size, stride, data);
 	}
