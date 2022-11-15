@@ -40,6 +40,7 @@ namespace SkySnow
 	//GLBuffer其处理的主要对象为IndexBuffer、VertexBuffer、StructureBuffer(SSBO)
 	class GLBuffer : public GRIBuffer
 	{
+		friend class GRIGLDrive;
 	public:
 		GLBuffer()
 			: GRIBuffer()

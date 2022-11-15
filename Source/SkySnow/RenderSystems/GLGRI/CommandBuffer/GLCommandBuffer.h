@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -21,31 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GLBuffer.h"
-#include "GRIGLDrive.h"
-#include "GLBufferResource.h"
+#pragma once
+#include "GRILowerCommandBuffer.h"
+#include "GRICommandBuffer.h"
 namespace SkySnow
 {
-	//创建IndexBuffer、vertexBuffer、SSBO
-	GRIBufferRef GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
+	class GLCommandBuffer : public GRICommandBufferBase , public GRILowerCommandBuffer
 	{
+	public:
+		GLCommandBuffer();
 
-		GLenum bufferType = GL_ARRAY_BUFFER;
-		if (usageType == BUT_IndexBuffer)
-		{
-			bufferType = GL_ELEMENT_ARRAY_BUFFER;
-		}
+		~GLCommandBuffer();
 
-		GLBuffer* griBuffer = new GLBuffer(bufferType,usageType, size, stride, data);
-		griBuffer->_StreamDraw = true;
-		griBuffer->_BufferName = "a";
-		return griBuffer;
-	}
+		virtual void Reset() final override;
+		virtual void BeginCommandBuffer() final override;
+		virtual void EndCommandBuffer() final override;
 
+		virtual void BeginRenderPass() final override;
+		virtual void EndRenderPass() final override;
+	
+	public://资源创建
+		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
+	private:
 
-
-	namespace OGLBuffer
-	{
-		
-	}
+	};
 }

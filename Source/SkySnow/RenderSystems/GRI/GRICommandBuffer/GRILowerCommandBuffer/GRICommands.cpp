@@ -20,12 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GRIImmediateCommandBuffer.h"
-
+#include "GRICommands.h"
+#include "GRICommandBuffer.h"
 namespace SkySnow
 {
-	GRIBufferRef GRIImmediateCommandBuffer::CMBCreateBufferCommand(BufferUsageType usageType, int size, int stride, void* data)
+	void GRICreateVertexShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
 	{
-		return GRI->GRICreateBuffer(usageType, size, stride, data);
+		_Handle = GRI->GRICreateVertexShader(_VsCode);
+	}
+
+	void GRICreateBufferCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		_Handle = GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data);
 	}
 }

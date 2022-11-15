@@ -28,7 +28,6 @@ namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
 	{
-
 		OpenGL::InitialExtensions();
 	}
 	//GRICreate===============================================================================================================================

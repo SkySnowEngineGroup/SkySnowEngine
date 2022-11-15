@@ -21,15 +21,66 @@
 // THE SOFTWARE.
 //
 #include "GRICommandBuffer.h"
-
+#include "GLCommandBuffer.h"
 namespace SkySnow
 {
-	GRICommandBuffer::GRICommandBuffer(CBExecuteType exeType)
-		: _Head(new GRINullCommand())
-		, _StackMem(nullptr)
-		, _ExecuteType(exeType)
-		, _NumCommands(0)
-	{
+	GRICommandBufferBase::GRICommandBufferBase(CommandBufferSate cbState)
+		: _CMState(cbState)
 
+	{
 	}
+
+
+    GRICommandBufferBase* GRICommandBufferPool::CreateCMB()
+    {
+        GRICommandBufferBase* tempCmb = nullptr;
+        GRIFeature version = GRI->GetGRIFeatureType();
+        switch (version)
+        {
+        case SkySnow::ENone:
+            break;
+        case SkySnow::EVulkan:
+            break;
+        case SkySnow::EMetal:
+            break;
+        case SkySnow::EGLES:
+        case SkySnow::EOpenGL:
+            tempCmb = new GLCommandBuffer();
+            break;
+        default:
+            break;
+        }
+        return tempCmb;
+    }
+
+	void GRICommandBufferQueue::Init()
+	{
+        GRIFeature version = GRI->GetGRIFeatureType();
+        switch (version)
+        {
+        case SkySnow::ENone:
+            break;
+        case SkySnow::EGLES:
+        case SkySnow::EOpenGL:
+            _LowerComBuf = new GLCommandBuffer();
+            break;
+        case SkySnow::EDx9:
+        case SkySnow::EDx10:
+        case SkySnow::EDx11:
+            break;
+        default:
+            break;
+        }
+	}
+    bool GRICommandBufferQueue::IsLowerVerion()
+    {
+        GRIFeature version = GRI->GetGRIFeatureType();
+        if (version == EVulkan ||
+            version == EMetal ||
+            version == EDX12)
+        {
+            return false;
+        }
+        return true;
+    }
 }

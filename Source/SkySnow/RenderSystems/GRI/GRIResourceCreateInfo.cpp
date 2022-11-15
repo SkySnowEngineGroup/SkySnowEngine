@@ -20,12 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GRICommands.h"
-#include "GRICommandBuffer.h"
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
-	void GRICreateVertexShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
-	{
-		_Handle = GRI->GRICreateVertexShader(_VsCode);
-	}
+
 }

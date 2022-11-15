@@ -30,6 +30,10 @@ namespace SkySnow
 		ENone,
 		EVulkan,
 		EMetal,
+		EDx9,
+		EDx10,
+		EDx11,
+		EDX12,
 		EGLES,
 		EOpenGL,
 		ENum

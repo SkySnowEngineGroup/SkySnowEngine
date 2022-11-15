@@ -21,21 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRICommandBuffer.h"
+#include "GLPlatformProfiles.h"
+#include "GRIDrive.h"
+#include "GLPipelineResource.h"
+
+
 namespace SkySnow
 {
-	//If it is an OpenGL context, you must ensure that the calling thread is the rendering thread
-	class GRIImmediateCommandBuffer: public GRICommandBuffer
+	class RenderThread
 	{
-	public:
-		GRIImmediateCommandBuffer()
-			: GRICommandBuffer(Immediate)
-		{
-		}
-		~GRIImmediateCommandBuffer()
-		{
-		}
 
-		GRIBufferRef CMBCreateBufferCommand(BufferUsageType usageType, int size, int stride, void* data);
 	};
 }

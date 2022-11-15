@@ -24,69 +24,95 @@
 #include "GRICommands.h"
 #include "StackAllocator.h"
 #include "CommandBufferMacro.h"
+#include "GRILowerCommandBuffer.h"
 #include <vector>
 namespace SkySnow
 {
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
-    class GRICommandBuffer;
-    
-    class GRICommandBuffer
+    class GRICommandBufferBase
     {
     public:
-        GRICommandBuffer(CBExecuteType exeType = Render);
-        virtual ~GRICommandBuffer()
+        GRICommandBufferBase(CommandBufferSate cbState = Initial);
+        virtual ~GRICommandBufferBase() 
         {
-            _StackMem.Flush();
-            if(_Head)
-            {
-                delete _Head;
-                _Head = nullptr;
-            }
-            
+            _CMState = Invalid;
         }
 
-        inline void* AllocCommand(int64_t cmdSize,int32_t cmdAlign)
-        {
-            GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize,cmdAlign);
-            _NumCommands ++;
-            _Curr = cmd;
-            _Curr = cmd->_Next;
-            return cmd;
-        }
+        virtual void Reset() = 0;
+        virtual void BeginCommandBuffer() = 0;
+        virtual void EndCommandBuffer() = 0;
 
-        template<typename CMD>
-        inline void* AllocCommand()
-        {
-            return AllocCommand(sizeof(CMD),alignof(CMD));
-        }
-        //reset this commandbuffer command to init
-        void Reset()
-        {
-        }
-    protected:
+        virtual void BeginRenderPass() = 0;
+        virtual void EndRenderPass() = 0;
 
     protected:
-        GRICommandBase* _Head;
-        GRICommandBase* _Curr{ _Head};
-        CBExecuteType   _ExecuteType;
-    private:
-        int             _NumCommands;
-        MemStack        _StackMem;
+        CommandBufferSate   _CMState;
     };
-#define Alloc_Command(...) new(AllocCommand(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__
-	//function call back GRICommands and RealTimeGRL
-	//type: RenderCommandBuffer ComputeCommandBuffer ext
-	class GRIRenderCommandBuffer : public GRICommandBuffer
-	{
-	public:
-        GRIRenderCommandBuffer()
-            : GRICommandBuffer(Render)
-		{
-		}
-        
-        
-	};
+
+    class GRICommandBufferPool
+    {
+    public:
+        GRICommandBufferPool()
+        {
+        }
+
+        ~GRICommandBufferPool()
+        {
+
+        }
+
+        GRICommandBufferBase* AllocCommandBuffer()
+        {
+            return CreateCMB();
+        }
+        void ReleasePool()
+        {
+
+        }
+    private:
+        GRICommandBufferBase* CreateCMB();
+    };
+    class GRICommandBufferQueue
+    {
+    public:
+        void Init();
+        void SubmitQueue(GRICommandBuffer* comBuf)
+        {
+
+        }
+
+        void BeginFrame();
+
+        void EndFrame();
+
+        void FlushResource()
+        {
+
+        }
+        void PresentQueue()
+        {
+
+        }
+        GRILowerCommandBuffer* GetLowerCommandBuffer()
+        {
+            return _LowerComBuf;
+        }
+
+        bool IsLowerVerion();
+    private:
+        GRILowerCommandBuffer* _LowerComBuf;
+    };
 
 
+    inline GRIVertexShaderRef CreateVertexShader(const char* vsCode)
+    {
+        if (!_GQueue.IsLowerVerion())
+        {
+            return GRI->GRICreateVertexShader(vsCode);
+        }
+        return _GQueue.GetLowerCommandBuffer()->CreateVertexShader(vsCode);
+    }
+    //全局唯一的一个Queue
+    GRICommandBufferQueue _GQueue;
 }

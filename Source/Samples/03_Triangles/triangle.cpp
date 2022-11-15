@@ -29,8 +29,8 @@
 #include "OSPlatform.h"
 #include "File.h"
 #include "SkySnowConfigInfo.h"
+#include "StackAllocator.h"
 #include "GRICommandBuffer.h"
-#include "GRICommandBufferPool.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
 {
@@ -40,8 +40,8 @@ public:
 		, m_File(nullptr)
 		, m_VsData(nullptr)
 		, m_FsData(nullptr)
-		, m_ComBufPool(new GRICommandBufferPool())
 	{
+		_GQueue.Init();
         SN_LOG("Application is name:%s", name);
         SN_WARN("Application description info:%s", description);
 	}
@@ -52,7 +52,6 @@ public:
 		Delete_Object(m_File);
 		Delete_Object(m_VsData);
 		Delete_Object(m_FsData);
-		Delete_Object(m_ComBufPool);
     }
 
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
@@ -84,8 +83,6 @@ public:
 
 		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
-		m_ComBuf = m_ComBufPool->AllocCommandBuffer<GRIRenderCommandBuffer>();
-//		m_vsRef = m_ComBuf->CreateVertexShaderCommand((char*)m_VsData->GetBytes());
 
 		//void* pt1 = m_MemStack.Alloc(4);
 		//void* pt2 = m_MemStack.Alloc(4);
@@ -109,10 +106,6 @@ public:
 		GRI->GRISetPipelineShaderState(m_PipelineShaderStateRef);
 		GRI->GRISetGraphicsPipelineState(m_PSORef);
 		GRI->GRIDrawPrimitive(3,1);
-
-		//_GlobleComBufQueue.SubmitQueue(m_ComBuf);
-		//_GlobleComBufQueue.FlushResource();
-		//_GlobleComBufQueue.PresentQueue();
 	}
 
 private:
@@ -125,8 +118,6 @@ private:
 	GRIBufferRef			m_VertexBufferRef;
 	GRIPipelineShaderStateRef m_PipelineShaderStateRef;
 	GRIGraphicsPipelineStateRef m_PSORef;
-	GRICommandBufferPool*	m_ComBufPool;
-	GRIRenderCommandBuffer*	m_ComBuf;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

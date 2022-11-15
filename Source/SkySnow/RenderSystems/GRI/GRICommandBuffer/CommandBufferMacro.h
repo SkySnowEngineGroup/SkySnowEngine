@@ -23,11 +23,12 @@
 #pragma once
 namespace SkySnow
 {
-	enum CBExecuteType
+	enum CommandBufferSate
 	{
-		Render = 1,
-		Compute,
-		Blit,
-		Immediate ,
+		Initial = 1,
+		Recording,
+		Executable,
+		Pending,
+		Invalid,
 	};
 }

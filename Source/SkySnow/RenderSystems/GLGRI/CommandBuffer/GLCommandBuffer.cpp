@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -21,31 +20,39 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GLBuffer.h"
-#include "GRIGLDrive.h"
-#include "GLBufferResource.h"
+#include "GLCommandBuffer.h"
+
 namespace SkySnow
 {
-	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
-	GRIBufferRef GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
+	GLCommandBuffer::GLCommandBuffer()
+		: GRICommandBufferBase()
 	{
 
-		GLenum bufferType = GL_ARRAY_BUFFER;
-		if (usageType == BUT_IndexBuffer)
-		{
-			bufferType = GL_ELEMENT_ARRAY_BUFFER;
-		}
-
-		GLBuffer* griBuffer = new GLBuffer(bufferType,usageType, size, stride, data);
-		griBuffer->_StreamDraw = true;
-		griBuffer->_BufferName = "a";
-		return griBuffer;
 	}
 
-
-
-	namespace OGLBuffer
+	GLCommandBuffer::~GLCommandBuffer()
 	{
-		
+	}
+
+	void GLCommandBuffer::Reset()
+	{
+
+	}
+	void GLCommandBuffer::BeginCommandBuffer()
+	{
+
+	}
+	void GLCommandBuffer::EndCommandBuffer()
+	{
+
+	}
+
+	void GLCommandBuffer::BeginRenderPass()
+	{
+
+	}
+	void GLCommandBuffer::EndRenderPass()
+	{
+
 	}
 }

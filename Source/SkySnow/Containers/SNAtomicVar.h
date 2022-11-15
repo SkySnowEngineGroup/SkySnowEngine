@@ -80,4 +80,19 @@ namespace SkySnow
 		std::atomic_int m_Count = { 0 };
 		std::atomic_bool m_Mark = { 0 };
 	};
+	class AutomicBool
+	{
+	public:
+		bool LoadFlag()
+		{
+			return _Flag.load();
+		}
+		void ChangeFlag()
+		{
+			bool val = _Flag.load();
+			_Flag.store(!val);
+		}
+	private:
+		std::atomic_bool _Flag{true};
+	};
 }

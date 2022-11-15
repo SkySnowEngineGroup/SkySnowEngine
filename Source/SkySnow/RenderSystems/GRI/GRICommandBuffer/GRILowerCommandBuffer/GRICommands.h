@@ -25,6 +25,12 @@
 #include "OSPlatform.h"
 namespace SkySnow
 {
+	/*
+	 *These instructions are data structures encapsulated for OpenGL 
+	 *and lower versions of dx. They are not required for metal&vulkan&dx12. 
+	 *The unified interface encapsulated in CommandBuffer delivers rendering 
+	 *instructions directly to the gpu
+	*/
 	class GRICommandBuffer;
 	struct GRICommandBase
 	{
@@ -57,7 +63,7 @@ namespace SkySnow
 	// CreateVertexShader
 	struct GRICreateVertexShaderCommand : public GRICommand<GRICreateVertexShaderCommand>
 	{
-        GRICreateVertexShaderCommand(GRIVertexShaderRef handle,const char* vsCode)
+        GRICreateVertexShaderCommand(GRIVertexShaderRef& handle,const char* vsCode)
 			: _VsCode(vsCode)
 			, _Handle(handle)
 		{
@@ -67,6 +73,22 @@ namespace SkySnow
 		const char*			_VsCode;
 		GRIVertexShaderRef	_Handle;
 	};
+	struct GRICreateBufferCommand : public GRICommand<GRICreateBufferCommand>
+	{
+		GRICreateBufferCommand(GRIBufferRef& handle,BufferUsageType usageType, int size, int stride, void* data)
+			: _Handle(handle)
+			, _UsageType(usageType)
+			, _Size(size)
+			, _Stride(stride)
+			, _Data(data)
+		{
+		}
 
-
+		void Execute(GRICommandBuffer& cmdBuffer);
+		BufferUsageType _UsageType;
+		int				_Size;
+		int				_Stride;
+		void*			_Data;
+		GRIBufferRef	_Handle;
+	};
 }
