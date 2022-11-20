@@ -26,11 +26,26 @@ namespace SkySnow
 {
 	void GRICreateVertexShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
 	{
-		_Handle = GRI->GRICreateVertexShader(_VsCode);
+		GRI->GRICreateVertexShader(_VsCode, _Handle);
+	}
+
+	void GRICreateFragmentShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRICreateFragmentShader(_FsCode, _Handle);
+	}
+
+	void GRICreatePipelineShaderStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRICreatePipelineShaderState(_Handle);
 	}
 
 	void GRICreateBufferCommand::Execute(GRICommandBuffer& cmdBuffer)
 	{
-		_Handle = GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data);
+		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data, _Handle);
+	}
+
+	void GRICreateGraphicsPipelineStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRICreateGraphicsPipelineState(_PsoInfo,_Handle);
 	}
 }

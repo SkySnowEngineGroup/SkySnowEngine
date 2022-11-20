@@ -30,23 +30,22 @@ namespace SkySnow
 {
 	using namespace OGLShader;
 	////Create Shader about Resource
-	GRIVertexShaderRef GRIGLDrive::GRICreateVertexShader(const char* vsCode)
+	void GRIGLDrive::GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle)
 	{
-		return OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode);
+		OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode, handle);
 	}
 
-	GRIFragmentShaderRef GRIGLDrive::GRTCreateFragmentShader(const char* fsCode)
+	void GRIGLDrive::GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle)
 	{
-		return OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode);
+		OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode, handle);
 	}
 
-	GRIPipelineShaderStateRef GRIGLDrive::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	void GRIGLDrive::GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle)
 	{
-		GLPipelineShaderState* temp = new GLPipelineShaderState(vs, fs);
-		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);
-		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
-		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle,temp->_ProgramId);
-		return temp;
+		GLPipelineShaderState* shaderPipe = dynamic_cast<GLPipelineShaderState*>(handle.GetReference());
+		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(shaderPipe->GetVertexShader());
+		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(shaderPipe->GetFragmentShader());
+		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
 	}
 
 	//Shader 创建的模板类方法(公共方法)
@@ -57,19 +56,21 @@ namespace SkySnow
 	//它命名空间下调用
 
 	template<typename GRIShaderType,typename OGLShaderType>
-	GRIShaderType* OGLShader::CreateShader(const char* shadercode)
+	void OGLShader::CreateShader(const char* shadercode, GRIShaderType* handle)
 	{
-		GRIShaderType* shaderObject = CompileShader<OGLShaderType>(shadercode);
-		return shaderObject;
+		OGLShaderType* shaderObject = dynamic_cast<OGLShaderType*>handle;
+		CompileShader<OGLShaderType>(shadercode, shaderObject);
 	}
 
 	template<typename OGLShaderType>
-	OGLShaderType* OGLShader::CompileShader(const char* shadercode)
+	void OGLShader::CompileShader(const char* shadercode,OGLShaderType* handle)
 	{
-		OGLShaderType* shader = new OGLShaderType();
-		shader->_GpuHandle = OpenGL::CreateShader(shader->m_GLTypeEnum);
-		CompileCurrentShader(shader->_GpuHandle,shadercode);
-		return shader;
+		handle->_GpuHandle = OpenGL::CreateShader(handle->m_GLTypeEnum);
+		bool flag = CompileCurrentShader(handle->_GpuHandle,shadercode);
+		if (!flag)
+		{
+			SN_ERR("Compile Shader fail.");
+		}
 	}
 
 	bool OGLShader::CompileCurrentShader(const GLuint shaderHandle, const char* shadercode)

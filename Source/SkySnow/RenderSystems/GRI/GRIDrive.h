@@ -24,6 +24,7 @@
 #include "GRICommons.h"
 #include "GRIResource.h"
 #include "GRIResourceCreateInfo.h"
+
 namespace SkySnow
 {
 	//根据不同平台创建不同的渲染API
@@ -47,27 +48,15 @@ namespace SkySnow
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
 		//GRICreate=======================================================================================================================
 		//Create Vertex Shader
-		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) = 0;
+		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) = 0;
 		//Create Fragment Shader
-		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) = 0;
+		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) = 0;
 		//Create Pipeline Shader Stage State
-		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
+		virtual void GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle) = 0;
 		//Create Graphics Pipeline
-		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
+		virtual void GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle) = 0;
 		//Create Buffer:index vertex SSBO
-		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data) = 0;
-
-		//virtual GRIVertexBindingDescRef GRICreateVertexBindingDesc() = 0;
-		//vulkan is submit,metal is commit
-		//virtual void Commit() = 0;
+		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
 		//GRICreate=======================================================================================================================
-
-		//GRISet==========================================================================================================================
-		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
-		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) = 0;
-		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
-		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
-		//GRISet==========================================================================================================================
-
 	};
 };

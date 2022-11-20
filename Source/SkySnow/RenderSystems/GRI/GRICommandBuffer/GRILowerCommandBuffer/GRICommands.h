@@ -73,6 +73,30 @@ namespace SkySnow
 		const char*			_VsCode;
 		GRIVertexShaderRef	_Handle;
 	};
+
+	struct GRICreateFragmentShaderCommand : public GRICommand<GRICreateFragmentShaderCommand>
+	{
+		GRICreateFragmentShaderCommand(GRIFragmentShaderRef& handle, const char* vsCode)
+			: _FsCode(vsCode)
+			, _Handle(handle)
+		{
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+
+		const char*				_FsCode;
+		GRIFragmentShaderRef	_Handle;
+	};
+
+	struct GRICreatePipelineShaderStateCommand : public GRICommand<GRICreatePipelineShaderStateCommand>
+	{
+		GRICreatePipelineShaderStateCommand(GRIPipelineShaderStateRef& handle)
+			: _Handle(handle)
+		{
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+		GRIPipelineShaderStateRef _Handle;
+	};
+
 	struct GRICreateBufferCommand : public GRICommand<GRICreateBufferCommand>
 	{
 		GRICreateBufferCommand(GRIBufferRef& handle,BufferUsageType usageType, int size, int stride, void* data)
@@ -90,5 +114,19 @@ namespace SkySnow
 		int				_Stride;
 		void*			_Data;
 		GRIBufferRef	_Handle;
+	};
+
+	struct GRICreateGraphicsPipelineStateCommand : public GRICommand<GRICreateGraphicsPipelineStateCommand>
+	{
+		GRICreateGraphicsPipelineStateCommand(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle)
+			: _PsoInfo(createInfo)
+			, _Handle(handle)
+		{
+
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+
+		GRICreateGraphicsPipelineStateInfo _PsoInfo;
+		GRIGraphicsPipelineStateRef _Handle;
 	};
 }

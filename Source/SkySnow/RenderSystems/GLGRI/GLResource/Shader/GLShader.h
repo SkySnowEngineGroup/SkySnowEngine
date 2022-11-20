@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -42,12 +41,12 @@ namespace SkySnow
 	namespace OGLShader
 	{
 		template<typename GRIShaderType, typename OGLShaderType>
-		GRIShaderType* CreateShader(const char* shadercode);
+		void CreateShader(const char* shadercode, GRIShaderType* handle);
 		//关于这块，将会考虑二进制着色器文件缓存，单独的着色器对象搭配管道对象进行优化
 		//并且加入缓存hash机制，并不是所有的着色器程序对象中的顶点着色器是不一致的，有必要
 		//减少着色器对象在编译时耗费系统资源的问题。
 		template<typename OGLShaderType>
-		OGLShaderType* CompileShader(const char* shadercode);
+		void CompileShader(const char* shadercode,OGLShaderType* handle);
 
 		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
 

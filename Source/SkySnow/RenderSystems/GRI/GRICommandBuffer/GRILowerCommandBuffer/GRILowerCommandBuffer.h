@@ -40,6 +40,11 @@ namespace SkySnow
         virtual ~GRILowerCommandBuffer();
 
     protected:
+        // Command分配将不能采用此种模式，这种模式分配不是线程安全的
+        // 多个线程可以<创建渲染资源指令>，并可全局使用，单个渲染线程消费<渲染资源创建指令>
+        // MPSC无锁队列很合适:目前会支持这种方式
+        // 但如果想在低版本的API中多个渲染线程(使用共享上下文)，那么就需要使用MPMC无锁队列 todo
+        // 目前来说，这种方式makecurrcontext是很耗时的，并不打算支持
         inline void* AllocCommand(int64_t cmdSize, int32_t cmdAlign)
         {
             GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize, cmdAlign);
@@ -56,6 +61,14 @@ namespace SkySnow
         }
     public:
         virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) = 0;
+
+        virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) = 0;
+
+        virtual GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
+
+        virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) = 0;
+
+        virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
 
     protected:
         int                     _NumCommands;

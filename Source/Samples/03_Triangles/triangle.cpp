@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -41,7 +40,7 @@ public:
 		, m_VsData(nullptr)
 		, m_FsData(nullptr)
 	{
-		_GQueue.Init();
+		
         SN_LOG("Application is name:%s", name);
         SN_WARN("Application description info:%s", description);
 	}
@@ -56,30 +55,31 @@ public:
 
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
+		GRIInit();
         SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
-		string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
-		string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
-		m_File = new File();
-		m_VsData = new Data();
-		m_FsData = new Data();
-		m_File->ReadData(vsShaderPath, m_VsData);
-		m_File->ReadData(fsShaderPath, m_FsData);
+		//string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
+		//string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
+		//m_File = new File();
+		//m_VsData = new Data();
+		//m_FsData = new Data();
+		//m_File->ReadData(vsShaderPath, m_VsData);
+		//m_File->ReadData(fsShaderPath, m_FsData);
 
-		GRICreateGraphicsPipelineStateInfo psoCreateInfo;
-		
-		m_vsRef = GRI->GRICreateVertexShader((char*)m_VsData->GetBytes());
-		m_fsRef = GRI->GRTCreateFragmentShader((char*)m_FsData->GetBytes());
-		m_PipelineShaderStateRef = GRI->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
-		float vertices[] = { -0.5f, -0.5f, 0.0f,
-							 0.5f,  -0.5f, 0.0f,
-							 0.0f,  0.5f,  0.0f};
-		SN_LOG("Vertex Size:%d",sizeof(vertices));
-		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
-		m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
-												sizeof(vertices),
-												3, 
-												vertices);
-		m_PSORef = GRI->GRICreateGraphicsPipelineState(psoCreateInfo);
+		//GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+		//
+		//m_vsRef = GRI->GRICreateVertexShader((char*)m_VsData->GetBytes());
+		//m_fsRef = GRI->GRTCreateFragmentShader((char*)m_FsData->GetBytes());
+		//m_PipelineShaderStateRef = GRI->GRICreatePipelineShaderState(m_vsRef, m_fsRef);
+		//float vertices[] = { -0.5f, -0.5f, 0.0f,
+		//					 0.5f,  -0.5f, 0.0f,
+		//					 0.0f,  0.5f,  0.0f};
+		//SN_LOG("Vertex Size:%d",sizeof(vertices));
+		//psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
+		//m_VertexBufferRef = GRI->GRICreateBuffer(BufferUsageType::BUT_VertexBuffer,
+		//										sizeof(vertices),
+		//										3, 
+		//										vertices);
+		//m_PSORef = GRI->GRICreateGraphicsPipelineState(psoCreateInfo);
 
 		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
@@ -98,14 +98,14 @@ public:
 
 	void Update()
 	{
-		GRIResource::FlushResourceRelease();
-		GRI->GRIClearColor(0.0, 0.0, 0.0, 1.0);
-		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-		
-		GRI->GRISetBuffer(0,m_VertexBufferRef,0);
-		GRI->GRISetPipelineShaderState(m_PipelineShaderStateRef);
-		GRI->GRISetGraphicsPipelineState(m_PSORef);
-		GRI->GRIDrawPrimitive(3,1);
+		//GRIResource::FlushResourceRelease();
+		//GRI->GRIClearColor(0.0, 0.0, 0.0, 1.0);
+		//glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+		//
+		//GRI->GRISetBuffer(0,m_VertexBufferRef,0);
+		//GRI->GRISetPipelineShaderState(m_PipelineShaderStateRef);
+		//GRI->GRISetGraphicsPipelineState(m_PSORef);
+		//GRI->GRIDrawPrimitive(3,1);
 	}
 
 private:

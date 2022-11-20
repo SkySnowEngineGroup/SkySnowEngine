@@ -21,7 +21,10 @@
 // THE SOFTWARE.
 //
 #include "GLCommandBuffer.h"
-
+#include "GLShader.h"
+#include "GLShaderResource.h"
+#include "GLBufferResource.h"
+#include "GLPipelineResource.h"
 namespace SkySnow
 {
 	GLCommandBuffer::GLCommandBuffer()
@@ -34,24 +37,76 @@ namespace SkySnow
 	{
 	}
 
-	void GLCommandBuffer::Reset()
+	void GLCommandBuffer::CmdReset()
 	{
 
 	}
-	void GLCommandBuffer::BeginCommandBuffer()
+	void GLCommandBuffer::CmdBeginCommandBuffer()
 	{
 
 	}
-	void GLCommandBuffer::EndCommandBuffer()
+	void GLCommandBuffer::CmdEndCommandBuffer()
 	{
 
 	}
 
-	void GLCommandBuffer::BeginRenderPass()
+	void GLCommandBuffer::CmdBeginRenderPass()
 	{
 
 	}
-	void GLCommandBuffer::EndRenderPass()
+	void GLCommandBuffer::CmdEndRenderPass()
+	{
+
+	}
+	//ResourceCreate====================================================================
+	GRIVertexShaderRef GLCommandBuffer::CreateVertexShader(const char* vsCode)
+	{
+		GRIVertexShaderRef handle = new GLVertexShader();
+		Alloc_Command(GRICreateVertexShaderCommand)(handle,vsCode);
+		return handle;
+	}
+
+	GRIFragmentShaderRef GLCommandBuffer::CreateFragmentShader(const char* fsCode)
+	{
+		GRIFragmentShaderRef handle = new GLFragmentShader();
+		Alloc_Command(GRICreateFragmentShaderCommand)(handle,fsCode);
+		return handle;
+	}
+
+	GRIPipelineShaderStateRef GLCommandBuffer::CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	{
+		GRIPipelineShaderStateRef handle = new GLPipelineShaderState(vs,fs);
+		Alloc_Command(GRICreatePipelineShaderStateCommand)(handle);
+		return handle;
+	}
+
+	GRIBufferRef GLCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
+	{
+		GRIBufferRef handle = new GLBuffer(usageType, size, stride, data);
+		Alloc_Command(GRICreateBufferCommand)(handle,usageType, size, stride, data);
+		return handle;
+	}
+
+	GRIGraphicsPipelineStateRef GLCommandBuffer::CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	{
+		GRIGraphicsPipelineStateRef handle = new GLGraphicPipelineState(createInfo);
+		Alloc_Command(GRICreateGraphicsPipelineStateCommand)(createInfo, handle);
+		return handle;
+	}
+	//ResourceSet====================================================================
+	void GLCommandBuffer::CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
+	{
+
+	}
+	void GLCommandBuffer::CmdDrawPrimitive(int numPrimitive, int numInstance)
+	{
+
+	}
+	void GLCommandBuffer::CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	{
+
+	}
+	void GLCommandBuffer::CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
 
 	}

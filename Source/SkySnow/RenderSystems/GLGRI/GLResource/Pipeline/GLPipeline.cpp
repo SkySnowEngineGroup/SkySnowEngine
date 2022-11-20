@@ -29,8 +29,8 @@ namespace SkySnow
 	//后期在抽象Encoder的时，会将此Interface接口归属与RenderEncoder编码器处理
 	//RenderEncoder从EncoderPool申请，单独处理该接口，如果加载数据压力较大的情况
 	//下可以异步处理，即可以在一根线程单独持有pipeline的处理，而进行事件或者内存屏障进行同步
-	GRIGraphicsPipelineStateRef GRIGLDrive::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	void GRIGLDrive::GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle)
 	{
-		return new GLGraphicPipelineState(createInfo);
+		new GLGraphicPipelineState(createInfo);
 	}
 }

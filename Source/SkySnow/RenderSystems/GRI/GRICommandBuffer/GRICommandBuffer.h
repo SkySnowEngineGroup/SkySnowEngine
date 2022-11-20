@@ -21,13 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRICommands.h"
 #include "StackAllocator.h"
 #include "CommandBufferMacro.h"
 #include "GRILowerCommandBuffer.h"
-#include <vector>
 namespace SkySnow
 {
+    //vulkan 中关于资源创建，资源命令设置以及同步等操作的渲染接口，一共约130个
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
     class GRICommandBufferBase
@@ -39,13 +38,17 @@ namespace SkySnow
             _CMState = Invalid;
         }
 
-        virtual void Reset() = 0;
-        virtual void BeginCommandBuffer() = 0;
-        virtual void EndCommandBuffer() = 0;
+        virtual void CmdReset() = 0;
+        virtual void CmdBeginCommandBuffer() = 0;
+        virtual void CmdEndCommandBuffer() = 0;
 
-        virtual void BeginRenderPass() = 0;
-        virtual void EndRenderPass() = 0;
+        virtual void CmdBeginRenderPass() = 0;
+        virtual void CmdEndRenderPass() = 0;
 
+        virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+        virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
+        virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
+        virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
     protected:
         CommandBufferSate   _CMState;
     };
@@ -103,16 +106,20 @@ namespace SkySnow
     private:
         GRILowerCommandBuffer* _LowerComBuf;
     };
-
-
-    inline GRIVertexShaderRef CreateVertexShader(const char* vsCode)
-    {
-        if (!_GQueue.IsLowerVerion())
-        {
-            return GRI->GRICreateVertexShader(vsCode);
-        }
-        return _GQueue.GetLowerCommandBuffer()->CreateVertexShader(vsCode);
-    }
     //全局唯一的一个Queue
-    GRICommandBufferQueue _GQueue;
+    extern GRICommandBufferQueue* _GQueue;
+
+    void GRIInit();
+    //对外资源创建接口、全局接口
+    GRIVertexShaderRef CreateVertexShader(const char* vsCode);
+
+    GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
+
+    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs);
+
+    GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
+
+    GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo);
+
+
 }

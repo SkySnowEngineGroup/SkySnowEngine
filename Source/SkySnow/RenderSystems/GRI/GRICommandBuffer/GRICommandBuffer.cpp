@@ -83,4 +83,66 @@ namespace SkySnow
         }
         return true;
     }
+    GRICommandBufferQueue* _GQueue = nullptr;
+
+    void GRIInit()
+    {
+        _GQueue = new GRICommandBufferQueue();
+        _GQueue->Init();
+    }
+
+    GRIVertexShaderRef CreateVertexShader(const char* vsCode)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIVertexShaderRef handle;
+            GRI->GRICreateVertexShader(vsCode, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateVertexShader(vsCode);
+    }
+
+    GRIFragmentShaderRef CreateFragmentShader(const char* fsCode)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIFragmentShaderRef handle;
+            GRI->GRICreateFragmentShader(fsCode, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(fsCode);
+    }
+
+    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIPipelineShaderStateRef handle;
+            GRI->GRICreatePipelineShaderState(handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShaderState(vs,fs);
+    }
+
+    GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIBufferRef handle;
+            GRI->GRICreateBuffer(usageType,size,stride,data, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
+    }
+
+    GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIGraphicsPipelineStateRef handle;
+            GRI->GRICreateGraphicsPipelineState(createInfo, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipelineState(createInfo);
+    }
 }

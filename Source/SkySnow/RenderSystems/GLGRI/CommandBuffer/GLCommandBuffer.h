@@ -32,15 +32,25 @@ namespace SkySnow
 
 		~GLCommandBuffer();
 
-		virtual void Reset() final override;
-		virtual void BeginCommandBuffer() final override;
-		virtual void EndCommandBuffer() final override;
+		virtual void CmdReset() final override;
+		virtual void CmdBeginCommandBuffer() final override;
+		virtual void CmdEndCommandBuffer() final override;
 
-		virtual void BeginRenderPass() final override;
-		virtual void EndRenderPass() final override;
+		virtual void CmdBeginRenderPass() final override;
+		virtual void CmdEndRenderPass() final override;
 	
 	public://资源创建
 		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
+		virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) final override;
+		virtual GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
+		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) final override;
+		virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) final override;
+
+	public://资源设置
+		virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
+		virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) final override;
+		virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
+		virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
 	private:
 
 	};

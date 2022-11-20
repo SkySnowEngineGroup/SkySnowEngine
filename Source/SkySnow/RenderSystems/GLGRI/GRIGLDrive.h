@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -25,7 +24,7 @@
 #include "GLPlatformProfiles.h"
 #include "GRIDrive.h"
 #include "GLPipelineResource.h"
-
+#include "GRILowerDrive.h"
 
 namespace SkySnow
 {
@@ -34,7 +33,7 @@ namespace SkySnow
 			   Different rendering APIs inherit from this class and implement the functions of 
 			   different APIs with the same capability
 	*/
-	class GRIGLDrive : public GRIDrive
+	class GRIGLDrive : public GRIDrive , public GRILowerDrive
 	{
 	public:
 		GRIGLDrive();
@@ -45,14 +44,14 @@ namespace SkySnow
 		//Test Demo
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) final override;
 		//Create Vertex Shader
-		virtual GRIVertexShaderRef GRICreateVertexShader(const char* vsCode) final override;
+		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) final override;
 		//Create Fragment Shader
-		virtual GRIFragmentShaderRef GRTCreateFragmentShader(const char* fsCode) final override;
+		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) final override;
 		//Create Shader State
-		virtual GRIPipelineShaderStateRef GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
+		virtual void GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle) final override;
 		//Create Pipeline State 
-		virtual GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) final override;
-		virtual GRIBufferRef GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data) final override;
+		virtual void GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle) final override;
+		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
 		//GRISet====================================================================================================================================

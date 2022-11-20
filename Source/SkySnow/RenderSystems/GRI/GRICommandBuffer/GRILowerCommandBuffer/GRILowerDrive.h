@@ -21,15 +21,20 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GRICommons.h"
+#include "GRIResource.h"
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
-	//2D、2DArray纹理
-	//3D、3DArray纹理
-	//CubeMap纹理
-	//Npot不可变纹理
-	//mipmap纹理
-	//srgb纹理
-	//压缩纹理:ASTC、ETC1、EAC、ETC2
-	//采样器对象
+	//这是不支持并行提交命令的低版本API的桥接版本，低版本API必须继承此类，高版本不需要
+	//低版本的API需要继承实现，而metal&vulkan&dx12则不需要
+	class GRILowerDrive
+	{
+		//GRISet==========================================================================================================================
+		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) = 0;
+		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
+		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
+		//GRISet==========================================================================================================================
+	};
 }

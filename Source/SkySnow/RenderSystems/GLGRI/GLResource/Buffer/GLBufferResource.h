@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -58,13 +57,12 @@ namespace SkySnow
 		//read 表示数据将被客户端程序读取（GL到应用程序）
 		//copy 表示数据可用于绘制与读取（GL到GL）
 		//针对于indexBuffer  vertexBuffer  SSBO，即使用Draw即可
-		GLBuffer(GLenum bufferType,BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
-			: GRIBuffer(usageType, size, stride)
-			, _BufferType(bufferType)
+		GLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
+			: GRIBuffer(usageType, size, stride) 
 			, _Data(data)
 			, _StreamDraw(streamDraw)
 		{
-			CreateBuffer(usageType,size);
+			
 		}
 
 		~GLBuffer()
@@ -73,8 +71,9 @@ namespace SkySnow
 		//在GLES3.1及GL4.3以上，将顶点类型，顶点数据获取拆分为两个部分
 		//因此这里只是单独的创建Buffer即可，在DrawPrimitive的时候，在根据
 		//SetBuffer设置的类型进行<数据类型指定>与<数据类型如何获取>的设置
-		void CreateBuffer(GLenum usageType,GLuint size)
+		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size)
 		{
+			_BufferType = bufferType;
 			OpenGL::GenBuffers(1,&_GpuHandle);
 			OpenGL::BindBuffer(_BufferType, _GpuHandle);
 			OpenGL::BufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
