@@ -61,8 +61,6 @@ namespace SkySnow
             GRICommandBase* mem = (GRICommandBase*)_StackMem.Alloc(sizeof(T), alignof(T));
             T* cmd = new(mem) T(std::forward<Args>(args)...);
             _MpscQueue.Enqueue<T>(cmd);
-            T* cmd;
-            _MpscQueue.Dequeue<T>(cmd);
         }
     public:
         virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) = 0;
