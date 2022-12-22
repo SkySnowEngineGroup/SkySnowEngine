@@ -52,10 +52,10 @@ namespace SkySnow
 		MpscQueue& operator=(const MpscQueue&& other) = delete;
 
 		template<typename... Args>
-		bool Enqueue(Args&&... args)
+		void Enqueue(Args&&... args)
 		{
 
-			return true;
+			
 		}
 		template<typename T>
 		bool Dequeue(T& item)
@@ -65,7 +65,7 @@ namespace SkySnow
 	private:
 		struct Node
 		{
-			std::atomic<Node*> _Next{ nullptr };;
+			std::atomic<Node*> _Next{ nullptr };
 			T				   _Value;
 		};
 	private:
