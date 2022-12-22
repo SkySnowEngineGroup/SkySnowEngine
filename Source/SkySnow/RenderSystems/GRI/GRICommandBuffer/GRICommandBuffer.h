@@ -119,7 +119,7 @@ namespace SkySnow
 
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
 
-    GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo);
+    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo);
 
 
 }

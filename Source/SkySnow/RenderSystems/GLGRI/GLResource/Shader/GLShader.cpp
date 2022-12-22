@@ -58,7 +58,7 @@ namespace SkySnow
 	template<typename GRIShaderType,typename OGLShaderType>
 	void OGLShader::CreateShader(const char* shadercode, GRIShaderType* handle)
 	{
-		OGLShaderType* shaderObject = dynamic_cast<OGLShaderType*>handle;
+		OGLShaderType* shaderObject = dynamic_cast<OGLShaderType*>(handle);
 		CompileShader<OGLShaderType>(shadercode, shaderObject);
 	}
 

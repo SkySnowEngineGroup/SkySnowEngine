@@ -24,6 +24,7 @@
 #include "GRICommands.h"
 #include "StackAllocator.h"
 #include "CommandBufferMacro.h"
+#include "MpscQueue.h"
 namespace SkySnow
 {
     //The CommandBuffer is a wrapper for Opengl and Dx instructions that 
@@ -45,7 +46,7 @@ namespace SkySnow
         // MPSC无锁队列很合适:目前会支持这种方式
         // 但如果想在低版本的API中多个渲染线程(使用共享上下文)，那么就需要使用MPMC无锁队列 todo
         // 目前来说，这种方式makecurrcontext是很耗时的，并不打算支持
-        inline void* AllocCommand(int64_t cmdSize, int32_t cmdAlign)
+        inline void* AllocCommandSet(int64_t cmdSize, int32_t cmdAlign)
         {
             GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize, cmdAlign);
             _NumCommands++;
@@ -54,10 +55,14 @@ namespace SkySnow
             return cmd;
         }
 
-        template<typename CMD>
-        inline void* AllocCommand()
+        template<typename T,typename... Args>
+        void AllocCommandCreate(Args&&... args)
         {
-            return AllocCommand(sizeof(CMD), alignof(CMD));
+            GRICommandBase* mem = (GRICommandBase*)_StackMem.Alloc(sizeof(T), alignof(T));
+            T* cmd = new(mem) T(std::forward<Args>(args)...);
+            _MpscQueue.Enqueue<T>(cmd);
+            T* cmd;
+            _MpscQueue.Dequeue<T>(cmd);
         }
     public:
         virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) = 0;
@@ -71,10 +76,14 @@ namespace SkySnow
         virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
 
     protected:
-        int                     _NumCommands;
-        GRICommandBase*         _Head;
-        GRICommandBase*         _Curr{ _Head };
-        MemStack                _StackMem;
+        int                         _NumCommands;
+        GRICommandBase*             _Head;
+        GRICommandBase*             _Curr{ _Head };
+        MemStack                    _StackMem;
+        MpscQueue<GRICommandBase>   _MpscQueue;
     };
-#define Alloc_Command(...) new(AllocCommand(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__
+//GPUResourceSet use this on OpenGL & GLES & DX9 & DX11
+#define Alloc_CommandSet(...) new(AllocCommandSet(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__
+//GPUResourceCreate use this on OpenGL & GLES & DX9 & DX11
+#define Alloc_CommandCreate(type,...) AllocCommandCreate<type>(__VA_ARGS__)
 }

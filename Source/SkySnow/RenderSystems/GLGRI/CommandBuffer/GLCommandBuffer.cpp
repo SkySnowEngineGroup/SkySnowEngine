@@ -62,35 +62,36 @@ namespace SkySnow
 	GRIVertexShaderRef GLCommandBuffer::CreateVertexShader(const char* vsCode)
 	{
 		GRIVertexShaderRef handle = new GLVertexShader();
-		Alloc_Command(GRICreateVertexShaderCommand)(handle,vsCode);
+		Alloc_CommandSet(GRICreateVertexShaderCommand)(handle,vsCode);
+		Alloc_CommandCreate(GRICreateVertexShaderCommand, handle, vsCode);
 		return handle;
 	}
 
 	GRIFragmentShaderRef GLCommandBuffer::CreateFragmentShader(const char* fsCode)
 	{
 		GRIFragmentShaderRef handle = new GLFragmentShader();
-		Alloc_Command(GRICreateFragmentShaderCommand)(handle,fsCode);
+		Alloc_CommandSet(GRICreateFragmentShaderCommand)(handle,fsCode);
 		return handle;
 	}
 
 	GRIPipelineShaderStateRef GLCommandBuffer::CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
 		GRIPipelineShaderStateRef handle = new GLPipelineShaderState(vs,fs);
-		Alloc_Command(GRICreatePipelineShaderStateCommand)(handle);
+		Alloc_CommandSet(GRICreatePipelineShaderStateCommand)(handle);
 		return handle;
 	}
 
 	GRIBufferRef GLCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
 	{
 		GRIBufferRef handle = new GLBuffer(usageType, size, stride, data);
-		Alloc_Command(GRICreateBufferCommand)(handle,usageType, size, stride, data);
+		Alloc_CommandSet(GRICreateBufferCommand)(handle,usageType, size, stride, data);
 		return handle;
 	}
 
 	GRIGraphicsPipelineStateRef GLCommandBuffer::CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
 	{
 		GRIGraphicsPipelineStateRef handle = new GLGraphicPipelineState(createInfo);
-		Alloc_Command(GRICreateGraphicsPipelineStateCommand)(createInfo, handle);
+		Alloc_CommandSet(GRICreateGraphicsPipelineStateCommand)(createInfo, handle);
 		return handle;
 	}
 	//ResourceSet====================================================================

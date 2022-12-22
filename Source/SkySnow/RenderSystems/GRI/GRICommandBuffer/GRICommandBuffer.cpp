@@ -135,7 +135,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
     }
 
-    GRIGraphicsPipelineStateRef GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
     {
         if (!_GQueue->IsLowerVerion())
         {
