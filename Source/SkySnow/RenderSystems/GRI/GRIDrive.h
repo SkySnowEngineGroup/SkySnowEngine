@@ -58,5 +58,13 @@ namespace SkySnow
 		//Create Buffer:index vertex SSBO
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
 		//GRICreate=======================================================================================================================
+
+		//Lower Render Deive Interface
+		//GRISet==========================================================================================================================
+		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) {};
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {};
+		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) {};
+		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) {};
+		//GRISet==========================================================================================================================
 	};
 };

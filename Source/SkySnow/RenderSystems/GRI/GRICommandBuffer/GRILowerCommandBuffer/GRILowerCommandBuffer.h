@@ -24,7 +24,7 @@
 #include "GRICommands.h"
 #include "StackAllocator.h"
 #include "CommandBufferMacro.h"
-#include "MpscQueue.h"
+#include "ThreadMutex.h"
 namespace SkySnow
 {
     //The CommandBuffer is a wrapper for Opengl and Dx instructions that 
@@ -43,9 +43,7 @@ namespace SkySnow
     protected:
         // Command分配将不能采用此种模式，这种模式分配不是线程安全的
         // 多个线程可以<创建渲染资源指令>，并可全局使用，单个渲染线程消费<渲染资源创建指令>
-        // MPSC无锁队列很合适:目前会支持这种方式
-        // 但如果想在低版本的API中多个渲染线程(使用共享上下文)，那么就需要使用MPMC无锁队列 todo
-        // 目前来说，这种方式makecurrcontext是很耗时的，并不打算支持
+        // MPSC无锁队列很合适:但是MPSC又会涉及到内存安全问题，比较复杂 TODO
         inline void* AllocCommandSet(int64_t cmdSize, int32_t cmdAlign)
         {
             GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize, cmdAlign);
@@ -58,9 +56,13 @@ namespace SkySnow
         template<typename T,typename... Args>
         void AllocCommandCreate(Args&&... args)
         {
+            _Lock.Lock();
             GRICommandBase* mem = (GRICommandBase*)_StackMem.Alloc(sizeof(T), alignof(T));
             T* cmd = new(mem) T(std::forward<Args>(args)...);
-            _MpscQueue.Enqueue<T>(cmd);
+            _NumCommands++;
+            _Curr = cmd;
+            _Curr = cmd->_Next;
+            _Lock.UnLock();
         }
     public:
         virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) = 0;
@@ -78,7 +80,8 @@ namespace SkySnow
         GRICommandBase*             _Head;
         GRICommandBase*             _Curr{ _Head };
         MemStack                    _StackMem;
-        MpscQueue<GRICommandBase>   _MpscQueue;
+        //MpscQueue<GRICommandBase>   _MpscQueue;
+        ThreadMutex                 _Lock;
     };
 //GPUResourceSet use this on OpenGL & GLES & DX9 & DX11
 #define Alloc_CommandSet(...) new(AllocCommandSet(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__

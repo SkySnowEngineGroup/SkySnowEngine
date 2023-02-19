@@ -24,7 +24,6 @@
 #include "GLPlatformProfiles.h"
 #include "GRIDrive.h"
 #include "GLPipelineResource.h"
-#include "GRILowerDrive.h"
 
 namespace SkySnow
 {
@@ -33,7 +32,7 @@ namespace SkySnow
 			   Different rendering APIs inherit from this class and implement the functions of 
 			   different APIs with the same capability
 	*/
-	class GRIGLDrive : public GRIDrive , public GRILowerDrive
+	class GRIGLDrive : public GRIDrive
 	{
 	public:
 		GRIGLDrive();

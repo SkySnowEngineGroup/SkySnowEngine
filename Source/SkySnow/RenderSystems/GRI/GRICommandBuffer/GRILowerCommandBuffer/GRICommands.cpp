@@ -24,6 +24,24 @@
 #include "GRICommandBuffer.h"
 namespace SkySnow
 {
+
+	void CmdSetBufferCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRISetBuffer(_BufferInfoId, _Buffer, _Offset);
+	}
+	void CmdDrawPrimitiveCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRIDrawPrimitive(_NumPrimitive, _NumInstance);
+	}
+	void CmdSetPipelineShaderStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRISetPipelineShaderState(_PipelineShaderState);
+	}
+	void CmdSetGraphicsPipelineStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRISetGraphicsPipelineState(_PipelineState);
+	}
+	//===============================================================================
 	void GRICreateVertexShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
 	{
 		GRI->GRICreateVertexShader(_VsCode, _Handle);

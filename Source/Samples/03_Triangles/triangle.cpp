@@ -85,35 +85,35 @@ public:
 		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
 		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 
-		//void* pt1 = m_MemStack.Alloc(4);
-		//void* pt2 = m_MemStack.Alloc(4);
-		//void* pt3 = m_MemStack.Alloc(4);
-		//void* pt4 = m_MemStack.Alloc(4);
-		//SN_LOG("pt1:%p", pt1);
-		//SN_LOG("pt2:%p", pt2);
-		//SN_LOG("pt3:%p", pt3);
-		//SN_LOG("pt4:%p", pt4);
-		//m_MemStack.Flush();
+		void* pt1 = m_MemStack.Alloc(4);
+		void* pt2 = m_MemStack.Alloc(4);
+		void* pt3 = m_MemStack.Alloc(4);
+		void* pt4 = m_MemStack.Alloc(4);
+		SN_LOG("pt1:%p", pt1);
+		SN_LOG("pt2:%p", pt2);
+		SN_LOG("pt3:%p", pt3);
+		SN_LOG("pt4:%p", pt4);
+		m_MemStack.Flush();
 		return 0;
 	}
 
 	void Update()
 	{
 		GRIResource::FlushResourceRelease();
-		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+		//glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
 
-		m_CMB->CmdBeginCommandBuffer();
+		//m_CMB->CmdBeginCommandBuffer();
 
-		m_CMB->CmdBeginRenderPass();
+		//m_CMB->CmdBeginRenderPass();
 
-		m_CMB->CmdSetBuffer(0,m_VertexBufferRef,0);
-		m_CMB->CmdSetPipelineShaderState(m_PipelineShaderStateRef);
-		m_CMB->CmdSetGraphicsPipelineState(m_PSORef);
-		m_CMB->CmdDrawPrimitive(3,1);
+		//m_CMB->CmdSetBuffer(0,m_VertexBufferRef,0);
+		//m_CMB->CmdSetPipelineShaderState(m_PipelineShaderStateRef);
+		//m_CMB->CmdSetGraphicsPipelineState(m_PSORef);
+		//m_CMB->CmdDrawPrimitive(3,1);
 
-		m_CMB->CmdEndRenderPass();
+		//m_CMB->CmdEndRenderPass();
 
-		m_CMB->CmdEndCommandBuffer();
+		//m_CMB->CmdEndCommandBuffer();
 	}
 
 private:

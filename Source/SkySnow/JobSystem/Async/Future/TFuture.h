@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,20 +21,14 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
-#include <pthread.h>
-
+#include "IFuture.h"
+#include "TFutureSate.h"
 namespace SkySnow
 {
-	class ThreadMutex : public NonCopyable
+	template<typename Result>
+	class TFtuture : public IFuture
 	{
 	public:
-		ThreadMutex();
-		virtual ~ThreadMutex();
-		void Lock();
-		void UnLock();
-		bool TryLock();
-	private:
-		pthread_mutex_t m_mutex;
+
 	};
 }

@@ -57,7 +57,51 @@ namespace SkySnow
 	};
 	//======================================================================================================================
 	// RenderResource Set 
-	
+	struct CmdSetBufferCommand : public GRICommand<CmdSetBufferCommand>
+	{
+		CmdSetBufferCommand(int BufferInfoId, GRIBuffer* buffer, int offset)
+			: _BufferInfoId(BufferInfoId)
+			, _Offset(offset)
+			, _Buffer(buffer)
+		{
+
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+
+		int _BufferInfoId;
+		int _Offset;
+		GRIBuffer* _Buffer;	
+	};
+	struct CmdDrawPrimitiveCommand : public GRICommand<CmdDrawPrimitiveCommand>
+	{
+		CmdDrawPrimitiveCommand(int numPrimitive, int numInstance)
+			: _NumPrimitive(numPrimitive)
+			, _NumInstance(numInstance)
+		{
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+		int _NumPrimitive;
+		int _NumInstance;
+	};
+	struct CmdSetPipelineShaderStateCommand : public GRICommand<CmdSetPipelineShaderStateCommand>
+	{
+		CmdSetPipelineShaderStateCommand(GRIPipelineShaderState* pipelineShaderState)
+			: _PipelineShaderState(pipelineShaderState)
+		{
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+		GRIPipelineShaderState* _PipelineShaderState;
+	};
+
+	struct CmdSetGraphicsPipelineStateCommand : public GRICommand<CmdSetGraphicsPipelineStateCommand>
+	{
+		CmdSetGraphicsPipelineStateCommand(GRIGraphicsPipelineState* pipelineState)
+			: _PipelineState(pipelineState)
+		{
+		}
+		void Execute(GRICommandBuffer& cmdBuffer);
+		GRIGraphicsPipelineState* _PipelineState;
+	};
 	//======================================================================================================================
 	// RenderResource Create
 	// CreateVertexShader

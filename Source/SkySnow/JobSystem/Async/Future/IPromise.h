@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,25 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "PlatformProfiles.h"
-#if PLATFORM == PLATFORM_IOS
-#include <unistd.h>
-#endif // PLATFORM == PLATFORM_IOS
+
 namespace SkySnow
 {
-	enum ThreadPriority
+	class IPromise
 	{
-		ETP_Low = 0,
-		ETP_Normal = 1,
-		ETP_Hight = 2
+	public:
+
 	};
-    //该函数可用宏定义，但是本人讨厌宏编程，因此使用c类型函数
-    static void SNSleep(unsigned int millisecond)//单位ms
-    {
-#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-            sleep(millisecond/1000);//该接口ios为秒
-#else
-            Sleep(millisecond);
-#endif
-    }
 }

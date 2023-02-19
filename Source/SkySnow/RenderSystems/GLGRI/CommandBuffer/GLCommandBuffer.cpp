@@ -96,18 +96,18 @@ namespace SkySnow
 	//ResourceSet====================================================================
 	void GLCommandBuffer::CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
 	{
-
+		Alloc_CommandSet(CmdSetBufferCommand)(BufferInfoId, buffer, offset);
 	}
 	void GLCommandBuffer::CmdDrawPrimitive(int numPrimitive, int numInstance)
 	{
-
+		Alloc_CommandSet(CmdDrawPrimitiveCommand)(numPrimitive, numInstance);
 	}
 	void GLCommandBuffer::CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
 	{
-
+		Alloc_CommandSet(CmdSetPipelineShaderStateCommand)(pipelineShaderState);
 	}
 	void GLCommandBuffer::CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
-
+		Alloc_CommandSet(CmdSetGraphicsPipelineStateCommand)(pipelineState);
 	}
 }

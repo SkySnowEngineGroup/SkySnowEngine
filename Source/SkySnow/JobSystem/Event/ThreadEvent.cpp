@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -21,51 +20,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "NonCopyable.h"
-#include <cstdint>
-#include <pthread.h>
-#include "ThreadProfiles.h"
+#include "ThreadEvent.h"
+
 namespace SkySnow
 {
-	class Thread : public NonCopyable
+	ThreadEvent::ThreadEvent()
 	{
-		friend class NWThread;
-	public:
-		Thread();
-		virtual ~Thread();
-		void Run(void*(*thread_funptr)(void*), void* data);
-
-		void SetName(const char* name)
+		if (pthread_mutex_init(&_Mutex, nullptr) == 0)
 		{
-			m_ThreadName = name;
+			if (pthread_cond_init(&_Condition, nullptr) == 0)
+			{
+				_Initial = true;
+			}
+			else
+			{
+				pthread_mutex_destroy(&_Mutex);
+				SN_ERR("Create Mutex Fail.\n");
+			}
 		}
-
-		void Stop();
-
-		void SetPriority(ThreadPriority tpri);
-
-		ThreadPriority GetThreadPriority()
+	}
+	ThreadEvent::~ThreadEvent()
+	{
+		if (_Initial)
 		{
-			return m_Priority;
+			Signal();
+			LockEventMutex();
+			pthread_cond_destroy(&_Condition);
+			UnlockEventMutex();
+			pthread_mutex_destroy(&_Mutex);
 		}
-		bool IsRunning() const
-		{
-			return m_IsRunning;
-		}
-		static pthread_t GetCurrentThreadID();
-	protected:
-		void CreateThread();
-	private:
-		static void* RunThreadFunStatic(void* ptr);
-		void UpdatePriority(const Thread* thread) const;
-	private:
-		void*			m_Data;
-		void*			(*m_ThreadFunPtr)(void*);
-		volatile bool	m_IsRunning;
-		ThreadPriority	m_Priority;
-		int				m_DefaultPriority;
-		pthread_t*		m_PThread;
-		const char*		m_ThreadName;
-	};
+	}
+
+	void ThreadEvent::Signal()
+	{
+		LockEventMutex();
+		//todo multi threads
+		pthread_cond_signal(&_Condition);
+		UnlockEventMutex();
+	}
+
+	void ThreadEvent::Wait()
+	{
+		LockEventMutex();
+		pthread_cond_wait(&_Condition, &_Mutex);
+		UnlockEventMutex();
+	}
 }

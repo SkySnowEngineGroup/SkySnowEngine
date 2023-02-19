@@ -83,15 +83,40 @@ namespace SkySnow
 	class AutomicBool
 	{
 	public:
+		AutomicBool()
+		{
+		}
+		constexpr AutomicBool(bool arg)
+			: _Flag(arg)
+		{
+		}
+
+		operator bool() const
+		{
+			return _Flag.load();
+		}
+
+		bool operator=(bool val)
+		{
+			_Flag.store(!val);
+			return val;
+		}
+
 		bool LoadFlag()
 		{
 			return _Flag.load();
 		}
+
 		void ChangeFlag()
 		{
 			bool val = _Flag.load();
 			_Flag.store(!val);
 		}
+	private:
+		AutomicBool(AutomicBool&&) = delete;
+		AutomicBool(const AutomicBool&) = delete;
+		AutomicBool& operator=(AutomicBool&&) = delete;
+		AutomicBool& operator=(const AutomicBool&) = delete;
 	private:
 		std::atomic_bool _Flag{true};
 	};
