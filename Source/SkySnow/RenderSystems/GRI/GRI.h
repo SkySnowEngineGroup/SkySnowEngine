@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "OSPlatform.h"
+#include "GRIResourceCreateInfo.h"
 // render type interface for engine 
 namespace SkySnow
 {
