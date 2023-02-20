@@ -108,18 +108,4 @@ namespace SkySnow
     };
     //全局唯一的一个Queue
     extern GRICommandBufferQueue* _GQueue;
-
-    void GRIInit();
-    //对外资源创建接口、全局接口
-    GRIVertexShaderRef CreateVertexShader(const char* vsCode);
-
-    GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
-
-    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs);
-
-    GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
-
-    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo);
-
-
 }

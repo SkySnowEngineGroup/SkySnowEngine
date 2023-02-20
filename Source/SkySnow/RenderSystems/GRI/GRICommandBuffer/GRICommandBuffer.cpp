@@ -21,7 +21,14 @@
 // THE SOFTWARE.
 //
 #include "GRICommandBuffer.h"
+#include "SkySnowConfigInfo.h"
 #include "GLCommandBuffer.h"
+#include "GRI.h"
+#include "WindowOSPlatform.h"
+#include "AndroidOSPlatform.h"
+#include "IOSOSPlatform.h"
+#include "MacOSPlatform.h"
+#include "LinuxOSPlatform.h"
 namespace SkySnow
 {
 	GRICommandBufferBase::GRICommandBufferBase(CommandBufferSate cbState)
@@ -87,8 +94,25 @@ namespace SkySnow
 
     void GRIInit()
     {
+#if PLATFORM == PLATFORM_WINDOW
+        _OSPlatform = new WindowOSPlatform();
+#elif PLATFORM == PLATFORM_IOS
+        _OSPlatform = new IOSOSPlatform();
+#elif PLATFORM == PLATFORM_MAC
+        _OSPlatform = new MacOSPlatform();
+#elif PLATFORM == PLATFORM_ANDROID
+        _OSPlatform = new AndroidOSPlatform();
+#elif  PLATFORM == PLATFORM_LINUX
+        _OSPlatform = new LinuxOSPlatform();
+#endif
+        GRI = _OSPlatform->OSPlatformCreateGRI();
         _GQueue = new GRICommandBufferQueue();
         _GQueue->Init();
+    }
+
+    void GRIExit()
+    {
+        Delete_Object(_OSPlatform);
     }
 
     GRIVertexShaderRef CreateVertexShader(const char* vsCode)

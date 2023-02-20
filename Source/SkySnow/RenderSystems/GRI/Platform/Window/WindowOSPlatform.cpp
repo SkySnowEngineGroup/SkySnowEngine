@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -23,43 +22,33 @@
 //
 
 #include "WindowOSPlatform.h"
-#include "GLTypeGRI.h"
+#include "GRIGLDrive.h"
 namespace SkySnow
 {
 	WindowOSPlatform::WindowOSPlatform()
-		: m_TypeGRI(nullptr)
-		, m_RealTimeGRI(nullptr)
+		: _GRI(nullptr)
 	{
 
 	}
 
 	WindowOSPlatform::~WindowOSPlatform()
 	{
-		if (nullptr != m_TypeGRI)
+		if (_GRI)
 		{
-			delete m_TypeGRI;
-			m_TypeGRI = nullptr;
-		}
-		if (m_RealTimeGRI)
-		{
-			delete m_RealTimeGRI;
-			m_RealTimeGRI = nullptr;
+			delete _GRI;
+			_GRI = nullptr;
 		}
 	}
 
 	GRIDrive* WindowOSPlatform::OSPlatformCreateGRI()
 	{ 
-		if (m_TypeGRI && m_RealTimeGRI)
+		if (_GRI)
 		{
-			return m_RealTimeGRI;
+			return _GRI;
 		}
-		//can create OpenGL Vulkan,Nuwa plan not support DX 
-		m_TypeGRI = new GLTypeGRI();
+		//can create OpenGL Vulkan,SkySnow plan not support DX 
 		//Windows platform can support OpenGL, Vulakn GRI
-		if (m_TypeGRI->IsSupport())
-		{
-			m_RealTimeGRI = m_TypeGRI->CreateGRI();
-		}
-		return m_RealTimeGRI;
+		_GRI = new GRIGLDrive();
+		return _GRI;
 	}
 }

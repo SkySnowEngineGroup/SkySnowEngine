@@ -25,7 +25,7 @@
 #include "Application.h"
 #include "LogAssert.h"
 #include "GRIProfiles.h"
-#include "OSPlatform.h"
+#include "GRI.h"
 #include "File.h"
 #include "SkySnowConfigInfo.h"
 #include "StackAllocator.h"

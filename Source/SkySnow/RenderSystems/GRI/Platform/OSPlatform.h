@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -35,20 +34,20 @@ namespace SkySnow
 		virtual GRIDrive* OSPlatformCreateGRI() = 0;
 	};
 
-	class GRTCreate : public NonCopyable
-	{
-	private:
-		GRTCreate();
-		~GRTCreate();
-	public:
-		static GRTCreate* Instance();
+	//class GRTCreate : public NonCopyable
+	//{
+	//private:
+	//	GRTCreate();
+	//	~GRTCreate();
+	//public:
+	//	static GRTCreate* Instance();
 
-		GRIDrive* GetGRI();
+	//	GRIDrive* GetGRI();
 
-	private:
-		OSPlatform*				m_OSPlatform;
-		GRIDrive*				m_GRI;
-	};
+	//private:
+	//	OSPlatform*				m_OSPlatform;
+	//	GRIDrive*				m_GRI;
+	//};
 }
 //GRI: Graphics Render Create And Set
-#define GRI SkySnow::GRTCreate::Instance()->GetGRI()
+//#define GRI SkySnow::GRTCreate::Instance()->GetGRI()

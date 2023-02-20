@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -32,52 +31,52 @@
 #include "LogAssert.h"
 namespace SkySnow
 {
-	static GRTCreate* griCreateInstance = nullptr;
-	GRTCreate::GRTCreate()
-		: m_GRI(nullptr)
-		, m_OSPlatform(nullptr)
-	{
-		griCreateInstance = this;
-	}
-
-	GRTCreate::~GRTCreate()
-	{
-		if (nullptr != m_OSPlatform)
-		{
-			delete m_OSPlatform;
-			m_OSPlatform = nullptr;
-		}
-		griCreateInstance = nullptr;
-	}
-
-	GRTCreate* GRTCreate::Instance()
-	{
-		static GRTCreate instance;
-		return &instance;
-	}
-
-	GRIDrive* GRTCreate::GetGRI()
-	{
-		if (nullptr != m_GRI)
-		{
-			return m_GRI;
-		}
-#if PLATFORM == PLATFORM_WINDOW
-		m_OSPlatform = new WindowOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
-#elif PLATFORM == PLATFORM_IOS
-		m_OSPlatform = new IOSOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
-#elif PLATFORM == PLATFORM_MAC
-		m_OSPlatform = new MacOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
-#elif PLATFORM == PLATFORM_ANDROID
-		m_OSPlatform = new AndroidOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
-#elif  PLATFORM == PLATFORM_LINUX
-		m_OSPlatform = new LinuxOSPlatform();
-		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
-#endif
-		return m_GRI;
-	}
+//	static GRTCreate* griCreateInstance = nullptr;
+//	GRTCreate::GRTCreate()
+//		: m_GRI(nullptr)
+//		, m_OSPlatform(nullptr)
+//	{
+//		griCreateInstance = this;
+//	}
+//
+//	GRTCreate::~GRTCreate()
+//	{
+//		if (nullptr != m_OSPlatform)
+//		{
+//			delete m_OSPlatform;
+//			m_OSPlatform = nullptr;
+//		}
+//		griCreateInstance = nullptr;
+//	}
+//
+//	GRTCreate* GRTCreate::Instance()
+//	{
+//		static GRTCreate instance;
+//		return &instance;
+//	}
+//
+//	GRIDrive* GRTCreate::GetGRI()
+//	{
+//		if (nullptr != m_GRI)
+//		{
+//			return m_GRI;
+//		}
+//#if PLATFORM == PLATFORM_WINDOW
+//		m_OSPlatform = new WindowOSPlatform();
+//		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
+//#elif PLATFORM == PLATFORM_IOS
+//		m_OSPlatform = new IOSOSPlatform();
+//		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
+//#elif PLATFORM == PLATFORM_MAC
+//		m_OSPlatform = new MacOSPlatform();
+//		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
+//#elif PLATFORM == PLATFORM_ANDROID
+//		m_OSPlatform = new AndroidOSPlatform();
+//		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
+//#elif  PLATFORM == PLATFORM_LINUX
+//		m_OSPlatform = new LinuxOSPlatform();
+//		m_GRI = m_OSPlatform->OSPlatformCreateGRI();
+//#endif
+//		return m_GRI;
+//	}
 }
