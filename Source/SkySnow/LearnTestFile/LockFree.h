@@ -117,7 +117,7 @@ namespace SkySnowLearning
 			mpq->Enqueue(const_cast<TestMpscQueue*>(this));
 
 			std::vector<TestMpscQueue*> popData;
-			mpq->Dequeue(popData);
+//			mpq->Dequeue(popData);
 			int aa = 10;
 		}
 

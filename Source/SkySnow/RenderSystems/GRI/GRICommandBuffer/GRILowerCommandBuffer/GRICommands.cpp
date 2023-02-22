@@ -22,6 +22,7 @@
 //
 #include "GRICommands.h"
 #include "GRICommandBuffer.h"
+#include "GRI.h"
 namespace SkySnow
 {
 

@@ -91,7 +91,8 @@ namespace SkySnow
         return true;
     }
     GRICommandBufferQueue* _GQueue = nullptr;
-
+    OSPlatform* _OSPlatform = nullptr;
+    GRIDrive* GRI = nullptr;
     void GRIInit()
     {
 #if PLATFORM == PLATFORM_WINDOW

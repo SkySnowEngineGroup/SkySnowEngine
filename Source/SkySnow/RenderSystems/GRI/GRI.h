@@ -26,8 +26,8 @@
 // render type interface for engine 
 namespace SkySnow
 {
-    OSPlatform* _OSPlatform = nullptr;
-    GRIDrive* GRI = nullptr;
+    extern OSPlatform* _OSPlatform;
+    extern GRIDrive* GRI;
     void GRIInit();
 
     void GRIExit();

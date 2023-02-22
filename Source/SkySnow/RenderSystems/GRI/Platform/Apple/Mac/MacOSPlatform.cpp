@@ -49,7 +49,9 @@ namespace SkySnow
         //m_PlatformGRI = new VulkanPlatformGRI();//if config with json
         //m_PlatformGRI = new MetalPlatformGRI();
         //Windows platform can support OpenGL, Vulakn GRI
+#if GRI_PLATFORM == GRI_GL
         _GRI = new GRIGLDrive();
+#endif
         return _GRI;
     }
 }

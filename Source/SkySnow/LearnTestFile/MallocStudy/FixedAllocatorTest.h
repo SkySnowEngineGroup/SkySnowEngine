@@ -22,7 +22,12 @@
 //
 #pragma once
 #include <stdint.h>
+#include "PlatformProfiles.h"
+#if PLATFORM == PLATFORM_MAC
+#include <sys/malloc.h>
+#else
 #include <malloc.h>
+#endif
 #define FixedMinBlockSize 256
 #define MinNodeSize 16
 namespace SkySnow

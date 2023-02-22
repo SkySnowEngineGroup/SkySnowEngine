@@ -24,66 +24,68 @@
 #include "LogAssert.h"
 #include "Thread.h"
 #include "ThreadQueue.h"
-class MainThread
+class RenderThreadMulti
 {
 public:
-	MainThread(ThreadMultiRender::ThreadQueue* tdq)
-        : m_MainThread_quit(false)
-        , m_MainThread(nullptr)
+    RenderThreadMulti(ThreadMultiRender::ThreadQueue* tdq)
+		: m_RenderThread_quit(false)
+		, m_RenderThread(nullptr)
         , m_ThreadQueue(tdq)
 	{
+
 	}
 
-	virtual ~MainThread()
+	virtual ~RenderThreadMulti()
 	{
-        if (m_MainThread)
+        if (m_RenderThread)
         {
-            delete m_MainThread;
-            m_MainThread = nullptr;
+            delete m_RenderThread;
+            m_RenderThread = nullptr;
         }
+
 	}
-    void StartMainThread()
+    void StartRenderThread()
     {
-        if (m_MainThread == nullptr)
+        if (m_RenderThread == nullptr)
         {
-            m_MainThread = new SkySnow::Thread();
-            m_MainThread->SetName("Main_Thread.");
-            m_MainThread->Run(MainThreadRun, this);
+            m_RenderThread = new SkySnow::Thread();
+            m_RenderThread->SetName("Render_Thread.");
+            m_RenderThread->Run(RenderThreadRun, this);
         }
         //return;
     }
-    bool IsRuning()
+    void StopRenderThread()
     {
-        return m_MainThread->IsRunning();
-    }
-    void StopMainThread()
-    {
-        if (m_MainThread)
+        if (m_RenderThread)
         {
-            m_MainThread_quit = true;
-            m_MainThread->Stop();
+            m_RenderThread_quit = true;
+            m_RenderThread->Stop();
         }
     }
-private:
-    static void* MainThreadRun(void* data)
+    bool IsRuning()
     {
-        MainThread* worker = (MainThread*)data;
+        return m_RenderThread->IsRunning();
+    }
+private:
+    static void* RenderThreadRun(void* data)
+    {
+        RenderThread* worker = (RenderThread*)data;
         worker->Run();
         return nullptr;
     }
 
     void Run()
     {
-        while (!m_MainThread_quit)
+        while (!m_RenderThread_quit)
         {
             if (m_ThreadQueue)
             {
-                m_ThreadQueue->EngineUpdate();
-            } 
+                m_ThreadQueue->RenderOneFrame();
+            }
         }
     }
 private:
-    bool                            m_MainThread_quit;
-    SkySnow::Thread*                m_MainThread;
+	bool			                m_RenderThread_quit;
+	SkySnow::Thread*	            m_RenderThread;
     ThreadMultiRender::ThreadQueue* m_ThreadQueue;
 };

@@ -41,7 +41,7 @@ namespace SkySnow
 
 		virtual void WaitForExit() override;
 	protected:
-		virtual bool CreateRunnableThread(Runnable* runnable,std::string name) override;
+		virtual bool CreateRunnableThread(Runnable* runnable,std::string name = "NullName") override;
 	private:
 		static void* PThreadFun(void* ptr);
 		void Run();

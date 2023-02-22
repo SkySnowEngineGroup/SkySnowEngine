@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "GRIResource.h"
-#include "OSPlatform.h"
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
 	/*

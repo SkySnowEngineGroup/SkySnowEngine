@@ -21,8 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "MainThread.h"
-#include "RenderThread.h"
+#include "MainThreadMulti.h"
+#include "RenderThreadMulti.h"
 #include "ThreadDoubleQueue.h"
 namespace ThreadMultiRender
 {
@@ -72,8 +72,8 @@ namespace ThreadMultiRender
         }
 
 	private:
-		MainThread*						m_MainThread;
-		RenderThread*					m_RenderThread;
+		MainThreadMulti*				m_MainThread;
+		RenderThreadMulti*				m_RenderThread;
 		ThreadDoubleQueue*				m_DoublueQueue;
 	};
 }

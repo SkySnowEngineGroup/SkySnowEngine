@@ -48,7 +48,9 @@ namespace SkySnow
 		}
 		//can create OpenGL Vulkan,SkySnow plan not support DX 
 		//Windows platform can support OpenGL, Vulakn GRI
+#if GRI_PLATFORM == GRI_GL
 		_GRI = new GRIGLDrive();
+#endif
 		return _GRI;
 	}
 }

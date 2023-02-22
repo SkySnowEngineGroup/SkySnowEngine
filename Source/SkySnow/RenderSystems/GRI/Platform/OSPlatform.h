@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIType.h"
+#include "GRIDrive.h"
 #include "NonCopyable.h"
 namespace SkySnow
 {
@@ -33,21 +33,4 @@ namespace SkySnow
 
 		virtual GRIDrive* OSPlatformCreateGRI() = 0;
 	};
-
-	//class GRTCreate : public NonCopyable
-	//{
-	//private:
-	//	GRTCreate();
-	//	~GRTCreate();
-	//public:
-	//	static GRTCreate* Instance();
-
-	//	GRIDrive* GetGRI();
-
-	//private:
-	//	OSPlatform*				m_OSPlatform;
-	//	GRIDrive*				m_GRI;
-	//};
 }
-//GRI: Graphics Render Create And Set
-//#define GRI SkySnow::GRTCreate::Instance()->GetGRI()

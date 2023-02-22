@@ -45,19 +45,25 @@ namespace SkySnow
 			_Head.store(sentinel,std::memory_order_relaxed);
 			_Tail = _Head;
 		}
+        ~MpscQueue()
+        {
+            
+        }
+        
+        MpscQueue(MpscQueue&& other) = delete;
 		MpscQueue(const MpscQueue& other) = delete;
-		MpscQueue(const MpscQueue&& other) = delete;
+        MpscQueue& operator=(MpscQueue&& other) = delete;
 		MpscQueue& operator=(const MpscQueue& other) = delete;
-		MpscQueue& operator=(const MpscQueue&& other) = delete;
+		
 
-		template<typename... Args>
-		void Enqueue(Args&&... args)
+        template <typename... ArgTypes>
+		void Enqueue(ArgTypes&&... args)
 		{
 
 			
 		}
-		template<typename T>
-		bool Dequeue(T& item)
+		
+		bool Dequeue(std::vector<T*>& list)
 		{
 			return true;
 		}
@@ -69,6 +75,6 @@ namespace SkySnow
 		};
 	private:
 		std::atomic<Node*>	_Head;
-		std::atomic<Node*>	_Tail;
+		Node*           	_Tail;
 	};
 }

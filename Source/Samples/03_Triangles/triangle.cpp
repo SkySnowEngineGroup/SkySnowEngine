@@ -24,11 +24,8 @@
 #include <iostream>
 #include "Application.h"
 #include "LogAssert.h"
-#include "GRIProfiles.h"
-#include "GRI.h"
 #include "File.h"
-#include "SkySnowConfigInfo.h"
-#include "StackAllocator.h"
+#include "GRI.h"
 #include "GRICommandBuffer.h"
 using namespace SkySnow;
 class Triangle : public SkySnow::Application
@@ -51,6 +48,7 @@ public:
 		Delete_Object(m_File);
 		Delete_Object(m_VsData);
 		Delete_Object(m_FsData);
+        GRIExit();
     }
 
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
@@ -100,8 +98,8 @@ public:
 	void Update()
 	{
 		GRIResource::FlushResourceRelease();
-		//glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-
+		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+        glClearColor(1.0,0.0,0.0,1.0);
 		//m_CMB->CmdBeginCommandBuffer();
 
 		//m_CMB->CmdBeginRenderPass();

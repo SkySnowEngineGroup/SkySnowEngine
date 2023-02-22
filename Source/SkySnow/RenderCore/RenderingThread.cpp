@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "RenderingThread.h"
-#include "OSPlatform.h"
+#include "GRI.h"
 namespace SkySnow
 {
     RenderingThread::RenderingThread()

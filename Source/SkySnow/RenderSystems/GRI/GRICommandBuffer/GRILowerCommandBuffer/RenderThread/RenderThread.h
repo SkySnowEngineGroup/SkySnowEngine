@@ -28,8 +28,8 @@
 
 namespace SkySnow
 {
-	class RenderThread
-	{
-
-	};
+//	class RenderThread
+//	{
+//
+//	};
 }
