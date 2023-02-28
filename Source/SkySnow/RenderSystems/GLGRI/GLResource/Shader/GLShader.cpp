@@ -65,7 +65,7 @@ namespace SkySnow
 	template<typename OGLShaderType>
 	void OGLShader::CompileShader(const char* shadercode,OGLShaderType* handle)
 	{
-		handle->_GpuHandle = OpenGL::CreateShader(handle->m_GLTypeEnum);
+		handle->_GpuHandle = OpenGL::CreateShader(handle->_GLTypeEnum);
 		bool flag = CompileCurrentShader(handle->_GpuHandle,shadercode);
 		if (!flag)
 		{

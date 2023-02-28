@@ -33,4 +33,6 @@ namespace SkySnow
 
 		virtual GRIDrive* OSPlatformCreateGRI() = 0;
 	};
+
+    OSPlatform* CreateTargetOSPlatform();
 }

@@ -27,8 +27,36 @@ namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
 	{
-		OpenGL::InitialExtensions();
 	}
+    GRIGLDrive::~GRIGLDrive()
+    {
+        if(_GLContext)
+        {
+            delete  _GLContext;
+            _GLContext = nullptr;
+        }
+    }
+    void GRIGLDrive::Init()
+    {
+#if PLATFORM == PLATFORM_WINDOW
+        _GLContext = new GLContextWin();
+#elif PLATFORM == PLATFORM_IOS
+        _GLContext = new GLContextIos();
+#elif PLATFORM == PLATFORM_MAC
+        _GLContext = new GLContextMac();
+#elif PLATFORM == PLATFORM_ANDROID
+        _GLContext = new GLContextAndroid();
+#elif  PLATFORM == PLATFORM_LINUX
+//            _GLContext = new GLContextLinux();
+#endif
+        _GLContext->CreateGLContext();
+        OpenGL::InitialExtensions();
+    }
+
+    void GRIGLDrive::Exit()
+    {
+        _GLContext->DestroyGLContext();
+    }
 	//GRICreate===============================================================================================================================
 	void GRIGLDrive::GRIClearColor(float red, float green, float blue, float alpha)
 	{
@@ -42,36 +70,36 @@ namespace SkySnow
 	void GRIGLDrive::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
 	{
 		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
-		m_PendingState._BufferInfo[BufferInfoId]._GpuHandle = bufferGL->_GpuHandle;
-		m_PendingState._BufferInfo[BufferInfoId]._Stride = bufferGL->GetStride();
-		m_PendingState._BufferInfo[BufferInfoId]._Offset = offset;
-		m_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
+		_PendingState._BufferInfo[BufferInfoId]._GpuHandle = bufferGL->_GpuHandle;
+		_PendingState._BufferInfo[BufferInfoId]._Stride = bufferGL->GetStride();
+		_PendingState._BufferInfo[BufferInfoId]._Offset = offset;
+		_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
 	}
 
 	void  GRIGLDrive::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
 	{
-		m_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
+		_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
 	}
 
 	void GRIGLDrive::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
-		m_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipelineState*>(pipelineState)->_PrimitiveType;
+		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipelineState*>(pipelineState)->_PrimitiveType;
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
 		GLenum drawMode = GL_TRIANGLES;
 		int numElements;
-		CheckPrimitiveType(m_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
+		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
-		SetupVertexFormatBinding(m_PendingState, m_PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
+		SetupVertexFormatBinding(_PendingState, _PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
 
 		}
 		else
 		{
-			glUseProgram(m_PendingState._ShaderStateInfo._GpuHandle);
+			glUseProgram(_PendingState._ShaderStateInfo._GpuHandle);
 			glDrawArrays(drawMode, 0, numElements);
 		}
 	}

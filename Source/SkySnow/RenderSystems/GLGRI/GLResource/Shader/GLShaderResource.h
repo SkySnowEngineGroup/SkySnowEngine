@@ -32,11 +32,11 @@ namespace SkySnow
 	{
 	public:
 		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency)
-			: m_GLTypeEnum(GLTypeEnum)
-			, m_ShaderFrequency(shaderFrequency)
+			: _GLTypeEnum(GLTypeEnum)
+			, _ShaderFrequency(shaderFrequency)
 			, _GpuHandle(0)
 #if Debug_Shader
-			, m_ShaderCode(nullptr)
+			, _ShaderCode(nullptr)
 			, mShaderName("")
 #endif
 		{
@@ -48,11 +48,11 @@ namespace SkySnow
 
 
 	public:
-		GLenum			m_GLTypeEnum;//Shader Type at OGL
-		ShaderFrequency m_ShaderFrequency;
+		GLenum			_GLTypeEnum;//Shader Type at OGL
+		ShaderFrequency _ShaderFrequency;
 		GLuint			_GpuHandle;
 #if Debug_Shader
-		const char*		m_ShaderCode;
+		const char*		_ShaderCode;
 		std::string		mShaderName;
 #endif
 	};

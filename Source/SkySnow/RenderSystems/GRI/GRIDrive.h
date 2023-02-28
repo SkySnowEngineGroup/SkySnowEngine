@@ -42,6 +42,11 @@ namespace SkySnow
 	{
 	public:
 		virtual ~GRIDrive() {}
+        
+        //Some Engine Interface
+        virtual void Init() = 0;
+        
+        virtual void Exit() = 0;
 
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		// Test:clear quad color

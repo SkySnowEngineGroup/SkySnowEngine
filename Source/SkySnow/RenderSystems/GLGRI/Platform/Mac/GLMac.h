@@ -23,7 +23,6 @@
 #pragma once
 #include "GL4.h"
 #if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
-
 namespace SkySnow
 {
 	class GLMac : public OpenGL4
@@ -33,7 +32,31 @@ namespace SkySnow
 		{
 			return EOpenGL;
 		}
+        
+        static void InitialExtensions()
+        {
+            GetAPIEntryPointer();
+            OpenGL4::InitialExtensions();
+        }
+    private:
+        static void GetAPIEntryPointer();
+
 	};
+
+    class GLContextMac : public GLContext
+    {
+    public:
+        GLContextMac();
+        ~GLContextMac();
+        
+        virtual void CreateGLContext() override;
+        
+        virtual void DestroyGLContext() override;
+        
+        virtual void MakeCurrContext() override;
+    private:
+        
+    };
 }
 typedef SkySnow::GLMac OpenGL;
 #endif

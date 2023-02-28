@@ -69,11 +69,3 @@
 #	include <fcntl.h>
 #	include <io.h>
 #endif
-
-//Shader是否debug的标记
-#if DEBUG
-#	undef Debug_Shader
-#	define Debug_Shader 1
-#endif // DEBUG
-
-

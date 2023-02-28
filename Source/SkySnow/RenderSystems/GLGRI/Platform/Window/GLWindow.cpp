@@ -31,5 +31,45 @@ namespace SkySnow
 		#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
 		APIENTRY_POINTER(GET_APIENTRY_POINTER);
 	}
+
+
+	GLContextWin::GLContextWin()
+		: _OpenGL32Dll(nullptr)
+	{
+
+	}
+	GLContextWin::~GLContextWin()
+	{
+
+	}
+
+	void GLContextWin::CreateGLContext()
+	{
+		DlOpen();
+		//#define GET_WGL_APIENTRY_POINTER(FunType,Wgl_Fun) Wgl_Fun = (FunType)(void*)::GetProcAddress( (HMODULE)_OpenGL32Dll, #Wgl_Fun);
+		//WGL_APIENTRY_POINTER(GET_WGL_APIENTRY_POINTER);
+	}
+
+	void GLContextWin::DestroyGLContext()
+	{
+
+	}
+
+	void GLContextWin::MakeCurrContext()
+	{
+
+	}
+
+	void GLContextWin::DlOpen()
+	{
+		if (!_OpenGL32Dll)
+		{
+			_OpenGL32Dll = (void*)::LoadLibraryA("opengl32.dll");
+		}
+		if (!_OpenGL32Dll)
+		{
+			SN_ERR("Failed to open opengl32.dll.\n");
+		}
+	}
 }
 #endif

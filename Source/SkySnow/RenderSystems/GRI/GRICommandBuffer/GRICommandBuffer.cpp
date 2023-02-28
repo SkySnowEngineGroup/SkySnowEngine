@@ -23,12 +23,13 @@
 #include "GRICommandBuffer.h"
 #include "SkySnowConfigInfo.h"
 #include "GLCommandBuffer.h"
-#include "GRI.h"
 #include "WindowOSPlatform.h"
 #include "AndroidOSPlatform.h"
 #include "IOSOSPlatform.h"
 #include "MacOSPlatform.h"
 #include "LinuxOSPlatform.h"
+#include "GRI.h"
+
 namespace SkySnow
 {
 	GRICommandBufferBase::GRICommandBufferBase(CommandBufferSate cbState)
@@ -90,32 +91,28 @@ namespace SkySnow
         }
         return true;
     }
+
+    //Globle Member Variable
     GRICommandBufferQueue* _GQueue = nullptr;
     OSPlatform* _OSPlatform = nullptr;
     GRIDrive* GRI = nullptr;
+    //Globle Member Function
     void GRIInit()
     {
-#if PLATFORM == PLATFORM_WINDOW
-        _OSPlatform = new WindowOSPlatform();
-#elif PLATFORM == PLATFORM_IOS
-        _OSPlatform = new IOSOSPlatform();
-#elif PLATFORM == PLATFORM_MAC
-        _OSPlatform = new MacOSPlatform();
-#elif PLATFORM == PLATFORM_ANDROID
-        _OSPlatform = new AndroidOSPlatform();
-#elif  PLATFORM == PLATFORM_LINUX
-        _OSPlatform = new LinuxOSPlatform();
-#endif
-        GRI = _OSPlatform->OSPlatformCreateGRI();
-        _GQueue = new GRICommandBufferQueue();
-        _GQueue->Init();
+        if(!_OSPlatform)
+        {
+            _OSPlatform = CreateTargetOSPlatform();
+            GRI = _OSPlatform->OSPlatformCreateGRI();
+            _GQueue = new GRICommandBufferQueue();
+            _GQueue->Init();
+        }
     }
 
     void GRIExit()
     {
         Delete_Object(_OSPlatform);
     }
-
+    //GRI Globle Create Resource Interface
     GRIVertexShaderRef CreateVertexShader(const char* vsCode)
     {
         if (!_GQueue->IsLowerVerion())

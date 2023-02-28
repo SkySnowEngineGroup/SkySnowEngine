@@ -106,6 +106,5 @@ namespace SkySnow
     private:
         GRILowerCommandBuffer* _LowerComBuf;
     };
-    //全局唯一的一个Queue
-    extern GRICommandBufferQueue* _GQueue;
+    extern GRICommandBufferQueue*   _GQueue;
 }

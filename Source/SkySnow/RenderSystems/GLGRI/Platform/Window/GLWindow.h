@@ -25,16 +25,21 @@
 #include "LogAssert.h"
 #include "UString.h"
 #if PLATFORM == PLATFORM_WINDOW
-
+#include <wingdi.h>
 namespace SkySnow
 {
-	//该处，未来将区分从oopengl32.dll导入的与直接导入的拓展函数
 #define APIENTRY_POINTER(Macro)\
 		Macro(PFNGLBINDVERTEXBUFFERPROC, glBindVertexBuffer)\
 		Macro(PFNGLVERTEXATTRIBFORMATPROC, glVertexAttribFormat)\
 		Macro(PFNGLVERTEXATTRIBIFORMATPROC, glVertexAttribIFormat)\
 		Macro(PFNGLVERTEXATTRIBBINDINGPROC, glVertexAttribBinding)\
 		Macro(PFNGLVERTEXBINDINGDIVISORPROC, glVertexBindingDivisor)
+
+#define WGL_APIENTRY_POINTER(Macro)\
+		Macro(PFNWGLGETPROCADDRESSPROC,wglGetProcAddress)\
+		Macro(PFNWGLMAKECURRENTPROC,wglMakeCurrent)\
+		Macro(PFNWGLCREATECONTEXTPROC,wglCreateContext)\
+		Macro(PFNWGLDELETECONTEXTPROC,wglDeleteContext)
 
 	class GLWindow : public OpenGL4
 	{
@@ -66,6 +71,24 @@ namespace SkySnow
 	private:
 		static void GetAPIEntryPointer();
 	};
+
+    class GLContextWin : public GLContext
+    {
+    public:
+        GLContextWin();
+        ~GLContextWin();
+        
+        virtual void CreateGLContext() override;
+        
+        virtual void DestroyGLContext() override;
+        
+        virtual void MakeCurrContext() override;
+    private:
+		void DlOpen();
+
+	private:
+		void* _OpenGL32Dll;
+    };
 }
 typedef SkySnow::GLWindow OpenGL;
 #endif

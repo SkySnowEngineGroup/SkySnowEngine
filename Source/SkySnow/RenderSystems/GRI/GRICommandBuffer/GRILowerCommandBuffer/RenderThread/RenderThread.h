@@ -24,12 +24,24 @@
 #include "GLPlatformProfiles.h"
 #include "GRIDrive.h"
 #include "GLPipelineResource.h"
-
+#include "Runnable.h"
 
 namespace SkySnow
 {
-//	class RenderThread
-//	{
-//
-//	};
+    //禁止继承该类，该类为引擎核心部件
+	class RenderThread final: public Runnable
+	{
+    public:
+        RenderThread();
+        
+        ~RenderThread();
+        
+        virtual void Run() override;
+
+        virtual void Stop() override;
+
+        virtual void Exit() override;
+    private:
+        
+	};
 }

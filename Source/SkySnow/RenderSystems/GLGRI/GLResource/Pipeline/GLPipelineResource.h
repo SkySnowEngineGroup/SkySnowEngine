@@ -36,13 +36,13 @@ namespace SkySnow
 		GLPipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 			: GRIPipelineShaderState()
 			, _ProgramId(0)
-			, m_OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
-			, m_OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
+			, _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
+			, _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
 		{
 		}
 
-		inline GLVertexShader* GetVertexShader() { return m_OGLVertexShader; }
-		inline GLFragmentShader* GetFragmentShader() { return m_OGLFragmentShader; }
+		inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
+		inline GLFragmentShader* GetFragmentShader() { return _OGLFragmentShader; }
 
 		const GLShaderBase* GetShader(ShaderFrequency sf)
 		{
@@ -64,8 +64,8 @@ namespace SkySnow
 	private:
 		//Cache Array or LRUCache
 		//temp is ptr
-		GLVertexShader* m_OGLVertexShader;
-		GLFragmentShader* m_OGLFragmentShader;
+		GLVertexShader*     _OGLVertexShader;
+		GLFragmentShader*   _OGLFragmentShader;
 		
 	};
 	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路

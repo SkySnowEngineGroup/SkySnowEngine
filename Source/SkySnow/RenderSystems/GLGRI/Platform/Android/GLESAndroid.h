@@ -35,7 +35,20 @@ namespace SkySnow
 			return EGLES;
 		}
 	};
-	
+    class GLContextAndroid : public GLContext
+    {
+    public:
+        GLContextAndroid();
+        ~GLContextAndroid();
+        
+        virtual void CreateGLContext() override;
+        
+        virtual void DestroyGLContext() override;
+        
+        virtual void MakeCurrContext() override;
+    private:
+        
+    };
 }
 typedef Nuwa::GLESAndroid OpenGL;
 

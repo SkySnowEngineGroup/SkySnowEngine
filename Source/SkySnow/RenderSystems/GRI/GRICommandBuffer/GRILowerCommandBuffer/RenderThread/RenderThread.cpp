@@ -20,32 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#include "RenderThread.h"
 
-#include "OSPlatform.h"
-#include "PlatformProfiles.h"
-#include "WindowOSPlatform.h"
-#include "AndroidOSPlatform.h"
-#include "IOSOSPlatform.h"
-#include "MacOSPlatform.h"
-#include "LinuxOSPlatform.h"
-#include "LogAssert.h"
 namespace SkySnow
 {
-    OSPlatform* CreateTargetOSPlatform()
+    RenderThread::RenderThread()
     {
-        OSPlatform* osPlatform;
-        //Create Target OSPlatform
-    #if PLATFORM == PLATFORM_WINDOW
-        osPlatform = new WindowOSPlatform();
-    #elif PLATFORM == PLATFORM_IOS
-        osPlatform = new IOSOSPlatform();
-    #elif PLATFORM == PLATFORM_MAC
-        osPlatform = new MacOSPlatform();
-    #elif PLATFORM == PLATFORM_ANDROID
-        osPlatform = new AndroidOSPlatform();
-    #elif  PLATFORM == PLATFORM_LINUX
-        osPlatform = new LinuxOSPlatform();
-    #endif
-        return osPlatform;
+        
+    }
+
+    RenderThread::~RenderThread()
+    {
+        
+    }
+
+    void RenderThread::Run()
+    {
+        
+    }
+
+    void RenderThread::Stop()
+    {
+        
+    }
+
+    void RenderThread::Exit()
+    {
+        
     }
 }

@@ -37,7 +37,12 @@ namespace SkySnow
 	public:
 		GRIGLDrive();
 
-		~GRIGLDrive() {}
+        ~GRIGLDrive();
+        
+        virtual void Init() final override;
+        
+        virtual void Exit() final override;
+        
 		//GRICreate=================================================================================================================================
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
 		//Test Demo
@@ -70,12 +75,13 @@ namespace SkySnow
 		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
 	private:
 		//将要提交到GPU执行的pipelinestate
-		GLGraphicPipelineState		m_PendingState;
+		GLGraphicPipelineState		_PendingState;
 		//已经存在于GPU中的pipelinestate
-		GLGraphicPipelineState		m_ExistingState;
+		GLGraphicPipelineState		_ExistingState;
 		//图元绘制类型
-		PrimitiveType				m_PrimitiveType = PrimitiveType::PT_Num;
+		PrimitiveType				_PrimitiveType = PrimitiveType::PT_Num;
 		//Cache中有相关状态的缓存
-		GLGraphicPipelineStateCache m_PipelineCache;
+		GLGraphicPipelineStateCache _PipelineCache;
+        GLContext*                  _GLContext;
 	};
 }

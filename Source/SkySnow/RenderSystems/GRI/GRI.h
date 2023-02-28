@@ -26,11 +26,14 @@
 // render type interface for engine 
 namespace SkySnow
 {
-    extern OSPlatform* _OSPlatform;
-    extern GRIDrive* GRI;
+    //全局变量
+    extern OSPlatform*              _OSPlatform;
+    extern GRIDrive*                GRI;
+    //全局接口
     void GRIInit();
 
     void GRIExit();
+    
     //对外资源创建接口、全局接口
     GRIVertexShaderRef CreateVertexShader(const char* vsCode);
 

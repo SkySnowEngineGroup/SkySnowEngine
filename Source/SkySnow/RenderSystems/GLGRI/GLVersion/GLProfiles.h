@@ -48,3 +48,18 @@
 #   include <glad/glad.h>
 #	include <GLFW/glfw3.h>
 #endif // 0
+
+class GLContext
+{
+public:
+    GLContext(){};
+    
+    virtual ~GLContext(){};
+    
+    virtual void CreateGLContext() = 0;
+    
+    virtual void DestroyGLContext() = 0;
+    
+    virtual void MakeCurrContext() = 0;
+    
+};

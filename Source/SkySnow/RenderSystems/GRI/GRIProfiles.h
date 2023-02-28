@@ -33,4 +33,8 @@
 #   include "GLPlatformProfiles.h"
 #endif // GRI_PLATFORM == GRI_GL
 
-
+//Shader是否debug的标记
+#if DEBUG
+#    undef Debug_Shader
+#    define Debug_Shader 1
+#endif // DEBUG

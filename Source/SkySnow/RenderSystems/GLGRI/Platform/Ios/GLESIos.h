@@ -35,6 +35,20 @@ namespace SkySnow
 			return EGLES;
 		}
 	};
+    class GLContextIos : public GLContext
+    {
+    public:
+        GLContextIos();
+        ~GLContextIos();
+        
+        virtual void CreateGLContext() override;
+        
+        virtual void DestroyGLContext() override;
+        
+        virtual void MakeCurrContext() override;
+    private:
+        
+    };
 }
 typedef SkySnow::GLESIos OpenGL;
 
