@@ -103,6 +103,7 @@ namespace SkySnow
         {
             _OSPlatform = CreateTargetOSPlatform();
             GRI = _OSPlatform->OSPlatformCreateGRI();
+            GRI->Init();
             _GQueue = new GRICommandBufferQueue();
             _GQueue->Init();
         }
@@ -110,6 +111,8 @@ namespace SkySnow
 
     void GRIExit()
     {
+        GRI->Exit();
+        Delete_Object(_GQueue);
         Delete_Object(_OSPlatform);
     }
     //GRI Globle Create Resource Interface

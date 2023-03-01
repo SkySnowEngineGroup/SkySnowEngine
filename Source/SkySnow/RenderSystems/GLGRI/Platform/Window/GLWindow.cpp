@@ -25,7 +25,7 @@
 #if PLATFORM == PLATFORM_WINDOW
 namespace SkySnow
 {
-	void GLWindow::GetAPIEntryPointer()
+	void GLWindow::ImportAPIEntryPointer()
 	{
 		//获取拓展的函数指针
 		#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
@@ -46,13 +46,16 @@ namespace SkySnow
 	void GLContextWin::CreateGLContext()
 	{
 		DlOpen();
-		//#define GET_WGL_APIENTRY_POINTER(FunType,Wgl_Fun) Wgl_Fun = (FunType)(void*)::GetProcAddress( (HMODULE)_OpenGL32Dll, #Wgl_Fun);
+		#define GET_WGL_APIENTRY_POINTER(FunType,Wgl_Fun) Wgl_Fun = (FunType)(void*)::GetProcAddress( (HMODULE)_OpenGL32Dll, #Wgl_Fun);
 		//WGL_APIENTRY_POINTER(GET_WGL_APIENTRY_POINTER);
 	}
 
 	void GLContextWin::DestroyGLContext()
 	{
-
+        if(_OpenGL32Dll)
+        {
+            ::FreeLibrary( (HMODULE)_OpenGL32Dll);
+        }
 	}
 
 	void GLContextWin::MakeCurrContext()
@@ -68,7 +71,7 @@ namespace SkySnow
 		}
 		if (!_OpenGL32Dll)
 		{
-			SN_ERR("Failed to open opengl32.dll.\n");
+			SN_ERR("Failed To Open opengl32.dll.\n");
 		}
 	}
 }

@@ -21,7 +21,7 @@
 # THE SOFTWARE.
 #
 
+#add_compile_options(-x objective-c++)
+set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -std=c99")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -D__STDC_FORMAT_MACROS")
 
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-#set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -std=c99")

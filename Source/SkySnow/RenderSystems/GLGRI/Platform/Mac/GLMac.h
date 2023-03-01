@@ -22,7 +22,9 @@
 //
 #pragma once
 #include "GL4.h"
+#include "LogAssert.h"
 #if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
+
 namespace SkySnow
 {
 	class GLMac : public OpenGL4
@@ -35,11 +37,11 @@ namespace SkySnow
         
         static void InitialExtensions()
         {
-            GetAPIEntryPointer();
+            ImportAPIEntryPointer();
             OpenGL4::InitialExtensions();
         }
     private:
-        static void GetAPIEntryPointer();
+        static void ImportAPIEntryPointer();
 
 	};
 
@@ -55,7 +57,12 @@ namespace SkySnow
         
         virtual void MakeCurrContext() override;
     private:
+        void DlOpen();
         
+    private:
+        void*    _OpenGLDll;
+        void*    _GLContext;
+        void*    _View;
     };
 }
 typedef SkySnow::GLMac OpenGL;

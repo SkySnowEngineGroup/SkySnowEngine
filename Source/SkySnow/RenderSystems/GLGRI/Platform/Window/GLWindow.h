@@ -25,7 +25,9 @@
 #include "LogAssert.h"
 #include "UString.h"
 #if PLATFORM == PLATFORM_WINDOW
-#include <wingdi.h>
+#include <GL/glcorearb.h>
+#include <GL/glext.h>
+#include <GL/wglext.h>
 namespace SkySnow
 {
 #define APIENTRY_POINTER(Macro)\
@@ -60,7 +62,7 @@ namespace SkySnow
 			}
 			_ExtensionsStr = (const char*)glGetString(GL_EXTENSIONS);
 
-			GetAPIEntryPointer();
+            ImportAPIEntryPointer();
 			OpenGL4::InitialExtensions();
 			if (_SupportVertexFormatBinding)
 			{
@@ -69,7 +71,7 @@ namespace SkySnow
 		}
 
 	private:
-		static void GetAPIEntryPointer();
+		static void ImportAPIEntryPointer();
 	};
 
     class GLContextWin : public GLContext
