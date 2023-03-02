@@ -22,18 +22,17 @@
 //
 #include "GLMac.h"
 #if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
-#include <unistd.h>
 #include <dlfcn.h>
 #include <AvailabilityMacros.h>
 #include <Cocoa/Cocoa.h>
-
+#include "OSPlatform.h"
 namespace SkySnow
 {
     void GLMac::ImportAPIEntryPointer()
     {
         
     }
-    //=GLContext-Start=============================================================================================================================
+    //=GLContext-Start=========================================================================================================================
     // cpp local var
     static NSOpenGLPixelFormat* _PixelFormat    = nil;
     NSOpenGLPixelFormatAttribute Profile        = NSOpenGLProfileVersion3_2Core;
@@ -55,7 +54,7 @@ namespace SkySnow
         if(!_PixelFormat)
         {
             _PixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:PixelFormatAttributes];
-            if(_PixelFormat != nil)
+            if(!_PixelFormat)
             {
                 SN_ERR("Failed to initialize pixel format.\n");
             }
@@ -78,8 +77,47 @@ namespace SkySnow
     void GLContextMac::CreateGLContext()
     {
         DlOpen();
+
+        NSObject* nativeWindow = (NSObject*)_GOSPlatformInfo->_NativeWindow;
+        NSWindow* nsWindow = nil;
+        NSView* contentView = nil;
+        if ([nativeWindow isKindOfClass:[NSView class]])
+        {
+            contentView = (NSView*)nativeWindow;
+        }
+        else if ([nativeWindow isKindOfClass:[NSWindow class]])
+        {
+            nsWindow = (NSWindow*)nativeWindow;
+            contentView = [nsWindow contentView];
+        }
+
         NSOpenGLContext* CreateGLContextInternal(NSOpenGLContext* shareGLContext);
         _GLContext = CreateGLContextInternal(nil);
+
+        NSRect glViewRect = [contentView bounds];
+        NSOpenGLView* glView = [[NSOpenGLView alloc] initWithFrame:glViewRect pixelFormat:_PixelFormat];
+
+        if (nil != contentView)
+        {
+            [glView setAutoresizingMask:( NSViewHeightSizable |
+                    NSViewWidthSizable |
+                    NSViewMinXMargin |
+                    NSViewMaxXMargin |
+                    NSViewMinYMargin |
+                    NSViewMaxYMargin )];
+            [contentView addSubview:glView];
+        }
+        else
+        {
+            if (nil != nsWindow)
+                [nsWindow setContentView:glView];
+        }
+        NSOpenGLContext* glContext = [glView openGLContext];
+        [_PixelFormat release];
+
+        [glContext makeCurrentContext];
+        GLint interval = 0;
+        [_GLContext setValues:&interval forParameter:NSOpenGLCPSwapInterval];
         int a = 10;
     }
 
@@ -107,6 +145,6 @@ namespace SkySnow
             SN_ERR("Failed To Open /System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL Dll.\n");
         }
     }
-    //=GLContext-End=============================================================================================================================
+    //=GLContext-End===========================================================================================================================
 }
 #endif

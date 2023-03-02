@@ -25,7 +25,6 @@
 #include <stdlib.h>
 #include <iostream>
 #include "GLFWWindow.h"
-#include "RenderingThread.h"
 #include "EngineMainThread.h"
 namespace SkySnow
 {
@@ -48,17 +47,21 @@ namespace SkySnow
     public:
         //don't overload child
         int RunApplication(Application* app, int argc, const char* const* argv);
+    protected:
+        void* GetNativeWindow()
+        {
+            return _Window->GetNativeWindow();
+        }
 	private:
-		void LoopInRenderThread();
+        void MainThreadLoop();
 	private:
-		bool				m_IsInit;
-		const char*			m_Name;
-		const char*			m_Description;
-		const char* const*	m_Argv;
-		int					m_Argc;
-        SN_GLFWWindow*		m_Window;
-
-		Application*		m_ChildApp;
+		bool				_IsInit;
+		const char*			_Name;
+		const char*			_Description;
+		const char* const*	_Argv;
+		int					_Argc;
+        GLFWWindow*		    _Window;
+		Application*		_ChildApp;
 	};
 	
 }

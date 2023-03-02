@@ -35,4 +35,18 @@ namespace SkySnow
 	};
 
     OSPlatform* CreateTargetOSPlatform();
+
+    struct OSPlatformInfo
+    {
+        OSPlatformInfo()
+            : _NativeWindow(nullptr)
+            , _DriveContext(nullptr)
+        {
+            
+        }
+        
+        void* _NativeWindow;
+        void* _DriveContext;
+    };
+    extern OSPlatformInfo*          _GOSPlatformInfo;
 }

@@ -22,46 +22,45 @@
 //
 #pragma once
 #include "IWindow.h"
+#include "PlatformProfiles.h"
 #include "GRIProfiles.h"
 namespace SkySnow
 {
 	//can be use mac and window os
-	class SN_GLFWWindow: public IWindow
-	{
-	public:
-		SN_GLFWWindow();
-			
-		~SN_GLFWWindow();
+    class GLFWWindow final: public IWindow
+    {
+    public:
+        GLFWWindow();
+        
+        ~GLFWWindow();
+        
+        virtual void CreateEngineWindow(unsigned int width,unsigned int height) override;
 
-		virtual void SNCreateWindow(unsigned int width,unsigned int height) override;
+        virtual bool IsCloseWindow() override;
 
-		virtual bool SNIsCloseWindow() override;
-
-		virtual void SNShutDown() override;
-
-		void MakeGLContext();
-
-		void LoadgladFun();
-
-		void GLFWSwapBuffer();
-
-        GLFWwindow* GetWindow()
+        virtual void ShutDown() override;
+        
+        void* GetNativeWindow()
         {
-            return m_Window;
+        #if PLATFORM == PLATFORM_WINDOW
+            return glfwGetWin32Window(_Window);
+        #elif PLATFORM == PLATFORM_MAC
+            return glfwGetCocoaWindow(_Window);
+        #endif
         }
-		int GetWindowWidth()
-		{
-			return m_Width;
-		}
 
-		int GetWindowHeight()
-		{
-			return m_Height;
-		}
-
-	private:
-		unsigned int		m_Width;
-		unsigned int		m_Height;
-		GLFWwindow*			m_Window;
-	};
+        int GetWindowWidth() const
+        {
+            return _Width;
+        }
+        
+        int GetWindowHeight() const
+        {
+            return _Height;
+        }
+    private:
+        unsigned int        _Width;
+        unsigned int        _Height;
+        GLFWwindow*         _Window;
+    };
 }

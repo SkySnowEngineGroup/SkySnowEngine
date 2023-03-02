@@ -47,6 +47,14 @@
 #	include <stdio.h>
 #   include <glad/glad.h>
 #	include <GLFW/glfw3.h>
+#   if PLATFORM == PLATFORM_WINDOW
+#       define GLFW_EXPOSE_NATIVE_WIN32
+#       define GLFW_EXPOSE_NATIVE_WGL
+#   elif PLATFORM == PLATFORM_MAC
+#       define GLFW_EXPOSE_NATIVE_COCOA
+#       define GLFW_EXPOSE_NATIVE_NSGL
+#   endif
+#   include <GLFW/glfw3native.h>
 #endif // 0
 
 class GLContext

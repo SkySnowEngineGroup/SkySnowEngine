@@ -53,7 +53,7 @@ namespace SkySnow
 
 		static void InitialExtensions()
 		{
-			UString version = (const char*)glGetString(GL_VERSION);
+			/*UString version = (const char*)glGetString(GL_VERSION);
 			std::vector<UString> res = version.Split('.');
 			if (res.size() > 1)
 			{
@@ -67,7 +67,7 @@ namespace SkySnow
 			if (_SupportVertexFormatBinding)
 			{
 				SN_LOG("Support VFB");
-			}
+			}*/
 		}
 
 	private:
@@ -87,9 +87,13 @@ namespace SkySnow
         virtual void MakeCurrContext() override;
     private:
 		void DlOpen();
-
+		HGLRC CreateGLContextInternal(HDC hdc);
 	private:
 		void* _OpenGL32Dll;
+		HDC _Hdc;
+		int _PixelFormat;
+		PIXELFORMATDESCRIPTOR _Pfd;
+		HGLRC _Context;
     };
 }
 typedef SkySnow::GLWindow OpenGL;

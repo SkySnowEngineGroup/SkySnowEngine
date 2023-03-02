@@ -32,11 +32,11 @@ namespace SkySnow
         {}
 
 	public:
-		virtual void SNCreateWindow(unsigned int width, unsigned int height) = 0;
+		virtual void CreateEngineWindow(unsigned int width, unsigned int height) = 0;
 
-		virtual bool SNIsCloseWindow() = 0;
+		virtual bool IsCloseWindow() = 0;
 
-		virtual void SNShutDown() = 0;
+		virtual void ShutDown() = 0;
 
 	};
 }

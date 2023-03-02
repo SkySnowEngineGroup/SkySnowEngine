@@ -29,7 +29,7 @@
 #define GRI_PLATFORM GRI_GL
 
 #if GRI_PLATFORM == GRI_GL
-#	include"GLProfiles.h"
+#	include "GLProfiles.h"
 #   include "GLPlatformProfiles.h"
 #endif // GRI_PLATFORM == GRI_GL
 

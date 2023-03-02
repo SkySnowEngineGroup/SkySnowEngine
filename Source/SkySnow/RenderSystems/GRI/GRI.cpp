@@ -21,7 +21,8 @@
 // THE SOFTWARE.
 //
 #include "GRI.h"
+#include "GRICommandBuffer.h"
 namespace SkySnow
 {
-    
+
 }

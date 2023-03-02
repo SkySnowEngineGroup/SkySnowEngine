@@ -33,99 +33,101 @@ class Triangle : public SkySnow::Application
 public:
 	Triangle(const char* name, const char* description)
 		: Application(name, description)
-		, m_File(nullptr)
-		, m_VsData(nullptr)
-		, m_FsData(nullptr)
+		, _File(nullptr)
+		, _VsData(nullptr)
+		, _FsData(nullptr)
 	{
-		m_CMBPool = new GRICommandBufferPool();
-        SN_LOG("Application is name:%s", name);
-        SN_WARN("Application description info:%s", description);
+//		_CMBPool = new GRICommandBufferPool();
+//        SN_LOG("Application is name:%s", name);
+//        SN_WARN("Application description info:%s", description);
 	}
     
     ~Triangle()
     {
-        SN_LOG("Trangle Application is quit.");
-		Delete_Object(m_File);
-		Delete_Object(m_VsData);
-		Delete_Object(m_FsData);
+//      SN_LOG("Trangle Application is quit.");
+//		Delete_Object(_File);
+//		Delete_Object(_VsData);
+//		Delete_Object(_FsData);
         GRIExit();
     }
 
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
-		GRIInit();
-		m_CMB = m_CMBPool->AllocCommandBuffer();
-        SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
-		string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
-		string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
-		m_File = new File();
-		m_VsData = new Data();
-		m_FsData = new Data();
-		m_File->ReadData(vsShaderPath, m_VsData);
-		m_File->ReadData(fsShaderPath, m_FsData);
-
-		GRICreateGraphicsPipelineStateInfo psoCreateInfo;
-		
-		m_vsRef = CreateVertexShader((char*)m_VsData->GetBytes());
-		m_fsRef = CreateFragmentShader((char*)m_FsData->GetBytes());
-		m_PipelineShaderStateRef = CreatePipelineShaderState(m_vsRef, m_fsRef);
-		float vertices[] = { -0.5f, -0.5f, 0.0f,
-							 0.5f,  -0.5f, 0.0f,
-							 0.0f,  0.5f,  0.0f};
-		SN_LOG("Vertex Size:%d",sizeof(vertices));
-		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
-		m_VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-												sizeof(vertices),
-												3, 
-												vertices);
-		m_PSORef = CreateGraphicsPipelineState(psoCreateInfo);
-
-		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
-		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
-
-		void* pt1 = m_MemStack.Alloc(4);
-		void* pt2 = m_MemStack.Alloc(4);
-		void* pt3 = m_MemStack.Alloc(4);
-		void* pt4 = m_MemStack.Alloc(4);
-		SN_LOG("pt1:%p", pt1);
-		SN_LOG("pt2:%p", pt2);
-		SN_LOG("pt3:%p", pt3);
-		SN_LOG("pt4:%p", pt4);
-		m_MemStack.Flush();
+        OSPlatformInfo osPlatformInfo;
+        osPlatformInfo._NativeWindow = GetNativeWindow();
+		GRIInit(osPlatformInfo);
+//		_CMB = _CMBPool->AllocCommandBuffer();
+//        SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
+//		string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
+//		string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
+//		_File = new File();
+//		_VsData = new Data();
+//		_FsData = new Data();
+//		_File->ReadData(vsShaderPath, _VsData);
+//		_File->ReadData(fsShaderPath, _FsData);
+//
+//		GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+//
+//		_vsRef = CreateVertexShader((char*)_VsData->GetBytes());
+//		_fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
+//		_PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
+//		float vertices[] = { -0.5f, -0.5f, 0.0f,
+//							 0.5f,  -0.5f, 0.0f,
+//							 0.0f,  0.5f,  0.0f};
+//		SN_LOG("Vertex Size:%d",sizeof(vertices));
+//		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
+//		_VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+//												sizeof(vertices),
+//												3,
+//												vertices);
+//		_PSORef = CreateGraphicsPipelineState(psoCreateInfo);
+//
+//		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
+//		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
+//
+//		void* pt1 = _MemStack.Alloc(4);
+//		void* pt2 = _MemStack.Alloc(4);
+//		void* pt3 = _MemStack.Alloc(4);
+//		void* pt4 = _MemStack.Alloc(4);
+//		SN_LOG("pt1:%p", pt1);
+//		SN_LOG("pt2:%p", pt2);
+//		SN_LOG("pt3:%p", pt3);
+//		SN_LOG("pt4:%p", pt4);
+//		_MemStack.Flush();
 		return 0;
 	}
 
 	void Update()
 	{
-		GRIResource::FlushResourceRelease();
-		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-        glClearColor(1.0,0.0,0.0,1.0);
-		//m_CMB->CmdBeginCommandBuffer();
+//		GRIResource::FlushResourceRelease();
+//		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+//        glClearColor(1.0,0.0,0.0,1.0);
+		//_CMB->CmdBeginCommandBuffer();
 
-		//m_CMB->CmdBeginRenderPass();
+		//_CMB->CmdBeginRenderPass();
 
-		//m_CMB->CmdSetBuffer(0,m_VertexBufferRef,0);
-		//m_CMB->CmdSetPipelineShaderState(m_PipelineShaderStateRef);
-		//m_CMB->CmdSetGraphicsPipelineState(m_PSORef);
-		//m_CMB->CmdDrawPrimitive(3,1);
+		//_CMB->CmdSetBuffer(0,_VertexBufferRef,0);
+		//_CMB->CmdSetPipelineShaderState(_PipelineShaderStateRef);
+		//_CMB->CmdSetGraphicsPipelineState(_PSORef);
+		//_CMB->CmdDrawPrimitive(3,1);
 
-		//m_CMB->CmdEndRenderPass();
+		//_CMB->CmdEndRenderPass();
 
-		//m_CMB->CmdEndCommandBuffer();
+		//_CMB->CmdEndCommandBuffer();
 	}
 
 private:
-	MemStack				m_MemStack;
-	File*					m_File;
-	Data*					m_VsData;
-	Data*					m_FsData;
-	GRIVertexShaderRef		m_vsRef;
-	GRIFragmentShaderRef	m_fsRef;
-	GRIBufferRef			m_VertexBufferRef;
-	GRIPipelineShaderStateRef m_PipelineShaderStateRef;
-	GRIGraphicsPipelineStateRef m_PSORef;
-	GRICommandBufferPool*	m_CMBPool;
-	GRICommandBufferBase*	m_CMB;
+	MemStack				    _MemStack;
+	File*					    _File;
+	Data*					    _VsData;
+	Data*					    _FsData;
+	GRIVertexShaderRef		    _vsRef;
+	GRIFragmentShaderRef	    _fsRef;
+	GRIBufferRef			    _VertexBufferRef;
+	GRIPipelineShaderStateRef   _PipelineShaderStateRef;
+	GRIGraphicsPipelineStateRef _PSORef;
+	GRICommandBufferPool*	    _CMBPool;
+	GRICommandBufferBase*	    _CMB;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

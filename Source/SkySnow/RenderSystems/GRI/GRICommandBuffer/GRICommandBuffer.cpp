@@ -93,27 +93,33 @@ namespace SkySnow
     }
 
     //Globle Member Variable
-    GRICommandBufferQueue* _GQueue = nullptr;
-    OSPlatform* _OSPlatform = nullptr;
-    GRIDrive* GRI = nullptr;
+    GRICommandBufferQueue*  _GQueue = nullptr;
+    OSPlatform*             _GOSPlatform = nullptr;
+    OSPlatformInfo*         _GOSPlatformInfo = nullptr;
+    GRIDrive*               GRI = nullptr;
     //Globle Member Function
-    void GRIInit()
+    void GRIInit(const OSPlatformInfo& osPlatformInfo)
     {
-        if(!_OSPlatform)
+        if(!_GOSPlatform)
         {
-            _OSPlatform = CreateTargetOSPlatform();
-            GRI = _OSPlatform->OSPlatformCreateGRI();
+            _GOSPlatformInfo = new OSPlatformInfo();
+            _GOSPlatformInfo->_NativeWindow = osPlatformInfo._NativeWindow;
+            _GOSPlatformInfo->_DriveContext = osPlatformInfo._DriveContext;
+            _GOSPlatform = CreateTargetOSPlatform();
+            GRI = _GOSPlatform->OSPlatformCreateGRI();
             GRI->Init();
-            _GQueue = new GRICommandBufferQueue();
-            _GQueue->Init();
+    //          _GQueue = new GRICommandBufferQueue();
+    //          _GQueue->Init();
         }
+        
     }
 
     void GRIExit()
     {
         GRI->Exit();
-        Delete_Object(_GQueue);
-        Delete_Object(_OSPlatform);
+    //      Delete_Object(_GQueue);
+        Delete_Object(_GOSPlatform);
+        Delete_Object(_GOSPlatformInfo);
     }
     //GRI Globle Create Resource Interface
     GRIVertexShaderRef CreateVertexShader(const char* vsCode)

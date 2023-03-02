@@ -27,10 +27,11 @@
 namespace SkySnow
 {
     //全局变量
-    extern OSPlatform*              _OSPlatform;
+    extern OSPlatform*              _GOSPlatform;
     extern GRIDrive*                GRI;
+    
     //全局接口
-    void GRIInit();
+    void GRIInit(const OSPlatformInfo& osPlatformInfo);
 
     void GRIExit();
     

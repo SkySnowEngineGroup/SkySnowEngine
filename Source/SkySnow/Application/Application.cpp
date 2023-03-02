@@ -27,45 +27,44 @@
 namespace SkySnow
 {
 	Application::Application(const char* name, const char* description)
-		: m_Name(name)
-		, m_Description(description)
-        , m_Window(nullptr)
-        , m_ChildApp(nullptr)
-        , m_IsInit(false)
+		: _Name(name)
+		, _Description(description)
+        , _Window(nullptr)
+        , _ChildApp(nullptr)
+        , _IsInit(false)
 	{
 
 	}
 	Application::~Application()
 	{
-        if(m_Window)
+        if(_Window)
         {
-            delete m_Window;
-            m_Window = nullptr;
+            delete _Window;
+            _Window = nullptr;
         }
 	}
 
 	int Application::RunApplication(Application* app, int argc, const char* const* argv)
 	{
-        m_ChildApp = app;
-        m_Argc = argc;
-        m_Argv = argv;
-        LoopInRenderThread();
+        _ChildApp = app;
+        _Argc = argc;
+        _Argv = argv;
+        MainThreadLoop();
         return 0;
 	}
-    void Application::LoopInRenderThread()
+    void Application::MainThreadLoop()
     {
-        m_Window = new SN_GLFWWindow();
-        m_Window->SNCreateWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
-        m_Window->MakeGLContext();
-        m_Window->LoadgladFun();
-        m_ChildApp->Init(m_Argc, m_Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
-        glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
-        while (!m_Window->SNIsCloseWindow())
+        _Window = new GLFWWindow();
+        _Window->CreateEngineWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
+        _ChildApp->Init(_Argc, _Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
+        glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
+        GLenum err = glGetError();
+        //while (!_Window->IsCloseWindow())
         {
-            //SN_LOG("SkySnowEngine Rendering Thread Update.");
-            m_ChildApp->Update();
-            m_Window->GLFWSwapBuffer();
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+            glClearColor(1,0,0,1);
+            _ChildApp->Update();
         }
-        m_Window->SNShutDown();
+        //_Window->ShutDown();
     }
 }
