@@ -50,9 +50,9 @@ foreach (SourceHeader IN LISTS SkySnowHeader)
 	target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/${source_path_dir})
 endforeach()
 
+#${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Glad/
 # 导入三方依赖库的头文件依赖
-target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Glad/
-						   ${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
+target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
 #mac window 导入KHR头文件
 if(APPLE OR WIN32)
 target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Khronos/

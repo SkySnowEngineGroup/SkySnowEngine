@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
 #include "GRIGLDrive.h"
 #include "GLShader.h"
 namespace SkySnow
@@ -50,9 +49,11 @@ namespace SkySnow
 //            _GLContext = new GLContextLinux();
 #endif
         _GLContext->CreateGLContext();
-        OpenGL::InitialExtensions();
     }
-
+    void GRIGLDrive::SwapTemp()
+    {
+        _GLContext->SwapGLTemp();
+    }
     void GRIGLDrive::Exit()
     {
         _GLContext->DestroyGLContext();

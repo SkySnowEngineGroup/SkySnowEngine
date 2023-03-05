@@ -29,7 +29,7 @@ file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp"
 add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
 target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
 if(WIN32)
-    target_link_libraries(Triangle SkySnow Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
+    target_link_libraries(Triangle SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
 else()
-    target_link_libraries(Triangle SkySnow Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+    target_link_libraries(Triangle SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
 endif(WIN32)

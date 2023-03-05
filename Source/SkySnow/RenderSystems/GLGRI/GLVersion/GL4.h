@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "GL3.h"
+//extern PFNGLVERTEXBINDINGDIVISORPROC glVertexBindingDivisor;
 namespace SkySnow
 {
 	class OpenGL4 : public OpenGL3

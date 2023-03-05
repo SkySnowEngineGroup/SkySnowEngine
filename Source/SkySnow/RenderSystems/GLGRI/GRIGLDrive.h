@@ -21,10 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
-#include "GRIDrive.h"
-#include "GLPipelineResource.h"
 
+#include "GRIDrive.h"
+#if PLATFORM == PLATFORM_ANDROID
+#	include "GLESAndroid.h"
+#elif PLATFORM == PLATFORM_IOS
+#	include "GLESIos.h"
+#elif PLATFORM == PLATFORM_WINDOW
+#	include "GLWindow.h"
+#elif PLATFORM == PLATFORM_MAC
+#	include "GLMac.h"
+#endif
+#include "GLPipelineResource.h"
 namespace SkySnow
 {
 	/*
@@ -40,7 +48,7 @@ namespace SkySnow
         ~GRIGLDrive();
         
         virtual void Init() final override;
-        
+        virtual void SwapTemp() final override;
         virtual void Exit() final override;
         
 		//GRICreate=================================================================================================================================

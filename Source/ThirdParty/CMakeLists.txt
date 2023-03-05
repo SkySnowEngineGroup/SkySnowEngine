@@ -24,7 +24,7 @@
 set (TARGET_NAME ThirdParty)
 
 add_subdirectory(imgui)
-add_subdirectory(Glad)
+#add_subdirectory(Glad)
 add_subdirectory(glfw3)
 #add_subdirectory(flatbuffers)
 

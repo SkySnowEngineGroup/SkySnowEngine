@@ -30,7 +30,8 @@ namespace SkySnow
 {
     void GLMac::ImportAPIEntryPointer()
     {
-        
+        #define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)dlsym(RTLD_SELF, #Fun);
+                APIENTRY_POINTER(GET_APIENTRY_POINTER);
     }
     //=GLContext-Start=========================================================================================================================
     // cpp local var
@@ -62,10 +63,13 @@ namespace SkySnow
         NSOpenGLContext* glContext = [[NSOpenGLContext alloc] initWithFormat: _PixelFormat shareContext: shareGLContext];
         int syncInterval = 0;
         [glContext setValues: &syncInterval forParameter: NSOpenGLCPSwapInterval];
+        if(!glContext)
+        {
+            SN_ERR("GLContext is null.");
+        }
         return glContext;
     }
     GLContextMac::GLContextMac()
-        : _OpenGLDll(nullptr)
     {
         
     }
@@ -90,13 +94,29 @@ namespace SkySnow
             nsWindow = (NSWindow*)nativeWindow;
             contentView = [nsWindow contentView];
         }
-
-        NSOpenGLContext* CreateGLContextInternal(NSOpenGLContext* shareGLContext);
-        _GLContext = CreateGLContextInternal(nil);
-
+        if(!contentView)
+        {
+            SN_ERR("contentView is null.");
+        }
+        
+        NSOpenGLPixelFormatAttribute profile = NSOpenGLProfileVersion3_2Core;
+        NSOpenGLPixelFormatAttribute pixelFormatAttributes[] = {
+            NSOpenGLPFAOpenGLProfile, profile,
+            NSOpenGLPFAColorSize,     24,
+            NSOpenGLPFAAlphaSize,     8,
+            NSOpenGLPFADepthSize,     24,
+            NSOpenGLPFAStencilSize,   8,
+            NSOpenGLPFADoubleBuffer,  true,
+            NSOpenGLPFAAccelerated,   true,
+            NSOpenGLPFANoRecovery,    true,
+            0,                        0,
+        };
+        NSOpenGLPixelFormat* pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:pixelFormatAttributes];
         NSRect glViewRect = [contentView bounds];
-        NSOpenGLView* glView = [[NSOpenGLView alloc] initWithFrame:glViewRect pixelFormat:_PixelFormat];
+        NSOpenGLView* glView = [[NSOpenGLView alloc] initWithFrame:glViewRect pixelFormat:pixelFormat];
 
+        [pixelFormat release];
+        
         if (nil != contentView)
         {
             [glView setAutoresizingMask:( NSViewHeightSizable |
@@ -113,12 +133,24 @@ namespace SkySnow
                 [nsWindow setContentView:glView];
         }
         NSOpenGLContext* glContext = [glView openGLContext];
-        [_PixelFormat release];
-
         [glContext makeCurrentContext];
         GLint interval = 0;
-        [_GLContext setValues:&interval forParameter:NSOpenGLCPSwapInterval];
-        int a = 10;
+        [glContext setValues:&interval forParameter:NSOpenGLCPSwapInterval];
+        void (^set_view)(void) = ^(void)
+        {
+            [glContext setView:glView];
+        };
+
+        if([NSThread isMainThread])
+        {
+            set_view();
+        }
+        else
+        {
+            dispatch_sync(dispatch_get_main_queue(),set_view);
+        }
+        OpenGL::InitialExtensions();
+        _GLContext = glContext;
     }
 
     void GLContextMac::DestroyGLContext()
@@ -132,6 +164,33 @@ namespace SkySnow
     void GLContextMac::MakeCurrContext()
     {
         
+    }
+    void GLContextMac::SwapGLTemp()
+    {
+//        bool vsync = !!(_flags&BGFX_RESET_VSYNC);
+        GLint interval = 1;
+        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+        [glContext setValues:&interval forParameter:NSOpenGLCPSwapInterval];
+        
+        void (^update_view)(void) = ^(void) {
+            [glContext update];
+        };
+
+        if([NSThread isMainThread])
+        {
+            update_view();
+        }
+        else
+        {
+            dispatch_sync(dispatch_get_main_queue(),update_view);
+        }
+        glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glClearColor(1,0,0,1);
+        
+//        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+        [glContext makeCurrentContext];
+        [glContext flushBuffer];
     }
 
     void GLContextMac::DlOpen()

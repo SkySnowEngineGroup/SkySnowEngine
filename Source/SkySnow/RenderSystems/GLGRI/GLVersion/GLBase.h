@@ -21,9 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
-#include "UString.h"
 #include <string>
+#include "UString.h"
 //关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
 namespace SkySnow
 {

@@ -45,14 +45,19 @@
 #	define GLFW_INCLUDE_NONE
 #	include <stdarg.h>
 #	include <stdio.h>
-#   include <glad/glad.h>
+//#   include <glad/glad.h>
 #	include <GLFW/glfw3.h>
 #   if PLATFORM == PLATFORM_WINDOW
 #       define GLFW_EXPOSE_NATIVE_WIN32
 #       define GLFW_EXPOSE_NATIVE_WGL
+#       include <GL/glcorearb.h>
+#       include <GL/glext.h>
+#       include <GL/wglext.h>
 #   elif PLATFORM == PLATFORM_MAC
 #       define GLFW_EXPOSE_NATIVE_COCOA
 #       define GLFW_EXPOSE_NATIVE_NSGL
+#       include <GL/glcorearb.h>
+#       include <GL/glext.h>
 #   endif
 #   include <GLFW/glfw3native.h>
 #endif // 0
@@ -69,5 +74,7 @@ public:
     virtual void DestroyGLContext() = 0;
     
     virtual void MakeCurrContext() = 0;
+    
+    virtual void SwapGLTemp() = 0;
     
 };

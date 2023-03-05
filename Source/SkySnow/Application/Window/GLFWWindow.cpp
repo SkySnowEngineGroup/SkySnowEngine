@@ -21,10 +21,6 @@
 // THE SOFTWARE.
 //
 #include "GLFWWindow.h"
-//#if PLATFORM == PLATFORM_MAC
-//#include <Cocoa/Cocoa.h>
-//#endif
-#include <GLFW/glfw3native.h>
 namespace SkySnow
 {
     GLFWWindow::GLFWWindow()

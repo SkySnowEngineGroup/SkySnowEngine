@@ -27,6 +27,12 @@
 
 namespace SkySnow
 {
+#define APIENTRY_POINTER(Macro)\
+        Macro(PFNGLVIEWPORTPROC, glViewport)\
+        Macro(PFNGLCLEARPROC, glClear)\
+        Macro(PFNGLCLEARCOLORPROC, glClearColor)\
+        Macro(PFNGLGETERRORPROC, glGetError)
+
 	class GLMac : public OpenGL4
 	{
 	public:
@@ -44,7 +50,7 @@ namespace SkySnow
         static void ImportAPIEntryPointer();
 
 	};
-
+    //maxosx not export opengl function
     class GLContextMac : public GLContext
     {
     public:
@@ -56,6 +62,8 @@ namespace SkySnow
         virtual void DestroyGLContext() override;
         
         virtual void MakeCurrContext() override;
+        
+        virtual void SwapGLTemp() override;
     private:
         void DlOpen();
         

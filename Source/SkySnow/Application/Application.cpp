@@ -58,13 +58,13 @@ namespace SkySnow
         _Window->CreateEngineWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
         _ChildApp->Init(_Argc, _Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
         glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
-        GLenum err = glGetError();
-        //while (!_Window->IsCloseWindow())
+        //GLenum err = glGetError();
+        while (!_Window->IsCloseWindow())
         {
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             glClearColor(1,0,0,1);
             _ChildApp->Update();
         }
-        //_Window->ShutDown();
+        _Window->ShutDown();
     }
 }
