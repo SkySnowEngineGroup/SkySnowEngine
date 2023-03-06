@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "GL4.h"
+#if USE_GL4
 namespace SkySnow
 {
 	void OpenGL4::InitialExtensions()
@@ -31,3 +32,4 @@ namespace SkySnow
 		OpenGL3::InitialExtensions();
 	}
 }
+#endif

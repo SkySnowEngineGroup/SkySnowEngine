@@ -30,8 +30,8 @@ namespace SkySnow
 {
     void GLMac::ImportAPIEntryPointer()
     {
-        #define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)dlsym(RTLD_SELF, #Fun);
-                APIENTRY_POINTER(GET_APIENTRY_POINTER);
+//        #define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)dlsym(RTLD_SELF, #Fun);
+//                APIENTRY_POINTER(GET_APIENTRY_POINTER);
     }
     //=GLContext-Start=========================================================================================================================
     // cpp local var
@@ -155,54 +155,55 @@ namespace SkySnow
 
     void GLContextMac::DestroyGLContext()
     {
-        if(_OpenGLDll)
-        {
-            ::dlclose(_OpenGLDll);
-        }
+//        if(_OpenGLDll)
+//        {
+//            ::dlclose(_OpenGLDll);
+//        }
     }
 
     void GLContextMac::MakeCurrContext()
     {
         
     }
-    void GLContextMac::SwapGLTemp()
-    {
-//        bool vsync = !!(_flags&BGFX_RESET_VSYNC);
-        GLint interval = 1;
-        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
-        [glContext setValues:&interval forParameter:NSOpenGLCPSwapInterval];
-        
-        void (^update_view)(void) = ^(void) {
-            [glContext update];
-        };
-
-        if([NSThread isMainThread])
-        {
-            update_view();
-        }
-        else
-        {
-            dispatch_sync(dispatch_get_main_queue(),update_view);
-        }
-        glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        glClearColor(1,0,0,1);
-        
+//    void GLContextMac::SwapGLTemp()
+//    {
+////        bool vsync = !!(_flags&BGFX_RESET_VSYNC);
+//        GLint interval = 1;
 //        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
-        [glContext makeCurrentContext];
-        [glContext flushBuffer];
-    }
-
+//        [glContext setValues:&interval forParameter:NSOpenGLCPSwapInterval];
+//        
+//        void (^update_view)(void) = ^(void) {
+//            [glContext update];
+//        };
+//
+//        if([NSThread isMainThread])
+//        {
+//            update_view();
+//        }
+//        else
+//        {
+//            dispatch_sync(dispatch_get_main_queue(),update_view);
+//        }
+//        glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
+//        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+//        glClearColor(1,0,0,1);
+//        
+////        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+//        [glContext makeCurrentContext];
+//        [glContext flushBuffer];
+//    }
+    
+    //use MacOS GL Function Pointer, So Not Get Dll Pointer And Not Import GLFunction By OpenGL DLL
     void GLContextMac::DlOpen()
     {
-        if(!_OpenGLDll)
-        {
-            _OpenGLDll = ::dlopen("/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL", RTLD_LOCAL|RTLD_LAZY);
-        }
-        if(!_OpenGLDll)
-        {
-            SN_ERR("Failed To Open /System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL Dll.\n");
-        }
+//        if(!_OpenGLDll)
+//        {
+//            _OpenGLDll = ::dlopen("/System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL", RTLD_LOCAL|RTLD_LAZY);
+//        }
+//        if(!_OpenGLDll)
+//        {
+//            SN_ERR("Failed To Open /System/Library/Frameworks/OpenGL.framework/Versions/Current/OpenGL Dll.\n");
+//        }
     }
     //=GLContext-End===========================================================================================================================
 }

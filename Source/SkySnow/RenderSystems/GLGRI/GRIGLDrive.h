@@ -48,7 +48,7 @@ namespace SkySnow
         ~GRIGLDrive();
         
         virtual void Init() final override;
-        virtual void SwapTemp() final override;
+        
         virtual void Exit() final override;
         
 		//GRICreate=================================================================================================================================

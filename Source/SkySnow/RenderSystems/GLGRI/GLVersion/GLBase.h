@@ -21,38 +21,44 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLProfiles.h"
 #include <string>
 #include "UString.h"
-//关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
+
+#ifndef USE_GL3
+#define USE_GL3 0
+#endif
+#ifndef USE_GL4
+#define USE_GL4 0
+#endif
+//For core library standards, check the website:https://docs.gl/
+
+//Macros define the body of functions that contain optimizations and high version imports.
+//These are functions that are defined in base but not implemented by GLX.h
+#define VOID_BODYFUN {}
+#define RETURN_BODY(RETURNVALUE){return RETURNVALUE;}
+
 namespace SkySnow
 {
 	class OpenGLBase
 	{
 	public:
-		//static inline GRIFeature GetFeatureType() { return ENone; }
+        //default None Support
+		static inline GRIFeature GetFeatureType() { return ENone; }
+        static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
+        
+        static inline GLuint GetMajorVersion() { return _MajorVersion; };
+        
+        static inline GLuint GetMinorVersion() { return _MinorVersion; };
+        //base Function Not define this,All of the functions defined here are extended or higher versions
+        static inline void BindVertexBuffer(GLuint bindingIndex, GLuint buffer, GLintptr offset, GLsizei stride) VOID_BODYFUN
+        static inline void VertexAttribFormat(GLuint attribIndex, GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset)VOID_BODYFUN
+        static inline void VertexAttribIFormat(GLuint attribIndex, GLint size, GLenum type, GLuint relativeOffset) VOID_BODYFUN
+        static inline void VertexAttribBinding(GLuint attribIndex, GLuint bindingIndex) VOID_BODYFUN
+        static inline void VertexBindingDivisor(GLuint bindingIndex, GLuint divisor) VOID_BODYFUN
 
-		static inline GLuint CreateShader(GLenum shadertype) 
-		{ 
-			return glCreateShader(shadertype); 
-		}
+		
 
-		static inline void BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
-		{
-			glBufferSubData(target,offset,size,data);
-		}
-		static inline void BufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage)
-		{
-			glBufferData(target,size,data,usage);
-		}
-		//卷绕法绑定\索引法绑定\SSBO的绑定
-		static inline void BindBuffer(GLenum type,GLuint buffer)
-		{
-			glBindBuffer(type, buffer);
-		}
-
-		static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
-		static inline GLuint GetMajorVersion() { return _MajorVersion; };
-		static inline GLuint GetMinorVersion() { return _MinorVersion; };
 		static void InitialExtensions();
 	protected:
 		static bool		_SupportVertexFormatBinding;

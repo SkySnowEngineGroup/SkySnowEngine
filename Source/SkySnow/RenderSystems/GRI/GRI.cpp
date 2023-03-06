@@ -45,10 +45,7 @@ namespace SkySnow
         }
         
     }
-    void GRISwapTemp()
-    {
-        GRI->SwapTemp();
-    }
+
     void GRIExit()
     {
         GRI->Exit();

@@ -74,9 +74,9 @@ namespace SkySnow
 		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size)
 		{
 			_BufferType = bufferType;
-			OpenGL::GenBuffers(1,&_GpuHandle);
-			OpenGL::BindBuffer(_BufferType, _GpuHandle);
-			OpenGL::BufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+			glGenBuffers(1,&_GpuHandle);
+			glBindBuffer(_BufferType, _GpuHandle);
+			glBufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 		}
 
 	public:

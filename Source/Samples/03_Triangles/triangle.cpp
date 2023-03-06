@@ -114,7 +114,6 @@ public:
 		//_CMB->CmdEndRenderPass();
 
 		//_CMB->CmdEndCommandBuffer();
-        GRISwapTemp();
 	}
 
 private:

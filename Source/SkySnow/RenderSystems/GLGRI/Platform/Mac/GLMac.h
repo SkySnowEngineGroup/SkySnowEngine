@@ -21,19 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GL4.h"
+#include "GL3.h"
 #include "LogAssert.h"
 #if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
-
+//MacOS use System GLFunction and use low GL4.x
 namespace SkySnow
 {
-#define APIENTRY_POINTER(Macro)\
-        Macro(PFNGLVIEWPORTPROC, glViewport)\
-        Macro(PFNGLCLEARPROC, glClear)\
-        Macro(PFNGLCLEARCOLORPROC, glClearColor)\
-        Macro(PFNGLGETERRORPROC, glGetError)
-
-	class GLMac : public OpenGL4
+	class GLMac : public OpenGL3
 	{
 	public:
 		static inline GRIFeature GetFeatureType()
@@ -44,7 +38,7 @@ namespace SkySnow
         static void InitialExtensions()
         {
             ImportAPIEntryPointer();
-            OpenGL4::InitialExtensions();
+            OpenGL3::InitialExtensions();
         }
     private:
         static void ImportAPIEntryPointer();
@@ -62,13 +56,11 @@ namespace SkySnow
         virtual void DestroyGLContext() override;
         
         virtual void MakeCurrContext() override;
-        
-        virtual void SwapGLTemp() override;
     private:
         void DlOpen();
         
     private:
-        void*    _OpenGLDll;
+//        void*    _OpenGLDll;
         void*    _GLContext;
         void*    _View;
     };

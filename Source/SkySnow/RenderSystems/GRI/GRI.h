@@ -34,8 +34,6 @@ namespace SkySnow
     void GRIInit(const OSPlatformInfo& osPlatformInfo);
 
     void GRIExit();
-
-    void GRISwapTemp();
     
     //对外资源创建接口、全局接口
     GRIVertexShaderRef CreateVertexShader(const char* vsCode);

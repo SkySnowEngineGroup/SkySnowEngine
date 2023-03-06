@@ -24,13 +24,7 @@
 #include "GLProfiles.h"
 #include "LogAssert.h"
 #include "UString.h"
-#if PLATFORM != PLATFORM_WINDOW
-	#error "GLWindow.h included for a platform other than Windows."
-#endif
-typedef PROC(APIENTRYP PFNWGLGETPROCADDRESSPROC) (LPCSTR lpszProc);
-typedef BOOL(APIENTRYP PFNWGLMAKECURRENTPROC) (HDC hdc, HGLRC hglrc);
-typedef HGLRC(APIENTRYP PFNWGLCREATECONTEXTPROC) (HDC hdc);
-typedef BOOL(APIENTRYP PFNWGLDELETECONTEXTPROC) (HGLRC hglrc);
+#if PLATFORM == PLATFORM_WINDOW
 
 #define GL_APIENTRYPOINTER_DLL(Macro)\
 		Macro(PFNGLBINDTEXTUREPROC,glBindTexture) \
@@ -399,23 +393,24 @@ typedef BOOL(APIENTRYP PFNWGLDELETECONTEXTPROC) (HGLRC hglrc);
 		Macro(PFNGLGETPROGRAMBINARYPROC, glGetProgramBinary) \
 		Macro(PFNGLPROGRAMBINARYPROC, glProgramBinary)
 
-#define WGL_APIENTRYPOINTER_DLL(Macro)\
-		Macro(PFNWGLGETPROCADDRESSPROC,wglGetProcAddress)\
-		Macro(PFNWGLMAKECURRENTPROC,wglMakeCurrent)\
-		Macro(PFNWGLCREATECONTEXTPROC,wglCreateContext)\
-		Macro(PFNWGLDELETECONTEXTPROC,wglDeleteContext)
-
 #define DECLARE_GL_APIENTRYPOINTS(FunType,Fun) extern FunType Fun;
 		GL_APIENTRYPOINTER_DLL(DECLARE_GL_APIENTRYPOINTS);
 		GL_APIENTRYPOINTER(DECLARE_GL_APIENTRYPOINTS);
 		GL_APIENTRYPOINTS_OPTIONAL(DECLARE_GL_APIENTRYPOINTS);
-#undef DECLARE_GL_APIENTRYPOINTS
-		//WGL_APIENTRYPOINTER_DLL(DECLARE_GL_APIENTRYPOINTS);
 
-		//extern PFNGLVERTEXBINDINGDIVISORPROC glVertexBindingDivisor;
 #include "GL4.h"
 namespace SkySnow
 {
+	typedef PROC(APIENTRYP PFNWGLGETPROCADDRESSPROC) (LPCSTR lpszProc);
+	typedef BOOL(APIENTRYP PFNWGLMAKECURRENTPROC) (HDC hdc, HGLRC hglrc);
+	typedef HGLRC(APIENTRYP PFNWGLCREATECONTEXTPROC) (HDC hdc);
+	typedef BOOL(APIENTRYP PFNWGLDELETECONTEXTPROC) (HGLRC hglrc);
+
+	extern PFNWGLGETPROCADDRESSPROC wglGetProcAddress;
+	extern PFNWGLMAKECURRENTPROC wglMakeCurrent;
+	extern PFNWGLCREATECONTEXTPROC wglCreateContext;
+	extern PFNWGLDELETECONTEXTPROC wglDeleteContext;
+
 	class GLWindow : public OpenGL4
 	{
 	public:
@@ -455,7 +450,6 @@ namespace SkySnow
         
         virtual void MakeCurrContext() override;
 
-		virtual void SwapGLTemp() override;
     private:
 		void OpenOpenGLLib();
 		HGLRC CreateGLContextInternal(HDC hdc);
@@ -467,5 +461,6 @@ namespace SkySnow
 		HGLRC _Context;
     };
 }
-
 typedef SkySnow::GLWindow OpenGL;
+#endif
+

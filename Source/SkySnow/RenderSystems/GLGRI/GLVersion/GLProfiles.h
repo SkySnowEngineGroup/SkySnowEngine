@@ -21,11 +21,16 @@
 // THE SOFTWARE.
 //
 /*
-	在SkySnow中我们将APIImport层去掉，去掉原因是，暂时还没有过多精力处理这些问题
-	但是SkySnow会保留GPUEnv、GPUResource以及GPU接口的三层封装，如果后期针对渲染优
-	化，需要自己导入一些函数以及宏定义时，我们将会把这最底层添加进来，虽然我们
-	去掉这一层设计，但是我们会保留架构的拓展性，以便后面可以拓展它。
-*/
+    WindowOS  : Import GLFunction Self,Include ThiryParty/Khronos/OpenGL.
+                    Use DLL Pointer Address Import
+                    Use wglGetPropAddress Import
+                        GL Common Function Pointer
+                        GL Option Function Pointer
+    MacOS     : Not Import GLFunction Self,Include OS GL Header,And MacOS Use GL version below 4.x(<GL4.x).
+    LinuxOS   : Not Support OS.
+    AndroidOS : Not Import GLFunction,Include OS GL Header,But Check Expansion String.
+    IosOS     : Not Import GLFunction,Include OS GL Header,But Check Expansion String.
+ */
 #pragma once
 #include "PlatformProfiles.h"
 #include "GRICommons.h"
@@ -35,7 +40,7 @@
 #elif PLATFORM == PLATFORM_IOS
 #	include <OpenGLES/ES3/gl.h>
 #	include <OpenGLES/ES3/glext.h>
-	//GPU加速使用
+	//GPU Simd
 #	if __has_include(<simd/simd.h>)
 #		ifndef WBSIMD
 #			define WBSIMD
@@ -45,7 +50,6 @@
 #	define GLFW_INCLUDE_NONE
 #	include <stdarg.h>
 #	include <stdio.h>
-//#   include <glad/glad.h>
 #	include <GLFW/glfw3.h>
 #   if PLATFORM == PLATFORM_WINDOW
 #       define GLFW_EXPOSE_NATIVE_WIN32
@@ -53,15 +57,18 @@
 #       include <GL/glcorearb.h>
 #       include <GL/glext.h>
 #       include <GL/wglext.h>
+//#       define USE_GL4 1
 #   elif PLATFORM == PLATFORM_MAC
 #       define GLFW_EXPOSE_NATIVE_COCOA
 #       define GLFW_EXPOSE_NATIVE_NSGL
-#       include <GL/glcorearb.h>
-#       include <GL/glext.h>
+#       include <OpenGL/OpenGL.h>
+#       include <OpenGL/gl3.h>
+#       include <OpenGL/gl3ext.h>
+//#       define USE_GL4 0
 #   endif
 #   include <GLFW/glfw3native.h>
 #endif // 0
-
+//This is Not good idea,so delete this class
 class GLContext
 {
 public:
@@ -75,6 +82,10 @@ public:
     
     virtual void MakeCurrContext() = 0;
     
-    virtual void SwapGLTemp() = 0;
-    
 };
+void PlatformDeviceContextInit();
+//About OS Platform Context:Example GLContext
+struct PlatformDeviceContext;
+//About OS Platform Device:Example Window for Window(OSWindow) for window(WindowHandle) for Android(NativeWindow)
+struct PlatformDeviceInit;
+

@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "GLBase.h"
+
 namespace SkySnow
 {
 	class OpenGL3 : public OpenGLBase

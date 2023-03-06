@@ -21,14 +21,16 @@
 // THE SOFTWARE.
 //
 #pragma once
+#define USE_GL4 1
 #include "GL3.h"
-//extern PFNGLVERTEXBINDINGDIVISORPROC glVertexBindingDivisor;
+
+#if USE_GL4
 namespace SkySnow
 {
 	class OpenGL4 : public OpenGL3
 	{
 	public:
-		//OpenGLµÄ4.3ºÍOpenGL ES 3.1ÐÂAPI
+		//this API is GL4.x version
 		static inline void BindVertexBuffer(GLuint bindingIndex, GLuint buffer, GLintptr offset, GLsizei stride)
 		{
 			glBindVertexBuffer(bindingIndex, buffer, offset, stride);
@@ -53,3 +55,4 @@ namespace SkySnow
 		static void InitialExtensions();
 	};
 }
+#endif
