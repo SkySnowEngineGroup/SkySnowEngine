@@ -21,9 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#define USE_GL4 1
 #include "GL3.h"
-
 #if USE_GL4
 namespace SkySnow
 {

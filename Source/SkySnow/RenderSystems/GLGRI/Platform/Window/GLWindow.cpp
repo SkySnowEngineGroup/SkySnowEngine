@@ -148,21 +148,25 @@ namespace SkySnow
 		{
 			//获取opengl32dll函数地址
 			_OpenGL32Dll = (void*)::LoadLibraryA("opengl32.dll");
+			wglGetProcAddress = (PFNWGLGETPROCADDRESSPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglGetProcAddress");
+			wglMakeCurrent = (PFNWGLMAKECURRENTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglMakeCurrent");
+			wglCreateContext = (PFNWGLCREATECONTEXTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglCreateContext");
+			wglDeleteContext = (PFNWGLDELETECONTEXTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglDeleteContext");
 			//必须通过opengl32的dll地址获取函数指针
-			//#define GET_WGLAPIENTRY_POINTER_DLL(WglFunType,WglFun) WglFun = (WglFunType)::GetProcAddress((HMODULE)_OpenGL32Dll, #WglFun);
+			#define GET_WGLAPIENTRY_POINTER_DLL(WglFunType,WglFun) WglFun = (WglFunType)::GetProcAddress((HMODULE)_OpenGL32Dll, #WglFun);
 			//WGL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
-			//GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
+			GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
 
 			////可以通过wgl获取函数指针
-			//#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
-			//GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
-			//GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
+			#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
+			GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
+			GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
 			//检索gl函数指针是否都已经初始化完毕
-			//#define CHECK_GLAPIENTRYPOINTS(FunType,Fun) if(Fun == NULL){SN_WARN("Failed to find entry point for %s",#Fun);}
+			#define CHECK_GLAPIENTRYPOINTS(FunType,Fun) if(Fun == NULL){SN_WARN("Failed to find entry point for %s",#Fun);}
 			//WGL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
-			//GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
-			//GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
-			//GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
+			GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
+			GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
+			GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
 		}
 		if (!_OpenGL32Dll)
 		{

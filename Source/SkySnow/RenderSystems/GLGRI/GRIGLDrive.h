@@ -32,6 +32,7 @@
 #elif PLATFORM == PLATFORM_MAC
 #	include "GLMac.h"
 #endif
+
 #include "GLPipelineResource.h"
 namespace SkySnow
 {
