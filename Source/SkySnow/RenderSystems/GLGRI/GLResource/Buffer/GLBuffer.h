@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
+#include "GLProfiles.h"
 namespace SkySnow
 {
 	//Buffer Desicr infor£ºvertex index SSBO

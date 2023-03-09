@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
 #include "GRIDrive.h"
 #include "GLPipelineResource.h"
 #include "Runnable.h"

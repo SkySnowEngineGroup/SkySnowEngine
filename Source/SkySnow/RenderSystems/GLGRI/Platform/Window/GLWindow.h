@@ -21,23 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
 #include "LogAssert.h"
 #include "UString.h"
 #include "GL4.h"
 #if PLATFORM == PLATFORM_WINDOW
 namespace SkySnow
 {
-	typedef PROC(APIENTRYP PFNWGLGETPROCADDRESSPROC) (LPCSTR lpszProc);
-	typedef BOOL(APIENTRYP PFNWGLMAKECURRENTPROC) (HDC hdc, HGLRC hglrc);
-	typedef HGLRC(APIENTRYP PFNWGLCREATECONTEXTPROC) (HDC hdc);
-	typedef BOOL(APIENTRYP PFNWGLDELETECONTEXTPROC) (HGLRC hglrc);
-
-	extern PFNWGLGETPROCADDRESSPROC wglGetProcAddress;
-	extern PFNWGLMAKECURRENTPROC wglMakeCurrent;
-	extern PFNWGLCREATECONTEXTPROC wglCreateContext;
-	extern PFNWGLDELETECONTEXTPROC wglDeleteContext;
-
 	class GLWindow : public OpenGL4
 	{
 	public:
@@ -78,7 +67,7 @@ namespace SkySnow
         virtual void MakeCurrContext() override;
 
     private:
-		void OpenOpenGLLib();
+		void ProcAddressInit();
 		HGLRC CreateGLContextInternal(HDC hdc);
 	private:
 		void* _OpenGL32Dll;

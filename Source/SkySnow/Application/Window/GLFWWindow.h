@@ -24,6 +24,7 @@
 #include "IWindow.h"
 #include "PlatformProfiles.h"
 #include "GRIProfiles.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
 	//can be use mac and window os

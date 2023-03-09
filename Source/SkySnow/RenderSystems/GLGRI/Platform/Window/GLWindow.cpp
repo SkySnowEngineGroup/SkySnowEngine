@@ -25,12 +25,14 @@
 
 #if PLATFORM == PLATFORM_WINDOW
 
-
 #define DEFINE_APIENTRY_POINTER(FunType,Fun) FunType Fun = NULL;
         GL_APIENTRYPOINTER_DLL(DEFINE_APIENTRY_POINTER);
         GL_APIENTRYPOINTER(DEFINE_APIENTRY_POINTER);
         GL_APIENTRYPOINTS_OPTIONAL(DEFINE_APIENTRY_POINTER);
-        //WGL_APIENTRYPOINTER_DLL(DEFINE_APIENTRY_POINTER);
+#undef DEFINE_APIENTRY_POINTER
+
+
+
 namespace SkySnow
 {
 	PFNWGLGETPROCADDRESSPROC wglGetProcAddress = NULL;
@@ -54,12 +56,18 @@ namespace SkySnow
 
 	void GLContextWin::CreateGLContext()
 	{
-		OpenOpenGLLib();
-
 		_Hdc = GetDC((HWND)_GOSPlatformInfo->_NativeWindow);
 		HWND hwnd = CreateWindowA("STATIC", "", WS_POPUP | WS_DISABLED, -32000, -32000, 0, 0, NULL, NULL, GetModuleHandle(NULL), 0);
 		HDC hdc = GetDC(hwnd);
+
+		//获取opengl32dll函数地址
+		_OpenGL32Dll = (void*)::LoadLibraryA("opengl32.dll");
+		wglGetProcAddress = (PFNWGLGETPROCADDRESSPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglGetProcAddress");
+		wglMakeCurrent = (PFNWGLMAKECURRENTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglMakeCurrent");
+		wglCreateContext = (PFNWGLCREATECONTEXTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglCreateContext");
+		wglDeleteContext = (PFNWGLDELETECONTEXTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglDeleteContext");
 		
+
 		HGLRC context = CreateGLContextInternal(hdc);
 
 		wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)wglGetProcAddress("wglGetExtensionsStringARB");
@@ -125,7 +133,8 @@ namespace SkySnow
 		}
 		result = wglMakeCurrent(_Hdc, _Context);
 		wglSwapIntervalEXT(0);
-        //window export opengl function
+		ProcAddressInit();
+        //window Check Extensions String
         OpenGL::InitialExtensions();
 	}
 
@@ -142,31 +151,24 @@ namespace SkySnow
 		wglMakeCurrent(_Hdc, _Context);
 	}
 
-	void GLContextWin::OpenOpenGLLib()
+	void GLContextWin::ProcAddressInit()
 	{
-		if (!_OpenGL32Dll)
+		if (_OpenGL32Dll)
 		{
-			//获取opengl32dll函数地址
-			_OpenGL32Dll = (void*)::LoadLibraryA("opengl32.dll");
-			wglGetProcAddress = (PFNWGLGETPROCADDRESSPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglGetProcAddress");
-			wglMakeCurrent = (PFNWGLMAKECURRENTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglMakeCurrent");
-			wglCreateContext = (PFNWGLCREATECONTEXTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglCreateContext");
-			wglDeleteContext = (PFNWGLDELETECONTEXTPROC)::GetProcAddress((HMODULE)_OpenGL32Dll, "wglDeleteContext");
 			//必须通过opengl32的dll地址获取函数指针
 			#define GET_WGLAPIENTRY_POINTER_DLL(WglFunType,WglFun) WglFun = (WglFunType)::GetProcAddress((HMODULE)_OpenGL32Dll, #WglFun);
-			//WGL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
-			GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
+					GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
 
-			////可以通过wgl获取函数指针
+			//可以通过wgl获取函数指针
 			#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
-			GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
-			GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
+					GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
+					GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
+
 			//检索gl函数指针是否都已经初始化完毕
 			#define CHECK_GLAPIENTRYPOINTS(FunType,Fun) if(Fun == NULL){SN_WARN("Failed to find entry point for %s",#Fun);}
-			//WGL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
-			GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
-			GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
-			GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
+					GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
+					GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
+					GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
 		}
 		if (!_OpenGL32Dll)
 		{
@@ -195,29 +197,29 @@ namespace SkySnow
 		return context;
 	}
 
-	void PlatformDeviceContextInit()
-	{
-		void* dllPointer = (void*)::LoadLibraryA("opengl32.dll");
-		//必须通过opengl32的dll地址获取函数指针
-		#define GET_WGLAPIENTRY_POINTER_DLL(WglFunType,WglFun) WglFun = (WglFunType)::GetProcAddress((HMODULE)dllPointer, #WglFun);
-		//WGL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
-		GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
-		wglGetProcAddress = (PFNWGLGETPROCADDRESSPROC)::GetProcAddress((HMODULE)dllPointer, "wglGetProcAddress");
-		wglMakeCurrent = (PFNWGLMAKECURRENTPROC)::GetProcAddress((HMODULE)dllPointer, "wglMakeCurrent");
-		wglCreateContext = (PFNWGLCREATECONTEXTPROC)::GetProcAddress((HMODULE)dllPointer, "wglCreateContext");
-		wglDeleteContext = (PFNWGLDELETECONTEXTPROC)::GetProcAddress((HMODULE)dllPointer, "wglDeleteContext");
+	//void PlatformDeviceContextInit()
+	//{
+	//	void* dllPointer = (void*)::LoadLibraryA("opengl32.dll");
+	//	//必须通过opengl32的dll地址获取函数指针
+	//	#define GET_WGLAPIENTRY_POINTER_DLL(WglFunType,WglFun) WglFun = (WglFunType)::GetProcAddress((HMODULE)dllPointer, #WglFun);
+	//	//WGL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
+	//	GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
+	//	wglGetProcAddress = (PFNWGLGETPROCADDRESSPROC)::GetProcAddress((HMODULE)dllPointer, "wglGetProcAddress");
+	//	wglMakeCurrent = (PFNWGLMAKECURRENTPROC)::GetProcAddress((HMODULE)dllPointer, "wglMakeCurrent");
+	//	wglCreateContext = (PFNWGLCREATECONTEXTPROC)::GetProcAddress((HMODULE)dllPointer, "wglCreateContext");
+	//	wglDeleteContext = (PFNWGLDELETECONTEXTPROC)::GetProcAddress((HMODULE)dllPointer, "wglDeleteContext");
 
-		//可以通过wgl获取函数指针
-		#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
-		GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
-		GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
+	//	//可以通过wgl获取函数指针
+	//	#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
+	//	GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
+	//	GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
 
-		//检索gl函数指针是否都已经初始化完毕
-		#define CHECK_GLAPIENTRYPOINTS(FunType,Fun) if(Fun == NULL){SN_WARN("Failed to find entry point for %s",#Fun);}
-		//WGL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
-		GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
-		GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
-		GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
-	}
+	//	//检索gl函数指针是否都已经初始化完毕
+	//	#define CHECK_GLAPIENTRYPOINTS(FunType,Fun) if(Fun == NULL){SN_WARN("Failed to find entry point for %s",#Fun);}
+	//	//WGL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
+	//	GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
+	//	GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
+	//	GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
+	//}
 }
 #endif

@@ -49,8 +49,7 @@ namespace SkySnow
 //            _GLContext = new GLContextLinux();
 #endif
         _GLContext->CreateGLContext();
-		PlatformDeviceContextInit();
-		OpenGL::InitialExtensions();
+		//OpenGL::InitialExtensions();
     }
 
     void GRIGLDrive::Exit()

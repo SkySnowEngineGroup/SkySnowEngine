@@ -24,13 +24,7 @@
 #include "GLProfiles.h"
 #include <string>
 #include "UString.h"
-
-#ifndef USE_GL3
-#define USE_GL3 0
-#endif
-#ifndef USE_GL4
-#define USE_GL4 0
-#endif
+#include "GLImport.h"
 //For core library standards, check the website:https://docs.gl/
 
 //Macros define the body of functions that contain optimizations and high version imports.
