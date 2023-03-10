@@ -37,20 +37,35 @@ namespace SkySnow
         {
             _CMState = Invalid;
         }
+    protected:
+        CommandBufferSate   _CMState;
+        CommandBufferType   _CMType;
+    };
 
+    class GRIRenderCommandBuffer : public GRICommandBufferBase
+    {
+    public:
+        virtual ~GRIRenderCommandBuffer() {}
         virtual void CmdReset() = 0;
         virtual void CmdBeginCommandBuffer() = 0;
         virtual void CmdEndCommandBuffer() = 0;
 
         virtual void CmdBeginRenderPass() = 0;
         virtual void CmdEndRenderPass() = 0;
+        //this interface will move blitcommandbuffer
+        virtual void CmdBeginViewport() = 0;
+        virtual void CmdEndViewport() = 0;
 
         virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
         virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
         virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
         virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
     protected:
-        CommandBufferSate   _CMState;
+    };
+    //compute shader is a single pipeline
+    class GRIComputeCommandBuffer : public GRICommandBufferBase
+    {
+    public:
     };
 
     class GRICommandBufferPool

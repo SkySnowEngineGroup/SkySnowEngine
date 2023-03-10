@@ -66,6 +66,7 @@ namespace SkySnow
         
         virtual void MakeCurrContext() override;
 
+		virtual void SwapBuffer() override;
     private:
 		void ProcAddressInit();
 		HGLRC CreateGLContextInternal(HDC hdc);

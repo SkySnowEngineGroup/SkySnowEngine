@@ -53,7 +53,7 @@ namespace SkySnow
             break;
         case SkySnow::EGLES:
         case SkySnow::EOpenGL:
-            tempCmb = new GLCommandBuffer();
+            tempCmb = new GLRenderCommandBuffer();
             break;
         default:
             break;
@@ -70,7 +70,7 @@ namespace SkySnow
             break;
         case SkySnow::EGLES:
         case SkySnow::EOpenGL:
-            _LowerComBuf = new GLCommandBuffer();
+            _LowerComBuf = new GLRenderCommandBuffer();
             break;
         case SkySnow::EDx9:
         case SkySnow::EDx10:

@@ -27,86 +27,96 @@
 #include "GLPipelineResource.h"
 namespace SkySnow
 {
-	GLCommandBuffer::GLCommandBuffer()
-		: GRICommandBufferBase()
+	GLRenderCommandBuffer::GLRenderCommandBuffer()
+		: GRIRenderCommandBuffer()
 	{
 
 	}
 
-	GLCommandBuffer::~GLCommandBuffer()
+	GLRenderCommandBuffer::~GLRenderCommandBuffer()
 	{
 	}
 
-	void GLCommandBuffer::CmdReset()
+	void GLRenderCommandBuffer::CmdReset()
 	{
 
 	}
-	void GLCommandBuffer::CmdBeginCommandBuffer()
+	void GLRenderCommandBuffer::CmdBeginCommandBuffer()
 	{
 
 	}
-	void GLCommandBuffer::CmdEndCommandBuffer()
+	void GLRenderCommandBuffer::CmdEndCommandBuffer()
 	{
 
 	}
 
-	void GLCommandBuffer::CmdBeginRenderPass()
+	void GLRenderCommandBuffer::CmdBeginRenderPass()
 	{
 
 	}
-	void GLCommandBuffer::CmdEndRenderPass()
+	void GLRenderCommandBuffer::CmdEndRenderPass()
 	{
 
+	}
+
+	void GLRenderCommandBuffer::CmdBeginViewport()
+	{
+		Alloc_CommandSet(CmdBeginViewportCommand)();
+	}
+
+	void GLRenderCommandBuffer::CmdEndViewport()
+	{
+		Alloc_CommandSet(CmdEndViewportCommand)();
 	}
 	//ResourceCreate====================================================================
-	GRIVertexShaderRef GLCommandBuffer::CreateVertexShader(const char* vsCode)
+	GRIVertexShaderRef GLRenderCommandBuffer::CreateVertexShader(const char* vsCode)
 	{
 		GRIVertexShaderRef handle = new GLVertexShader();
 		Alloc_CommandCreate(GRICreateVertexShaderCommand, handle, vsCode);
 		return handle;
 	}
 
-	GRIFragmentShaderRef GLCommandBuffer::CreateFragmentShader(const char* fsCode)
+	GRIFragmentShaderRef GLRenderCommandBuffer::CreateFragmentShader(const char* fsCode)
 	{
 		GRIFragmentShaderRef handle = new GLFragmentShader();
 		Alloc_CommandCreate(GRICreateFragmentShaderCommand,handle,fsCode);
 		return handle;
 	}
 
-	GRIPipelineShaderStateRef GLCommandBuffer::CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	GRIPipelineShaderStateRef GLRenderCommandBuffer::CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
 		GRIPipelineShaderStateRef handle = new GLPipelineShaderState(vs,fs);
 		Alloc_CommandCreate(GRICreatePipelineShaderStateCommand,handle);
 		return handle;
 	}
 
-	GRIBufferRef GLCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
+	GRIBufferRef GLRenderCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
 	{
 		GRIBufferRef handle = new GLBuffer(usageType, size, stride, data);
 		Alloc_CommandCreate(GRICreateBufferCommand,handle,usageType, size, stride, data);
 		return handle;
 	}
 
-	GRIGraphicsPipelineStateRef GLCommandBuffer::CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	GRIGraphicsPipelineStateRef GLRenderCommandBuffer::CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
 	{
 		GRIGraphicsPipelineStateRef handle = new GLGraphicPipelineState(createInfo);
 		Alloc_CommandCreate(GRICreateGraphicsPipelineStateCommand,createInfo, handle);
 		return handle;
 	}
 	//ResourceSet====================================================================
-	void GLCommandBuffer::CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
+	void GLRenderCommandBuffer::CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
 	{
 		Alloc_CommandSet(CmdSetBufferCommand)(BufferInfoId, buffer, offset);
 	}
-	void GLCommandBuffer::CmdDrawPrimitive(int numPrimitive, int numInstance)
+	void GLRenderCommandBuffer::CmdDrawPrimitive(int numPrimitive, int numInstance)
 	{
 		Alloc_CommandSet(CmdDrawPrimitiveCommand)(numPrimitive, numInstance);
 	}
-	void GLCommandBuffer::CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	void GLRenderCommandBuffer::CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
 	{
 		Alloc_CommandSet(CmdSetPipelineShaderStateCommand)(pipelineShaderState);
 	}
-	void GLCommandBuffer::CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	void GLRenderCommandBuffer::CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
 	{
 		Alloc_CommandSet(CmdSetGraphicsPipelineStateCommand)(pipelineState);
 	}

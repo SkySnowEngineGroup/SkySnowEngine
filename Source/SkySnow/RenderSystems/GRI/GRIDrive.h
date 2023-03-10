@@ -43,12 +43,17 @@ namespace SkySnow
 	public:
 		virtual ~GRIDrive() {}
         
-        //Some Engine Interface
+        //Some Engine Globle Interface
         virtual void Init() = 0;
         
         virtual void Exit() = 0;
 
+		virtual void SwapBufferTemp() = 0;
+
 		virtual GRIFeature GetGRIFeatureType() = 0;
+		//about one viewport
+		virtual void GRIBeginViewport() = 0;
+		virtual void GRIEndViewport() = 0;
 		// Test:clear quad color
 		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
 		//GRICreate=======================================================================================================================

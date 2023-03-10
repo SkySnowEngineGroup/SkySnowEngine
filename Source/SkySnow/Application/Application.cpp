@@ -24,6 +24,7 @@
 #include "LogAssert.h"
 #include "GRIProfiles.h"
 #include "OSPlatform.h"
+#include "GRI.h"
 namespace SkySnow
 {
 	Application::Application(const char* name, const char* description)
@@ -64,6 +65,7 @@ namespace SkySnow
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             glClearColor(1,0,0,1);
             _ChildApp->Update();
+            GRISwapBufferTemp();
         }
         _Window->ShutDown();
     }

@@ -86,6 +86,8 @@ public:
     virtual void DestroyGLContext() = 0;
     
     virtual void MakeCurrContext() = 0;
+
+    virtual void SwapBuffer() = 0;
     
 };
 

@@ -56,6 +56,16 @@ namespace SkySnow
 		void Execute(GRICommandBuffer& cmdBuffer) {}
 	};
 	//======================================================================================================================
+	// render pipeline control
+	struct CmdBeginViewportCommand : public GRICommand<CmdBeginViewportCommand>
+	{
+		void Execute(GRICommandBuffer& cmdBuffer);
+	};
+	struct CmdEndViewportCommand : public GRICommand<CmdEndViewportCommand>
+	{
+		void Execute(GRICommandBuffer& cmdBuffer);
+	};
+	//======================================================================================================================
 	// RenderResource Set 
 	struct CmdSetBufferCommand : public GRICommand<CmdSetBufferCommand>
 	{

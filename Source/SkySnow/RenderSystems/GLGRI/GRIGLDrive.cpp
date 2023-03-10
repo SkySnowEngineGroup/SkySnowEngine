@@ -56,6 +56,22 @@ namespace SkySnow
     {
         _GLContext->DestroyGLContext();
     }
+
+	void GRIGLDrive::SwapBufferTemp()
+	{
+		_GLContext->SwapBuffer();
+	}
+	//GRIRenderPipe===========================================================================================================================
+	void GRIGLDrive::GRIBeginViewport()
+	{
+		//暂时先放这里
+		_GLContext->MakeCurrContext();
+	}
+	void GRIGLDrive::GRIEndViewport()
+	{
+		_GLContext->SwapBuffer();
+	}
+	//GRIRenderPipe===========================================================================================================================
 	//GRICreate===============================================================================================================================
 	void GRIGLDrive::GRIClearColor(float red, float green, float blue, float alpha)
 	{

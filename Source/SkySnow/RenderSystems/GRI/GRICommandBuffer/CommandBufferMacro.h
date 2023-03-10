@@ -31,4 +31,10 @@ namespace SkySnow
 		Pending,
 		Invalid,
 	};
+	enum CommandBufferType
+	{
+		Render,
+		Compute,
+		Blit
+	};
 }

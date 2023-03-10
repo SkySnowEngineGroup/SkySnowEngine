@@ -25,7 +25,14 @@
 #include "GRI.h"
 namespace SkySnow
 {
-
+	void CmdBeginViewportCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRIBeginViewport();
+	}
+	void CmdEndViewportCommand::Execute(GRICommandBuffer& cmdBuffer)
+	{
+		GRI->GRIEndViewport();
+	}
 	void CmdSetBufferCommand::Execute(GRICommandBuffer& cmdBuffer)
 	{
 		GRI->GRISetBuffer(_BufferInfoId, _Buffer, _Offset);

@@ -25,12 +25,12 @@
 #include "GRICommandBuffer.h"
 namespace SkySnow
 {
-	class GLCommandBuffer : public GRICommandBufferBase , public GRILowerCommandBuffer
+	class GLRenderCommandBuffer : public GRIRenderCommandBuffer, public GRILowerCommandBuffer
 	{
 	public:
-		GLCommandBuffer();
+		GLRenderCommandBuffer();
 
-		~GLCommandBuffer();
+		~GLRenderCommandBuffer();
 
 		virtual void CmdReset() final override;
 		virtual void CmdBeginCommandBuffer() final override;
@@ -38,6 +38,10 @@ namespace SkySnow
 
 		virtual void CmdBeginRenderPass() final override;
 		virtual void CmdEndRenderPass() final override;
+	public:
+		//globle set
+		virtual void CmdBeginViewport() final override;
+		virtual void CmdEndViewport() final override;
 	
 	public://Set Resource
 		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
@@ -54,4 +58,5 @@ namespace SkySnow
 	private:
 
 	};
+
 }

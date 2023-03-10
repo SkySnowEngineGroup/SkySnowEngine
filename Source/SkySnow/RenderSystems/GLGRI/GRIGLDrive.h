@@ -51,7 +51,11 @@ namespace SkySnow
         virtual void Init() final override;
         
         virtual void Exit() final override;
-        
+
+		virtual void SwapBufferTemp() final override;
+
+		virtual void GRIBeginViewport() final override;
+		virtual void GRIEndViewport() final override;
 		//GRICreate=================================================================================================================================
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
 		//Test Demo
