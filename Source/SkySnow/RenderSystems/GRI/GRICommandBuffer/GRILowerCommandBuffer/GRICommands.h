@@ -31,10 +31,10 @@ namespace SkySnow
 	 *The unified interface encapsulated in CommandBuffer delivers rendering 
 	 *instructions directly to the gpu
 	*/
-	class GRICommandBuffer;
+	class GRICommandBufferBase;
 	struct GRICommandBase
 	{
-		virtual void ExecuteCommand(GRICommandBuffer& cmdBuffer) = 0;
+		virtual void ExecuteCommand(GRICommandBufferBase& cmdBuffer) = 0;
 		GRICommandBase* _Next = nullptr;
 	};
 
@@ -42,7 +42,7 @@ namespace SkySnow
 	struct GRICommand : public GRICommandBase
 	{
 	public:
-		void ExecuteCommand(GRICommandBuffer& cmdBuffer) override final
+		void ExecuteCommand(GRICommandBufferBase& cmdBuffer) override final
 		{
 			T* cmd = static_cast<T*>(this);
 			cmd->Execute(cmdBuffer);
@@ -53,17 +53,17 @@ namespace SkySnow
 	//======================================================================================================================
 	struct GRINullCommand : public GRICommand<GRINullCommand>
 	{
-		void Execute(GRICommandBuffer& cmdBuffer) {}
+		void Execute(GRICommandBufferBase& cmdBuffer) {}
 	};
 	//======================================================================================================================
 	// render pipeline control
 	struct CmdBeginViewportCommand : public GRICommand<CmdBeginViewportCommand>
 	{
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 	};
 	struct CmdEndViewportCommand : public GRICommand<CmdEndViewportCommand>
 	{
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 	};
 	//======================================================================================================================
 	// RenderResource Set 
@@ -76,7 +76,7 @@ namespace SkySnow
 		{
 
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 
 		int _BufferInfoId;
 		int _Offset;
@@ -89,7 +89,7 @@ namespace SkySnow
 			, _NumInstance(numInstance)
 		{
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 		int _NumPrimitive;
 		int _NumInstance;
 	};
@@ -99,7 +99,7 @@ namespace SkySnow
 			: _PipelineShaderState(pipelineShaderState)
 		{
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 		GRIPipelineShaderState* _PipelineShaderState;
 	};
 
@@ -109,7 +109,7 @@ namespace SkySnow
 			: _PipelineState(pipelineState)
 		{
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 		GRIGraphicsPipelineState* _PipelineState;
 	};
 	//======================================================================================================================
@@ -122,7 +122,7 @@ namespace SkySnow
 			, _Handle(handle)
 		{
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 
 		const char*			_VsCode;
 		GRIVertexShaderRef	_Handle;
@@ -135,7 +135,7 @@ namespace SkySnow
 			, _Handle(handle)
 		{
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 
 		const char*				_FsCode;
 		GRIFragmentShaderRef	_Handle;
@@ -147,7 +147,7 @@ namespace SkySnow
 			: _Handle(handle)
 		{
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 		GRIPipelineShaderStateRef _Handle;
 	};
 
@@ -162,7 +162,7 @@ namespace SkySnow
 		{
 		}
 
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 		BufferUsageType _UsageType;
 		int				_Size;
 		int				_Stride;
@@ -178,7 +178,7 @@ namespace SkySnow
 		{
 
 		}
-		void Execute(GRICommandBuffer& cmdBuffer);
+		void Execute(GRICommandBufferBase& cmdBuffer);
 
 		GRICreateGraphicsPipelineStateInfo _PsoInfo;
 		GRIGraphicsPipelineStateRef _Handle;

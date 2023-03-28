@@ -40,4 +40,9 @@ namespace SkySnow
 		}
 	}
 
+	void GRILowerCommandBuffer::ResourceCreateExecutor()
+	{
+
+	}
+
 }

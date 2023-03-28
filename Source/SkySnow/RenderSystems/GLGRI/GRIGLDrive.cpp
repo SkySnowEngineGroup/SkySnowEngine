@@ -57,10 +57,6 @@ namespace SkySnow
         _GLContext->DestroyGLContext();
     }
 
-	void GRIGLDrive::SwapBufferTemp()
-	{
-		_GLContext->SwapBuffer();
-	}
 	//GRIRenderPipe===========================================================================================================================
 	void GRIGLDrive::GRIBeginViewport()
 	{

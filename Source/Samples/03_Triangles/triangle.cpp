@@ -37,18 +37,18 @@ public:
 		, _VsData(nullptr)
 		, _FsData(nullptr)
 	{
-//		_CMBPool = new GRICommandBufferPool();
-//        SN_LOG("Application is name:%s", name);
-//        SN_WARN("Application description info:%s", description);
+		_CMBPool = new GRICommandBufferPool();
+        SN_LOG("Application is name:%s", name);
+        SN_WARN("Application description info:%s", description);
 	}
     
     ~Triangle()
     {
-//      SN_LOG("Trangle Application is quit.");
-//		Delete_Object(_File);
-//		Delete_Object(_VsData);
-//		Delete_Object(_FsData);
-        GRIExit();
+		SN_LOG("Trangle Application is quit.");
+		Delete_Object(_File);
+		Delete_Object(_VsData);
+		Delete_Object(_FsData);
+		GRIExit();
     }
 
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
@@ -56,34 +56,34 @@ public:
         OSPlatformInfo osPlatformInfo;
         osPlatformInfo._NativeWindow = GetNativeWindow();
 		GRIInit(osPlatformInfo);
-//		_CMB = _CMBPool->AllocCommandBuffer();
-//        SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
-//		string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
-//		string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
-//		_File = new File();
-//		_VsData = new Data();
-//		_FsData = new Data();
-//		_File->ReadData(vsShaderPath, _VsData);
-//		_File->ReadData(fsShaderPath, _FsData);
-//
-//		GRICreateGraphicsPipelineStateInfo psoCreateInfo;
-//
-//		_vsRef = CreateVertexShader((char*)_VsData->GetBytes());
-//		_fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
-//		_PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
-//		float vertices[] = { -0.5f, -0.5f, 0.0f,
-//							 0.5f,  -0.5f, 0.0f,
-//							 0.0f,  0.5f,  0.0f};
-//		SN_LOG("Vertex Size:%d",sizeof(vertices));
-//		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
-//		_VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-//												sizeof(vertices),
-//												3,
-//												vertices);
-//		_PSORef = CreateGraphicsPipelineState(psoCreateInfo);
-//
-//		SN_LOG("Major:%d", OpenGL::GetMajorVersion());
-//		SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
+		_CMB = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
+        SN_LOG("Trangle is Initial success (width:%d, height:%d)", width,height);
+		string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
+		string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
+		_File = new File();
+		_VsData = new Data();
+		_FsData = new Data();
+		_File->ReadData(vsShaderPath, _VsData);
+		_File->ReadData(fsShaderPath, _FsData);
+
+		GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+
+		_vsRef = CreateVertexShader((char*)_VsData->GetBytes());
+		_fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
+		_PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
+		float vertices[] = { -0.5f, -0.5f, 0.0f,
+							 0.5f,  -0.5f, 0.0f,
+							 0.0f,  0.5f,  0.0f};
+		SN_LOG("Vertex Size:%d",sizeof(vertices));
+		psoCreateInfo._PrimitiveType = PrimitiveType::PT_Lines;
+		_VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+												sizeof(vertices),
+												3,
+												vertices);
+		_PSORef = CreateGraphicsPipelineState(psoCreateInfo);
+
+		//SN_LOG("Major:%d", OpenGL::GetMajorVersion());
+		//SN_LOG("Minor:%d", OpenGL::GetMinorVersion());
 //
 //		void* pt1 = _MemStack.Alloc(4);
 //		void* pt2 = _MemStack.Alloc(4);
@@ -99,21 +99,28 @@ public:
 
 	void Update()
 	{
-//		GRIResource::FlushResourceRelease();
-//		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
-//        glClearColor(1.0,0.0,0.0,1.0);
-		//_CMB->CmdBeginCommandBuffer();
+		_GQueue->BeginFrame();
 
-		//_CMB->CmdBeginRenderPass();
+		GRIResource::FlushResourceRelease();
 
-		//_CMB->CmdSetBuffer(0,_VertexBufferRef,0);
-		//_CMB->CmdSetPipelineShaderState(_PipelineShaderStateRef);
-		//_CMB->CmdSetGraphicsPipelineState(_PSORef);
-		//_CMB->CmdDrawPrimitive(3,1);
+		glClear(GL_COLOR_BUFFER_BIT| GL_DEPTH_BUFFER_BIT);
+        glClearColor(1.0,0.0,0.0,1.0);
 
-		//_CMB->CmdEndRenderPass();
+		_CMB->CmdBeginCommandBuffer();
+		_CMB->CmdBeginRenderPass();
 
-		//_CMB->CmdEndCommandBuffer();
+		_CMB->CmdSetBuffer(0,_VertexBufferRef,0);
+		_CMB->CmdSetPipelineShaderState(_PipelineShaderStateRef);
+		_CMB->CmdSetGraphicsPipelineState(_PSORef);
+		_CMB->CmdDrawPrimitive(3,1);
+
+		_CMB->CmdEndRenderPass();
+		_CMB->CmdEndCommandBuffer();
+
+		_GQueue->SubmitQueue(_CMB);
+		_GQueue->PresentQueue();
+
+		_GQueue->EndFrame();
 	}
 
 private:
@@ -127,7 +134,7 @@ private:
 	GRIPipelineShaderStateRef   _PipelineShaderStateRef;
 	GRIGraphicsPipelineStateRef _PSORef;
 	GRICommandBufferPool*	    _CMBPool;
-	GRICommandBufferBase*	    _CMB;
+	GRIRenderCommandBuffer*	    _CMB;
 };
 
 SkySnow_DEFINE_APPLICATION_MAIN(

@@ -75,6 +75,8 @@ namespace SkySnow
 
         virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
 
+
+        virtual void ResourceCreateExecutor();
     protected:
         int                         _NumCommands;
         GRICommandBase*             _Head;

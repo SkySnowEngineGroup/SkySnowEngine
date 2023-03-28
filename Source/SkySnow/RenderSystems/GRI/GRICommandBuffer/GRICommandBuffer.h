@@ -37,6 +37,12 @@ namespace SkySnow
         {
             _CMState = Invalid;
         }
+        virtual void CmdResourceSetExecutor() = 0;
+        virtual void CmdReset() = 0;
+        virtual void CmdBeginCommandBuffer() = 0;
+        virtual void CmdEndCommandBuffer() = 0;
+        virtual void CmdBeginRenderPass() = 0;
+        virtual void CmdEndRenderPass() = 0;
     protected:
         CommandBufferSate   _CMState;
         CommandBufferType   _CMType;
@@ -46,12 +52,6 @@ namespace SkySnow
     {
     public:
         virtual ~GRIRenderCommandBuffer() {}
-        virtual void CmdReset() = 0;
-        virtual void CmdBeginCommandBuffer() = 0;
-        virtual void CmdEndCommandBuffer() = 0;
-
-        virtual void CmdBeginRenderPass() = 0;
-        virtual void CmdEndRenderPass() = 0;
         //this interface will move blitcommandbuffer
         virtual void CmdBeginViewport() = 0;
         virtual void CmdEndViewport() = 0;
@@ -95,12 +95,14 @@ namespace SkySnow
     {
     public:
         void Init();
-        void SubmitQueue(GRICommandBuffer* comBuf)
+        void SubmitQueue(GRICommandBufferBase* comBuf)
         {
-
+            _ComBufList.push_back(comBuf);
         }
 
-        void BeginFrame();
+        void BeginFrame()
+        {
+        }
 
         void EndFrame();
 
@@ -110,7 +112,14 @@ namespace SkySnow
         }
         void PresentQueue()
         {
-
+            //资源创建的Cmb====testcode
+            _LowerComBuf->ResourceCreateExecutor();
+            //资源设置的Cmb====testcode
+            for (int i = 0; i < _ComBufList.size(); i ++)
+            {
+                GRICommandBufferBase* cmb = _ComBufList[i];
+                cmb->CmdResourceSetExecutor();
+            }
         }
         GRILowerCommandBuffer* GetLowerCommandBuffer()
         {
@@ -119,7 +128,8 @@ namespace SkySnow
 
         bool IsLowerVerion();
     private:
-        GRILowerCommandBuffer* _LowerComBuf;
+        GRILowerCommandBuffer*              _LowerComBuf;
+        std::vector<GRICommandBufferBase*>  _ComBufList;
     };
     extern GRICommandBufferQueue*   _GQueue;
 }

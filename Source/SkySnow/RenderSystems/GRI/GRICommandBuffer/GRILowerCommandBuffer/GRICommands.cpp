@@ -25,52 +25,52 @@
 #include "GRI.h"
 namespace SkySnow
 {
-	void CmdBeginViewportCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void CmdBeginViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRIBeginViewport();
 	}
-	void CmdEndViewportCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void CmdEndViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRIEndViewport();
 	}
-	void CmdSetBufferCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void CmdSetBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRISetBuffer(_BufferInfoId, _Buffer, _Offset);
 	}
-	void CmdDrawPrimitiveCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void CmdDrawPrimitiveCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRIDrawPrimitive(_NumPrimitive, _NumInstance);
 	}
-	void CmdSetPipelineShaderStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void CmdSetPipelineShaderStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRISetPipelineShaderState(_PipelineShaderState);
 	}
-	void CmdSetGraphicsPipelineStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void CmdSetGraphicsPipelineStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRISetGraphicsPipelineState(_PipelineState);
 	}
 	//===============================================================================
-	void GRICreateVertexShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRICreateVertexShader(_VsCode, _Handle);
 	}
 
-	void GRICreateFragmentShaderCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void GRICreateFragmentShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRICreateFragmentShader(_FsCode, _Handle);
 	}
 
-	void GRICreatePipelineShaderStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void GRICreatePipelineShaderStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRICreatePipelineShaderState(_Handle);
 	}
 
-	void GRICreateBufferCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void GRICreateBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data, _Handle);
 	}
 
-	void GRICreateGraphicsPipelineStateCommand::Execute(GRICommandBuffer& cmdBuffer)
+	void GRICreateGraphicsPipelineStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRICreateGraphicsPipelineState(_PsoInfo,_Handle);
 	}

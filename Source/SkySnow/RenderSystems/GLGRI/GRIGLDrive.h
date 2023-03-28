@@ -52,8 +52,6 @@ namespace SkySnow
         
         virtual void Exit() final override;
 
-		virtual void SwapBufferTemp() final override;
-
 		virtual void GRIBeginViewport() final override;
 		virtual void GRIEndViewport() final override;
 		//GRICreate=================================================================================================================================

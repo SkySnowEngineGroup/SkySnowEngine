@@ -56,11 +56,10 @@ namespace SkySnow
         virtual void DestroyGLContext() override;
         
         virtual void MakeCurrContext() override;
-    private:
-        void DlOpen();
+        
+        virtual void SwapBuffer() override;
         
     private:
-//        void*    _OpenGLDll;
         void*    _GLContext;
         void*    _View;
     };

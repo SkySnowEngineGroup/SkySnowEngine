@@ -120,4 +120,8 @@ namespace SkySnow
 	{
 		Alloc_CommandSet(CmdSetGraphicsPipelineStateCommand)(pipelineState);
 	}
+	void GLRenderCommandBuffer::CmdResourceSetExecutor()
+	{
+
+	}
 }

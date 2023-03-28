@@ -65,7 +65,7 @@ namespace SkySnow
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
             glClearColor(1,0,0,1);
             _ChildApp->Update();
-            GRISwapBufferTemp();
+            glfwPollEvents();
         }
         _Window->ShutDown();
     }

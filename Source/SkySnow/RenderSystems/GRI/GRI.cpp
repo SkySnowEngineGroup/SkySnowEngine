@@ -40,19 +40,15 @@ namespace SkySnow
             _GOSPlatform = CreateTargetOSPlatform();
             GRI = _GOSPlatform->OSPlatformCreateGRI();
             GRI->Init();
-    //          _GQueue = new GRICommandBufferQueue();
-    //          _GQueue->Init();
+            _GQueue = new GRICommandBufferQueue();
+            _GQueue->Init();
         }
-        
     }
-    void GRISwapBufferTemp()
-    {
-        GRI->SwapBufferTemp();
-    }
+
     void GRIExit()
     {
         GRI->Exit();
-    //      Delete_Object(_GQueue);
+        Delete_Object(_GQueue);
         Delete_Object(_GOSPlatform);
         Delete_Object(_GOSPlatformInfo);
     }
