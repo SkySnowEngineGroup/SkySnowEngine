@@ -48,8 +48,16 @@ namespace SkySnow
         {
             GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize, cmdAlign);
             _NumCommands++;
-            _Curr = cmd;
-            _Curr = cmd->_Next;
+            if(_Head == nullptr)
+            {
+                _Head = cmd;
+                _Curr = cmd;
+            }
+            else
+            {
+                _Curr->_Next = cmd;
+                _Curr = cmd;
+            }
             return cmd;
         }
 
@@ -60,8 +68,17 @@ namespace SkySnow
             GRICommandBase* mem = (GRICommandBase*)_StackMem.Alloc(sizeof(T), alignof(T));
             T* cmd = new(mem) T(std::forward<Args>(args)...);
             _NumCommands++;
-            _Curr = cmd;
-            _Curr = cmd->_Next;
+            if(_Head == nullptr)
+            {
+                _Head = cmd;
+                _Curr = cmd;
+            }
+            else
+            {
+                _Curr->_Next = cmd;
+                _Curr = cmd;
+            }
+
             _Lock.UnLock();
         }
     public:
@@ -75,12 +92,13 @@ namespace SkySnow
 
         virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
 
-
         virtual void ResourceCreateExecutor();
+    private:
+        void CommandBufferReset();
     protected:
         int                         _NumCommands;
-        GRICommandBase*             _Head;
-        GRICommandBase*             _Curr{ _Head };
+        GRICommandBase*             _Curr;
+        GRICommandBase*             _Head{_Curr};
         MemStack                    _StackMem;
         //MpscQueue<GRICommandBase>   _MpscQueue;
         ThreadMutex                 _Lock;

@@ -111,7 +111,7 @@ namespace SkySnow
 		int32_t contextAttrs[9] =
 		{
 			WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
-			WGL_CONTEXT_MINOR_VERSION_ARB, 1,
+			WGL_CONTEXT_MINOR_VERSION_ARB, 3,
 			WGL_CONTEXT_FLAGS_ARB, true,
 			WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
 			0
@@ -144,6 +144,9 @@ namespace SkySnow
         {
             ::FreeLibrary( (HMODULE)_OpenGL32Dll);
         }
+        wglMakeCurrent(NULL, NULL);
+        wglDeleteContext(_Context);
+        ReleaseDC((HWND)_GOSPlatformInfo->_NativeWindow, _Hdc);
 	}
 
 	void GLContextWin::MakeCurrContext()

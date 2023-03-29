@@ -73,6 +73,7 @@ namespace SkySnow
 	private:
 		void* _OpenGL32Dll;
 		HDC _Hdc;
+        HWND _HWND;
 		int _PixelFormat;
 		PIXELFORMATDESCRIPTOR _Pfd;
 		HGLRC _Context;

@@ -28,7 +28,7 @@ namespace SkySnow
 	{
 		//OpenGL4.3版本以上均可支持
 		_SupportVertexFormatBinding = (_MajorVersion == 4 && _MinorVersion >= 3) || _ExtensionsStr.Contains("GL_ARB_vertex_attrib_binding");
-
+		_SupportVertexFormatBinding = false;
 		OpenGL3::InitialExtensions();
 	}
 }

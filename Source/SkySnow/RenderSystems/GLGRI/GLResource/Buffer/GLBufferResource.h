@@ -77,6 +77,13 @@ namespace SkySnow
 			glGenBuffers(1,&_GpuHandle);
 			glBindBuffer(_BufferType, _GpuHandle);
 			glBufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+			glBindBuffer(_BufferType, 0);
+			float* vdata = (float*)_Data;
+			int num = size / sizeof(float);
+			for (int i = 0; i < num;i ++)
+			{
+				SN_LOG("vdata[%d]:%f",i, vdata[i]);
+			}
 		}
 
 	public:

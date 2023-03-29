@@ -60,6 +60,7 @@ namespace SkySnow
         virtual void SwapBuffer() override;
         
     private:
+        GLuint   _VertexArrayObject;
         void*    _GLContext;
         void*    _View;
     };

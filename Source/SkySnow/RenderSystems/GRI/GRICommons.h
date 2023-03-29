@@ -29,10 +29,10 @@ namespace SkySnow
 		ENone,
 		EVulkan,
 		EMetal,
-		EDx9,
-		EDx10,
-		EDx11,
-		EDX12,
+		EDx9,//not support
+		EDx10,//not support
+		EDx11,//not support
+		EDX12,//not support
 		EGLES,
 		EOpenGL,
 		ENum

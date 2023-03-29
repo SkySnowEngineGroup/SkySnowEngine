@@ -30,7 +30,7 @@ namespace SkySnow
 	GLRenderCommandBuffer::GLRenderCommandBuffer()
 		: GRIRenderCommandBuffer()
 	{
-
+        _CMType = Render;
 	}
 
 	GLRenderCommandBuffer::~GLRenderCommandBuffer()
@@ -39,7 +39,11 @@ namespace SkySnow
 
 	void GLRenderCommandBuffer::CmdReset()
 	{
-
+        _StackMem.Flush();
+        _NumCommands = 0;
+        _Curr = nullptr;
+        _Head = _Curr;
+        _CMState = Invalid;
 	}
 	void GLRenderCommandBuffer::CmdBeginCommandBuffer()
 	{
@@ -122,6 +126,12 @@ namespace SkySnow
 	}
 	void GLRenderCommandBuffer::CmdResourceSetExecutor()
 	{
-
+        GRICommandBase* cmd = _Head;
+        while (cmd)
+        {
+            cmd->ExecuteCommand(*this);
+            cmd = cmd->_Next;
+        }
+        CmdReset();
 	}
 }

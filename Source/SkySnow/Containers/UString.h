@@ -127,6 +127,8 @@ namespace SkySnow
 		//Assign = char
 		UString& operator =(const char* other)
 		{
+			if(other == NULL)
+				return *this;
 			unsigned length = strlen(other);
 			Resize(length);
 			CopyData(_Buffer,other,length);

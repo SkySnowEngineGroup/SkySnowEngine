@@ -26,6 +26,7 @@
 #define GRI_VULKAN 2
 #define GRI_METAL 3
 
+//setup render device type: opengl or metal or vulkan
 #define GRI_PLATFORM GRI_GL
 
 #if GRI_PLATFORM == GRI_GL

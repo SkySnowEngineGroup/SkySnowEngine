@@ -26,6 +26,8 @@ namespace SkySnow
 {
 	GRILowerCommandBuffer::GRILowerCommandBuffer()
 		: _NumCommands(0)
+		, _Curr(nullptr)
+		, _Head(nullptr)
 	{
 		_StackMem.Flush();
 	}
@@ -42,7 +44,22 @@ namespace SkySnow
 
 	void GRILowerCommandBuffer::ResourceCreateExecutor()
 	{
-
+        GRICommandBase* cmd = _Head;
+        while (cmd)
+        {
+            GRICommandBufferBase* cb = nullptr;
+            cmd->ExecuteCommand(*cb);
+            cmd = cmd->_Next;
+        }
+        CommandBufferReset();
 	}
+    
+    void GRILowerCommandBuffer::CommandBufferReset()
+    {
+        _StackMem.Flush();
+        _NumCommands = 0;
+        _Curr = nullptr;
+        _Head = _Curr;
+    }
 
 }

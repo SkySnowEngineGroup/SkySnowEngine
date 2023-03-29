@@ -66,18 +66,25 @@ namespace SkySnow
         [openGLContext makeCurrentContext];
         // 将OpenGL上下文与窗口关联
         [openGLContext setView:view];
+        
+//        glGenVertexArrays(1,&_VertexArrayObject);
+//        glBindVertexArray(_VertexArrayObject);
+        
         OpenGL::InitialExtensions();
         _GLContext = openGLContext;
     }
 
     void GLContextMac::DestroyGLContext()
     {
-
+//        glBindVertexArray(0);
+//        glDeleteVertexArrays(1, &_VertexArrayObject);
+        [_GLContext release];
     }
 
     void GLContextMac::MakeCurrContext()
     {
-        
+        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+        [glContext makeCurrentContext];
     }
     
     void GLContextMac::SwapBuffer()

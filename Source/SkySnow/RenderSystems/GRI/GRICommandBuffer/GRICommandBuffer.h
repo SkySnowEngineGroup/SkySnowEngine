@@ -27,6 +27,7 @@
 namespace SkySnow
 {
     //vulkan 中关于资源创建，资源命令设置以及同步等操作的渲染接口，一共约130个
+    
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
     class GRICommandBufferBase
@@ -43,6 +44,14 @@ namespace SkySnow
         virtual void CmdEndCommandBuffer() = 0;
         virtual void CmdBeginRenderPass() = 0;
         virtual void CmdEndRenderPass() = 0;
+        bool CommandBufferValid(CommandBufferType cmbType)
+        {
+            if(_CMState == Invalid && cmbType == _CMType)
+            {
+                return true;
+            }
+            return false;
+        }
     protected:
         CommandBufferSate   _CMState;
         CommandBufferType   _CMType;
@@ -80,16 +89,19 @@ namespace SkySnow
 
         }
 
-        GRICommandBufferBase* AllocCommandBuffer()
+        GRICommandBufferBase* AllocCommandBuffer(CommandBufferType cbType = Render)
         {
-            return CreateCMB();
+            return CreateCommandBuffer(cbType);
         }
         void ReleasePool()
         {
 
         }
     private:
-        GRICommandBufferBase* CreateCMB();
+        GRICommandBufferBase* CreateCommandBuffer(CommandBufferType cbType);
+    private:
+        ThreadMutex                 _Lock;
+        std::vector<GRICommandBufferBase*>  _CommandBufferList;//testCode
     };
     class GRICommandBufferQueue
     {
@@ -104,7 +116,10 @@ namespace SkySnow
         {
         }
 
-        void EndFrame();
+        void EndFrame()
+        {
+            
+        }
 
         void FlushResource()
         {
@@ -112,14 +127,16 @@ namespace SkySnow
         }
         void PresentQueue()
         {
-            //资源创建的Cmb====testcode
+            //TestCode Single MainThread Render Capacity
+            //TestCode == Resource Create At Lower Api Version
             _LowerComBuf->ResourceCreateExecutor();
-            //资源设置的Cmb====testcode
+            //TestCode == Resource Set At Lower Api Version,At Height Api Version Use Self CommandBuffer
             for (int i = 0; i < _ComBufList.size(); i ++)
             {
                 GRICommandBufferBase* cmb = _ComBufList[i];
                 cmb->CmdResourceSetExecutor();
             }
+            _ComBufList.clear();
         }
         GRILowerCommandBuffer* GetLowerCommandBuffer()
         {
