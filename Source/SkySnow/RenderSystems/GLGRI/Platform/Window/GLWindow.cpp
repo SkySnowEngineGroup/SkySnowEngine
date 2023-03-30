@@ -46,6 +46,7 @@ namespace SkySnow
 
 	GLContextWin::GLContextWin()
 		: _OpenGL32Dll(nullptr)
+        , _VertexArrayObject(-1)
 	{
 
 	}
@@ -136,6 +137,9 @@ namespace SkySnow
 		ProcAddressInit();
         //window Check Extensions String
         OpenGL::InitialExtensions();
+        //default vao
+        glGenVertexArrays(1,&_VertexArrayObject);
+        glBindVertexArray(_VertexArrayObject);
 	}
 
 	void GLContextWin::DestroyGLContext()
@@ -143,6 +147,10 @@ namespace SkySnow
         if(_OpenGL32Dll)
         {
             ::FreeLibrary( (HMODULE)_OpenGL32Dll);
+        }
+        if(_VertexArrayObject != -1)
+        {
+            glDeleteVertexArrays(1, &_VertexArrayObject);
         }
         wglMakeCurrent(NULL, NULL);
         wglDeleteContext(_Context);

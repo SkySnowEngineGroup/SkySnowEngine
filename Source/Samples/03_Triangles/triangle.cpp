@@ -50,7 +50,16 @@ public:
 		Delete_Object(_FsData);
 		GRIExit();
     }
-
+    /*  重要的处理内容
+        一、资源安全
+        The data of the resource needs to be further encapsulated to avoid the problem of data contention in multithreading.
+        For example, vertex data needs to use the resource object provided in the GRI to ensure the data security of the
+        resource object and avoid resource contention
+        This is the next step of GRI rendering system packaging focus, and to investigate vulkan and metal resource security
+        solutions, so that the framework can be compatible with Vulkan & Metal resource design framework, the maximum possible
+        release of a new generation of rendering api capabilities
+        二、多线程架构设计
+     */
 	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
 	{
         OSPlatformInfo osPlatformInfo;

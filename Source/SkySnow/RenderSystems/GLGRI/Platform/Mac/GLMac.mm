@@ -33,12 +33,12 @@ namespace SkySnow
     }
     //=GLContext-Start======================================================================================================================
     GLContextMac::GLContextMac()
+        : _VertexArrayObject(-1)
     {
         
     }
     GLContextMac::~GLContextMac()
     {
-        
     }
 
     void GLContextMac::CreateGLContext()
@@ -67,17 +67,19 @@ namespace SkySnow
         // 将OpenGL上下文与窗口关联
         [openGLContext setView:view];
         
-//        glGenVertexArrays(1,&_VertexArrayObject);
-//        glBindVertexArray(_VertexArrayObject);
-        
         OpenGL::InitialExtensions();
         _GLContext = openGLContext;
+        //default vao
+        glGenVertexArrays(1,&_VertexArrayObject);
+        glBindVertexArray(_VertexArrayObject);
     }
 
     void GLContextMac::DestroyGLContext()
     {
-//        glBindVertexArray(0);
-//        glDeleteVertexArrays(1, &_VertexArrayObject);
+        if(_VertexArrayObject != -1)
+        {
+            glDeleteVertexArrays(1, &_VertexArrayObject);
+        }
         [_GLContext release];
     }
 
