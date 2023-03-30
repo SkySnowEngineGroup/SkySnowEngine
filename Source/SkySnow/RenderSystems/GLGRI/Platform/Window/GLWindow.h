@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,9 +21,10 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "LogAssert.h"
+#include "UString.h"
 #include "GL4.h"
 #if PLATFORM == PLATFORM_WINDOW
-
 namespace SkySnow
 {
 	class GLWindow : public OpenGL4
@@ -34,7 +34,52 @@ namespace SkySnow
 		{
 			return EOpenGL;
 		}
+
+		static void InitialExtensions()
+		{
+			UString version = (const char*)glGetString(GL_VERSION);
+			std::vector<UString> res = version.Split('.');
+			if (res.size() > 1)
+			{
+				_MajorVersion = atoi(res[0].C_Str());
+				_MinorVersion = atoi(res[1].C_Str());
+			}
+			_ExtensionsStr = (const char*)glGetString(GL_EXTENSIONS);
+
+			OpenGL4::InitialExtensions();
+			if (_SupportVertexFormatBinding)
+			{
+				SN_LOG("Support VFB");
+			}
+		}
 	};
+
+    class GLContextWin : public GLContext
+    {
+    public:
+        GLContextWin();
+        ~GLContextWin();
+        
+        virtual void CreateGLContext() override;
+        
+        virtual void DestroyGLContext() override;
+        
+        virtual void MakeCurrContext() override;
+
+		virtual void SwapBuffer() override;
+    private:
+		void ProcAddressInit();
+		HGLRC CreateGLContextInternal(HDC hdc);
+	private:
+        GLuint   _VertexArrayObject;
+		void* _OpenGL32Dll;
+		HDC _Hdc;
+        HWND _HWND;
+		int _PixelFormat;
+		PIXELFORMATDESCRIPTOR _Pfd;
+		HGLRC _Context;
+    };
 }
 typedef SkySnow::GLWindow OpenGL;
 #endif
+

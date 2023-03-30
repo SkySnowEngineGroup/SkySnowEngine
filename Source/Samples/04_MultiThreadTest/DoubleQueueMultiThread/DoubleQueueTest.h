@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,8 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "MainThread.h"
-#include "RenderThread.h"
+#include "MainThreadMulti.h"
+#include "RenderThreadMulti.h"
 #include "ThreadDoubleQueue.h"
 namespace ThreadMultiRender
 {
@@ -73,8 +72,8 @@ namespace ThreadMultiRender
         }
 
 	private:
-		MainThread*						m_MainThread;
-		RenderThread*					m_RenderThread;
+		MainThreadMulti*				m_MainThread;
+		RenderThreadMulti*				m_RenderThread;
 		ThreadDoubleQueue*				m_DoublueQueue;
 	};
 }

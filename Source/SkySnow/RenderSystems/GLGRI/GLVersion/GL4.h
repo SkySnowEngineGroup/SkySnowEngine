@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -23,10 +22,35 @@
 //
 #pragma once
 #include "GL3.h"
+#if USE_GL4
 namespace SkySnow
 {
 	class OpenGL4 : public OpenGL3
 	{
 	public:
+		//this API is GL4.x version
+		static inline void BindVertexBuffer(GLuint bindingIndex, GLuint buffer, GLintptr offset, GLsizei stride)
+		{
+			glBindVertexBuffer(bindingIndex, buffer, offset, stride);
+		}
+		static inline void VertexAttribFormat(GLuint attribIndex, GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset)
+		{
+			glVertexAttribFormat(attribIndex, size, type, normalized, relativeOffset);
+		}
+		static inline void VertexAttribIFormat(GLuint attribIndex, GLint size, GLenum type, GLuint relativeOffset)
+		{
+			glVertexAttribIFormat(attribIndex, size, type, relativeOffset);
+		}
+		static inline void VertexAttribBinding(GLuint attribIndex, GLuint bindingIndex)
+		{
+			glVertexAttribBinding(attribIndex, bindingIndex);
+		}
+		static inline void VertexBindingDivisor(GLuint bindingIndex, GLuint divisor)
+		{
+			glVertexBindingDivisor(bindingIndex, divisor);
+		}
+
+		static void InitialExtensions();
 	};
 }
+#endif

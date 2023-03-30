@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -27,10 +26,15 @@
 #define GRI_VULKAN 2
 #define GRI_METAL 3
 
+//setup render device type: opengl or metal or vulkan
 #define GRI_PLATFORM GRI_GL
 
 #if GRI_PLATFORM == GRI_GL
-#	include"GLProfiles.h"
+#	include "GLProfiles.h"
 #endif // GRI_PLATFORM == GRI_GL
 
-
+//Shader是否debug的标记
+#if DEBUG
+#    undef Debug_Shader
+#    define Debug_Shader 1
+#endif // DEBUG

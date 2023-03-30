@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,19 +21,49 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GL4.h"
+#include "GL3.h"
+#include "LogAssert.h"
 #if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
-
+//MacOS use System GLFunction and use low GL4.x
 namespace SkySnow
 {
-	class GLMac : public OpenGL4
+	class GLMac : public OpenGL3
 	{
 	public:
 		static inline GRIFeature GetFeatureType()
 		{
 			return EOpenGL;
 		}
+        
+        static void InitialExtensions()
+        {
+            ImportAPIEntryPointer();
+            OpenGL3::InitialExtensions();
+        }
+    private:
+        static void ImportAPIEntryPointer();
+
 	};
+    //maxosx not export opengl function
+    class GLContextMac : public GLContext
+    {
+    public:
+        GLContextMac();
+        ~GLContextMac();
+        
+        virtual void CreateGLContext() override;
+        
+        virtual void DestroyGLContext() override;
+        
+        virtual void MakeCurrContext() override;
+        
+        virtual void SwapBuffer() override;
+        
+    private:
+        GLuint   _VertexArrayObject;
+        void*    _GLContext;
+        void*    _View;
+    };
 }
 typedef SkySnow::GLMac OpenGL;
 #endif

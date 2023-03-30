@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -33,11 +32,11 @@ namespace SkySnow
         {}
 
 	public:
-		virtual void SNCreateWindow(unsigned int width, unsigned int height) = 0;
+		virtual void CreateEngineWindow(unsigned int width, unsigned int height) = 0;
 
-		virtual bool SNIsCloseWindow() = 0;
+		virtual bool IsCloseWindow() = 0;
 
-		virtual void SNShutDown() = 0;
+		virtual void ShutDown() = 0;
 
 	};
 }

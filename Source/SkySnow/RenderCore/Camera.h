@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,12 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once 
-#include "Componment.h"
+#include "Component.h"
 namespace SkySnow
 {
-	class Camera : public Componment
+	class Camera : public Component
 	{
-		SkySnow_Object(Camera, Componment);
+		SkySnow_Object(Camera, Component);
 	public:
 		Camera();
 		~Camera();

@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "GLShader.h"
-#include "GRIGLCommandsCreate.h"
+#include "GRIGLDrive.h"
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 #include "GLPipelineResource.h"
@@ -31,25 +30,22 @@ namespace SkySnow
 {
 	using namespace OGLShader;
 	////Create Shader about Resource
-	GRIVertexShaderRef GRIGLCommandsCreate::GRICreateVertexShader(const char* vsCode)
+	void GRIGLDrive::GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle)
 	{
-		return OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode);
+		OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode, handle);
 	}
 
-	GRIFragmentShaderRef GRIGLCommandsCreate::GRTCreateFragmentShader(const char* fsCode)
+	void GRIGLDrive::GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle)
 	{
-		return OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode);
+		OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode, handle);
 	}
 
-	GRIPipelineShaderStateRef GRIGLCommandsCreate::GRICreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	void GRIGLDrive::GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle)
 	{
-		GLPipelineShaderState* temp = new GLPipelineShaderState(vs, fs);
-		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(vs);
-		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(fs);
-		OGLShader::CreateProgram(glvs->m_GpuHandle, 
-								 glfs->m_GpuHandle,
-								 temp->m_ProgramId);
-		return temp;
+		GLPipelineShaderState* shaderPipe = dynamic_cast<GLPipelineShaderState*>(handle.GetReference());
+		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(shaderPipe->GetVertexShader());
+		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(shaderPipe->GetFragmentShader());
+		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
 	}
 
 	//Shader 创建的模板类方法(公共方法)
@@ -60,19 +56,21 @@ namespace SkySnow
 	//它命名空间下调用
 
 	template<typename GRIShaderType,typename OGLShaderType>
-	GRIShaderType* OGLShader::CreateShader(const char* shadercode)
+	void OGLShader::CreateShader(const char* shadercode, GRIShaderType* handle)
 	{
-		GRIShaderType* shaderObject = CompileShader<OGLShaderType>(shadercode);
-		return shaderObject;
+		OGLShaderType* shaderObject = dynamic_cast<OGLShaderType*>(handle);
+		CompileShader<OGLShaderType>(shadercode, shaderObject);
 	}
 
 	template<typename OGLShaderType>
-	OGLShaderType* OGLShader::CompileShader(const char* shadercode)
+	void OGLShader::CompileShader(const char* shadercode,OGLShaderType* handle)
 	{
-		OGLShaderType* shader = new OGLShaderType();
-		shader->m_GpuHandle = OpenGL::CreateShader(shader->m_GLTypeEnum);
-		CompileCurrentShader(shader->m_GpuHandle,shadercode);
-		return shader;
+		handle->_GpuHandle = glCreateShader(handle->_GLTypeEnum);
+		bool flag = CompileCurrentShader(handle->_GpuHandle,shadercode);
+		if (!flag)
+		{
+			SN_ERR("Compile Shader fail.");
+		}
 	}
 
 	bool OGLShader::CompileCurrentShader(const GLuint shaderHandle, const char* shadercode)
@@ -82,7 +80,7 @@ namespace SkySnow
 			SN_ERR("ShaderCode is nullptr.");
 			return false;
 		}
-		SN_LOG("OGL Shader Code:%s", shadercode);
+		//SN_LOG("OGL Shader Code:%s", shadercode);
 		int codeLength = strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);

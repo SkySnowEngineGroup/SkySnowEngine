@@ -1,7 +1,6 @@
 #
 # Copyright (c) 2020-2022 the SkySnowEngine project.
-# Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-#							liuqian(SkySnow),zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +29,7 @@ file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp"
 add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
 target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
 if(WIN32)
-    target_link_libraries(Triangle SkySnow Plugins glfw glad pthread_win ${OpenGL_LIBRARY}) #ThirdParty
+    target_link_libraries(Triangle SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
 else()
-    target_link_libraries(Triangle SkySnow Plugins glfw glad ${OpenGL_LIBRARY}) #ThirdParty
+    target_link_libraries(Triangle SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
 endif(WIN32)

@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -23,7 +22,7 @@
 //
 #pragma once
 #include "OSPlatform.h"
-#include "GRICommandsCreate.h"
+#include "GRIDrive.h"
 namespace SkySnow
 {
 	class WindowOSPlatform : public OSPlatform
@@ -31,11 +30,8 @@ namespace SkySnow
 	public:
 		WindowOSPlatform();
 		~WindowOSPlatform();
-		virtual GRICommandsCreate* OSPlatformCreateGRC() override;
-		virtual GRICommandsSet* OSPlatformCreateGRS() override;
+		virtual GRIDrive* OSPlatformCreateGRI() override;
 	private:
-		GRIType*			m_TypeGRI;
-		GRICommandsCreate*	m_RealTimeGRI;
-		GRICommandsSet*		m_Commands;
+		GRIDrive*			_GRI;
 	};
 }

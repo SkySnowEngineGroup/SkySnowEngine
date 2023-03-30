@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,4 +21,28 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "OSPlatform.h"
+#include "GRIResourceCreateInfo.h"
 // render type interface for engine 
+namespace SkySnow
+{
+    //全局变量
+    extern OSPlatform*              _GOSPlatform;
+    extern GRIDrive*                GRI;
+    
+    //全局接口
+    void GRIInit(const OSPlatformInfo& osPlatformInfo);
+
+    void GRIExit();
+ 
+    //对外资源创建接口、全局接口
+    GRIVertexShaderRef CreateVertexShader(const char* vsCode);
+
+    GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
+
+    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs);
+
+    GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
+
+    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo);
+}

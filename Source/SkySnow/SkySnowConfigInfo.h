@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -27,11 +26,18 @@ namespace SkySnow
 {
 	//声明全局变量，并用extern标记，即声明又定义，保证定义
 	//只在该处进行定义初始化，别的地方定义初始化会报错
-	extern const std::string g_MediaPath = "D:/StudyEnginer/";//Home Path
-	//extern const std::string g_MediaPath = "D:/"; //Company Path
-	extern const std::string g_RelativeMaterialPath = "SkySnowEngine/Script/Media/Material/";
+#if PLATFORM == PLATFORM_WINDOW
+	static const std::string g_MediaPath = "D:/StudyEnginer/";//Home Path
+#elif PLATFORM == PLATFORM_MAC
+	static const std::string g_MediaPath = "/Users/SS3D/"; //Mac Path
+#endif
+	static const std::string g_RelativeMaterialPath = "SkySnowEngine/Script/Media/Material/";
+	static const int g_String_Buffer_MaxLength = 128;
+	static char g_Null_Char = 0;
+	static const int g_Min_Capacity = 8;//最小8byte
+	static const unsigned NPOS = 0xffffffff;
 	//globle Function
-	std::string GetMaterialAllPath(const std::string mpath)
+	static std::string GetMaterialAllPath(const std::string mpath)
 	{
 		return g_MediaPath + g_RelativeMaterialPath + mpath;
 	}

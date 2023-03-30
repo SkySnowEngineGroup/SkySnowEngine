@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIType.h"
+#include "GRIDrive.h"
 #include "NonCopyable.h"
 namespace SkySnow
 {
@@ -32,29 +31,22 @@ namespace SkySnow
 		OSPlatform() {}
 		virtual ~OSPlatform() {}
 
-		virtual GRICommandsCreate* OSPlatformCreateGRC() = 0;
-
-		virtual GRICommandsSet* OSPlatformCreateGRS() = 0;
+		virtual GRIDrive* OSPlatformCreateGRI() = 0;
 	};
 
-	class GRTCreate : public NonCopyable
-	{
-	private:
-		GRTCreate();
-		~GRTCreate();
-	public:
-		static GRTCreate* Instance();
+    OSPlatform* CreateTargetOSPlatform();
 
-		GRICommandsCreate* GetGRICommandsCreate();
-
-		GRICommandsSet* GetGRICommandsSet();
-	private:
-		OSPlatform*				m_OSPlatform;
-		GRICommandsCreate*		m_GRI;
-		GRICommandsSet*			m_Commands;
-	};
+    struct OSPlatformInfo
+    {
+        OSPlatformInfo()
+            : _NativeWindow(nullptr)
+            , _DriveContext(nullptr)
+        {
+            
+        }
+        
+        void* _NativeWindow;
+        void* _DriveContext;
+    };
+    extern OSPlatformInfo*          _GOSPlatformInfo;
 }
-//GRC: Graphics Render Create
-//GRS: Graphics Render Set
-#define GRC SkySnow::GRTCreate::Instance()->GetGRICommandsCreate()
-#define GRS SkySnow::GRTCreate::Instance()->GetGRICommandsSet()

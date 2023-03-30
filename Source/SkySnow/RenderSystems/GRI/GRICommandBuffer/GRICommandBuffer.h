@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,26 +21,132 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "StackAllocator.h"
+#include "CommandBufferMacro.h"
+#include "GRILowerCommandBuffer.h"
 namespace SkySnow
 {
-	//function call back GRICommands and RealTimeGRL
-	//command encoder
-	class GRICommandBuffer
-	{
+    //vulkan 中关于资源创建，资源命令设置以及同步等操作的渲染接口，一共约130个
+    
+    class GRICommandBufferQueue;
+    class GRICommandBufferPool;
+    class GRICommandBufferBase
+    {
+    public:
+        GRICommandBufferBase(CommandBufferSate cbState = Initial);
+        virtual ~GRICommandBufferBase() 
+        {
+            _CMState = Invalid;
+        }
+        virtual void CmdResourceSetExecutor() = 0;
+        virtual void CmdReset() = 0;
+        virtual void CmdBeginCommandBuffer() = 0;
+        virtual void CmdEndCommandBuffer() = 0;
+        virtual void CmdBeginRenderPass() = 0;
+        virtual void CmdEndRenderPass() = 0;
+        bool CommandBufferValid(CommandBufferType cmbType)
+        {
+            if(_CMState == Invalid && cmbType == _CMType)
+            {
+                return true;
+            }
+            return false;
+        }
+    protected:
+        CommandBufferSate   _CMState;
+        CommandBufferType   _CMType;
+    };
 
-	};
+    class GRIRenderCommandBuffer : public GRICommandBufferBase
+    {
+    public:
+        virtual ~GRIRenderCommandBuffer() {}
+        //this interface will move blitcommandbuffer
+        virtual void CmdBeginViewport() = 0;
+        virtual void CmdEndViewport() = 0;
 
-	//Alloc CommandBuffers
-	class GRICommandBufferPool
-	{
+        virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+        virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
+        virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
+        virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
+    protected:
+    };
+    //compute shader is a single pipeline
+    class GRIComputeCommandBuffer : public GRICommandBufferBase
+    {
+    public:
+    };
 
-	};
-	//CommandBuufer commit command to commandQueue
-	//Abstract a set of such concepts for OpengL, and some encapsulation for OpengL,
-	//so that in the future compatible with Vulkan and Metal, also easier 
-	//
-	class GRICommandQueue
-	{
+    class GRICommandBufferPool
+    {
+    public:
+        GRICommandBufferPool()
+        {
+        }
 
-	};
+        ~GRICommandBufferPool()
+        {
+
+        }
+
+        GRICommandBufferBase* AllocCommandBuffer(CommandBufferType cbType = Render)
+        {
+            return CreateCommandBuffer(cbType);
+        }
+        void ReleasePool()
+        {
+
+        }
+    private:
+        GRICommandBufferBase* CreateCommandBuffer(CommandBufferType cbType);
+    private:
+        ThreadMutex                 _Lock;
+        std::vector<GRICommandBufferBase*>  _CommandBufferList;//testCode
+    };
+    class GRICommandBufferQueue
+    {
+    public:
+        void Init();
+        void SubmitQueue(GRICommandBufferBase* comBuf)
+        {
+            _ComBufList.push_back(comBuf);
+        }
+
+        void BeginFrame()
+        {
+        }
+
+        void EndFrame()
+        {
+            
+        }
+
+        void FlushResource()
+        {
+
+        }
+        void PresentQueue()
+        {
+            //TestCode Single MainThread Render Capacity
+            //TestCode == Resource Create At Lower Api Version
+            _LowerComBuf->ResourceCreateExecutor();
+            //TestCode == Resource Set At Lower Api Version,At Height Api Version Use Self CommandBuffer
+            for (int i = 0; i < _ComBufList.size(); i ++)
+            {
+                GRICommandBufferBase* cmb = _ComBufList[i];
+                cmb->CmdResourceSetExecutor();
+            }
+            _ComBufList.clear();
+        }
+        GRILowerCommandBuffer* GetLowerCommandBuffer()
+        {
+            return _LowerComBuf;
+        }
+
+        bool IsLowerVerion();
+    private:
+        GRILowerCommandBuffer*              _LowerComBuf;
+        std::vector<GRICommandBufferBase*>  _ComBufList;
+    };
+    extern GRICommandBufferQueue*   _GQueue;
 }

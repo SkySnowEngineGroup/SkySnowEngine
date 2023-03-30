@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,22 +21,23 @@
 // THE SOFTWARE.
 //
 #include "GLBuffer.h"
-#include "GRIGLCommandsCreate.h"
+#include "GRIGLDrive.h"
 #include "GLBufferResource.h"
 namespace SkySnow
 {
 	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
-	GRIBufferRef GRIGLCommandsCreate::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data)
+	void GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data, GRIBufferRef& handle)
 	{
-
 		GLenum bufferType = GL_ARRAY_BUFFER;
 		if (usageType == BUT_IndexBuffer)
 		{
 			bufferType = GL_ELEMENT_ARRAY_BUFFER;
 		}
 
-		GRIBufferRef griBuffer = new GLBuffer(bufferType,usageType, size, stride, data);
-		return griBuffer;
+		GLBuffer* glBuffer = dynamic_cast<GLBuffer*>(handle.GetReference());
+		glBuffer->CreateBuffer(bufferType,usageType, size);
+		glBuffer->_StreamDraw = true;
+		glBuffer->_BufferName = "a";
 	}
 
 

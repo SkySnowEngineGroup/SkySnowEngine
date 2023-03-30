@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the PhonelxEngine project.
-# Open source is written by wagcan、liuqian(SkySnow)、zhangshuangxue(Calence)
+# Copyright (c) 2020-2022 the SkySnowEngine project.
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,7 @@
 # THE SOFTWARE.
 #
 
+#add_compile_options(-x objective-c++)
+set(CMAKE_C_FLAGS  "${CMAKE_C_FLAGS} -std=c99")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -D__STDC_FORMAT_MACROS")
 
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")

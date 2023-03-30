@@ -1,7 +1,6 @@
 #
 # Copyright (c) 2020-2022 the SkySnowEngine project.
-# Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-#							liuqian(SkySnow),zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -51,9 +50,14 @@ foreach (SourceHeader IN LISTS SkySnowHeader)
 	target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/${source_path_dir})
 endforeach()
 
+#${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Glad/
 # 导入三方依赖库的头文件依赖
-target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Glad/
-						   ${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
+target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/glfw3/include/)
+#mac window 导入KHR头文件
+if(APPLE OR WIN32)
+target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Khronos/
+						   ${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/Khronos/OpenGL/)
+endif(APPLE OR WIN32)
 #在win32平台使用Pthreads库
 if(WIN32)
 target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/../ThirdParty/pthread_win/pthreads.2/)

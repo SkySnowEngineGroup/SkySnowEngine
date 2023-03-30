@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,36 +21,43 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Imports_GL.h"
-#include "Imports_GLES.h"
+#include "GLProfiles.h"
+#include <string>
+#include "UString.h"
+#include "GLImport.h"
+//For core library standards, check the website:https://docs.gl/
 
-//关于API版本，即核心标准库中，可以在此网站查询:https://docs.gl/
-//这里关于核心标准的API将不会在在重定义，只是在这里会进行一些拓展函数支持函数判断
-//由Import_GL&Import_GLES修改支持的标志位，并将函数重定义到Import_GL&Import_GLES中
+//Macros define the body of functions that contain optimizations and high version imports.
+//These are functions that are defined in base but not implemented by GLX.h
+#define VOID_BODYFUN {}
+#define RETURN_BODY(RETURNVALUE){return RETURNVALUE;}
+
 namespace SkySnow
 {
 	class OpenGLBase
 	{
 	public:
-		//static inline GRIFeature GetFeatureType() { return ENone; }
+        //default None Support
+		static inline GRIFeature GetFeatureType() { return ENone; }
+        static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
+        
+        static inline GLuint GetMajorVersion() { return _MajorVersion; };
+        
+        static inline GLuint GetMinorVersion() { return _MinorVersion; };
+        //base Function Not define this,All of the functions defined here are extended or higher versions
+        static inline void BindVertexBuffer(GLuint bindingIndex, GLuint buffer, GLintptr offset, GLsizei stride) VOID_BODYFUN
+        static inline void VertexAttribFormat(GLuint attribIndex, GLint size, GLenum type, GLboolean normalized, GLuint relativeOffset)VOID_BODYFUN
+        static inline void VertexAttribIFormat(GLuint attribIndex, GLint size, GLenum type, GLuint relativeOffset) VOID_BODYFUN
+        static inline void VertexAttribBinding(GLuint attribIndex, GLuint bindingIndex) VOID_BODYFUN
+        static inline void VertexBindingDivisor(GLuint bindingIndex, GLuint divisor) VOID_BODYFUN
 
-		static inline GLuint CreateShader(GLenum shadertype) 
-		{ 
-			return glCreateShader(shadertype); 
-		}
+		
 
-		static inline void BufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, const GLvoid* data)
-		{
-			glBufferSubData(target,offset,size,data);
-		}
-		static inline void BufferData(GLenum target, GLsizeiptr size, const void* data, GLenum usage)
-		{
-			glBufferData(target,size,data,usage);
-		}
-		//卷绕法绑定\索引法绑定\SSBO的绑定
-		static inline void BindBuffer(GLenum type,GLuint buffer)
-		{
-			glBindBuffer(type, buffer);
-		}
+		static void InitialExtensions();
+	protected:
+		static bool		_SupportVertexFormatBinding;
+		static GLuint	_MajorVersion;
+		static GLuint	_MinorVersion;
+		static UString  _ExtensionsStr;
 	};
 }

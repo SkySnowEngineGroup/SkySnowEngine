@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
+#include "GLProfiles.h"
 #include "GRIResource.h"
 #include "GLBuffer.h"
 
@@ -40,9 +39,14 @@ namespace SkySnow
 	//GLBuffer其处理的主要对象为IndexBuffer、VertexBuffer、StructureBuffer(SSBO)
 	class GLBuffer : public GRIBuffer
 	{
+		friend class GRIGLDrive;
 	public:
 		GLBuffer()
 			: GRIBuffer()
+			, _BufferType(0)
+			, _GpuHandle(0)
+			, _StreamDraw(false)
+			, _Data(nullptr)
 		{
 		}
 		//streamDraw 暂时不用
@@ -53,13 +57,12 @@ namespace SkySnow
 		//read 表示数据将被客户端程序读取（GL到应用程序）
 		//copy 表示数据可用于绘制与读取（GL到GL）
 		//针对于indexBuffer  vertexBuffer  SSBO，即使用Draw即可
-		GLBuffer(GLenum bufferType,BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
-			: GRIBuffer(usageType, size, stride)
-			, m_BufferType(bufferType)
-			, m_Data(data)
-			, b_StreamDraw(streamDraw)
+		GLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
+			: GRIBuffer(usageType, size, stride) 
+			, _Data(data)
+			, _StreamDraw(streamDraw)
 		{
-			CreateBuffer(usageType,size);
+			
 		}
 
 		~GLBuffer()
@@ -68,36 +71,27 @@ namespace SkySnow
 		//在GLES3.1及GL4.3以上，将顶点类型，顶点数据获取拆分为两个部分
 		//因此这里只是单独的创建Buffer即可，在DrawPrimitive的时候，在根据
 		//SetBuffer设置的类型进行<数据类型指定>与<数据类型如何获取>的设置
-		//对于数据的类型，一种是结构数组SOA，一种是数组结构AOS
-		//对于AOS来说，VBO1对应Position，VBO2对应法线......
-		//对于SOA来说，VBO中的数据对应有V/N/T(顶点、法线、uv等)，其组装格式有
-		//V/N/UV/V/N/UV 或者 V/V/V/N/N/N/UV/UV/UV 对于此种需要计算offset，即计算layout布局
-		//从性能上来讲，AOS是优于SOA的，但是Mali显卡有IDVS架构，在显卡级别处理将SOA处理为AOS的操作(这个操作也会浪费一部分GPU的资源)
-		//glBufferData的作用是初始化数据，而glBufferSubData的作用是初始化或更新数据
-		//因此可以使用glBufferSubData代替glBufferData，其基础功能一样，但是glBufferSubData功能多一些，其处理非交叉的SOA数据更简单快捷一些
-		void CreateBuffer(GLenum usageType,GLuint size)
+		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size)
 		{
-			glGenVertexArrays(1,&m_Vao);
-			glBindVertexArray(m_Vao);
-
-			OpenGL::GenBuffers(1,&m_GPUHandle);
-			OpenGL::BindBuffer(m_BufferType,m_GPUHandle);
-			OpenGL::BufferData(m_BufferType, size, m_Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
-			//该函数会移动到DrawPrimitive函数中，根据PipelineState进行处理，数据设置来源是GRISetBuffer
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride*sizeof(GLfloat), (GLvoid*)0);
-			glEnableVertexAttribArray(0);
-			
-			glBindBuffer(m_BufferType,0);
-			glBindVertexArray(0);
+			_BufferType = bufferType;
+			glGenBuffers(1,&_GpuHandle);
+			glBindBuffer(_BufferType, _GpuHandle);
+			glBufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+			glBindBuffer(_BufferType, 0);
+			float* vdata = (float*)_Data;
+			int num = size / sizeof(float);
+			for (int i = 0; i < num;i ++)
+			{
+				SN_LOG("vdata[%d]:%f",i, vdata[i]);
+			}
 		}
 
 	public:
-		GLuint		m_Vao;
-		GLenum		m_BufferType;
+		GLuint		_GpuHandle;
+		GLenum		_BufferType;
 	private:
-		bool		b_StreamDraw;
-		GLuint		m_GPUHandle;
-		const void* m_Data;
+		bool		_StreamDraw;
+		const void* _Data;
 		
 	};
 }

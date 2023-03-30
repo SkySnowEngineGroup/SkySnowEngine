@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,21 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
+#include "GLProfiles.h"
 namespace SkySnow
 {
 	//Buffer Desicr infor£ºvertex index SSBO
 	struct GLBufferInfo
 	{
 		GLBufferInfo()
-			: gpuHandle(0)
-			, stride(0)
-			, offset(0)
+			: _GpuHandle(0)
+			, _BufferType(0)
+			, _Stride(0)
+			, _Offset(0)
 		{
 		}
-		GLuint		gpuHandle;
-		int			stride;
-		int			offset;
+		GLuint		_GpuHandle;
+		GLenum		_BufferType;
+		int			_Stride;
+		int			_Offset;
 	};
 
 

@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -33,121 +32,147 @@
 #include "DSA.h"
 #include "File.h"
 #include "SingletonBase.h"
+#include "LockFree.h"
+#include "FunCb.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!\n");
-	//测试虚析构函数作用及顺序
-	{
-		TestChildCon();
-	}
-	//测试多种单例类
-	{
-		LazySingleton* instance = LazySingleton::GetInstance();
-		instance->Release();
-		LazySingletonLocal* instance1 = LazySingletonLocal::GetInstance();
-
-		HungrySingleton* instance2 = HungrySingleton::GetInstance();
-	}
-	//Data structures and algorithms
-	{
-		DSA* dsa = new DSA();
-		dsa->TestTwoNumSum();
-		dsa->TestBigNumSum();
-		delete dsa;
-	}
-	//LRUCache
-	{
-		LRU lru(5);
-;
-		lru.Put(1, 10);
-		lru.Put(2, 20);
-		lru.Put(3, 30);
-		lru.Put(4, 40);
-
-		lru.Put(2,200);
-		SN_LOG("LRU Value:%d",lru.Get(1));
-		SN_LOG("LRU Value:%d",lru.Get(2));
-	}
-	//右移操作符
-	{
-		Move* test = new Move();
-		Move test2;
-		test2.Test(std::move(test));
-		if (test)
-		{
-			delete test;
-		}
-		//test2 = std::move(test);
-		int a = (0x1 << 21) + 17;
-		SN_LOG("Value:%d",a);
-	}
-	//引擎基础测试案例
-	{
-		SN_LOG("====================");
-		//RefCountPtr<TestSkySnowPtr> test(new TestSkySnowPtr());
-		share_ptr<Base> test(new Base());
-
-		RefCountPtr<Test> test2(new Test());
-	}
-	//基础知识学习
-	{
-		SN_LOG("====================");
-		ConstBase* cb1 = new ConstBase();
-		ConstBase2 cb2;
-		cb2.PrintValue();
-		
-		cb1->FunA(cb2);
-		cb2.PrintValue();
-		cb1->FunB(&cb2);
-		cb2.PrintValue();
-		cb1->FunC(cb2);
-		cb2.PrintValue();
-		delete cb1;
-	}
-	//redfine 重定义父类函数
-	{
-		SN_LOG("====================");
-		Child* child = new Child();
-		child->FunA();
-		//如果调用父类函数，则需要类名::函数名调用
-		child->Parent::FunA();
-	}
 
 	{
-		SN_LOG("====================");
-		BinaryTree* bt = new BinaryTree();
-		bt->VisitTree();
-		bt->TwoTreeEqual();
-		bt->ReverTree();
-
-		delete bt;
-		bt = nullptr;
+		int a = 1;
+		int b = a & (~a);
+		SN_LOG("Value:%d", b);
 	}
-	//Study ListNode
-	{
-		SN_LOG("====================");
-		ListAlgorithm* la = new ListAlgorithm();
-		la->ReverseListNode();
 
-		la->IsExitisLoop();
-		delete la;
-		la = nullptr;
-	}
-	//Base KnowLedge
-	{
-		//Base tem1 = Base();
-		//Base tem2 = tem1;
-		//Base tem3;
-		//tem3 = tem1;
-		SN_LOG("==============");
-		Base* t1 = new Base();
-		Base* t2 = t1;
+	//{
+	//	CommandBuffer* cb = new CommandBuffer();
+	//	//编码命令
+	//	CreateHandle handle = cb->EncoderCreateBuffer();
 
-		t2->BaseLD();
-		delete t1;
-	}
+	//	cb->EncoderSetBuffer(handle);
+	//	//执行渲染命令
+	//	cb->RenderCmd();
+	//	handle._Data->Log();
+	//}
+	//{
+	//	TestFunctionAboutLockFree();
+	//}
+	//{
+	//	TestTNode* tN = new TestTNode();
+	//	tN->Print();
+	//}
+//	//测试虚析构函数作用及顺序
+//	{
+//		TestChildCon();
+//	}
+//	//测试多种单例类
+//	{
+//		LazySingleton* instance = LazySingleton::GetInstance();
+//		instance->Release();
+//		LazySingletonLocal* instance1 = LazySingletonLocal::GetInstance();
+//
+//		HungrySingleton* instance2 = HungrySingleton::GetInstance();
+//	}
+//	//Data structures and algorithms
+//	{
+//		DSA* dsa = new DSA();
+//		dsa->TestTwoNumSum();
+//		dsa->TestBigNumSum();
+//		delete dsa;
+//	}
+//	//LRUCache
+//	{
+//		LRU lru(5);
+//;
+//		lru.Put(1, 10);
+//		lru.Put(2, 20);
+//		lru.Put(3, 30);
+//		lru.Put(4, 40);
+//
+//		lru.Put(2,200);
+//		SN_LOG("LRU Value:%d",lru.Get(1));
+//		SN_LOG("LRU Value:%d",lru.Get(2));
+//	}
+//	//右移操作符
+//	{
+//		Move* test = new Move();
+//		Move test2;
+//		test2.Test(std::move(test));
+//		if (test)
+//		{
+//			delete test;
+//		}
+//		//test2 = std::move(test);
+//		int a = (0x1 << 21) + 17;
+//		SN_LOG("Value:%d",a);
+//	}
+//	//引擎基础测试案例
+//	{
+//		SN_LOG("====================");
+//		//RefCountPtr<TestSkySnowPtr> test(new TestSkySnowPtr());
+//		share_ptr<Base> test(new Base());
+//
+//		RefCountPtr<Test> test2(new Test());
+//	}
+//	//基础知识学习
+//	{
+//		SN_LOG("====================");
+//		ConstBase* cb1 = new ConstBase();
+//		ConstBase2 cb2;
+//		cb2.PrintValue();
+//		
+//		cb1->FunA(cb2);
+//		cb2.PrintValue();
+//		cb1->FunB(&cb2);
+//		cb2.PrintValue();
+//		cb1->FunC(cb2);
+//		cb2.PrintValue();
+//		delete cb1;
+//	}
+//	//redfine 重定义父类函数
+//	{
+//		SN_LOG("====================");
+//		Child* child = new Child();
+//		child->FunA();
+//		//如果调用父类函数，则需要类名::函数名调用
+//		child->Parent::FunA();
+//	}
+//
+//	{
+//		SN_LOG("====================");
+//		BinaryTree* bt = new BinaryTree();
+//		bt->VisitTree();
+//		bt->TwoTreeEqual();
+//		bt->ReverTree();
+//
+//		delete bt;
+//		bt = nullptr;
+//	}
+//	//Study ListNode
+//	{
+//		SN_LOG("====================");
+//		ListAlgorithm* la = new ListAlgorithm();
+//		la->ReverseListNode();
+//
+//		la->IsExitisLoop();
+//		delete la;
+//		la = nullptr;
+//	}
+//	//Base KnowLedge
+//	{
+//		//Base tem1 = Base();
+//		//Base tem2 = tem1;
+//		//Base tem3;
+//		//tem3 = tem1;
+//		SN_LOG("==============");
+//		Base* t1 = new Base();
+//		Base* t2 = t1;
+//
+//		t2->BaseLD();
+//		delete t1;
+//	}
 	//system("pause");
 	getchar();
 	return 0;

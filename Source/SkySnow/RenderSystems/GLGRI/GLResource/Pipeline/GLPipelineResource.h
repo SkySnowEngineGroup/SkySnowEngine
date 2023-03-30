@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,13 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
+#include "GLProfiles.h"
 #include "GRIResource.h"
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
 #include "GLBuffer.h"
 #include "GLShader.h"
-
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
 	class GLPipelineShaderState : public GRIPipelineShaderState
@@ -36,13 +35,14 @@ namespace SkySnow
 	public:
 		GLPipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
 			: GRIPipelineShaderState()
-			, m_OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
-			, m_OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
+			, _ProgramId(0)
+			, _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
+			, _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
 		{
 		}
 
-		inline GLVertexShader* GetVertexShader() { return m_OGLVertexShader; }
-		inline GLFragmentShader* GetFragmentShader() { return m_OGLFragmentShader; }
+		inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
+		inline GLFragmentShader* GetFragmentShader() { return _OGLFragmentShader; }
 
 		const GLShaderBase* GetShader(ShaderFrequency sf)
 		{
@@ -60,12 +60,12 @@ namespace SkySnow
 			return nullptr;
 		}
 	public:
-		GLuint m_ProgramId;
+		GLuint _ProgramId;
 	private:
 		//Cache Array or LRUCache
 		//temp is ptr
-		GLVertexShader* m_OGLVertexShader;
-		GLFragmentShader* m_OGLFragmentShader;
+		GLVertexShader*     _OGLVertexShader;
+		GLFragmentShader*   _OGLFragmentShader;
 		
 	};
 	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路
@@ -74,6 +74,13 @@ namespace SkySnow
 	public:
 		GLGraphicPipelineState()
 			: GRIGraphicsPipelineState()
+			, _PrimitiveType(PrimitiveType::PT_Num)
+		{
+		}
+
+		GLGraphicPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+			: GRIGraphicsPipelineState()
+			, _PrimitiveType(createInfo._PrimitiveType)
 		{
 		}
 
@@ -81,11 +88,11 @@ namespace SkySnow
 		{
 		}
 	public:
-		GLBufferInfo			vertexBufferInfo[Num_GL_Vertex_Attribute];
-		GLShaderStateInfo		shaderStateInfo;
+		GLBufferInfo			_BufferInfo[Num_GL_Vertex_Attribute];
+		GLShaderStateInfo		_ShaderStateInfo;
 		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
 		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。
-		PrimitiveType			primitiveType;
+		PrimitiveType			_PrimitiveType;
 	};
 	//该能力对齐vulkan&metal的pipelinecache
 	//在UE5中有类似的概念，但是从其代码来看

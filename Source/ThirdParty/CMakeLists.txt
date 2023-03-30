@@ -1,7 +1,6 @@
 #
 # Copyright (c) 2020-2022 the NuwaEngine project.
-# Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-#							liuqian(SkySnow),zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -25,9 +24,9 @@
 set (TARGET_NAME ThirdParty)
 
 add_subdirectory(imgui)
-add_subdirectory(Glad)
+#add_subdirectory(Glad)
 add_subdirectory(glfw3)
-add_subdirectory(flatbuffers)
+#add_subdirectory(flatbuffers)
 
 if(WIN32)
 add_subdirectory(pthread_win)

@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLPlatformProfiles.h"
+#include "GLProfiles.h"
 #include "GRICommons.h"
 #include "RefCounted.h"
 #include "GRIResource.h"
@@ -33,8 +32,13 @@ namespace SkySnow
 	{
 	public:
 		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency)
-			: m_GLTypeEnum(GLTypeEnum)
-			, m_ShaderFrequency(shaderFrequency)
+			: _GLTypeEnum(GLTypeEnum)
+			, _ShaderFrequency(shaderFrequency)
+			, _GpuHandle(0)
+#if Debug_Shader
+			, _ShaderCode(nullptr)
+			, mShaderName("")
+#endif
 		{
 		}
 		virtual ~GLShaderBase()
@@ -44,11 +48,11 @@ namespace SkySnow
 
 
 	public:
-		GLenum			m_GLTypeEnum;//Shader Type at OGL
-		ShaderFrequency m_ShaderFrequency;
-		GLuint			m_GpuHandle;
+		GLenum			_GLTypeEnum;//Shader Type at OGL
+		ShaderFrequency _ShaderFrequency;
+		GLuint			_GpuHandle;
 #if Debug_Shader
-		const char*		m_ShaderCode;
+		const char*		_ShaderCode;
 		std::string		mShaderName;
 #endif
 	};

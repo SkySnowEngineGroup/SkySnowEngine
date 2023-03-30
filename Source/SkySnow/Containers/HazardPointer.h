@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -25,8 +24,7 @@
 //中文翻译地址为:https://sites.google.com/site/lishuo02wiki/programming/lockfree/safememoryreclamation/hazard-pointer
 namespace SkySnow
 {
-
-
-
 	//Study HazardPointer Base Knowledge.
+
+
 }

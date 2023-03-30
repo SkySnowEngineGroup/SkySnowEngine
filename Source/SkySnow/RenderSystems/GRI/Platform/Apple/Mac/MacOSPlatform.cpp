@@ -1,7 +1,6 @@
 //
 // Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by sunguoqiang(SunGQ1987),wangcan(crygl),
-//							 liuqian(SkySnow),zhangshuangxue(Calence)
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
@@ -22,55 +21,37 @@
 // THE SOFTWARE.
 //
 #include "MacOSPlatform.h"
-#include "GLTypeGRI.h"
+#include "GRIGLDrive.h"
 namespace SkySnow
 {
     MacOSPlatform::MacOSPlatform()
-        : m_TypeGRI(nullptr)
-        , m_RealTimeGRI(nullptr)
+        : _GRI(nullptr)
     {
 
     }
 
     MacOSPlatform::~MacOSPlatform()
     {
-        if (nullptr != m_TypeGRI)
+        if (_GRI)
         {
-            delete m_TypeGRI;
-            m_TypeGRI = nullptr;
-        }
-        if (m_RealTimeGRI)
-        {
-            delete m_RealTimeGRI;
-            m_RealTimeGRI = nullptr;
+            delete _GRI;
+            _GRI = nullptr;
         }
     }
 
-    GRICommandsCreate* MacOSPlatform::OSPlatformCreateGRC()
+    GRIDrive* MacOSPlatform::OSPlatformCreateGRI()
     {
-        if (m_TypeGRI && m_RealTimeGRI)
+        if (_GRI)
         {
-            return m_RealTimeGRI;
+            return _GRI;
         }
-        m_TypeGRI = new GLTypeGRI();
+
         //m_PlatformGRI = new VulkanPlatformGRI();//if config with json
         //m_PlatformGRI = new MetalPlatformGRI();
         //Windows platform can support OpenGL, Vulakn GRI
-        if (m_TypeGRI->IsSupport())
-        {
-            m_RealTimeGRI = m_TypeGRI->CreateGRC();
-        }
-        return m_RealTimeGRI;
-    }
-
-    GRICommandsSet* MacOSPlatform::OSPlatformCreateGRS()
-    {
-        if (m_TypeGRI && m_RealTimeGRI)
-        {
-            m_Commands = m_TypeGRI->CreateGRS();
-            return m_Commands;
-        }
-        SN_ERR("Please Fast Call OSPlatformCreateRealTimeGRI Function.");
-        return nullptr;
+#if GRI_PLATFORM == GRI_GL
+        _GRI = new GRIGLDrive();
+#endif
+        return _GRI;
     }
 }
