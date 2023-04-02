@@ -20,20 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GRIProfiles.h"
-namespace nw
+#include <stdlib.h>
+#include <iostream>
+#include "LogAssert.h"
+#include "FrameWorkMultiThread.h"
+
+int main()
 {
-    class RenderPipeline
+	SN_LOG("Hello World!\n");
+	ThreadMultiRender::MTRFrameWork* mrtFW = new ThreadMultiRender::MTRFrameWork();
+	mrtFW->Initial();
+    
+    
+    while(true)
     {
-    public:
-        RenderPipeline();
-        RenderPipeline(const char* vertShaderSrc, const char* fragShaderSrc);
-
-    private:
-        GLuint loadShader(GLenum type, const char* shaderSrc);
-
-    private:
-        GLuint pipeline = -1;
-    };
+        //SN_LOG("======Main Thread.");
+    }
+    delete mrtFW;
+	system("pause");
+	return 0;
 }

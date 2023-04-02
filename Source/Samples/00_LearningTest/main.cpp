@@ -24,27 +24,29 @@
 #include <stdio.h>
 #include <iostream>
 #include "LogAssert.h"
-#include "Tree.h"
-#include "List.h"
+#include "TreeBase.h"
+#include "ListBase.h"
+#include "StackBase.h"
 #include "BaseKnowledge.h"
 #include "Ptr.h"
 #include "Cache.h"
-#include "DSA.h"
+#include "NumberProcess.h"
 #include "File.h"
 #include "SingletonBase.h"
 #include "LockFree.h"
 #include "FunCb.h"
+
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
-	SN_LOG("Learning KnowLedge!\n");
-
-	{
-		int a = 1;
-		int b = a & (~a);
-		SN_LOG("Value:%d", b);
-	}
+	SN_LOG("Learning KnowLedge!");
+    //Study Base Data Structure
+    {
+        StudyList();
+        Stack_Data();
+        StudyNumberProcess();
+    }
 
 	//{
 	//	CommandBuffer* cb = new CommandBuffer();
@@ -75,13 +77,7 @@ int main()
 //
 //		HungrySingleton* instance2 = HungrySingleton::GetInstance();
 //	}
-//	//Data structures and algorithms
-//	{
-//		DSA* dsa = new DSA();
-//		dsa->TestTwoNumSum();
-//		dsa->TestBigNumSum();
-//		delete dsa;
-//	}
+
 //	//LRUCache
 //	{
 //		LRU lru(5);
@@ -150,16 +146,7 @@ int main()
 //		delete bt;
 //		bt = nullptr;
 //	}
-//	//Study ListNode
-//	{
-//		SN_LOG("====================");
-//		ListAlgorithm* la = new ListAlgorithm();
-//		la->ReverseListNode();
-//
-//		la->IsExitisLoop();
-//		delete la;
-//		la = nullptr;
-//	}
+
 //	//Base KnowLedge
 //	{
 //		//Base tem1 = Base();

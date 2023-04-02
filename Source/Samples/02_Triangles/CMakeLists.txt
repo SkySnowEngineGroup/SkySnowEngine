@@ -22,11 +22,14 @@
 #
 
 set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+file(GLOB Sources_lists  "${SAMPLE_DIR}/*.cpp"
+	                     "${SAMPLE_DIR}/*.h"
+						 )
 
-file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
-
-add_executable(Window ${Sources_lists})
-
-target_include_directories(Window PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
-
-target_link_libraries(Window SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+add_executable(Triangle ${Frameworks_lists} ${Sources_lists})
+target_include_directories(Triangle PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>)
+if(WIN32)
+    target_link_libraries(Triangle SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
+else()
+    target_link_libraries(Triangle SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+endif(WIN32)
