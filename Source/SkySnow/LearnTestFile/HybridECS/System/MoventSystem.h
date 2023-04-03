@@ -21,20 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include <list>
-#include <memory>
-using namespace std;
-namespace SkySnow
+#include "LogAssert.h"
+#include "TSystem.h"
+namespace SkySnowLearning
 {
-	class Camera;
-	class RenderManager
-	{
-	public:
-		RenderManager();
-		~RenderManager();
-
-
-	private:
-		std::list<shared_ptr<Camera>> m_CameraList;
-	};
+    class MoventSystem : public System
+    {
+    public:
+        MoventSystem();
+        ~MoventSystem();
+        
+        virtual void DoUpdate() override;
+        
+    private:
+    };
 }

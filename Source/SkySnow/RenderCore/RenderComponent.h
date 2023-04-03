@@ -24,11 +24,11 @@
 #include "IComponent.h"
 namespace SkySnow
 {
-	class Camera : public IComponent
+	class RenderComponent : public IComponent
 	{
-		SkySnow_Object(Camera, IComponent);
+		SkySnow_Object(RenderComponent, IComponent);
 	public:
-		Camera();
-		~Camera();
+		RenderComponent();
+		~RenderComponent();
 	};
 }

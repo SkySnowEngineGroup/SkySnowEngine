@@ -20,14 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "RefCounted.h"
-namespace SkySnow
+#include "MoventSystem.h"
+#include "SceneManager.h"
+#include "TransformComponent.h"
+namespace SkySnowLearning
 {
-	class Scene : public RefThreadSafeCounted
-	{
-	public:
-		Scene();
-		~Scene();
-	};
+    MoventSystem::MoventSystem()
+    {
+        
+    }
+    MoventSystem::~MoventSystem()
+    {
+        
+    }
+
+    void MoventSystem::DoUpdate()
+    {
+        TransformComponent* trasCom = SceneManager::Instance()->GetSceneNode()->GetComponent<TransformComponent>();
+        trasCom->Update();
+    }
 }
+

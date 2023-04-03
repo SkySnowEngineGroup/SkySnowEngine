@@ -21,26 +21,50 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
+#include "Object.h"
 #include <vector>
-#include "SceneNode.h"
+#include "IComponent.h"
 namespace SkySnow
 {
-    class SceneManager : public NonCopyable
+    //SceneNode is ECS of the ECS System
+    //GameObject in u3d, actor in ue
+    class SceneNode : public Object
     {
+        SkySnow_Object(SceneNode,Object);
     public:
-        static SceneManager* Instance();
+        SceneNode();
+        ~SceneNode();
+        template<typename T> T* GetComponent();
         
-        SceneNode* CreateScene();
+        template<typename T> bool HasComponent();
         
-        SceneNode* GetSceneNode();
-        
-        void GetScenes(std::vector<SceneNode*>& sceneList);
+        void AddComponent(IComponent* component);
     private:
-        SceneManager();
-        ~SceneManager();
-    private:
-        std::vector<SceneNode*> _SceneList;
+        std::vector<IComponent*> _ComponentList;
     };
+    //========================================================================================
+    template<typename T> inline T* SceneNode::GetComponent()
+    {
+        for(int i = 0; i < _ComponentList.size(); i ++)
+        {
+            if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
+            {
+                Component* com = _ComponentList[i];
+                return dynamic_cast<T*>(com);
+            }
+        }
+        return nullptr;
+    }
+    //========================================================================================
+    template<typename T> inline bool SceneNode::HasComponent()
+    {
+        for(int i = 0; i < _ComponentList.size(); i ++)
+        {
+            if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
-

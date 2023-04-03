@@ -20,15 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-namespace SkySnow
+#include "SceneNode.h"
+
+namespace SkySnowLearning
 {
-	class Camera : public IComponent
-	{
-		SkySnow_Object(Camera, IComponent);
-	public:
-		Camera();
-		~Camera();
-	};
+    SceneNode::SceneNode()
+    {
+        
+    }
+    SceneNode::~SceneNode()
+    {
+        
+    }
+
+    void SceneNode::AddComponent(Component* component)
+    {
+        _ComponentList.push_back(component);
+    }
 }
+

@@ -20,15 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "Object.h"
+#include "Framework.h"
 namespace SkySnow
 {
-	class Node : public Object
+    Framework::Framework()
     {
-        SkySnow_Object(Node,Object);
-    public:
-        Node();
-        virtual ~Node();
-    };
+
+    }
+    Framework::~Framework()
+    {
+
+    }
+
+    void Framework::WordUpdate()
+    {
+
+    }
 }

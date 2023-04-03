@@ -20,15 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-namespace SkySnow
+#include "SceneManager.h"
+
+namespace SkySnowLearning
 {
-	class Camera : public IComponent
-	{
-		SkySnow_Object(Camera, IComponent);
-	public:
-		Camera();
-		~Camera();
-	};
+    SceneManager::SceneManager()
+    {
+        
+    }
+    SceneManager::~SceneManager()
+    {
+        
+    }
+    SceneManager* SceneManager::Instance()
+    {
+        static SceneManager instance;
+        return &instance;
+    }
+
+    SceneNode* SceneManager::CreateScene()
+    {
+        SceneNode* sn =  new SceneNode();
+        _SceneList.push_back(sn);
+        return sn;
+    }
+
+    SceneNode* SceneManager::GetSceneNode()
+    {
+        return _SceneList[0];
+    }
+
+    void SceneManager::GetScenes(std::vector<SceneNode*>& sceneList)
+    {
+        for(auto entry:_SceneList)
+        {
+            sceneList.push_back(entry);
+        }
+    }
 }
+

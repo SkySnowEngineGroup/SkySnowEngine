@@ -20,15 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-namespace SkySnow
+#pragma once
+#include "LogAssert.h"
+#include "TComponent.h"
+namespace SkySnowLearning
 {
-	class Camera : public IComponent
-	{
-		SkySnow_Object(Camera, IComponent);
-	public:
-		Camera();
-		~Camera();
-	};
+    class RenderComponent : public Component
+    {
+        SkySnow_Object(RenderComponent,Component);
+    public:
+        RenderComponent();
+        
+        ~RenderComponent();
+        
+        virtual void Update() override;
+    };
 }

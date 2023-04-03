@@ -19,16 +19,27 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-#pragma once 
-#include "IComponent.h"
+#pragma once
+#include "Object.h"
 namespace SkySnow
 {
-	class Camera : public IComponent
+	class IComponent : public Object
 	{
-		SkySnow_Object(Camera, IComponent);
+		SkySnow_Object(IComponent,Object);
 	public:
-		Camera();
-		~Camera();
+		IComponent() {}
+		virtual ~IComponent() {}
+
+		virtual void Update() {}
+
+		virtual void Deactivate() { _Enable = false; }
+
+		virtual bool HasEnabled() const { return _Enable; }
+
+		virtual bool GetEnabled() const { return _Enable; }
+
+		virtual void SetEnabled(bool enable) { _Enable = enable; }
+	protected:
+		bool		_Enable = true;
 	};
 }

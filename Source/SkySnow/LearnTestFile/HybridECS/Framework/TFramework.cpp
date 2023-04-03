@@ -20,15 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-namespace SkySnow
+#include "TFramework.h"
+#include "SkySnowConfigInfo.h"
+#include "TransformComponent.h"
+#include "RenderComponent.h"
+#include "SceneNode.h"
+#include "SceneManager.h"
+namespace SkySnowLearning
 {
-	class Camera : public IComponent
-	{
-		SkySnow_Object(Camera, IComponent);
-	public:
-		Camera();
-		~Camera();
-	};
+    TFramework::TFramework()
+        : _MoventSystem(nullptr)
+        , _RenderSystem(nullptr)
+        , _TestInit(false)
+    {
+        
+    }
+    TFramework::~TFramework()
+    {
+        Delete_Object(_MoventSystem);
+        Delete_Object(_RenderSystem);
+    }
+
+    void TFramework::WordUpdate()
+    {
+        if(!_TestInit)
+        {
+            SceneNode* rootSN = SceneManager::Instance()->CreateScene();
+            TransformComponent* tc = new TransformComponent();
+            RenderComponent* rc = new RenderComponent();
+            rootSN->AddComponent(tc);
+            rootSN->AddComponent(rc);
+            _TestInit = true;
+        }
+        if(!_MoventSystem)
+        {
+            _MoventSystem = new MoventSystem();
+        }
+        if(!_RenderSystem)
+        {
+            _RenderSystem = new RenderSystem();
+        }
+        
+        _MoventSystem->DoUpdate();
+        _RenderSystem->DoUpdate();
+        
+        _RenderSystem->DoRender();
+    }
 }
+

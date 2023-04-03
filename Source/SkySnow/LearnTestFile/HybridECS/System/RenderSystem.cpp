@@ -20,13 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-namespace SkySnow
+#include "RenderSystem.h"
+#include "RenderComponent.h"
+#include "SceneManager.h"
+namespace SkySnowLearning
 {
-	class RenderScene
-	{
-	public:
-		RenderScene();
-		~RenderScene();
-	};
+    RenderSystem::RenderSystem()
+    {
+        
+    }
+    RenderSystem::~RenderSystem()
+    {
+        
+    }
+
+    void RenderSystem::DoUpdate()
+    {
+        RenderComponent* rederCom = SceneManager::Instance()->GetSceneNode()->GetComponent<RenderComponent>();
+        rederCom->Update();
+    }
+
+    void RenderSystem::DoRender()
+    {
+        RenderComponent* rederCom = SceneManager::Instance()->GetSceneNode()->GetComponent<RenderComponent>();
+    }
 }

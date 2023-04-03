@@ -35,17 +35,19 @@
 #include "SingletonBase.h"
 #include "LockFree.h"
 #include "FunCb.h"
+#include "TFramework.h"
 
-using namespace SkySnow;
+//using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!");
     //Study Base Data Structure
     {
-        StudyList();
-        Stack_Data();
-        StudyNumberProcess();
+//        StudyList();
+//        Stack_Data();
+        //StudyNumberProcess();
+		TestECS();
     }
 
 	//{
