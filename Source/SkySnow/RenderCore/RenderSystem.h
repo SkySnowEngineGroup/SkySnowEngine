@@ -21,34 +21,24 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
-#include "RunnableThread.h"
-#include "LogAssert.h"
-#include <pthread.h>
+#include "ISystem.h"
 namespace SkySnow
 {
-	class RunnablePThread : public RunnableThread
-	{
-	public:
-		RunnablePThread();
-		virtual ~RunnablePThread();
-
-		virtual void SetPriority(ThreadPriority priority) override;
-
-		virtual void Pause() override;
-
-		virtual bool Exit() override;
-
-		virtual void WaitForExit() override;
-	protected:
-		virtual bool CreateThread(Runnable* runnable,std::string name = "NullName") override;
-	private:
-		static void* PThreadFun(void* ptr);
-		void Run();
-		void UpdatePriority(pthread_t thread, ThreadPriority newPriority);
-	private:
-		bool		_IsExit;
-		pthread_t	_PThread;
-		int			_DThreadPriority;
-	};
+    class RenderSystem : public ISystem
+    {
+    public:
+        RenderSystem();
+        
+        ~RenderSystem();
+        
+        virtual void PreUpdate() final override;
+        
+        virtual void Update() final override;
+        
+        virtual void PostUpdate()final override;
+        
+        virtual void ShutDown() final override;
+    private:
+        
+    };
 }

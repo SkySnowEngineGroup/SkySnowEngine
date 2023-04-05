@@ -19,48 +19,48 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
 #include "Object.h"
-#include <vector>
 #include "IComponent.h"
 namespace SkySnow
 {
-    //SceneNode is ECS of the ECS System
-    //GameObject in u3d, actor in ue
-    class SceneNode : public Object
-    {
-        SkySnow_Object(SceneNode,Object);
-    public:
-        SceneNode();
-        ~SceneNode();
-        template<typename T> T* GetComponent();
-        
-        template<typename T> bool HasComponent();
-        
+	class GameObject : public Object
+	{
+		SkySnow_Object(GameObject, Object);
+	public:
+		GameObject();
+		virtual ~GameObject();
+
+
+		template<typename T> T* GetComponent();
+
+		template<typename T> bool HasComponent();
+
         void AddComponent(IComponent* component);
-    private:
-        std::vector<IComponent*> _ComponentList;
-    };
+	private:
+        //TODO: Whether the array is going to be here, whether it's going to be a miss in memory
+		std::vector<IComponent*> _ComponentList; 
+	};
+
     //========================================================================================
-    template<typename T> inline T* SceneNode::GetComponent()
+    template<typename T> inline T* GameObject::GetComponent()
     {
-        for(int i = 0; i < _ComponentList.size(); i ++)
+        for (int i = 0; i < _ComponentList.size(); i++)
         {
-            if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
+            if (T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
             {
-                Component* com = _ComponentList[i];
+                IComponent* com = _ComponentList[i];
                 return dynamic_cast<T*>(com);
             }
         }
         return nullptr;
     }
     //========================================================================================
-    template<typename T> inline bool SceneNode::HasComponent()
+    template<typename T> inline bool GameObject::HasComponent()
     {
-        for(int i = 0; i < _ComponentList.size(); i ++)
+        for (int i = 0; i < _ComponentList.size(); i++)
         {
-            if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
+            if (T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
             {
                 return true;
             }

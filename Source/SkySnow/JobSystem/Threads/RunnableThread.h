@@ -42,7 +42,7 @@ namespace SkySnow
 
 		virtual void WaitForExit() = 0;
 	protected:
-		virtual bool CreateRunnableThread(Runnable* runnable,std::string name = "NullName") = 0;
+		virtual bool CreateThread(Runnable* runnable,std::string name = "NullName") = 0;
 	protected:
 		Runnable*		_Runnable;
 		ThreadPriority	_ThreadPriority;

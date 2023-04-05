@@ -20,35 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "NonCopyable.h"
-#include "RunnableThread.h"
-#include "LogAssert.h"
-#include <pthread.h>
+#pragma once 
+#include "IComponent.h"
 namespace SkySnow
 {
-	class RunnablePThread : public RunnableThread
+	class RenderLayerComponent : public IComponent
 	{
+		SkySnow_Object(RenderLayerComponent, IComponent);
 	public:
-		RunnablePThread();
-		virtual ~RunnablePThread();
-
-		virtual void SetPriority(ThreadPriority priority) override;
-
-		virtual void Pause() override;
-
-		virtual bool Exit() override;
-
-		virtual void WaitForExit() override;
-	protected:
-		virtual bool CreateThread(Runnable* runnable,std::string name = "NullName") override;
-	private:
-		static void* PThreadFun(void* ptr);
-		void Run();
-		void UpdatePriority(pthread_t thread, ThreadPriority newPriority);
-	private:
-		bool		_IsExit;
-		pthread_t	_PThread;
-		int			_DThreadPriority;
+        RenderLayerComponent();
+		~RenderLayerComponent();
 	};
 }

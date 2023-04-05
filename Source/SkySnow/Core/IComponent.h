@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once
 #include "Object.h"
+#include <vector>
 namespace SkySnow
 {
 	class IComponent : public Object
@@ -35,8 +36,6 @@ namespace SkySnow
 		virtual void Deactivate() { _Enable = false; }
 
 		virtual bool HasEnabled() const { return _Enable; }
-
-		virtual bool GetEnabled() const { return _Enable; }
 
 		virtual void SetEnabled(bool enable) { _Enable = enable; }
 	protected:

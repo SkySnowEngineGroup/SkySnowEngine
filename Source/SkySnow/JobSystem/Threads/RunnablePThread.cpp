@@ -80,7 +80,7 @@ namespace SkySnow
 		pthread_exit((void*)nullptr);
 		return nullptr;
 	}
-	bool RunnablePThread::CreateRunnableThread(Runnable* runnable, std::string name)
+	bool RunnablePThread::CreateThread(Runnable* runnable, std::string name)
 	{
 		_Runnable = runnable;
 		_ThreadName = name;

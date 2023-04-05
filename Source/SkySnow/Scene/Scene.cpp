@@ -20,22 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "SceneNode.h"
+#include "Scene.h"
 
 namespace SkySnow
 {
-    SceneNode::SceneNode()
+    Scene::Scene()
     {
         
     }
-    SceneNode::~SceneNode()
+    Scene::~Scene()
     {
         
-    }
-
-    void SceneNode::AddComponent(IComponent* component)
-    {
-        _ComponentList.push_back(component);
     }
 }
 

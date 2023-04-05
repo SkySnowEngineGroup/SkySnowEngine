@@ -19,36 +19,23 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include "NonCopyable.h"
-#include "RunnableThread.h"
-#include "LogAssert.h"
-#include <pthread.h>
+
+#pragma once
+#include "Object.h"
 namespace SkySnow
 {
-	class RunnablePThread : public RunnableThread
-	{
-	public:
-		RunnablePThread();
-		virtual ~RunnablePThread();
-
-		virtual void SetPriority(ThreadPriority priority) override;
-
-		virtual void Pause() override;
-
-		virtual bool Exit() override;
-
-		virtual void WaitForExit() override;
-	protected:
-		virtual bool CreateThread(Runnable* runnable,std::string name = "NullName") override;
-	private:
-		static void* PThreadFun(void* ptr);
-		void Run();
-		void UpdatePriority(pthread_t thread, ThreadPriority newPriority);
-	private:
-		bool		_IsExit;
-		pthread_t	_PThread;
-		int			_DThreadPriority;
-	};
+    class ISystem : public Object
+    {
+        SkySnow_Object(ISystem,Object);
+    public:
+        ISystem() {}
+        virtual ~ISystem() {}
+        
+        virtual void PreUpdate() = 0;
+        virtual void Update() = 0;
+        virtual void PostUpdate() = 0;
+        
+        virtual void ShutDown() = 0;
+    };
 }
