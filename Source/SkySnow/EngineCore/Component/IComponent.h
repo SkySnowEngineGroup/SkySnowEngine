@@ -19,43 +19,33 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-#include "SceneManager.h"
-
+#pragma once
+#include "Object.h"
+#include <vector>
 namespace SkySnow
 {
-    SceneManager::SceneManager()
-    {
+    class GameObject;
+	class IComponent : public Object
+	{
+		SkySnow_Object(IComponent,Object);
+	public:
+		IComponent() {}
+		virtual ~IComponent() {}
         
-    }
-    SceneManager::~SceneManager()
-    {
+        //Think: if we change this virtual function to a FunctionCallBack, will it reduce the virtual table query time in large scene?
+        virtual void Update() = 0;
+
+		virtual void Deactivate() { _Enable = false; }
+
+		virtual bool HasEnabled() const { return _Enable; }
+
+		virtual void SetEnabled(bool enable) { _Enable = enable; }
         
-    }
-    SceneManager* SceneManager::Instance()
-    {
-        static SceneManager instance;
-        return &instance;
-    }
-
-    Scene* SceneManager::CreateScene()
-    {
-        Scene* sn =  new Scene();
-        _SceneList.push_back(sn);
-        return sn;
-    }
-
-    Scene* SceneManager::GetActiveScene()
-    {
-        return _SceneList[0];
-    }
-
-    void SceneManager::GetScenes(std::vector<Scene*>& sceneList)
-    {
-        for(auto entry:_SceneList)
-        {
-            sceneList.push_back(entry);
-        }
-    }
+        GameObject& GetGameObject(){return *_GameObject;}
+        
+        void AttachToGameObject(GameObject* go){_GameObject = go;}
+	protected:
+		bool		_Enable = true;
+        GameObject* _GameObject;
+	};
 }
-

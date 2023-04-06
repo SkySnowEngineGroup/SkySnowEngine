@@ -33,6 +33,7 @@ namespace SkySnow
     }
 	void GameObject::AddComponent(IComponent* component)
     {
+        component->AttachToGameObject(this);
         _ComponentList.push_back(component);
     }
 }

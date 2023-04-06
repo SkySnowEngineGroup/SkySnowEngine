@@ -30,5 +30,7 @@ namespace SkySnow
 	public:
 		RenderComponent();
 		~RenderComponent();
+        
+        virtual void Update() final override;
 	};
 }

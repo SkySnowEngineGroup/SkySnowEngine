@@ -20,42 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "SceneManager.h"
-
+#include "EngineThread.h"
+#include "Application.h"
 namespace SkySnow
 {
-    SceneManager::SceneManager()
+    EngineThread::EngineThread()
     {
         
     }
-    SceneManager::~SceneManager()
+
+    EngineThread::~EngineThread()
     {
         
     }
-    SceneManager* SceneManager::Instance()
+
+    void EngineThread::Run()
     {
-        static SceneManager instance;
-        return &instance;
+        
     }
 
-    Scene* SceneManager::CreateScene()
+    void EngineThread::Stop()
     {
-        Scene* sn =  new Scene();
-        _SceneList.push_back(sn);
-        return sn;
+        
     }
 
-    Scene* SceneManager::GetActiveScene()
+    void EngineThread::Exit()
     {
-        return _SceneList[0];
-    }
-
-    void SceneManager::GetScenes(std::vector<Scene*>& sceneList)
-    {
-        for(auto entry:_SceneList)
-        {
-            sceneList.push_back(entry);
-        }
+        
     }
 }
-

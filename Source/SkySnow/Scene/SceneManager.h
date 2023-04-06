@@ -23,24 +23,25 @@
 #pragma once
 #include "NonCopyable.h"
 #include <vector>
-#include "SceneNode.h"
+#include "Scene.h"
 namespace SkySnow
 {
+    //SkySnow use HybridECS framework
     class SceneManager : public NonCopyable
     {
     public:
         static SceneManager* Instance();
+        //TODO: Create a Scene where memory is allocated from the memory pool, what type of memory pool should be used?
+        Scene* CreateScene();
         
-        SceneNode* CreateScene();
+        Scene* GetActiveScene();
         
-        SceneNode* GetSceneNode();
-        
-        void GetScenes(std::vector<SceneNode*>& sceneList);
+        void GetScenes(std::vector<Scene*>& sceneList);
     private:
         SceneManager();
         ~SceneManager();
     private:
-        std::vector<SceneNode*> _SceneList;
+        std::vector<Scene*> _SceneList;
     };
 }
 

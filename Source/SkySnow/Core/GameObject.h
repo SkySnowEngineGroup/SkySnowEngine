@@ -31,12 +31,15 @@ namespace SkySnow
 		GameObject();
 		virtual ~GameObject();
 
-
 		template<typename T> T* GetComponent();
 
 		template<typename T> bool HasComponent();
 
         void AddComponent(IComponent* component);
+        
+        void RemoveComponent(IComponent* component);
+        
+        template<typename T> void GetComponents(std::vector<IComponent*>& comList);
 	private:
         //TODO: Whether the array is going to be here, whether it's going to be a miss in memory
 		std::vector<IComponent*> _ComponentList; 
@@ -66,5 +69,16 @@ namespace SkySnow
             }
         }
         return false;
+    }
+    //========================================================================================
+    template<typename T> inline void GameObject::GetComponents(std::vector<IComponent*>& comList)
+    {
+        for(auto entry:_ComponentList)
+        {
+            if(T::GetTypeNameStatic() == entry->GetTypeName())
+            {
+                comList.emplace_back(entry);
+            }
+        }
     }
 }

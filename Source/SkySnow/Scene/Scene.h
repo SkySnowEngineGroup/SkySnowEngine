@@ -25,12 +25,19 @@
 
 namespace SkySnow
 {
+    class GameObject;
     class Scene : public Object
     {
         SkySnow_Object(Scene,Object);
     public:
         Scene();
         ~Scene();
+        
+        void AttachGameObject(GameObject* go);
+        
+        void UpdateActiveGameObject();
+    private:
+        
     };
 
 }

@@ -19,58 +19,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-#include "EngineMainThread.h"
-#include "Application.h"
+#pragma once
+#include "Object.h"
 namespace SkySnow
 {
-	EngineMainThread::EngineMainThread()
-		: m_ExitMainThread(false)
-		, m_MainThread(nullptr)
-		, m_EngineLoopFunPtr(nullptr)
+	class Behaviour : public Object
 	{
-	}
-
-	EngineMainThread::~EngineMainThread()
-	{
-		if (m_MainThread)
-		{
-			delete m_MainThread;
-			m_MainThread = nullptr;
-		}
-	}
-
-	void EngineMainThread::StartEngineMainThread()
-	{
-		if (m_MainThread == nullptr)
-		{
-			m_MainThread = new SkySnow::Thread();
-			m_MainThread->SetName("Main_Thread.");
-			m_MainThread->Run(EngineMainThreadRun, this);
-		}
-	}
-
-	void EngineMainThread::StopEngineMainThread()
-	{
-		if (m_MainThread)
-		{
-			m_ExitMainThread = true;
-			m_MainThread->Stop();
-		}
-	}
-
-	void EngineMainThread::AttactMainThread(void(Application::* EngineLoopFun)(void), Application* ptr)
-	{
-		m_EngineLoopFunPtr = EngineLoopFun;
-		m_App = ptr;
-	}
-
-	void EngineMainThread::MainThreadUpdate()
-	{
-		while (!m_ExitMainThread)
-		{
-			(m_App->*m_EngineLoopFunPtr)();
-			SN_LOG("SkySnowEngine EngineMain Thread Update.");
-		}
-	}
+		SkySnow_Object(Behaviour, Object);
+	public:
+		Behaviour();
+		virtual ~Behaviour();
+	};
 }
