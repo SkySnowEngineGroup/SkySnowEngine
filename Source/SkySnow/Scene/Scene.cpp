@@ -21,10 +21,11 @@
 // THE SOFTWARE.
 //
 #include "Scene.h"
-
+#include "SkySnowConfigInfo.h"
 namespace SkySnow
 {
     Scene::Scene()
+        : _CullingMask(g_DefaultCullingMask)
     {
         
     }

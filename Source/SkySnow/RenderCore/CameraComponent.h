@@ -21,14 +21,14 @@
 // THE SOFTWARE.
 //
 #pragma once 
-#include "IComponent.h"
+#include "Behaviour.h"
 namespace SkySnow
 {
-	class RenderLayer : public IComponent
+	class CameraComponent : public Behaviour
 	{
-		SkySnow_Object(RenderLayer, IComponent);
+		SkySnow_Object(CameraComponent, Behaviour);
 	public:
-		RenderLayer();
-		~RenderLayer();
+		CameraComponent();
+		~CameraComponent();
 	};
 }

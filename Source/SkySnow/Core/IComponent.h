@@ -24,21 +24,28 @@
 #include <vector>
 namespace SkySnow
 {
+    class GameObject;
 	class IComponent : public Object
 	{
 		SkySnow_Object(IComponent,Object);
 	public:
-		IComponent() {}
+		IComponent()
+			: _GameObject(nullptr)
+		{
+		}
 		virtual ~IComponent() {}
 
-		virtual void Update() {}
+		virtual void Update() = 0;
 
 		virtual void Deactivate() { _Enable = false; }
 
 		virtual bool HasEnabled() const { return _Enable; }
 
 		virtual void SetEnabled(bool enable) { _Enable = enable; }
+        //base function
+        void AttachToGameObject(GameObject* go);
 	protected:
 		bool		_Enable = true;
+        GameObject* _GameObject;
 	};
 }

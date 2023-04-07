@@ -36,8 +36,12 @@ namespace SkySnow
         void AttachGameObject(GameObject* go);
         
         void UpdateActiveGameObject();
-    private:
+        //Scene culling mask
+        void SetSceneCullingMask(uint64_t cullingMask);
         
+        uint64_t GetSceneLayer() const;
+    private:
+        uint64_t _CullingMask;
     };
 
 }

@@ -30,6 +30,12 @@ namespace SkySnow
 	public:
 		GameObject();
 		virtual ~GameObject();
+        
+        void SetLayer(int32_t layer);
+        
+        int32_t GetLayer() const;
+        //Gets the tag of the GameObject's level
+        int32_t GetLayerMask() const;
 
 		template<typename T> T* GetComponent();
 
@@ -41,6 +47,8 @@ namespace SkySnow
         
         template<typename T> void GetComponents(std::vector<IComponent*>& comList);
 	private:
+        //GameObject at Layer
+        int32_t _Layer;
         //TODO: Whether the array is going to be here, whether it's going to be a miss in memory
 		std::vector<IComponent*> _ComponentList; 
 	};

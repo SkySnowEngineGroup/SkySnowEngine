@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 
 #include "GameObject.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
     GameObject::GameObject()
@@ -30,6 +31,28 @@ namespace SkySnow
     GameObject::~GameObject()
     {
 
+    }
+    //value between [0 32),so layer max is 32
+    void GameObject::SetLayer(int32_t layer)
+    {
+        if(layer >= 0 && layer < 32)
+        {
+            _Layer = layer;
+        }
+        else
+        {
+            SN_WARN("GameObject::SetLayer parameter layer set error,The interval should be between [0 32].this setup layer value:%d",layer);
+        }
+    }
+
+    int32_t GameObject::GetLayer() const
+    {
+        return _Layer;
+    }
+    //Gets the tag of the GameObject's level
+    int32_t GameObject::GetLayerMask() const
+    {
+        return 1 << _Layer;
     }
 	void GameObject::AddComponent(IComponent* component)
     {
