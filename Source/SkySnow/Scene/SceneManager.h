@@ -30,18 +30,34 @@ namespace SkySnow
     class SceneManager : public NonCopyable
     {
     public:
-        static SceneManager* Instance();
+        static SceneManager& Instance();
         //TODO: Create a Scene where memory is allocated from the memory pool, what type of memory pool should be used?
-        Scene* CreateScene();
-        
-        Scene* GetActiveScene();
-        
+        Scene* CreateScene(std::string name = "");
+        //Get all scene list
         void GetScenes(std::vector<Scene*>& sceneList);
+        //Get Taget SceneName Scene
+        Scene* GetScene(std::string name);
     private:
         SceneManager();
         ~SceneManager();
     private:
         std::vector<Scene*> _SceneList;
     };
+
+    class GameObjectManager : public NonCopyable
+    {
+    public:
+        static GameObjectManager& Instance();
+    private:
+        GameObjectManager(){}
+        ~GameObjectManager(){}
+    private:
+        std::vector<GameObject*> _TagGameObjects;
+        std::vector<GameObject*> _ActiveGameObject;
+    };
+
+
+    GameObjectManager& GetGameObjectManager();
+    SceneManager& GetSceneManager();
 }
 

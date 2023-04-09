@@ -42,8 +42,24 @@ namespace SkySnow
 		virtual bool HasEnabled() const { return _Enable; }
 
 		virtual void SetEnabled(bool enable) { _Enable = enable; }
-        //base function
-        void AttachToGameObject(GameObject* go);
+        //attach this comonent to gameobject
+        void AttachToGameObject(GameObject* go)
+        {
+            _GameObject = go;
+        }
+        void DetachToGameObject()
+        {
+            _GameObject = nullptr;
+        }
+        //Get curr component attach gameobject
+        GameObject* GetGameObject() const
+        {
+            if(!_GameObject)
+            {
+                SN_WARN("Curr Component Not Attach Any GameObject.");
+            }
+            return _GameObject;
+        }
 	protected:
 		bool		_Enable = true;
         GameObject* _GameObject;

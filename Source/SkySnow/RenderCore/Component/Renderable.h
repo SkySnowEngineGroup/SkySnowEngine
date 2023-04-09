@@ -21,40 +21,16 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
-#include "LogAssert.h"
-#include "Thread.h"
+#include "IComponent.h"
 namespace SkySnow
 {
-    class Application;
+	class Renderable : public IComponent
+	{
+		SkySnow_Object(Renderable, IComponent);
+	public:
+		Renderable() {}
+		virtual ~Renderable() {}
 
-    typedef void(Application::*ENGINELOOPFUN)(void);
-    class EngineMainThread : public NonCopyable
-    {
-    public:
-        explicit EngineMainThread();
-        
-        ~EngineMainThread();
-        
-        void StartEngineMainThread();
-        
-        void StopEngineMainThread();
-        
-        void AttactMainThread(void(Application::* EngineLoopFun)(void),Application* ptr);
-    private:
-        static void* EngineMainThreadRun(void* data)
-        {
-            EngineMainThread* worker = (EngineMainThread*)data;
-            worker->MainThreadUpdate();
-            return nullptr;
-        }
-        
-        void MainThreadUpdate();
-    private:
-        bool                    m_ExitMainThread;
-        SkySnow::Thread*        m_MainThread;
-        void (Application::*m_EngineLoopFunPtr)(void);
-        Application*            m_App;
-    };
+		virtual void UpdateRenderer() = 0;
+	};
 }
-

@@ -24,6 +24,7 @@
 #include "IComponent.h"
 namespace SkySnow
 {
+    //if GO has parent-child,A TransformComponent must be mounted
 	class GameObject : public Object
 	{
 		SkySnow_Object(GameObject, Object);
@@ -45,12 +46,23 @@ namespace SkySnow
         
         void RemoveComponent(IComponent* component);
         
-        template<typename T> void GetComponents(std::vector<IComponent*>& comList);
+        void SetTag(int16_t tag);
+        
+        int16_t GetTag() const;
+        
+        void AddChild(GameObject* childGO);
+        
+        void RemoveChild(GameObject* childGO);
+        
+        void SetParent(GameObject* parentGO);
 	private:
         //GameObject at Layer
         int32_t _Layer;
-        //TODO: Whether the array is going to be here, whether it's going to be a miss in memory
-		std::vector<IComponent*> _ComponentList; 
+        int16_t _Tag;
+        GameObject*                 _Parent;
+        std::vector<GameObject*>    _ChildList;
+        //TODO: Whether the array is going to be here, whether it's going to be a miss in cache
+		std::vector<IComponent*>    _ComponentList;
 	};
 
     //========================================================================================
@@ -79,14 +91,4 @@ namespace SkySnow
         return false;
     }
     //========================================================================================
-    template<typename T> inline void GameObject::GetComponents(std::vector<IComponent*>& comList)
-    {
-        for(auto entry:_ComponentList)
-        {
-            if(T::GetTypeNameStatic() == entry->GetTypeName())
-            {
-                comList.emplace_back(entry);
-            }
-        }
-    }
 }

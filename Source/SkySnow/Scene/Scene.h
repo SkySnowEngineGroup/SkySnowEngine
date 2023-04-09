@@ -22,7 +22,9 @@
 //
 #pragma once
 #include "Object.h"
-
+#include "SkySnowConfigInfo.h"
+#include "TransformComponent.h"
+#include <vector>
 namespace SkySnow
 {
     class GameObject;
@@ -30,18 +32,31 @@ namespace SkySnow
     {
         SkySnow_Object(Scene,Object);
     public:
-        Scene();
+        Scene(std::string sceneName = "");
         ~Scene();
         
-        void AttachGameObject(GameObject* go);
-        
-        void UpdateActiveGameObject();
-        //Scene culling mask
+        std::string GetSceneName();
+        //setup curr scene root transform
+        void SetRootTransform(TransformComponent* transform);
+        //get curr scene root transform
+        TransformComponent* GetRootTransform() const;
+        //setup subscene flag
+        void SetSubScene(bool subScene);
+        //get subscene flag
+        bool IsSubScene() const;
+        //Scene culling mask(camera cal visable and novisable)
         void SetSceneCullingMask(uint64_t cullingMask);
-        
-        uint64_t GetSceneLayer() const;
+        //Get Scene
+        uint64_t GetSceneCullingMask() const;
+        //Set curr scene root gameobject
+        void AddRootToScene(GameObject* rootGo);
     private:
-        uint64_t _CullingMask;
+        bool                        _IsSubScene;
+        SkySnowSceneHandle          _SceneHandle;
+        uint64_t                    _CullingMask;
+        std::string                 _SceneName;
+        TransformComponent*         _CurrSceneTransform;
+        std::vector<GameObject*>    _RootList;
     };
 
 }

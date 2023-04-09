@@ -23,6 +23,7 @@
 #pragma once
 #include "GRIProfiles.h"
 #include "LogAssert.h"
+#include "RenderSystem.h"
 namespace SkySnow
 {
     class Framework
@@ -34,7 +35,8 @@ namespace SkySnow
         void WordUpdate();
 
     private:
-        bool          _TestInit = false;
+        bool _TempTest = false;
+        RenderSystem* _RenderSystem;
     };
 	
 }

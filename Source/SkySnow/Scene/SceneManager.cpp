@@ -21,41 +21,61 @@
 // THE SOFTWARE.
 //
 #include "SceneManager.h"
-
+#include "LogAssert.h"
 namespace SkySnow
 {
+    GameObjectManager& GetGameObjectManager()
+    {
+        return GameObjectManager::Instance();
+    }
+    SceneManager& GetSceneManager()
+    {
+        return SceneManager::Instance();
+    }
+
     SceneManager::SceneManager()
     {
-        
     }
     SceneManager::~SceneManager()
     {
-        
     }
-    SceneManager* SceneManager::Instance()
+    SceneManager& SceneManager::Instance()
     {
         static SceneManager instance;
-        return &instance;
+        return instance;
     }
 
-    Scene* SceneManager::CreateScene()
+    Scene* SceneManager::CreateScene(std::string name = "")
     {
-        Scene* sn =  new Scene();
+        Scene* sn =  new Scene(name);
         _SceneList.push_back(sn);
         return sn;
     }
 
-    Scene* SceneManager::GetActiveScene()
+    Scene* SceneManager::GetScene(std::string name)
     {
-        return _SceneList[0];
+        for(auto entry:_SceneList)
+        {
+            if(entry->GetSceneName() == name)
+            {
+                return entry;
+            }
+        }
+        SN_WARN("Not Find This %s Scene.",name.c_str());
+        return nullptr;
     }
-
     void SceneManager::GetScenes(std::vector<Scene*>& sceneList)
     {
         for(auto entry:_SceneList)
         {
             sceneList.push_back(entry);
         }
+    }
+    //========================================================================
+    GameObjectManager& GameObjectManager::Instance()
+    {
+        static GameObjectManager instance;
+        return instance;
     }
 }
 

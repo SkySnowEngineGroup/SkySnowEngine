@@ -21,19 +21,47 @@
 // THE SOFTWARE.
 //
 #include "Framework.h"
+#include "SceneManager.h"
+#include "GameObject.h"
+#include "RenderComponent.h"
+#include "CameraComponent.h"
 namespace SkySnow
 {
     Framework::Framework()
+        : _RenderSystem(nullptr)
     {
 
     }
     Framework::~Framework()
     {
-
+        Delete_Object(_RenderSystem);
     }
 
     void Framework::WordUpdate()
     {
-
+        if(!_TempTest)
+        {
+            _RenderSystem = new RenderSystem();
+            
+            Scene* scene = GetSceneManager().CreateScene("Test");
+            TransformComponent* curSceneTrans = new TransformComponent();
+            scene->SetRootTransform(curSceneTrans);
+            
+            GameObject* go = new GameObject();
+            CameraComponent* cameraCom = new CameraComponent();
+            TransformComponent* goTrans = new TransformComponent();
+            RenderComponent* renderCom = new RenderComponent();
+            
+            go->AddComponent(renderCom);
+            go->AddComponent(goTrans);
+            go->AddComponent(cameraCom);
+            
+            scene->AddRootToScene(go);
+            _TempTest = true;
+        }
+        
+        _RenderSystem->PreUpdate();
+        _RenderSystem->Update();
+        _RenderSystem->PostUpdate();
     }
 }

@@ -24,14 +24,55 @@
 #include "SkySnowConfigInfo.h"
 namespace SkySnow
 {
-    Scene::Scene()
+    Scene::Scene(std::string sceneName)
         : _CullingMask(g_DefaultCullingMask)
+        , _SceneName(sceneName)
+        , _IsSubScene(false)
     {
-        
     }
+
     Scene::~Scene()
     {
         
+    }
+
+    std::string Scene::GetSceneName()
+    {
+        return _SceneName;
+    }
+
+    void Scene::SetRootTransform(TransformComponent* transform)
+    {
+        _CurrSceneTransform = transform;
+    }
+    TransformComponent* Scene::GetRootTransform() const
+    {
+        return _CurrSceneTransform;
+    }
+    
+    void Scene::SetSubScene(bool subScene)
+    {
+        _IsSubScene = subScene;
+    }
+    
+    bool Scene::IsSubScene()const
+    {
+        return _IsSubScene;
+    }
+    
+    void Scene::SetSceneCullingMask(uint64_t cullingMask)
+    {
+        _CullingMask = cullingMask;
+    }
+
+    uint64_t Scene::GetSceneCullingMask() const
+    {
+        return _CullingMask;
+    }
+
+    void Scene::AddRootToScene(GameObject* rootGo)
+    {
+        _RootList.push_back(rootGo);
     }
 }
 

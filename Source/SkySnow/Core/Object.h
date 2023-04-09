@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once
 #include "ObjectDefines.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
 	class Object

@@ -20,51 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "TFramework.h"
-#include "SkySnowConfigInfo.h"
-#include "TransformComponent.h"
-#include "RenderComponent.h"
-#include "SceneNode.h"
-#include "SceneManager.h"
-namespace SkySnowLearning
+#pragma once 
+#include "Renderable.h"
+namespace SkySnow
 {
-    TFramework::TFramework()
-        : _MoventSystem(nullptr)
-        , _RenderSystem(nullptr)
-        , _TestInit(false)
-    {
+	class RenderComponent : public Renderable
+	{
+		SkySnow_Object(RenderComponent, Renderable);
+	public:
+		RenderComponent();
+		~RenderComponent();
         
-    }
-    TFramework::~TFramework()
-    {
-        Delete_Object(_MoventSystem);
-        Delete_Object(_RenderSystem);
-    }
+        virtual void Update() final override;
 
-    void TFramework::WordUpdate()
-    {
-        if(!_TestInit)
-        {
-            SceneNode* rootSN = SceneManager::Instance()->CreateScene();
-            TransformComponent* tc = new TransformComponent();
-            RenderComponent* rc = new RenderComponent();
-            rootSN->AddComponent(tc);
-            rootSN->AddComponent(rc);
-            _TestInit = true;
-        }
-        if(!_MoventSystem)
-        {
-            _MoventSystem = new MoventSystem();
-        }
-        if(!_RenderSystem)
-        {
-            _RenderSystem = new RenderSystem();
-        }
-        
-        _MoventSystem->DoUpdate();
-        _RenderSystem->DoUpdate();
-        
-        _RenderSystem->DoRender();
-    }
+		virtual void UpdateRenderer() final override;
+	};
 }
-

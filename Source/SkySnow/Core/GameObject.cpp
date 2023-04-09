@@ -22,6 +22,7 @@
 
 #include "GameObject.h"
 #include "LogAssert.h"
+#include "TransformComponent.h"
 namespace SkySnow
 {
     GameObject::GameObject()
@@ -58,5 +59,36 @@ namespace SkySnow
     {
         component->AttachToGameObject(this);
         _ComponentList.push_back(component);
+    }
+    
+    void GameObject::SetTag(int16_t tag)
+    {
+        _Tag = tag;
+    }
+
+    int16_t GameObject::GetTag() const
+    {
+        return _Tag;
+    }
+
+    void GameObject::AddChild(GameObject* childGO)
+    {
+        _ChildList.push_back(childGO);
+    }
+
+    void GameObject::RemoveChild(GameObject* childGO)
+    {
+        for(auto iter = _ChildList.begin(); iter != _ChildList.end(); iter ++)
+        {
+            if(*iter == childGO)
+            {
+                _ChildList.erase(iter);
+            }
+        }
+    }
+
+    void GameObject::SetParent(GameObject* parentGO)
+    {
+        _Parent = parentGO;
     }
 }

@@ -19,33 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
-#include "Object.h"
-#include <vector>
+//
+#pragma once 
+#include "Behaviour.h"
 namespace SkySnow
 {
-    class GameObject;
-	class IComponent : public Object
+	class CameraComponent : public Behaviour
 	{
-		SkySnow_Object(IComponent,Object);
+		SkySnow_Object(CameraComponent, Behaviour);
 	public:
-		IComponent() {}
-		virtual ~IComponent() {}
+		CameraComponent();
+		~CameraComponent();
         
-        //Think: if we change this virtual function to a FunctionCallBack, will it reduce the virtual table query time in large scene?
-        virtual void Update() = 0;
-
-		virtual void Deactivate() { _Enable = false; }
-
-		virtual bool HasEnabled() const { return _Enable; }
-
-		virtual void SetEnabled(bool enable) { _Enable = enable; }
-        
-        GameObject& GetGameObject(){return *_GameObject;}
-        
-        void AttachToGameObject(GameObject* go){_GameObject = go;}
-	protected:
-		bool		_Enable = true;
-        GameObject* _GameObject;
+        virtual void Update() override;
 	};
 }

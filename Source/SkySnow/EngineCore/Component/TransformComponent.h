@@ -21,27 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
-#include <vector>
-#include "SceneNode.h"
-using namespace SkySnow;
-namespace SkySnowLearning
+#include "IComponent.h"
+namespace SkySnow
 {
-    class SceneManager : public NonCopyable
+    class TransformComponent : public IComponent
     {
+        SkySnow_Object(TransformComponent, IComponent);
     public:
-        static SceneManager* Instance();
+        TransformComponent();
+        virtual ~TransformComponent();
         
-        SceneNode* CreateScene();
-        
-        SceneNode* GetSceneNode();
-        
-        void GetScenes(std::vector<SceneNode*>& sceneList);
+        virtual void Update() override;
     private:
-        SceneManager();
-        ~SceneManager();
-    private:
-        std::vector<SceneNode*> _SceneList;
     };
 }
-

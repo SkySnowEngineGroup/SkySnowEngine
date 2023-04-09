@@ -20,24 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "MoventSystem.h"
-#include "SceneManager.h"
 #include "TransformComponent.h"
-namespace SkySnowLearning
+
+namespace SkySnow
 {
-    MoventSystem::MoventSystem()
-    {
-        
-    }
-    MoventSystem::~MoventSystem()
+    TransformComponent::TransformComponent()
     {
         
     }
 
-    void MoventSystem::DoUpdate()
+    TransformComponent::~TransformComponent()
     {
-        TransformComponent* trasCom = SceneManager::Instance()->GetSceneNode()->GetComponent<TransformComponent>();
-        trasCom->Update();
+        
+    }
+
+    void TransformComponent::Update()
+    {
+        
     }
 }
-

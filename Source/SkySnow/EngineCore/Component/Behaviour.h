@@ -19,20 +19,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include "LogAssert.h"
-#include "TSystem.h"
-namespace SkySnowLearning
+#include "IComponent.h"
+namespace SkySnow
 {
-    class MoventSystem : public System
-    {
-    public:
-        MoventSystem();
-        ~MoventSystem();
-        
-        virtual void DoUpdate() override;
-        
-    private:
-    };
+	class Behaviour : public IComponent
+	{
+		SkySnow_Object(Behaviour, IComponent);
+	public:
+		Behaviour();
+		virtual ~Behaviour();
+	};
 }
