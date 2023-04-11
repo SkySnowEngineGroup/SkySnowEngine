@@ -27,7 +27,7 @@ namespace SkySnow
 	{
 		SkySnow_Object(Behaviour, IComponent);
 	public:
-		Behaviour();
-		virtual ~Behaviour();
+        Behaviour(){}
+        virtual ~Behaviour(){}
 	};
 }

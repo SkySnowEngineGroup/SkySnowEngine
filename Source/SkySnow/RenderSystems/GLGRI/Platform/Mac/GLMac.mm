@@ -85,8 +85,8 @@ namespace SkySnow
 
     void GLContextMac::MakeCurrContext()
     {
-        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
-        [glContext makeCurrentContext];
+        //NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+        //[glContext makeCurrentContext];
     }
     
     void GLContextMac::SwapBuffer()

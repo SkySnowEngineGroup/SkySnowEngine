@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "GLFWWindow.h"
-#include "EngineMainThread.h"
+//#include "EngineMainThread.h"
 namespace SkySnow
 {
 #if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)

@@ -45,7 +45,7 @@ namespace SkySnow
         return instance;
     }
 
-    Scene* SceneManager::CreateScene(std::string name = "")
+    Scene* SceneManager::CreateScene(std::string name)
     {
         Scene* sn =  new Scene(name);
         _SceneList.push_back(sn);
