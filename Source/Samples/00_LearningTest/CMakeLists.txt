@@ -30,4 +30,8 @@ add_executable(LearnTest ${Headers_lists} ${Sources_lists})
 
 target_include_directories(LearnTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
-target_link_libraries(LearnTest SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty
+if(WIN32)
+    target_link_libraries(LearnTest SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
+else()
+    target_link_libraries(LearnTest SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+endif(WIN32)

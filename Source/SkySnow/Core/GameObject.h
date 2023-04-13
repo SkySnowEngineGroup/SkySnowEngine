@@ -34,6 +34,10 @@ namespace SkySnow
         
         void SetLayer(int32_t layer);
         
+        void SetEnable(bool enable);
+        
+        bool IsEnable() const;
+        
         int32_t GetLayer() const;
         //Gets the tag of the GameObject's level
         int32_t GetLayerMask() const;
@@ -56,6 +60,7 @@ namespace SkySnow
         
         void SetParent(GameObject* parentGO);
 	private:
+        bool    _Enable;
         //GameObject at Layer
         int32_t _Layer;
         int16_t _Tag;

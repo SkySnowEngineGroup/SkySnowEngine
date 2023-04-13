@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 //
 #include "RenderSystem.h"
+#include "Context.h"
+#include "SceneRenderer.h"
 namespace SkySnow
 {
     RenderSystem::RenderSystem()
@@ -40,7 +42,7 @@ namespace SkySnow
 
     void RenderSystem::Update()
     {
-        
+        Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
     }
 
     void RenderSystem::PostUpdate()

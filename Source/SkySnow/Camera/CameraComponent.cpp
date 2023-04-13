@@ -20,17 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
+#include "CameraComponent.h"
+
 namespace SkySnow
 {
-	class RenderLayerComponent : public IComponent
+	CameraComponent::CameraComponent()
 	{
-		SkySnow_Object(RenderLayerComponent, IComponent);
-	public:
-        RenderLayerComponent();
-		~RenderLayerComponent();
-        
-        virtual void Update() final override;
-	};
+
+	}
+
+	CameraComponent::~CameraComponent()
+	{
+
+	}
+
+	void CameraComponent::Update()
+	{
+
+	}
 }

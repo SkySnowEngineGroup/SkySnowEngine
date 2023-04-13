@@ -34,5 +34,7 @@ namespace SkySnow
         virtual void Update() final override;
 
 		virtual void UpdateRenderer() final override;
+        
+        virtual void SetEnabled(bool enable) override;
 	};
 }

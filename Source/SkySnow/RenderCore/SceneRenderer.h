@@ -21,59 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "MainThreadMulti.h"
-#include "RenderThreadMulti.h"
-#include "ThreadDoubleQueue.h"
-namespace ThreadMultiRender
+#include <vector>
+namespace SkySnow
 {
-	class Engine_DoubleQueue
-	{
-	public:
-		Engine_DoubleQueue()
-			: m_MainThread(nullptr)
-			, m_RenderThread(nullptr)
-			, m_DoublueQueue(nullptr)
-		{
-		}
-
-		virtual ~Engine_DoubleQueue()
-		{
-			if (m_MainThread)
-			{
-				m_MainThread->StopMainThread();
-				delete m_MainThread;
-				m_MainThread = nullptr;
-			}
-			if (m_RenderThread)
-			{
-				m_RenderThread->StopRenderThread();
-				delete m_RenderThread;
-				m_RenderThread = nullptr;
-			}
-			if (m_DoublueQueue)
-			{
-				delete m_DoublueQueue;
-				m_DoublueQueue = nullptr;
-			}
-		}
-
-		void Initial()
-		{
-			m_DoublueQueue = new ThreadDoubleQueue();
-			m_MainThread = new MainThreadMulti(m_DoublueQueue);
-			m_MainThread->StartMainThread();
-
-			m_RenderThread = new RenderThreadMulti(m_DoublueQueue);
-			m_RenderThread->StartRenderThread();
-		}
-        bool IsRuning()
-        {
-            return m_MainThread->IsRuning() && m_RenderThread->IsRuning();
-        }
-
-	private:
-		MainThreadMulti*				m_MainThread;
-		RenderThreadMulti*				m_RenderThread;
-		ThreadDoubleQueue*				m_DoublueQueue;
-	};
+    class Renderable;
+    class SceneRenderer
+    {
+    public:
+        SceneRenderer();
+        
+        virtual ~SceneRenderer();
+        
+        virtual void AddRenderer(Renderable* renderer);
+        
+        virtual void RemoveRenderer(Renderable* renderer);
+        
+        virtual void UpdateAllRenderers();
+    private:
+        std::vector<Renderable*>    _RenderNodes;
+    };
 }

@@ -20,26 +20,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "NonCopyable.h"
-#include "LogAssert.h"
-#include "Thread.h"
-#include "Runnable.h"
+#include "RenderComponent.h"
+#include "Context.h"
+#include "SceneRenderer.h"
 namespace SkySnow
 {
-    class Application;
-    class EngineThread final: public Runnable
+    RenderComponent::RenderComponent()
     {
-    public:
-        EngineThread();
         
-        ~EngineThread();
+    }
+    RenderComponent::~RenderComponent()
+    {
         
-        virtual void Run() override;
+    }
 
-        virtual void Stop() override;
+    void RenderComponent::Update()
+    {
+        
+    }
 
-        virtual void Exit() override;
-    };
+    void RenderComponent::UpdateRenderer()
+    {
+        
+    }
+
+    void RenderComponent::SetEnabled(bool enable)
+    {
+        _Enable = enable;
+        SceneRenderer* sceneRenderer = Context::Instance().GetSceneRenderer();
+        if(_Enable)
+        {
+            sceneRenderer->AddRenderer(this);
+        }
+        else
+        {
+            sceneRenderer->RemoveRenderer(this);
+        }
+    }
 }
-

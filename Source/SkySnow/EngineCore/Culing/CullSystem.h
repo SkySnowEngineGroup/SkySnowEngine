@@ -20,19 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Renderable.h"
+#pragma once
+#include "ISystem.h"
 namespace SkySnow
 {
-	class RenderComponent : public Renderable
-	{
-		SkySnow_Object(RenderComponent, Renderable);
-	public:
-		RenderComponent();
-		~RenderComponent();
+    class CullSystem : public ISystem
+    {
+        SkySnow_Object(CullSystem,ISystem);
+    public:
+        CullSystem();
+        
+        ~CullSystem();
+        
+        virtual void PreUpdate() final override;
         
         virtual void Update() final override;
-
-		virtual void UpdateRenderer() final override;
-	};
+        
+        virtual void PostUpdate() final override;
+        
+        virtual void ShutDown() final override;
+    };
 }

@@ -26,6 +26,10 @@
 namespace SkySnow
 {
     GameObject::GameObject()
+        : _Layer(0)
+        , _Tag(0)
+        , _Parent(nullptr)
+        , _Enable(true)
     {
 
     }
@@ -33,6 +37,24 @@ namespace SkySnow
     {
 
     }
+
+    void GameObject::SetEnable(bool enable)
+    {
+        for(auto iter = _ComponentList.begin(); iter != _ComponentList.end();iter ++)
+        {
+            (*iter)->SetEnabled(enable);
+        }
+        for(auto iter = _ChildList.begin(); iter != _ChildList.end();iter ++)
+        {
+            (*iter)->SetEnable(enable);
+        }
+    }
+
+    bool GameObject::IsEnable() const
+    {
+        return _Enable;
+    }
+
     //value between [0 32),so layer max is 32
     void GameObject::SetLayer(int32_t layer)
     {
@@ -74,15 +96,21 @@ namespace SkySnow
     void GameObject::AddChild(GameObject* childGO)
     {
         _ChildList.push_back(childGO);
+        int32_t layer = _Layer + 1;
+        childGO->SetLayer(layer);
     }
 
     void GameObject::RemoveChild(GameObject* childGO)
     {
-        for(auto iter = _ChildList.begin(); iter != _ChildList.end(); iter ++)
+        for(auto iter = _ChildList.begin(); iter != _ChildList.end();)
         {
             if(*iter == childGO)
             {
-                _ChildList.erase(iter);
+                iter = _ChildList.erase(iter);
+            }
+            else
+            {
+                iter++;
             }
         }
     }

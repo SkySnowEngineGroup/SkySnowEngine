@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <iostream>
 #include "GLFWWindow.h"
-//#include "EngineMainThread.h"
+#include "Framework.h"
 namespace SkySnow
 {
 #if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
@@ -43,7 +43,7 @@ namespace SkySnow
 		Application(const char* name,const char* description);
 		virtual ~Application();
 		virtual bool Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
-		virtual void Update() = 0;
+		//virtual void Update() = 0;
     public:
         //don't overload child
         int RunApplication(Application* app, int argc, const char* const* argv);
@@ -62,6 +62,7 @@ namespace SkySnow
 		int					_Argc;
         GLFWWindow*		    _Window;
 		Application*		_ChildApp;
+		Framework*			_Framework;
 	};
 	
 }

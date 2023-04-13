@@ -29,14 +29,14 @@ namespace SkySnowLearning
 	class CommandBuffer;
 	class BufferT;
 	template<typename T>
-	class Handle
+	class HandleTest
 	{
 	public:
-		Handle()
+        HandleTest()
 			: _Data(nullptr)
 		{
 		}
-		Handle(T* data)
+        HandleTest(T* data)
 			: _Data(data)
 		{
 		}
@@ -60,7 +60,7 @@ namespace SkySnowLearning
 			SN_LOG("BufferT Log Function.");
 		}
 	};
-	using CreateHandle = Handle<BufferT>;
+	using CreateHandle = HandleTest<BufferT>;
 	//该函数对应驱动层的具体接口，这里是示例
 	void SetBufferD(BufferT* buffer)
 	{
@@ -164,7 +164,7 @@ namespace SkySnowLearning
 		}
 		CreateHandle EncoderCreateBuffer()
 		{
-			Handle<BufferT> handle;
+            HandleTest<BufferT> handle;
 			if (handle._Data == nullptr)
 			{
 				SN_LOG("Data is Null.");

@@ -36,6 +36,10 @@ namespace SkySnow
         ~Scene();
         
         std::string GetSceneName();
+        //Set Scene Enable Flag
+        void SetEnable(bool enable);
+        //Get Scene Enable Flag
+        bool IsEnable();
         //setup curr scene root transform
         void SetRootTransform(TransformComponent* transform);
         //get curr scene root transform
@@ -51,6 +55,7 @@ namespace SkySnow
         //Set curr scene root gameobject
         void AddRootToScene(GameObject* rootGo);
     private:
+        bool                        _Enable;
         bool                        _IsSubScene;
         SkySnowSceneHandle          _SceneHandle;
         uint64_t                    _CullingMask;

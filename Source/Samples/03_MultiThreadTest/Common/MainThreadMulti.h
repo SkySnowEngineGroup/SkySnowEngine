@@ -24,6 +24,7 @@
 #include "LogAssert.h"
 #include "Thread.h"
 #include "ThreadQueue.h"
+using namespace ThreadMultiRender;
 class MainThreadMulti
 {
 public:
@@ -46,7 +47,7 @@ public:
     {
         if (m_MainThread == nullptr)
         {
-            m_MainThread = new SkySnow::Thread();
+            m_MainThread = new Thread();
             m_MainThread->SetName("Main_Thread.");
             m_MainThread->Run(MainThreadRun, this);
         }
@@ -84,6 +85,6 @@ private:
     }
 private:
     bool                            m_MainThread_quit;
-    SkySnow::Thread*                m_MainThread;
+    Thread*                         m_MainThread;
     ThreadMultiRender::ThreadQueue* m_ThreadQueue;
 };

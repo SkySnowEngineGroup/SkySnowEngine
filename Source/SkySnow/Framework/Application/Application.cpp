@@ -32,7 +32,10 @@ namespace SkySnow
 		, _Description(description)
         , _Window(nullptr)
         , _ChildApp(nullptr)
+        , _Argv(nullptr)
+        , _Argc(0)
         , _IsInit(false)
+        , _Framework(nullptr)
 	{
 
 	}
@@ -42,6 +45,11 @@ namespace SkySnow
         {
             delete _Window;
             _Window = nullptr;
+        }
+        if (_Framework)
+        {
+            delete _Framework;
+            _Framework = nullptr;
         }
 	}
 
@@ -57,13 +65,18 @@ namespace SkySnow
     {
         _Window = new GLFWWindow();
         _Window->CreateEngineWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
+        _Framework = new Framework();
+        _Framework->Init();
         _ChildApp->Init(_Argc, _Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
         glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
         while (!_Window->IsCloseWindow())
         {
-            _ChildApp->Update();
+            //_ChildApp->Update();
+            _Framework->MainUpdate();
             glfwPollEvents();
         }
+        _Framework->Stop();
+        _Framework->Exit();
         _Window->ShutDown();
     }
 }

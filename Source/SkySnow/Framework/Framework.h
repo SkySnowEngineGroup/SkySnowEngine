@@ -23,20 +23,27 @@
 #pragma once
 #include "GRIProfiles.h"
 #include "LogAssert.h"
-#include "RenderSystem.h"
+#include "RunnableThread.h"
+#include "RenderRunnable.h"
 namespace SkySnow
 {
+    class RenderSystem;
     class Framework
     {
     public:
         Framework();
         ~Framework();
 
-        void WordUpdate();
+        void Init();
 
+        void MainUpdate();
+
+        void Stop();
+
+        void Exit();
     private:
-        bool _TempTest = false;
         RenderSystem* _RenderSystem;
+        RunnableThread* _RenderThread;
     };
 	
 }

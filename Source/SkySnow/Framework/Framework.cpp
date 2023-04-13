@@ -21,47 +21,43 @@
 // THE SOFTWARE.
 //
 #include "Framework.h"
-#include "SceneManager.h"
-#include "GameObject.h"
-#include "RenderComponent.h"
-#include "CameraComponent.h"
+#include "Context.h"
+#include "RenderSystem.h"
 namespace SkySnow
 {
     Framework::Framework()
         : _RenderSystem(nullptr)
+        , _RenderThread(nullptr)
     {
 
     }
     Framework::~Framework()
     {
-        Delete_Object(_RenderSystem);
+        Context::Instance().RemoveSystem<RenderSystem>();
     }
 
-    void Framework::WordUpdate()
+    void Framework::Init()
     {
-        if(!_TempTest)
-        {
-            _RenderSystem = new RenderSystem();
-            
-            Scene* scene = GetSceneManager().CreateScene("Test");
-            TransformComponent* curSceneTrans = new TransformComponent();
-            scene->SetRootTransform(curSceneTrans);
-            
-            GameObject* go = new GameObject();
-            CameraComponent* cameraCom = new CameraComponent();
-            TransformComponent* goTrans = new TransformComponent();
-            RenderComponent* renderCom = new RenderComponent();
-            
-            go->AddComponent(renderCom);
-            go->AddComponent(goTrans);
-            go->AddComponent(cameraCom);
-            
-            scene->AddRootToScene(go);
-            _TempTest = true;
-        }
-        
+        Context::Instance().RegisterSystem<RenderSystem>();
+        _RenderSystem = Context::Instance().GetSystem<RenderSystem>();
+        //if use OpenGL or OpenGLES will create RenderThread
+        RenderRunnable* renderRunnable = new RenderRunnable();
+        _RenderThread = RunnableThread::Create(renderRunnable);
+    }
+    void Framework::MainUpdate()
+    {
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();
         _RenderSystem->PostUpdate();
+    }
+
+    void Framework::Stop()
+    {
+
+    }
+
+    void Framework::Exit()
+    {
+
     }
 }

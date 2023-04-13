@@ -21,16 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IComponent.h"
 namespace SkySnow
 {
-	class Renderable : public IComponent
+	class CameraStack
 	{
-		SkySnow_Object(Renderable, IComponent);
 	public:
-		Renderable() {}
-		virtual ~Renderable() {}
 
-		virtual void UpdateRenderer() = 0;
 	};
 }

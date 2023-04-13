@@ -20,27 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GRIDrive.h"
-#include "GLPipelineResource.h"
-#include "Runnable.h"
+#include "RenderRunnable.h"
 
 namespace SkySnow
 {
-    //禁止继承该类，该类为引擎核心部件
-	class RenderThread final: public Runnable
-	{
-    public:
-        RenderThread();
+    RenderRunnable::RenderRunnable()
+    {
         
-        ~RenderThread();
-        
-        virtual void Run() override;
+    }
 
-        virtual void Stop() override;
-
-        virtual void Exit() override;
-    private:
+    RenderRunnable::~RenderRunnable()
+    {
         
-	};
+    }
+
+    void RenderRunnable::Run()
+    {
+        
+    }
+
+    void RenderRunnable::Stop()
+    {
+        
+    }
+
+    void RenderRunnable::Exit()
+    {
+        
+    }
 }

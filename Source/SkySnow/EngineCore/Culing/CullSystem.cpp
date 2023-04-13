@@ -20,15 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Behaviour.h"
+#include "CullSystem.h"
+
 namespace SkySnow
 {
-	class CameraComponent : public Behaviour
-	{
-		SkySnow_Object(CameraComponent, Behaviour);
-	public:
-		CameraComponent();
-		~CameraComponent();
-	};
+    CullSystem::CullSystem()
+    {
+        
+    }
+
+    CullSystem::~CullSystem()
+    {
+        
+    }
+
+    void CullSystem::PreUpdate()
+    {
+        
+    }
+
+    void CullSystem::Update()
+    {
+        
+    }
+
+    void CullSystem::PostUpdate()
+    {
+        
+    }
+
+    void CullSystem::ShutDown()
+    {
+        
+    }
 }

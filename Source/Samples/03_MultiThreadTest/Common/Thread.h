@@ -20,32 +20,51 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "EngineThread.h"
-#include "Application.h"
-namespace SkySnow
+#pragma once
+#include "NonCopyable.h"
+#include <cstdint>
+#include <pthread.h>
+#include "ThreadProfiles.h"
+using namespace SkySnow;
+namespace ThreadMultiRender
 {
-    EngineThread::EngineThread()
-    {
-        
-    }
+	class Thread : public NonCopyable
+	{
+	public:
+		Thread();
+		virtual ~Thread();
+		void Run(void*(*thread_funptr)(void*), void* data);
 
-    EngineThread::~EngineThread()
-    {
-        
-    }
+		void SetName(const char* name)
+		{
+			m_ThreadName = name;
+		}
 
-    void EngineThread::Run()
-    {
-        
-    }
+		void Stop();
 
-    void EngineThread::Stop()
-    {
-        
-    }
+		void SetPriority(ThreadPriority tpri);
 
-    void EngineThread::Exit()
-    {
-        
-    }
+		ThreadPriority GetThreadPriority()
+		{
+			return m_Priority;
+		}
+		bool IsRunning() const
+		{
+			return m_IsRunning;
+		}
+		static pthread_t GetCurrentThreadID();
+	protected:
+		void CreateThread();
+	private:
+		static void* RunThreadFunStatic(void* ptr);
+		void UpdatePriority(const Thread* thread) const;
+	private:
+		void*			m_Data;
+		void*			(*m_ThreadFunPtr)(void*);
+		volatile bool	m_IsRunning;
+		ThreadPriority	m_Priority;
+		int				m_DefaultPriority;
+		pthread_t*		m_PThread;
+		const char*		m_ThreadName;
+	};
 }

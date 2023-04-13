@@ -20,75 +20,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Scene.h"
-#include "GameObject.h"
-#include "SkySnowConfigInfo.h"
+#include "SceneRenderer.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
-    Scene::Scene(std::string sceneName)
-        : _CullingMask(g_DefaultCullingMask)
-        , _SceneName(sceneName)
-        , _IsSubScene(false)
-        , _Enable(true)
-    {
-    }
-
-    Scene::~Scene()
+    SceneRenderer::SceneRenderer()
     {
         
     }
 
-    std::string Scene::GetSceneName()
+    SceneRenderer::~SceneRenderer()
     {
-        return _SceneName;
+        
     }
 
-    void Scene::SetEnable(bool enable)
+    void SceneRenderer::AddRenderer(Renderable* renderer)
     {
-        _Enable = enable;
-        for(auto iter = _RootList.begin(); iter != _RootList.end(); iter ++)
+        bool isRepeat = false;
+        for each (auto entry in _RenderNodes)
         {
-            (*iter)->SetEnable(enable);
+            if (entry == renderer)
+            {
+                isRepeat = true;
+            }
+        }
+        if (!isRepeat)
+        {
+            _RenderNodes.push_back(renderer);
         }
     }
 
-    bool Scene::IsEnable()
+    void SceneRenderer::RemoveRenderer(Renderable* renderer)
     {
-        return _Enable;
+        for(auto iter = _RenderNodes.begin(); iter != _RenderNodes.end(); iter ++)
+        {
+            if(*iter == renderer)
+            {
+                _RenderNodes.erase(iter);
+            }
+        }
     }
 
-    void Scene::SetRootTransform(TransformComponent* transform)
+    void SceneRenderer::UpdateAllRenderers()
     {
-        _CurrSceneTransform = transform;
-    }
-    TransformComponent* Scene::GetRootTransform() const
-    {
-        return _CurrSceneTransform;
-    }
-    
-    void Scene::SetSubScene(bool subScene)
-    {
-        _IsSubScene = subScene;
-    }
-    
-    bool Scene::IsSubScene()const
-    {
-        return _IsSubScene;
-    }
-    
-    void Scene::SetSceneCullingMask(uint64_t cullingMask)
-    {
-        _CullingMask = cullingMask;
-    }
-
-    uint64_t Scene::GetSceneCullingMask() const
-    {
-        return _CullingMask;
-    }
-
-    void Scene::AddRootToScene(GameObject* rootGo)
-    {
-        _RootList.push_back(rootGo);
+        SN_LOG("RenderNodes Size:%d",_RenderNodes.size());
     }
 }
-

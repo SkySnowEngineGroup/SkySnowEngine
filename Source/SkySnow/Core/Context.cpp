@@ -19,52 +19,47 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-#pragma once
-#include "NonCopyable.h"
-#include <cstdint>
-#include <pthread.h>
-#include "ThreadProfiles.h"
-
+#include "Context.h"
+#include "SceneRenderer.h"
 namespace SkySnow
 {
-	class Thread : public NonCopyable
-	{
-	public:
-		Thread();
-		virtual ~Thread();
-		void Run(void*(*thread_funptr)(void*), void* data);
+    Context::Context()
+        : _SceneRenderer(nullptr)
+    {
+        
+    }
+    Context::~Context()
+    {
+        
+    }
+    Context& Context::Instance()
+    {
+        static Context instance;
+        return instance;
+    }
+    
+    void Context::RegisterSceneRenderer(SceneRenderer* sceneRenderer)
+    {
+        _SceneRenderer = sceneRenderer;
+    }
 
-		void SetName(const char* name)
-		{
-			m_ThreadName = name;
-		}
-
-		void Stop();
-
-		void SetPriority(ThreadPriority tpri);
-
-		ThreadPriority GetThreadPriority()
-		{
-			return m_Priority;
-		}
-		bool IsRunning() const
-		{
-			return m_IsRunning;
-		}
-		static pthread_t GetCurrentThreadID();
-	protected:
-		void CreateThread();
-	private:
-		static void* RunThreadFunStatic(void* ptr);
-		void UpdatePriority(const Thread* thread) const;
-	private:
-		void*			m_Data;
-		void*			(*m_ThreadFunPtr)(void*);
-		volatile bool	m_IsRunning;
-		ThreadPriority	m_Priority;
-		int				m_DefaultPriority;
-		pthread_t*		m_PThread;
-		const char*		m_ThreadName;
-	};
+    SceneRenderer* Context::GetSceneRenderer()
+    {
+        if(_SceneRenderer == nullptr)
+        {
+            _SceneRenderer = new SceneRenderer();
+            RegisterSceneRenderer(_SceneRenderer);
+            return _SceneRenderer;
+        }
+        return _SceneRenderer;
+    }
+    
+    void Context::RemoveSceneRenderer()
+    {
+        if(_SceneRenderer)
+        {
+            delete _SceneRenderer;
+            _SceneRenderer = nullptr;
+        }
+    }
 }

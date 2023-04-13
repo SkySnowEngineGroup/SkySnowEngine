@@ -35,9 +35,8 @@
 #include "SingletonBase.h"
 #include "LockFree.h"
 #include "FunCb.h"
-#include "TFramework.h"
-
-//using namespace SkySnow;
+#include "Framework.h"
+using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
@@ -47,7 +46,10 @@ int main()
 //        StudyList();
 //        Stack_Data();
         //StudyNumberProcess();
-		TestECS();
+        Framework* framework = new Framework();
+		framework->Init();
+        framework->MainUpdate();
+        delete framework;
     }
 
 	//{

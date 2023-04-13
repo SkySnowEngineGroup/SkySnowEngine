@@ -24,7 +24,7 @@
 #include "ThreadProfiles.h"
 #include "PlatformProfiles.h"
 #include "LogAssert.h"
-namespace SkySnow
+namespace ThreadMultiRender
 {
 	void* Thread::RunThreadFunStatic(void* ptr)
 	{

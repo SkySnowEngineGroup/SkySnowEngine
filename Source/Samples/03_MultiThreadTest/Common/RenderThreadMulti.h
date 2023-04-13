@@ -24,6 +24,7 @@
 #include "LogAssert.h"
 #include "Thread.h"
 #include "ThreadQueue.h"
+using namespace ThreadMultiRender;
 class RenderThreadMulti
 {
 public:
@@ -48,7 +49,7 @@ public:
     {
         if (m_RenderThread == nullptr)
         {
-            m_RenderThread = new SkySnow::Thread();
+            m_RenderThread = new Thread();
             m_RenderThread->SetName("Render_Thread.");
             m_RenderThread->Run(RenderThreadRun, this);
         }
@@ -69,7 +70,7 @@ public:
 private:
     static void* RenderThreadRun(void* data)
     {
-        RenderThread* worker = (RenderThread*)data;
+        RenderThreadMulti* worker = (RenderThreadMulti*)data;
         worker->Run();
         return nullptr;
     }
@@ -86,6 +87,6 @@ private:
     }
 private:
 	bool			                m_RenderThread_quit;
-	SkySnow::Thread*	            m_RenderThread;
+	Thread*	                        m_RenderThread;
     ThreadMultiRender::ThreadQueue* m_ThreadQueue;
 };
