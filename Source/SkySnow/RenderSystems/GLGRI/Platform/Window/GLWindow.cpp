@@ -45,8 +45,12 @@ namespace SkySnow
 	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
 
 	GLContextWin::GLContextWin()
-		: _OpenGL32Dll(nullptr)
-        , _VertexArrayObject(-1)
+		: _VertexArrayObject(-1)
+        , _OpenGL32Dll(NULL)
+		, _Hdc(NULL)
+		, _HWND(NULL)
+		, _PixelFormat(0)
+		, _Context(NULL)
 	{
 
 	}
@@ -140,6 +144,7 @@ namespace SkySnow
         //default vao
         glGenVertexArrays(1,&_VertexArrayObject);
         glBindVertexArray(_VertexArrayObject);
+		wglMakeCurrent(NULL, NULL);
 	}
 
 	void GLContextWin::DestroyGLContext()
@@ -160,6 +165,8 @@ namespace SkySnow
 	void GLContextWin::MakeCurrContext()
 	{
 		wglMakeCurrent(_Hdc, _Context);
+		glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
+		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	}
 
 	void GLContextWin::SwapBuffer()

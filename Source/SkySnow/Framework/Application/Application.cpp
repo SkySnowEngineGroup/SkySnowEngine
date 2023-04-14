@@ -65,8 +65,14 @@ namespace SkySnow
     {
         _Window = new GLFWWindow();
         _Window->CreateEngineWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
+        
         _Framework = new Framework();
-        _Framework->Init();
+        FrameworkInfo frameInfo;
+        OSPlatformInfo osPlatformInfo;
+        osPlatformInfo._NativeWindow = GetNativeWindow();
+        frameInfo._OSPlatformInfo = osPlatformInfo;
+        _Framework->Init(frameInfo);
+        
         _ChildApp->Init(_Argc, _Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
         glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
         while (!_Window->IsCloseWindow())

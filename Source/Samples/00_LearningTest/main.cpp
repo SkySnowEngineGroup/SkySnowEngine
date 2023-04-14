@@ -46,10 +46,6 @@ int main()
 //        StudyList();
 //        Stack_Data();
         //StudyNumberProcess();
-        Framework* framework = new Framework();
-		framework->Init();
-        framework->MainUpdate();
-        delete framework;
     }
 
 	//{

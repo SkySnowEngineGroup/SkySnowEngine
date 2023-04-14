@@ -21,7 +21,9 @@
 // THE SOFTWARE.
 //
 #include "RenderRunnable.h"
-
+#include "LogAssert.h"
+#include "GRI.h"
+#include "GRICommandBuffer.h"
 namespace SkySnow
 {
     RenderRunnable::RenderRunnable()
@@ -34,9 +36,44 @@ namespace SkySnow
         
     }
 
+    /*
+     void MainUpdate()
+     {
+        RenderSemaphore.Signal();
+        ...MianUpdate some thing
+        MainSemphore.WaitForSignal();
+     }
+     
+     void RenderUpdate()
+     {
+        RenderSemaphore.WaitForSignal();
+        ...Exe some thing
+        MainSemaphore.Signal();
+     }
+     */
+    void RenderRunnable::BeginFrame()
+    {
+        _RenderSem.Signal();
+    }
+
+    void RenderRunnable::OnRenderFrame()
+    {
+        _RenderSem.WaitForSignal();
+        SN_LOG("RenderUpdate++++++++++++++");
+        _GQueue->PresentQueue();
+        _MainSem.Signal();
+    }
+    void RenderRunnable::EndFrame()
+    {
+        _MainSem.WaitForSignal();
+    }
+
     void RenderRunnable::Run()
     {
-        
+        while(true)
+        {
+            OnRenderFrame();
+        }
     }
 
     void RenderRunnable::Stop()

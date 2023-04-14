@@ -22,12 +22,13 @@
 //
 #include "Framework.h"
 #include "Context.h"
-#include "RenderSystem.h"
+#include "GLFWWindow.h"
+#include <string>
+
 namespace SkySnow
 {
     Framework::Framework()
         : _RenderSystem(nullptr)
-        , _RenderThread(nullptr)
     {
 
     }
@@ -36,24 +37,71 @@ namespace SkySnow
         Context::Instance().RemoveSystem<RenderSystem>();
     }
 
-    void Framework::Init()
+    void Framework::Init(FrameworkInfo& frameInfo)
     {
+        //init gri
+        GRIInit(frameInfo._OSPlatformInfo);
+        
+        _CMBPool = new GRICommandBufferPool();
         Context::Instance().RegisterSystem<RenderSystem>();
         _RenderSystem = Context::Instance().GetSystem<RenderSystem>();
-        //if use OpenGL or OpenGLES will create RenderThread
-        RenderRunnable* renderRunnable = new RenderRunnable();
-        _RenderThread = RunnableThread::Create(renderRunnable);
     }
     void Framework::MainUpdate()
     {
+        _GQueue->BeginFrame();
+        SN_LOG("MainUpdate----------------");
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();
         _RenderSystem->PostUpdate();
+        
+        //------testcode start
+        if(!_TestInit)
+        {
+            string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
+            string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
+            _File = new File();
+            _VsData = new Data();
+            _FsData = new Data();
+            _File->ReadData(vsShaderPath, _VsData);
+            _File->ReadData(fsShaderPath, _FsData);
+
+            _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
+            _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
+            _PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
+            static float vertices[] = { -0.5f, -0.5f, 0.0f,
+                                 0.5f,  -0.5f, 0.0f,
+                                 0.0f,  0.5f,  0.0f};
+            SN_LOG("Vertex Size:%d",sizeof(vertices));
+            _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+                                                    sizeof(vertices),
+                                                    3,
+                                                    vertices);
+
+            GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+            psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
+            _PSORef = CreateGraphicsPipelineState(psoCreateInfo);
+            _TestInit = true;
+        }
+        
+        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
+        
+        commandBuffer->CmdBeginViewport();
+        
+        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
+        commandBuffer->CmdSetPipelineShaderState(_PipelineShaderStateRef);
+        commandBuffer->CmdSetGraphicsPipelineState(_PSORef);
+        commandBuffer->CmdDrawPrimitive(1,1);
+        
+        commandBuffer->CmdEndViewport();
+        
+        _GQueue->SubmitQueue(commandBuffer);
+        //------testcode end
+        _GQueue->EndFrame();
     }
 
     void Framework::Stop()
     {
-
+        GRIExit();
     }
 
     void Framework::Exit()

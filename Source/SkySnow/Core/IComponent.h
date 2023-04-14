@@ -30,23 +30,37 @@ namespace SkySnow
 		SkySnow_Object(IComponent,Object);
 	public:
 		IComponent()
-			: _GameObject(nullptr)
+			: _Enable(true)
+            , _GameObject(nullptr)
 		{
 		}
-		virtual ~IComponent() {}
+        
+		virtual ~IComponent()
+        {
+        }
 
 		virtual void Update() = 0;
 
-		virtual void Deactivate() { _Enable = false; }
+		virtual void Deactivate()
+        {
+            _Enable = false;
+        }
 
-		virtual bool HasEnabled() const { return _Enable; }
+		virtual bool HasEnabled() const
+        {
+            return _Enable;
+        }
 
-		virtual void SetEnabled(bool enable) { _Enable = enable; }
+		virtual void SetEnabled(bool enable)
+        {
+            _Enable = enable;
+        }
         //attach this comonent to gameobject
         void AttachToGameObject(GameObject* go)
         {
             _GameObject = go;
         }
+        //Detach curr component with gameobject
         void DetachToGameObject()
         {
             _GameObject = nullptr;
@@ -61,7 +75,7 @@ namespace SkySnow
             return _GameObject;
         }
 	protected:
-		bool		_Enable = true;
+		bool		_Enable;
         GameObject* _GameObject;
 	};
 }

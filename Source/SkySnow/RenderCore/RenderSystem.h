@@ -22,6 +22,8 @@
 //
 #pragma once
 #include "ISystem.h"
+#include "GRICommandBuffer.h"
+#include "GRI.h"
 namespace SkySnow
 {
     class RenderSystem : public ISystem

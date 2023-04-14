@@ -26,19 +26,18 @@
 namespace SkySnow
 {
     class SceneRenderer;
-
     class Context : public NonCopyable
     {
     public:
         static Context& Instance();
         
-        void RegisterSceneRenderer(SceneRenderer* sceneRenderer);
+        SceneRenderer* RegisterSceneRenderer();
         
         SceneRenderer* GetSceneRenderer();
         
         void RemoveSceneRenderer();
 
-        template<typename T> void RegisterSystem();
+        template<typename T> T* RegisterSystem();
 
         template<typename T> T* GetSystem();
 
@@ -51,47 +50,41 @@ namespace SkySnow
         std::vector<ISystem*> _Systems;
     };
 
-    template<typename T> inline void Context::RegisterSystem()
+    template<typename T> inline T* Context::RegisterSystem()
     {
-        bool isFind = false;
-        for each (auto entry in _Systems)
-        {
-            if (T::GetTypeNameStatic() == entry->GetTypeName())
-            {
-                isFind = true;
-            }
-        }
-        if (!isFind)
-        {
-            T* system = new T();
-            _Systems.push_back(system);
-        }
-    }
-
-    template<typename T> inline T* Context::GetSystem()
-    {
-        for each (auto entry in _Systems)
+        for(auto entry:_Systems)
         {
             if (T::GetTypeNameStatic() == entry->GetTypeName())
             {
                 return dynamic_cast<T*>(entry);
             }
         }
-        return nullptr;
+        T* system = new T();
+        _Systems.push_back(system);
+        return dynamic_cast<T*>(system);
+    }
+
+    template<typename T> inline T* Context::GetSystem()
+    {
+        for(auto entry:_Systems)
+        {
+            if (T::GetTypeNameStatic() == entry->GetTypeName())
+            {
+                return dynamic_cast<T*>(entry);
+            }
+        }
+        return RegisterSystem<T>();
     }
 
     template<typename T> inline void Context::RemoveSystem()
     {
-        for (auto iter = _Systems.begin(); iter != _Systems.end(); )
+        for (auto iter = _Systems.begin(); iter != _Systems.end();iter++)
         {
-            if (*iter != nullptr && (*iter)->GetTypeName() == T::GetTypeNameStatic())
+            if ((*iter)->GetTypeName() == T::GetTypeNameStatic())
             {
                 delete (*iter);
-                iter = _Systems.erase(iter);
-            }
-            else 
-            {
-                iter++;
+                _Systems.erase(iter);
+                break;
             }
         }
     }

@@ -71,13 +71,13 @@ namespace SkySnow
 		void ProcAddressInit();
 		HGLRC CreateGLContextInternal(HDC hdc);
 	private:
-        GLuint   _VertexArrayObject;
-		void* _OpenGL32Dll;
-		HDC _Hdc;
-        HWND _HWND;
-		int _PixelFormat;
-		PIXELFORMATDESCRIPTOR _Pfd;
-		HGLRC _Context;
+        GLuint					_VertexArrayObject;
+		void*					_OpenGL32Dll;
+		HDC						_Hdc;
+        HWND					_HWND;
+		int						_PixelFormat;
+		PIXELFORMATDESCRIPTOR	_Pfd;
+		HGLRC					_Context;
     };
 }
 typedef SkySnow::GLWindow OpenGL;

@@ -26,27 +26,39 @@
 namespace SkySnow
 {
     GameObject::GameObject()
-        : _Layer(0)
+        : _Enable(true)
+        , _Layer(0)
         , _Tag(0)
         , _Parent(nullptr)
-        , _Enable(true)
     {
-
+        _ComponentList.clear();
+        _ChildList.clear();
     }
+    
     GameObject::~GameObject()
     {
-
+        for (auto entry:_ComponentList)
+        {
+            delete entry;
+        }
+        _ComponentList.clear();
+        for(auto entry:_ChildList)
+        {
+            delete entry;
+        }
+        _ChildList.clear();
     }
 
     void GameObject::SetEnable(bool enable)
     {
-        for(auto iter = _ComponentList.begin(); iter != _ComponentList.end();iter ++)
+        _Enable = enable;
+        for(auto entry : _ComponentList)
         {
-            (*iter)->SetEnabled(enable);
+            entry->SetEnabled(enable);
         }
-        for(auto iter = _ChildList.begin(); iter != _ChildList.end();iter ++)
+        for(auto entry:_ChildList)
         {
-            (*iter)->SetEnable(enable);
+            entry->SetEnable(enable);
         }
     }
 
@@ -54,7 +66,6 @@ namespace SkySnow
     {
         return _Enable;
     }
-
     //value between [0 32),so layer max is 32
     void GameObject::SetLayer(int32_t layer)
     {
@@ -77,11 +88,6 @@ namespace SkySnow
     {
         return 1 << _Layer;
     }
-	void GameObject::AddComponent(IComponent* component)
-    {
-        component->AttachToGameObject(this);
-        _ComponentList.push_back(component);
-    }
     
     void GameObject::SetTag(int16_t tag)
     {
@@ -93,24 +99,23 @@ namespace SkySnow
         return _Tag;
     }
 
-    void GameObject::AddChild(GameObject* childGO)
+    GameObject* GameObject::AddChild()
     {
-        _ChildList.push_back(childGO);
+        GameObject* cgo = new GameObject();
+        _ChildList.push_back(cgo);
         int32_t layer = _Layer + 1;
-        childGO->SetLayer(layer);
+        cgo->SetLayer(layer);
+        return cgo;
     }
 
     void GameObject::RemoveChild(GameObject* childGO)
     {
-        for(auto iter = _ChildList.begin(); iter != _ChildList.end();)
+        for(auto entry:_ChildList)
         {
-            if(*iter == childGO)
+            if(entry == childGO)
             {
-                iter = _ChildList.erase(iter);
-            }
-            else
-            {
-                iter++;
+                delete entry;
+                break;
             }
         }
     }

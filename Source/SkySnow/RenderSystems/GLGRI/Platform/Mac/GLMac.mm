@@ -69,7 +69,7 @@ namespace SkySnow
         
         OpenGL::InitialExtensions();
         _GLContext = openGLContext;
-        //default vao
+        //default vao for this context
         glGenVertexArrays(1,&_VertexArrayObject);
         glBindVertexArray(_VertexArrayObject);
     }
@@ -85,8 +85,9 @@ namespace SkySnow
 
     void GLContextMac::MakeCurrContext()
     {
-        //NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
-        //[glContext makeCurrentContext];
+        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+        [glContext makeCurrentContext];
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
     }
     
     void GLContextMac::SwapBuffer()

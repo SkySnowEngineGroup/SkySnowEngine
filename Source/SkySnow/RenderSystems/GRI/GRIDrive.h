@@ -67,7 +67,7 @@ namespace SkySnow
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
 		//GRICreate=======================================================================================================================
 
-		//Lower Render Deive Interface
+		//Lower Render Deive Interface,so vulkan&metal not override this interface
 		//GRISet==========================================================================================================================
 		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) {};
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {};

@@ -35,15 +35,15 @@ namespace SkySnow
         Scene(std::string sceneName = "");
         ~Scene();
         
-        std::string GetSceneName();
+        std::string GetSceneName() const;
         //Set Scene Enable Flag
         void SetEnable(bool enable);
         //Get Scene Enable Flag
-        bool IsEnable();
+        bool IsEnable() const;
         //setup curr scene root transform
-        void SetRootTransform(TransformComponent* transform);
+        TransformComponent* SetupRootTransform();
         //get curr scene root transform
-        TransformComponent* GetRootTransform() const;
+        TransformComponent* GetRootTransform();
         //setup subscene flag
         void SetSubScene(bool subScene);
         //get subscene flag
@@ -53,15 +53,17 @@ namespace SkySnow
         //Get Scene
         uint64_t GetSceneCullingMask() const;
         //Set curr scene root gameobject
-        void AddRootToScene(GameObject* rootGo);
+        GameObject* AddRootToScene();
+        //set curr scene child gameobject
+        GameObject* AddChildGOToScene();
     private:
         bool                        _Enable;
         bool                        _IsSubScene;
         SkySnowSceneHandle          _SceneHandle;
+        GameObject*                 _SceneRootGO;
         uint64_t                    _CullingMask;
         std::string                 _SceneName;
         TransformComponent*         _CurrSceneTransform;
         std::vector<GameObject*>    _RootList;
     };
-
 }

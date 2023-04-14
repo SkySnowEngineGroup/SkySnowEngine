@@ -33,37 +33,31 @@ namespace SkySnow
 		virtual ~GameObject();
         
         void SetLayer(int32_t layer);
+        int32_t GetLayer() const;
+        int32_t GetLayerMask() const;
         
         void SetEnable(bool enable);
-        
         bool IsEnable() const;
         
-        int32_t GetLayer() const;
-        //Gets the tag of the GameObject's level
-        int32_t GetLayerMask() const;
-
-		template<typename T> T* GetComponent();
-
-		template<typename T> bool HasComponent();
-
-        void AddComponent(IComponent* component);
-        
-        void RemoveComponent(IComponent* component);
-        
         void SetTag(int16_t tag);
-        
         int16_t GetTag() const;
         
-        void AddChild(GameObject* childGO);
+		template<typename T> T* GetComponent();
+		template<typename T> bool HasComponent();
+
+        template<typename T> T* AddComponent();
+        template<typename T> void RemoveComponent();
         
+        GameObject* AddChild();
         void RemoveChild(GameObject* childGO);
-        
         void SetParent(GameObject* parentGO);
+    private:
+        void UpdateActiveGameObject();
 	private:
-        bool    _Enable;
+        bool                        _Enable;
         //GameObject at Layer
-        int32_t _Layer;
-        int16_t _Tag;
+        int32_t                     _Layer;
+        int16_t                     _Tag;
         GameObject*                 _Parent;
         std::vector<GameObject*>    _ChildList;
         //TODO: Whether the array is going to be here, whether it's going to be a miss in cache
@@ -71,6 +65,34 @@ namespace SkySnow
 	};
 
     //========================================================================================
+    template<typename T> inline T* GameObject::AddComponent()
+    {
+        for(auto entry:_ComponentList)
+        {
+            if(entry->GetTypeName() == T::GetTypeNameStatic())
+            {
+                SN_WARN("A component of this type(%s) is already included",entry->GetTypeName());
+                return dynamic_cast<T*>(entry);
+            }
+        }
+        T* newCom = new T();
+        newCom->AttachToGameObject(this);
+        _ComponentList.push_back(newCom);
+        return newCom;
+    }
+    template<typename T> void GameObject::RemoveComponent()
+    {
+        for (auto iter = _ComponentList.begin(); iter != _ComponentList.end(); ++iter)
+        {
+            if((*iter)->GetTypeName() == T::GetTypeNameStatic())
+            {
+                (*iter)->DetachToGameObject();
+                delete *iter;
+                _ComponentList.erase(iter);
+                break;
+            }
+        }
+    }
     template<typename T> inline T* GameObject::GetComponent()
     {
         for (int i = 0; i < _ComponentList.size(); i++)

@@ -38,18 +38,20 @@ namespace SkySnow
         return instance;
     }
     
-    void Context::RegisterSceneRenderer(SceneRenderer* sceneRenderer)
+    SceneRenderer* Context::RegisterSceneRenderer()
     {
-        _SceneRenderer = sceneRenderer;
+        if(_SceneRenderer == nullptr)
+        {
+            _SceneRenderer = new SceneRenderer();
+        }
+        return _SceneRenderer;
     }
 
     SceneRenderer* Context::GetSceneRenderer()
     {
         if(_SceneRenderer == nullptr)
         {
-            _SceneRenderer = new SceneRenderer();
-            RegisterSceneRenderer(_SceneRenderer);
-            return _SceneRenderer;
+            RegisterSceneRenderer();
         }
         return _SceneRenderer;
     }

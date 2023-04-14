@@ -24,7 +24,7 @@
 #include "GRIDrive.h"
 #include "GLPipelineResource.h"
 #include "Runnable.h"
-
+#include "ThreadSemaphore.h"
 namespace SkySnow
 {
     //禁止继承该类，该类为引擎核心部件
@@ -35,12 +35,19 @@ namespace SkySnow
         
         ~RenderRunnable();
         
+        void BeginFrame();
+        
+        void EndFrame();
+        
         virtual void Run() override;
 
         virtual void Stop() override;
 
         virtual void Exit() override;
     private:
-        
+        void OnRenderFrame();
+    private:
+        ThreadSemaphore     _RenderSem;
+        ThreadSemaphore     _MainSem;
 	};
 }

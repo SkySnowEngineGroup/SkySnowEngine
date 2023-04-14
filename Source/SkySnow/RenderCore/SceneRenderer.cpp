@@ -37,7 +37,7 @@ namespace SkySnow
     void SceneRenderer::AddRenderer(Renderable* renderer)
     {
         bool isRepeat = false;
-        for each (auto entry in _RenderNodes)
+        for(auto entry:_RenderNodes)
         {
             if (entry == renderer)
             {

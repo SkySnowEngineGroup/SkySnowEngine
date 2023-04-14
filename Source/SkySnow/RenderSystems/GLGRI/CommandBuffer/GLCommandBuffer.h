@@ -59,4 +59,10 @@ namespace SkySnow
 
 	};
 
+    class GLCommandBufferPool
+    {
+    public:
+        
+    };
+
 }

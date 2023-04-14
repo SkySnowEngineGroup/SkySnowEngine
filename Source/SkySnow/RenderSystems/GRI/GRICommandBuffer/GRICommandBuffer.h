@@ -24,12 +24,14 @@
 #include "StackAllocator.h"
 #include "CommandBufferMacro.h"
 #include "GRILowerCommandBuffer.h"
+#include "RunnableThread.h"
 namespace SkySnow
 {
     //vulkan 中关于资源创建，资源命令设置以及同步等操作的渲染接口，一共约130个
-    
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
+    class RenderRunnable;
+    
     class GRICommandBufferBase
     {
     public:
@@ -106,47 +108,27 @@ namespace SkySnow
     class GRICommandBufferQueue
     {
     public:
+        GRICommandBufferQueue();
+        ~GRICommandBufferQueue();
         void Init();
-        void SubmitQueue(GRICommandBufferBase* comBuf)
-        {
-            _ComBufList.push_back(comBuf);
-        }
+        void SubmitQueue(GRICommandBufferBase* comBuf);
 
-        void BeginFrame()
-        {
-        }
+        void BeginFrame();
 
-        void EndFrame()
-        {
-            
-        }
+        void EndFrame();
 
-        void FlushResource()
-        {
+        void FlushResource();
+        
+        void PresentQueue();
 
-        }
-        void PresentQueue()
-        {
-            //TestCode Single MainThread Render Capacity
-            //TestCode == Resource Create At Lower Api Version
-            _LowerComBuf->ResourceCreateExecutor();
-            //TestCode == Resource Set At Lower Api Version,At Height Api Version Use Self CommandBuffer
-            for (int i = 0; i < _ComBufList.size(); i ++)
-            {
-                GRICommandBufferBase* cmb = _ComBufList[i];
-                cmb->CmdResourceSetExecutor();
-            }
-            _ComBufList.clear();
-        }
-        GRILowerCommandBuffer* GetLowerCommandBuffer()
-        {
-            return _LowerComBuf;
-        }
+        GRILowerCommandBuffer* GetLowerCommandBuffer();
 
         bool IsLowerVerion();
     private:
         GRILowerCommandBuffer*              _LowerComBuf;
         std::vector<GRICommandBufferBase*>  _ComBufList;
+        RenderRunnable*                     _RenderRunnable;
+        RunnableThread*                     _RenderThread;
     };
     extern GRICommandBufferQueue*   _GQueue;
 }

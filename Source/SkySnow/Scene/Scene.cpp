@@ -26,19 +26,28 @@
 namespace SkySnow
 {
     Scene::Scene(std::string sceneName)
-        : _CullingMask(g_DefaultCullingMask)
-        , _SceneName(sceneName)
+        : _Enable(true)
         , _IsSubScene(false)
-        , _Enable(true)
+        , _SceneHandle(-1)
+        , _SceneRootGO(nullptr)
+        , _CullingMask(g_DefaultCullingMask)
+        , _SceneName(sceneName)
+        , _CurrSceneTransform(nullptr)
     {
     }
 
     Scene::~Scene()
     {
-        
+        for(auto entry:_RootList)
+        {
+            delete entry;
+        }
+        _RootList.clear();
+        Delete_Object(_CurrSceneTransform);
+        Delete_Object(_SceneRootGO);
     }
 
-    std::string Scene::GetSceneName()
+    std::string Scene::GetSceneName() const
     {
         return _SceneName;
     }
@@ -52,17 +61,25 @@ namespace SkySnow
         }
     }
 
-    bool Scene::IsEnable()
+    bool Scene::IsEnable() const
     {
         return _Enable;
     }
 
-    void Scene::SetRootTransform(TransformComponent* transform)
+    TransformComponent* Scene::SetupRootTransform()
     {
-        _CurrSceneTransform = transform;
+        if(!_CurrSceneTransform)
+        {
+            _CurrSceneTransform = new TransformComponent();
+        }
+        return _CurrSceneTransform;
     }
-    TransformComponent* Scene::GetRootTransform() const
+    TransformComponent* Scene::GetRootTransform()
     {
+        if(!_CurrSceneTransform)
+        {
+            _CurrSceneTransform = SetupRootTransform();
+        }
         return _CurrSceneTransform;
     }
     
@@ -85,10 +102,19 @@ namespace SkySnow
     {
         return _CullingMask;
     }
-
-    void Scene::AddRootToScene(GameObject* rootGo)
+    GameObject* Scene::AddRootToScene()
     {
-        _RootList.push_back(rootGo);
+        if(!_SceneRootGO)
+        {
+            _SceneRootGO = new GameObject();
+        }
+        return _SceneRootGO;
+    }
+    GameObject* Scene::AddChildGOToScene()
+    {
+        GameObject* childGo = new GameObject();
+        _RootList.push_back(childGo);
+        return childGo;
     }
 }
 

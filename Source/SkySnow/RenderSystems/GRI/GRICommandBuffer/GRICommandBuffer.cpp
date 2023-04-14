@@ -29,10 +29,11 @@
 #include "MacOSPlatform.h"
 #include "LinuxOSPlatform.h"
 #include "GRI.h"
+#include "RenderRunnable.h"
 
 namespace SkySnow
 {
-    //整体思考一个问题，面相对象变成的几个规范
+    //整体思考一个问题，面相对象编程的几个规范
     /*
      面向对象的几个原则
         1. 单一职责原则(Single Responsibility Principle)
@@ -89,6 +90,7 @@ namespace SkySnow
                     tempCmb = new GLRenderCommandBuffer();
                 else if(cbType == Compute)
                     int a = 10;
+                _CommandBufferList.push_back(tempCmb);
             }
             break;
         default:
@@ -97,7 +99,18 @@ namespace SkySnow
         _Lock.UnLock();
         return tempCmb;
     }
-
+    //================================================================================================
+    GRICommandBufferQueue::GRICommandBufferQueue()
+        : _LowerComBuf(nullptr)
+        , _RenderRunnable(nullptr)
+        , _RenderThread(nullptr)
+    {
+        _ComBufList.clear();
+    }
+    GRICommandBufferQueue::~GRICommandBufferQueue()
+    {
+        
+    }
 	void GRICommandBufferQueue::Init()
 	{
         GRIFeature version = GRI->GetGRIFeatureType();
@@ -108,11 +121,53 @@ namespace SkySnow
         case SkySnow::EGLES:
         case SkySnow::EOpenGL:
             _LowerComBuf = new GLRenderCommandBuffer();
+            _RenderRunnable = new RenderRunnable();
+            _RenderThread = RunnableThread::Create(_RenderRunnable);
             break;
         default:
             break;
         }
 	}
+    
+    void GRICommandBufferQueue::SubmitQueue(GRICommandBufferBase* comBuf)
+    {
+        _ComBufList.push_back(comBuf);
+    }
+    
+    void GRICommandBufferQueue::BeginFrame()
+    {
+        if(_RenderRunnable)
+        {
+            _RenderRunnable->BeginFrame();
+        }
+    }
+
+    void GRICommandBufferQueue::EndFrame()
+    {
+        if(_RenderRunnable)
+        {
+            _RenderRunnable->EndFrame();
+        }
+    }
+
+    void GRICommandBufferQueue::FlushResource()
+    {
+        
+    }
+    void GRICommandBufferQueue::PresentQueue()
+    {
+        //TestCode Single MainThread Render Capacity
+        //TestCode == Resource Create At Lower Api Version
+        GRI->GRIBeginViewport();
+        _LowerComBuf->ResourceCreateExecutor();
+        //TestCode == Resource Set At Lower Api Version,At Height Api Version Use Self CommandBuffer
+        for (int i = 0; i < _ComBufList.size(); i ++)
+        {
+            GRICommandBufferBase* cmb = _ComBufList[i];
+            cmb->CmdResourceSetExecutor();
+        }
+        _ComBufList.clear();
+    }
     bool GRICommandBufferQueue::IsLowerVerion()
     {
         GRIFeature version = GRI->GetGRIFeatureType();
@@ -124,7 +179,12 @@ namespace SkySnow
         }
         return true;
     }
-
+    
+    GRILowerCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()
+    {
+        return _LowerComBuf;
+    }
+    //================================================================================================
     //GRI Globle Create Resource Interface
     GRIVertexShaderRef CreateVertexShader(const char* vsCode)
     {

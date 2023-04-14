@@ -29,11 +29,18 @@ namespace SkySnow
     {
         SkySnow_Object(ISystem,Object);
     public:
-        ISystem() {}
-        virtual ~ISystem() {}
+        ISystem()
+        {
+        }
+        
+        virtual ~ISystem()
+        {
+        }
         
         virtual void PreUpdate() = 0;
+        
         virtual void Update() = 0;
+        
         virtual void PostUpdate() = 0;
         
         virtual void ShutDown() = 0;
