@@ -41,61 +41,20 @@ namespace SkySnow
     {
         //init gri
         GRIInit(frameInfo._OSPlatformInfo);
-        
-        _CMBPool = new GRICommandBufferPool();
-        Context::Instance().RegisterSystem<RenderSystem>();
-        _RenderSystem = Context::Instance().GetSystem<RenderSystem>();
+        //register rendersystem
+        _RenderSystem = Context::Instance().RegisterSystem<RenderSystem>();
     }
     void Framework::MainUpdate()
     {
+        //main thread start
         _GQueue->BeginFrame();
         SN_LOG("MainUpdate----------------");
+        
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();
         _RenderSystem->PostUpdate();
         
-        //------testcode start
-        if(!_TestInit)
-        {
-            string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
-            string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
-            _File = new File();
-            _VsData = new Data();
-            _FsData = new Data();
-            _File->ReadData(vsShaderPath, _VsData);
-            _File->ReadData(fsShaderPath, _FsData);
-
-            _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
-            _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
-            _PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
-            static float vertices[] = { -0.5f, -0.5f, 0.0f,
-                                 0.5f,  -0.5f, 0.0f,
-                                 0.0f,  0.5f,  0.0f};
-            SN_LOG("Vertex Size:%d",sizeof(vertices));
-            _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-                                                    sizeof(vertices),
-                                                    3,
-                                                    vertices);
-
-            GRICreateGraphicsPipelineStateInfo psoCreateInfo;
-            psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
-            _PSORef = CreateGraphicsPipelineState(psoCreateInfo);
-            _TestInit = true;
-        }
-        
-        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        
-        commandBuffer->CmdBeginViewport();
-        
-        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
-        commandBuffer->CmdSetPipelineShaderState(_PipelineShaderStateRef);
-        commandBuffer->CmdSetGraphicsPipelineState(_PSORef);
-        commandBuffer->CmdDrawPrimitive(1,1);
-        
-        commandBuffer->CmdEndViewport();
-        
-        _GQueue->SubmitQueue(commandBuffer);
-        //------testcode end
+        //main thread end
         _GQueue->EndFrame();
     }
 

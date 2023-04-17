@@ -23,7 +23,6 @@
 #pragma once
 #include "GRIProfiles.h"
 #include "LogAssert.h"
-#include "File.h"
 #include "RenderSystem.h"
 namespace SkySnow
 {
@@ -46,20 +45,7 @@ namespace SkySnow
 
         void Exit();
     private:
-        //testcode start
-        bool                        _TestInit = false;
-        File*                       _File;
-        Data*                       _VsData;
-        Data*                       _FsData;
-        GRIVertexShaderRef          _vsRef;
-        GRIFragmentShaderRef        _fsRef;
-        GRIBufferRef                _VertexBufferRef;
-        GRIPipelineShaderStateRef   _PipelineShaderStateRef;
-        GRIGraphicsPipelineStateRef _PSORef;
-        //testcode end
-        RenderSystem* _RenderSystem;
-        GRICommandBufferPool*        _CMBPool;
-        
+        RenderSystem*       _RenderSystem;
     };
 	
 }

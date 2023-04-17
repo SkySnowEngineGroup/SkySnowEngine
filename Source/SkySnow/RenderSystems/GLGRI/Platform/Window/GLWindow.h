@@ -71,6 +71,7 @@ namespace SkySnow
 		void ProcAddressInit();
 		HGLRC CreateGLContextInternal(HDC hdc);
 	private:
+        GLContextState          _ContextState;
         GLuint					_VertexArrayObject;
 		void*					_OpenGL32Dll;
 		HDC						_Hdc;

@@ -70,6 +70,14 @@
 #endif // 0
 
 #define Num_GL_Vertex_Attribute 16
+//glContext state
+enum class GLContextState
+{
+    NoUse,
+    MainContext,
+    ShareContext,
+    RenderingContext
+};
 
 //About OS Platform Device:Example Window for Window(OSWindow) 
 //                         for window(WindowHandle) for Android(NativeWindow)

@@ -87,9 +87,13 @@ namespace SkySnow
             if(tempCmb == nullptr)
             {
                 if(cbType == Render)
+                {
                     tempCmb = new GLRenderCommandBuffer();
+                }
                 else if(cbType == Compute)
+                {
                     int a = 10;
+                }
                 _CommandBufferList.push_back(tempCmb);
             }
             break;
@@ -99,6 +103,7 @@ namespace SkySnow
         _Lock.UnLock();
         return tempCmb;
     }
+    //GRICommandBufferQueue
     //================================================================================================
     GRICommandBufferQueue::GRICommandBufferQueue()
         : _LowerComBuf(nullptr)
@@ -184,8 +189,9 @@ namespace SkySnow
     {
         return _LowerComBuf;
     }
-    //================================================================================================
+
     //GRI Globle Create Resource Interface
+    //================================================================================================
     GRIVertexShaderRef CreateVertexShader(const char* vsCode)
     {
         if (!_GQueue->IsLowerVerion())

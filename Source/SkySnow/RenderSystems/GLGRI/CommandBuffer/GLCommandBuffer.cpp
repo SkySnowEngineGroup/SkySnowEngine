@@ -42,7 +42,7 @@ namespace SkySnow
         _StackMem.Flush();
         _NumCommands = 0;
         _Curr = nullptr;
-        _Head = _Curr;
+        _Head = nullptr;
         _CMState = Invalid;
 	}
 	void GLRenderCommandBuffer::CmdBeginCommandBuffer()

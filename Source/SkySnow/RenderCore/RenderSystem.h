@@ -24,6 +24,7 @@
 #include "ISystem.h"
 #include "GRICommandBuffer.h"
 #include "GRI.h"
+#include "File.h"
 namespace SkySnow
 {
     class RenderSystem : public ISystem
@@ -41,6 +42,15 @@ namespace SkySnow
         
         virtual void ShutDown() final override;
     private:
-        
+        bool                        _TestInit = false;
+        File*                       _File;
+        Data*                       _VsData;
+        Data*                       _FsData;
+        GRIVertexShaderRef          _vsRef;
+        GRIFragmentShaderRef        _fsRef;
+        GRIBufferRef                _VertexBufferRef;
+        GRIPipelineShaderStateRef   _PipelineShaderStateRef;
+        GRIGraphicsPipelineStateRef _PSORef;
+        GRICommandBufferPool*       _CMBPool;
     };
 }

@@ -51,6 +51,7 @@ namespace SkySnow
 		, _HWND(NULL)
 		, _PixelFormat(0)
 		, _Context(NULL)
+        , _ContextState(GLContextState::NoUse)
 	{
 
 	}
@@ -164,9 +165,13 @@ namespace SkySnow
 
 	void GLContextWin::MakeCurrContext()
 	{
-		wglMakeCurrent(_Hdc, _Context);
-		glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
-		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        if(_ContextState == GLContextState::NoUse)
+        {
+            wglMakeCurrent(_Hdc, _Context);
+            glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
+            glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+			_ContextState = GLContextState::RenderingContext;
+        }
 	}
 
 	void GLContextWin::SwapBuffer()
@@ -191,6 +196,7 @@ namespace SkySnow
 		int result;
 		result = SetPixelFormat(hdc, pixelFormat, &pfd);
 		HGLRC context = wglCreateContext(hdc);
+        //Note In the windowOS, unbind the bound thread before binding glcontext to a new thread
 		result = wglMakeCurrent(hdc, context);
 		return context;
 	}

@@ -34,6 +34,7 @@ namespace SkySnow
     //=GLContext-Start======================================================================================================================
     GLContextMac::GLContextMac()
         : _VertexArrayObject(-1)
+        , _GLContextState(GLContextState::NoUse)
     {
         
     }
@@ -44,8 +45,17 @@ namespace SkySnow
     void GLContextMac::CreateGLContext()
     {
         NSObject* nativeWindow = (NSObject*)_GOSPlatformInfo->_NativeWindow;
-        NSView* view = [[nativeWindow contentView] retain];
-        
+        NSWindow* nsWindow = nil;
+        NSView* contentView = nil;
+        if ([nativeWindow isKindOfClass:[NSView class]])
+        {
+            contentView = (NSView*)nativeWindow;
+        }
+        else if ([nativeWindow isKindOfClass:[NSWindow class]])
+        {
+            nsWindow = (NSWindow*)nativeWindow;
+            contentView = [nsWindow contentView];
+        }
         // 创建NSOpenGLPixelFormat
         NSOpenGLPixelFormatAttribute attrs[] = {
             NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
@@ -60,15 +70,32 @@ namespace SkySnow
             0
         };
         NSOpenGLPixelFormat *pixelFormat = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-        // 创建NSOpenGLContext
-        NSOpenGLContext *openGLContext = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];
-        // 设置当前上下文
-        [openGLContext makeCurrentContext];
-        // 将OpenGL上下文与窗口关联
-        [openGLContext setView:view];
+        NSRect glViewRect = [contentView bounds];
+        NSOpenGLView* glView = [[NSOpenGLView alloc] initWithFrame:glViewRect pixelFormat:pixelFormat];
+        [pixelFormat release];
         
+        if (nil != contentView)
+        {
+            //设置自适应大小glview
+            [glView setAutoresizingMask:( NSViewHeightSizable |NSViewWidthSizable |NSViewMinXMargin |NSViewMaxXMargin |NSViewMinYMargin |NSViewMaxYMargin )];
+            //将glview设置为子窗口
+            [contentView addSubview:glView];
+        }
+        else
+        {
+            if (nil != nsWindow)
+            {
+                [nsWindow setContentView:glView];
+            }
+        }
+        //获取上下文
+        NSOpenGLContext* openGLContext = [glView openGLContext];
+        //将当前上下文与当前线程绑定
+        [openGLContext makeCurrentContext];
+        //初始化拓展字段查询
         OpenGL::InitialExtensions();
         _GLContext = openGLContext;
+        _View = glView;
         //default vao for this context
         glGenVertexArrays(1,&_VertexArrayObject);
         glBindVertexArray(_VertexArrayObject);
@@ -80,21 +107,32 @@ namespace SkySnow
         {
             glDeleteVertexArrays(1, &_VertexArrayObject);
         }
-        [_GLContext release];
+        if(_GLContext != nullptr)
+        {
+            NSOpenGLView* glView = (NSOpenGLView*)_View;
+            [glView release];
+            NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+            [glContext release];
+            _View       = nullptr;
+            _GLContext  = nullptr;
+        }
     }
-
+    //todo:The context can only be rebound to the rendering thread when you switch screens
     void GLContextMac::MakeCurrContext()
     {
-        NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
-        [glContext makeCurrentContext];
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        if(_GLContextState == GLContextState::NoUse)
+        {
+            NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+            [glContext makeCurrentContext];
+            _GLContextState = GLContextState::RenderingContext;
+        }
     }
-    
+    //Each frame is called to exchange the rendered off-screen data to the up-screen data
+    //to display the rendering of the corresponding window
     void GLContextMac::SwapBuffer()
     {
         NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
         [glContext flushBuffer];
     }
-    
 }
 #endif

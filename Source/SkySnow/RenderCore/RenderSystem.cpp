@@ -43,6 +43,49 @@ namespace SkySnow
     void RenderSystem::Update()
     {
         Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
+        
+        if(!_TestInit)
+        {
+            _CMBPool = new GRICommandBufferPool();
+            
+            string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
+            string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
+            _File = new File();
+            _VsData = new Data();
+            _FsData = new Data();
+            _File->ReadData(vsShaderPath, _VsData);
+            _File->ReadData(fsShaderPath, _FsData);
+
+            _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
+            _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
+            _PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
+            static float vertices[] = { -0.5f, -0.5f, 0.0f,
+                                        0.5f,  -0.5f, 0.0f,
+                                        0.0f,  0.5f,  0.0f};
+            SN_LOG("Vertex Size:%d",sizeof(vertices));
+            _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+                                                    sizeof(vertices),
+                                                    3,
+                                                    vertices);
+
+            GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+            psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
+            _PSORef = CreateGraphicsPipelineState(psoCreateInfo);
+            _TestInit = true;
+        }
+        
+        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
+        
+        commandBuffer->CmdBeginViewport();
+        
+        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
+        commandBuffer->CmdSetPipelineShaderState(_PipelineShaderStateRef);
+        commandBuffer->CmdSetGraphicsPipelineState(_PSORef);
+        commandBuffer->CmdDrawPrimitive(1,1);
+        
+        commandBuffer->CmdEndViewport();
+        
+        _GQueue->SubmitQueue(commandBuffer);
     }
 
     void RenderSystem::PostUpdate()
