@@ -46,8 +46,8 @@ namespace SkySnow
         Context();
         ~Context();
     private:
-        SceneRenderer*  _SceneRenderer;
-        std::vector<ISystem*> _Systems;
+        SceneRenderer*          _SceneRenderer;
+        std::vector<ISystem*>   _Systems;
     };
 
     template<typename T> inline T* Context::RegisterSystem()

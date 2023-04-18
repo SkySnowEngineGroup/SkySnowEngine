@@ -102,8 +102,13 @@ namespace SkySnow
     {
         return _CullingMask;
     }
-    GameObject* Scene::AddRootToScene()
+    GameObject* Scene::AddRootToScene(GameObject* goRoot = nullptr)
     {
+        if (goRoot)
+        {
+            _IsSubScene = true;
+            _SceneRootGO ? (delete _SceneRootGO) : _SceneRootGO = goRoot;
+        }
         if(!_SceneRootGO)
         {
             _SceneRootGO = new GameObject();

@@ -51,12 +51,31 @@ namespace SkySnow
         7. 组合/聚合复用原则（Composite/Aggregate Reuse Principle）
            尽量使用组合/聚合的方式，而不是使用继承
      */
+    //GRICommandBufferBase
+    //================================================================================================
 	GRICommandBufferBase::GRICommandBufferBase(CommandBufferSate cbState)
 		: _CMState(cbState)
 
 	{
 	}
-
+    GRICommandBufferBase::~GRICommandBufferBase()
+    {
+        _CMState = Invalid;
+    }
+    void GRICommandBufferBase::SetupState(CommandBufferSate cmbType)
+    {
+        _CMState = cmbType;
+    }
+    bool GRICommandBufferBase::CommandBufferValid(CommandBufferType cmbType)
+    {
+        if (_CMState == Invalid && cmbType == _CMType)
+        {
+            return true;
+        }
+        return false;
+    }
+    //GRICommandBufferPool
+    //================================================================================================
     GRICommandBufferBase* GRICommandBufferPool::CreateCommandBuffer(CommandBufferType cbType)
     {
         _Lock.Lock();
@@ -80,6 +99,7 @@ namespace SkySnow
                     if(commandBuffer->CommandBufferValid(cbType))
                     {
                         tempCmb = commandBuffer;
+                        tempCmb->SetupState(Recording);
                         break;
                     }
                 }

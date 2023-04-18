@@ -34,26 +34,20 @@ namespace SkySnow
     
     class GRICommandBufferBase
     {
+        friend class GRICommandBufferPool;
     public:
         GRICommandBufferBase(CommandBufferSate cbState = Initial);
-        virtual ~GRICommandBufferBase() 
-        {
-            _CMState = Invalid;
-        }
+        virtual ~GRICommandBufferBase();
+        
         virtual void CmdResourceSetExecutor() = 0;
         virtual void CmdReset() = 0;
         virtual void CmdBeginCommandBuffer() = 0;
         virtual void CmdEndCommandBuffer() = 0;
         virtual void CmdBeginRenderPass() = 0;
         virtual void CmdEndRenderPass() = 0;
-        bool CommandBufferValid(CommandBufferType cmbType)
-        {
-            if(_CMState == Invalid && cmbType == _CMType)
-            {
-                return true;
-            }
-            return false;
-        }
+    protected:
+        void SetupState(CommandBufferSate cmbType);
+        bool CommandBufferValid(CommandBufferType cmbType);
     protected:
         CommandBufferSate   _CMState;
         CommandBufferType   _CMType;

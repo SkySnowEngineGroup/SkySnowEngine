@@ -53,7 +53,7 @@ namespace SkySnow
         //Get Scene
         uint64_t GetSceneCullingMask() const;
         //Set curr scene root gameobject
-        GameObject* AddRootToScene();
+        GameObject* AddRootToScene(GameObject* goRoot = nullptr);
         //set curr scene child gameobject
         GameObject* AddChildGOToScene();
     private:
