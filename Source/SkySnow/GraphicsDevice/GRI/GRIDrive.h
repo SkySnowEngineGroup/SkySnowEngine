@@ -52,8 +52,6 @@ namespace SkySnow
 		//about one viewport
 		virtual void GRIBeginViewport() = 0;
 		virtual void GRIEndViewport() = 0;
-		// Test:clear quad color
-		virtual void GRIClearColor(float red, float green, float blue, float alpha) = 0;
 		//GRICreate=======================================================================================================================
 		//Create Vertex Shader
 		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) = 0;

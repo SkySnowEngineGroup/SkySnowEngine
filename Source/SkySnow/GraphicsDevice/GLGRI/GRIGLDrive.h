@@ -56,8 +56,6 @@ namespace SkySnow
 		virtual void GRIEndViewport() final override;
 		//GRICreate=================================================================================================================================
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
-		//Test Demo
-		virtual void GRIClearColor(float red, float green, float blue, float alpha) final override;
 		//Create Vertex Shader
 		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) final override;
 		//Create Fragment Shader

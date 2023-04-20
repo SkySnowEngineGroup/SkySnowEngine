@@ -25,6 +25,7 @@
 namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
+		: _GLContext(nullptr)
 	{
 	}
     GRIGLDrive::~GRIGLDrive()
@@ -68,14 +69,6 @@ namespace SkySnow
 		_GLContext->SwapBuffer();
 	}
 	//GRIRenderPipe===========================================================================================================================
-	//GRICreate===============================================================================================================================
-	void GRIGLDrive::GRIClearColor(float red, float green, float blue, float alpha)
-	{
-		glClearColor(red,green,blue,alpha);
-	}
-
-
-	//GRICreate===============================================================================================================================
 
 	//GRISet==================================================================================================================================
 	void GRIGLDrive::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
