@@ -23,7 +23,7 @@
 #include "Type.h"
 namespace SkySnow
 {
-//记录类型信息
+//runtime type info
 #define SkySnow_Object(TypeName,BaseTypeName) \
 		public: \
 			using ClassName = TypeName; \

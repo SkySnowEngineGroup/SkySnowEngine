@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once
 #include "ObjectDefines.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
 	class Object
@@ -32,11 +33,17 @@ namespace SkySnow
 		virtual const Type* GetType() const = 0;
 
 		virtual const char* GetTypeName() const = 0;
-
+        
+        static const char* GetTypeNameStatic()
+        {
+            return nullptr;
+        }
+        
 		static const Type* GetTypeStatic() 
 		{
 			return nullptr; 
 		}
+
 	private:
 
 	};

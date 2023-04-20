@@ -36,6 +36,8 @@ namespace SkySnow
 	static char g_Null_Char = 0;
 	static const int g_Min_Capacity = 8;//ื๎ะก8byte
 	static const unsigned NPOS = 0xffffffff;
+    static const uint64_t g_DefaultCullingMask = 1ULL << 63;
+    typedef int SkySnowSceneHandle;
 	//globle Function
 	static std::string GetMaterialAllPath(const std::string mpath)
 	{

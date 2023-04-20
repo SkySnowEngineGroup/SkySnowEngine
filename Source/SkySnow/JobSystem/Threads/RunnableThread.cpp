@@ -38,7 +38,7 @@ namespace SkySnow
 	{
 		//目前只会创建PThread线程
 		RunnableThread* runnableThread = new RunnablePThread();
-		runnableThread->CreateRunnableThread(runable);
+		runnableThread->CreateThread(runable);
 		return runnableThread;
 	}
 }

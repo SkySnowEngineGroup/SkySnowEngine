@@ -21,13 +21,49 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RefCounted.h"
+#include "Object.h"
+#include "SkySnowConfigInfo.h"
+#include "TransformComponent.h"
+#include <vector>
 namespace SkySnow
 {
-	class Scene : public RefThreadSafeCounted
-	{
-	public:
-		Scene();
-		~Scene();
-	};
+    class GameObject;
+    class Scene : public Object
+    {
+        SkySnow_Object(Scene,Object);
+    public:
+        Scene(std::string sceneName = "");
+        ~Scene();
+        
+        std::string GetSceneName() const;
+        //Set Scene Enable Flag
+        void SetEnable(bool enable);
+        //Get Scene Enable Flag
+        bool IsEnable() const;
+        //setup curr scene root transform
+        TransformComponent* SetupRootTransform();
+        //get curr scene root transform
+        TransformComponent* GetRootTransform();
+        //setup subscene flag
+        void SetSubScene(bool subScene);
+        //get subscene flag
+        bool IsSubScene() const;
+        //Scene culling mask(camera cal visable and novisable)
+        void SetSceneCullingMask(uint64_t cullingMask);
+        //Get Scene
+        uint64_t GetSceneCullingMask() const;
+        //Set curr scene root gameobject
+        GameObject* AddRootToScene(GameObject* goRoot = nullptr);
+        //set curr scene child gameobject
+        GameObject* AddChildGOToScene();
+    private:
+        bool                        _Enable;
+        bool                        _IsSubScene;
+        SkySnowSceneHandle          _SceneHandle;
+        GameObject*                 _SceneRootGO;
+        uint64_t                    _CullingMask;
+        std::string                 _SceneName;
+        TransformComponent*         _CurrSceneTransform;
+        std::vector<GameObject*>    _RootList;
+    };
 }
