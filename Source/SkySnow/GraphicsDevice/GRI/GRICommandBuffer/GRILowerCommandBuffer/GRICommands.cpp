@@ -45,9 +45,9 @@ namespace SkySnow
 	{
 		GRI->GRISetPipelineShaderState(_PipelineShaderState);
 	}
-	void CmdSetGraphicsPipelineStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void CmdSetGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetGraphicsPipelineState(_PipelineState);
+		GRI->GRISetGraphicsPipeline(_PipelineState);
 	}
 	//===============================================================================
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
@@ -70,8 +70,8 @@ namespace SkySnow
 		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data, _Handle);
 	}
 
-	void GRICreateGraphicsPipelineStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void GRICreateGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateGraphicsPipelineState(_PsoInfo,_Handle);
+		GRI->GRICreateGraphicsPipeline(_PsoInfo,_Handle);
 	}
 }

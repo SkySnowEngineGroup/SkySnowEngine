@@ -50,7 +50,7 @@ namespace SkySnow
         GRIFragmentShaderRef        _fsRef;
         GRIBufferRef                _VertexBufferRef;
         GRIPipelineShaderStateRef   _PipelineShaderStateRef;
-        GRIGraphicsPipelineStateRef _PSORef;
+        GRIGraphicsPipelineRef      _PSORef;
         GRICommandBufferPool*       _CMBPool;
     };
 }

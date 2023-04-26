@@ -64,7 +64,7 @@ namespace SkySnow
         virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
         virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
         virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
-        virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
+        virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) = 0;
     protected:
     };
     //compute shader is a single pipeline

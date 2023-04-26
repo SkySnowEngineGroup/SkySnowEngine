@@ -44,10 +44,11 @@ namespace SkySnow
 		GRT_VertexShader,
 		GRT_FragmentShader,
 		GRT_PipelineShaderState,
-		GRT_GraphicsPipelineState,
+		GRT_GraphicsPipeline,
+        GRT_ComputePipeline,
 		GRT_Buffer,
-		GRI_Assembly,
-		GRI_VertexBindingDesc,
+		GRT_Assembly,
+		GRT_VertexBindingDesc,
 		GRT_Num
 	};
 

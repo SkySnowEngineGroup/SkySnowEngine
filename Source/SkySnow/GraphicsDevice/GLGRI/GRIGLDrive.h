@@ -62,8 +62,10 @@ namespace SkySnow
 		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) final override;
 		//Create Shader State
 		virtual void GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle) final override;
-		//Create Pipeline State 
-		virtual void GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle) final override;
+		//Create Render Pipeline
+		virtual void GRICreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle) final override;
+        //Create Compute Pipeline
+        virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo* createInfo,GRIComputePipelineRef& handle) final override;
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
@@ -74,23 +76,23 @@ namespace SkySnow
 		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
+		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
 		//GRISet====================================================================================================================================
 
 	private:
 		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
 		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
-		void SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount);
+		void SetupVertexFormatBinding(GLGraphicPipeline& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount);
 		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
 	private:
 		//将要提交到GPU执行的pipelinestate
-		GLGraphicPipelineState		_PendingState;
+		GLGraphicPipeline		    _PendingState;
 		//已经存在于GPU中的pipelinestate
-		GLGraphicPipelineState		_ExistingState;
+		GLGraphicPipeline   		_ExistingState;
 		//图元绘制类型
 		PrimitiveType				_PrimitiveType = PrimitiveType::PT_Num;
 		//Cache中有相关状态的缓存
-		GLGraphicPipelineStateCache _PipelineCache;
+		GLPipelineCache             _PipelineCache;
         GLContext*                  _GLContext;
 	};
 }

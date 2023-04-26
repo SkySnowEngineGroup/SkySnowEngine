@@ -85,9 +85,9 @@ namespace SkySnow
 		_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
 	}
 
-	void GRIGLDrive::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
-		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipelineState*>(pipelineState)->_PrimitiveType;
+		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipeline*>(pipelineState)->_PrimitiveType;
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
@@ -110,7 +110,7 @@ namespace SkySnow
 	//GRISet==================================================================================================================================
 
 	//GRIprivate==============================================================================================================================
-	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
+	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
 	{
 		if (OpenGL::SupportVertexFormatBinding())
 		{

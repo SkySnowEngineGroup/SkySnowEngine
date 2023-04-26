@@ -103,14 +103,14 @@ namespace SkySnow
 		GRIPipelineShaderState* _PipelineShaderState;
 	};
 
-	struct CmdSetGraphicsPipelineStateCommand : public GRICommand<CmdSetGraphicsPipelineStateCommand>
+	struct CmdSetGraphicsPipelineCommand : public GRICommand<CmdSetGraphicsPipelineCommand>
 	{
-		CmdSetGraphicsPipelineStateCommand(GRIGraphicsPipelineState* pipelineState)
+		CmdSetGraphicsPipelineCommand(GRIGraphicsPipeline* pipelineState)
 			: _PipelineState(pipelineState)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIGraphicsPipelineState* _PipelineState;
+		GRIGraphicsPipeline* _PipelineState;
 	};
 	//======================================================================================================================
 	// RenderResource Create
@@ -170,9 +170,9 @@ namespace SkySnow
 		GRIBufferRef	_Handle;
 	};
 
-	struct GRICreateGraphicsPipelineStateCommand : public GRICommand<GRICreateGraphicsPipelineStateCommand>
+	struct GRICreateGraphicsPipelineCommand : public GRICommand<GRICreateGraphicsPipelineCommand>
 	{
-		GRICreateGraphicsPipelineStateCommand(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle)
+        GRICreateGraphicsPipelineCommand(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle)
 			: _PsoInfo(createInfo)
 			, _Handle(handle)
 		{
@@ -180,7 +180,7 @@ namespace SkySnow
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
 
-		GRICreateGraphicsPipelineStateInfo _PsoInfo;
-		GRIGraphicsPipelineStateRef _Handle;
+        GRICreateGraphicsPipelineInfo   _PsoInfo;
+		GRIGraphicsPipelineRef          _Handle;
 	};
 }

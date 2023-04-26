@@ -90,7 +90,7 @@ namespace SkySnow
 
         virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) = 0;
 
-        virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
+        virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) = 0;
 
         virtual void ResourceCreateExecutor();
     private:

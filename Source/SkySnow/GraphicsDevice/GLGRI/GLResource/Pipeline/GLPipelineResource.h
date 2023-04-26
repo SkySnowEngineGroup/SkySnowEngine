@@ -68,42 +68,38 @@ namespace SkySnow
 		GLFragmentShader*   _OGLFragmentShader;
 		
 	};
-	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路
-	class GLGraphicPipelineState : public GRIGraphicsPipelineState
+    
+	class GLGraphicPipeline : public GRIGraphicsPipeline
 	{
 	public:
-		GLGraphicPipelineState()
-			: GRIGraphicsPipelineState()
+        GLGraphicPipeline()
+			: GRIGraphicsPipeline()
 			, _PrimitiveType(PrimitiveType::PT_Num)
 		{
 		}
 
-		GLGraphicPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
-			: GRIGraphicsPipelineState()
+        GLGraphicPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
+			: GRIGraphicsPipeline()
 			, _PrimitiveType(createInfo._PrimitiveType)
 		{
 		}
 
-		virtual ~GLGraphicPipelineState()
+		virtual ~GLGraphicPipeline()
 		{
 		}
 	public:
 		GLBufferInfo			_BufferInfo[Num_GL_Vertex_Attribute];
 		GLShaderStateInfo		_ShaderStateInfo;
-		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
-		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。
 		PrimitiveType			_PrimitiveType;
 	};
-	//该能力对齐vulkan&metal的pipelinecache
-	//在UE5中有类似的概念，但是从其代码来看
-	//其ContextState实现与PipelineCache冲突(从我的理解来看，是历史问题)
-	//(vulkan&metal中pipelinestate可存储到硬件磁盘上，类似于二进制着色器码)
-	//但ContextState不具备该能力
-	//SkySnow为了统一OpenGL与Vulkan&Metal的规范，因此决定抛弃
-	//ContextState的概念，转而使用PipelineCache的概念。
-	class GLGraphicPipelineStateCache
+    class GLComputePipeline : public GRIComputePipeline
+    {
+    public:
+        
+    };
+
+    class GLPipelineCache
 	{
 	public:
-
 	};
 }

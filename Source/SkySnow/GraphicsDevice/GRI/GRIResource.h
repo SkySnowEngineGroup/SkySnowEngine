@@ -133,7 +133,7 @@ namespace SkySnow
 	{
 	public:
 		GRIAssembly()
-			: GRIResource(EGRIResourceType::GRI_Assembly)
+			: GRIResource(EGRIResourceType::GRT_Assembly)
 		{
 		}
 		virtual ~GRIAssembly()
@@ -155,18 +155,31 @@ namespace SkySnow
 		}
 	};
 	//渲染Pipeline资源基类
-	class GRIGraphicsPipelineState : public GRIResource
+	class GRIGraphicsPipeline : public GRIResource
 	{
 	public:
-		GRIGraphicsPipelineState()
-			: GRIResource(EGRIResourceType::GRT_GraphicsPipelineState)
+		GRIGraphicsPipeline()
+			: GRIResource(EGRIResourceType::GRT_GraphicsPipeline)
 		{
 		}
-		virtual ~GRIGraphicsPipelineState()
+		virtual ~GRIGraphicsPipeline()
 		{
-			SN_LOG("GRIGraphicsPipelineState Destruct.");
+			SN_LOG("GRIGraphicsPipeline Destruct.");
 		}
 	};
+    class GRIComputePipeline : public GRIResource
+    {
+    public:
+        GRIComputePipeline()
+            : GRIResource(EGRIResourceType::GRT_ComputePipeline)
+        {
+            
+        }
+        virtual ~GRIComputePipeline()
+        {
+            SN_LOG("GRIComputePipeline Destruct.");
+        }
+    };
 
 	class GRIBuffer : public GRIResource
 	{
@@ -233,7 +246,7 @@ namespace SkySnow
 	{
 	public:
 		GRIVertexBindingDesc()
-			: GRIResource(GRI_VertexBindingDesc)
+			: GRIResource(GRT_VertexBindingDesc)
 		{
 		}
 		virtual ~GRIVertexBindingDesc()
@@ -243,13 +256,15 @@ namespace SkySnow
 	};
 
 
-	// Shader相关资源的智能指针
+	//shader type vertex fragement compute
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
 	typedef RefCountPtr<GRIPipelineShaderState>		GRIPipelineShaderStateRef;
-	//在Draw之前，无GPU句柄及带GPU句柄的需进行资源设置或绑定
-	typedef RefCountPtr<GRIGraphicsPipelineState>	GRIGraphicsPipelineStateRef;
-	//Buffer相关的智能指针
+	//rendercomandbuffer
+    typedef RefCountPtr<GRIGraphicsPipeline>        GRIGraphicsPipelineRef;
+    //computecommandbuffer
+	typedef RefCountPtr<GRIComputePipeline>	        GRIComputePipelineRef;
+	//buffer type: vertex index texture  SSBO(Shader Storage Buffer Object)
 	typedef class GRIBuffer							GRIIndexBuffer;
 	typedef class GRIBuffer							GRIVertexBuffer;
 	typedef RefCountPtr<GRIVertexBuffer>			GRIVertexBufferRef;

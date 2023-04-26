@@ -68,9 +68,9 @@ namespace SkySnow
                                                     3,
                                                     vertices);
 
-            GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+            GRICreateGraphicsPipelineInfo psoCreateInfo;
             psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
-            _PSORef = CreateGraphicsPipelineState(psoCreateInfo);
+            _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             _TestInit = true;
         }
         
@@ -80,7 +80,7 @@ namespace SkySnow
         
         commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
         commandBuffer->CmdSetPipelineShaderState(_PipelineShaderStateRef);
-        commandBuffer->CmdSetGraphicsPipelineState(_PSORef);
+        commandBuffer->CmdSetGraphicsPipeline(_PSORef);
         commandBuffer->CmdDrawPrimitive(1,1);
         
         commandBuffer->CmdEndViewport();

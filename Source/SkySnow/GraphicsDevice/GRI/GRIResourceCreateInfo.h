@@ -24,9 +24,13 @@
 #include "GRICommons.h"
 namespace SkySnow
 {
-	class GRICreateGraphicsPipelineStateInfo
+	class GRICreateGraphicsPipelineInfo
 	{
 	public:
 		PrimitiveType _PrimitiveType;
 	};
+    class GRICreateComputePipelineInfo
+    {
+        
+    };
 }

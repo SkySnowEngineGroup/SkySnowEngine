@@ -256,14 +256,14 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
     }
 
-    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+    GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
     {
         if (!_GQueue->IsLowerVerion())
         {
-            GRIGraphicsPipelineStateRef handle;
-            GRI->GRICreateGraphicsPipelineState(createInfo, handle);
+            GRIGraphicsPipelineRef handle;
+            GRI->GRICreateGraphicsPipeline(createInfo, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipelineState(createInfo);
+        return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
     }
 }

@@ -101,10 +101,10 @@ namespace SkySnow
 		return handle;
 	}
 
-	GRIGraphicsPipelineStateRef GLRenderCommandBuffer::CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+	GRIGraphicsPipelineRef GLRenderCommandBuffer::CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
 	{
-		GRIGraphicsPipelineStateRef handle = new GLGraphicPipelineState(createInfo);
-		Alloc_CommandCreate(GRICreateGraphicsPipelineStateCommand,createInfo, handle);
+		GRIGraphicsPipelineRef handle = new GLGraphicPipeline(createInfo);
+		Alloc_CommandCreate(GRICreateGraphicsPipelineCommand,createInfo, handle);
 		return handle;
 	}
 	//ResourceSet====================================================================
@@ -120,9 +120,9 @@ namespace SkySnow
 	{
 		Alloc_CommandSet(CmdSetPipelineShaderStateCommand)(pipelineShaderState);
 	}
-	void GLRenderCommandBuffer::CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	void GLRenderCommandBuffer::CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
-		Alloc_CommandSet(CmdSetGraphicsPipelineStateCommand)(pipelineState);
+		Alloc_CommandSet(CmdSetGraphicsPipelineCommand)(pipelineState);
 	}
 	void GLRenderCommandBuffer::CmdResourceSetExecutor()
 	{
