@@ -61,11 +61,11 @@ namespace SkySnow
 		//Create Fragment Shader
 		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) final override;
 		//Create Shader State
-		virtual void GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle) final override;
+		virtual void GRICreatePipelineShader(GRIPipelineShaderRef& handle) final override;
 		//Create Render Pipeline
 		virtual void GRICreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle) final override;
         //Create Compute Pipeline
-        virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo* createInfo,GRIComputePipelineRef& handle) final override;
+        virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) final override;
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
@@ -73,7 +73,7 @@ namespace SkySnow
 		//Set Buffer
 		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
 		//set ShaderPipelineState
-		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
+		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
 		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;

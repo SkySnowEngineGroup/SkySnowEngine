@@ -40,9 +40,9 @@ namespace SkySnow
 		OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode, handle);
 	}
 
-	void GRIGLDrive::GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle)
+	void GRIGLDrive::GRICreatePipelineShader(GRIPipelineShaderRef& handle)
 	{
-		GLPipelineShaderState* shaderPipe = dynamic_cast<GLPipelineShaderState*>(handle.GetReference());
+		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(handle.GetReference());
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(shaderPipe->GetVertexShader());
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(shaderPipe->GetFragmentShader());
 		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);

@@ -59,6 +59,10 @@ namespace SkySnow
         {
             (*iter)->SetEnable(enable);
         }
+        if (_SceneRootGO)
+        {
+            _SceneRootGO->SetEnable(enable);
+        }
     }
 
     bool Scene::IsEnable() const

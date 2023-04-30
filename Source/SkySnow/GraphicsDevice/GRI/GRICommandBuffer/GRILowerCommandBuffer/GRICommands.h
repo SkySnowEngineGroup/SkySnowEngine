@@ -93,14 +93,14 @@ namespace SkySnow
 		int _NumPrimitive;
 		int _NumInstance;
 	};
-	struct CmdSetPipelineShaderStateCommand : public GRICommand<CmdSetPipelineShaderStateCommand>
+	struct CmdSetPipelineShaderCommand : public GRICommand<CmdSetPipelineShaderCommand>
 	{
-		CmdSetPipelineShaderStateCommand(GRIPipelineShaderState* pipelineShaderState)
+		CmdSetPipelineShaderCommand(GRIPipelineShader* pipelineShaderState)
 			: _PipelineShaderState(pipelineShaderState)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIPipelineShaderState* _PipelineShaderState;
+		GRIPipelineShader* _PipelineShaderState;
 	};
 
 	struct CmdSetGraphicsPipelineCommand : public GRICommand<CmdSetGraphicsPipelineCommand>
@@ -141,14 +141,14 @@ namespace SkySnow
 		GRIFragmentShaderRef	_Handle;
 	};
 
-	struct GRICreatePipelineShaderStateCommand : public GRICommand<GRICreatePipelineShaderStateCommand>
+	struct GRICreatePipelineShaderCommand : public GRICommand<GRICreatePipelineShaderCommand>
 	{
-		GRICreatePipelineShaderStateCommand(GRIPipelineShaderStateRef& handle)
+		GRICreatePipelineShaderCommand(GRIPipelineShaderRef& handle)
 			: _Handle(handle)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIPipelineShaderStateRef _Handle;
+		GRIPipelineShaderRef _Handle;
 	};
 
 	struct GRICreateBufferCommand : public GRICommand<GRICreateBufferCommand>

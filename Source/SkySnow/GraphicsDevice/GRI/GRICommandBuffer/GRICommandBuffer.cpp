@@ -234,15 +234,15 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(fsCode);
     }
 
-    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
     {
         if (!_GQueue->IsLowerVerion())
         {
-            GRIPipelineShaderStateRef handle;
-            GRI->GRICreatePipelineShaderState(handle);
+            GRIPipelineShaderRef handle;
+            GRI->GRICreatePipelineShader(handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShaderState(vs,fs);
+        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs);
     }
 
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)

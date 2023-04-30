@@ -80,9 +80,9 @@ namespace SkySnow
 		_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
 	}
 
-	void  GRIGLDrive::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-		_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
+		_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShader*>(pipelineShaderState)->_ProgramId;
 	}
 
 	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)

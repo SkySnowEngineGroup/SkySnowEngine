@@ -46,14 +46,14 @@ namespace SkySnow
 	public://Set Resource
 		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
 		virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) final override;
-		virtual GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
+		virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
 		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) final override;
 		virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) final override;
 		virtual void CmdResourceSetExecutor() final override;
 	public://Create Resource
 		virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
 		virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
+		virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
 		virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
 	private:
 

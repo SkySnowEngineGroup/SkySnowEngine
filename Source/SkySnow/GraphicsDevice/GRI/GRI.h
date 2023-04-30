@@ -40,7 +40,7 @@ namespace SkySnow
 
     GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
 
-    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs);
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs);
 
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
 

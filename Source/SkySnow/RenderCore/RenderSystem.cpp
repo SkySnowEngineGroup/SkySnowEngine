@@ -58,7 +58,7 @@ namespace SkySnow
 
             _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
             _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
-            _PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
+            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
             static float vertices[] = { -0.5f, -0.5f, 0.0f,
                                         0.5f,  -0.5f, 0.0f,
                                         0.0f,  0.5f,  0.0f};
@@ -79,7 +79,7 @@ namespace SkySnow
         commandBuffer->CmdBeginViewport();
         
         commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
-        commandBuffer->CmdSetPipelineShaderState(_PipelineShaderStateRef);
+        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
         commandBuffer->CmdSetGraphicsPipeline(_PSORef);
         commandBuffer->CmdDrawPrimitive(1,1);
         

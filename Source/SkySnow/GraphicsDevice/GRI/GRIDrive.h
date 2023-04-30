@@ -58,11 +58,11 @@ namespace SkySnow
 		//Create Fragment Shader
 		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) = 0;
 		//Create Pipeline Shader Stage State
-		virtual void GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle) = 0;
+		virtual void GRICreatePipelineShader(GRIPipelineShaderRef& handle) = 0;
 		//Create Graphics Pipeline
 		virtual void GRICreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle) = 0;
         //Create Compute Pipeline
-        virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo* createInfo,GRIComputePipelineRef& handle) = 0;
+        virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) = 0;
 		//Create Buffer:index vertex SSBO
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
 		//GRICreate=======================================================================================================================
@@ -71,7 +71,7 @@ namespace SkySnow
 		//GRISet==========================================================================================================================
 		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) {};
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {};
-		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) {};
+		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) {};
 		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) {};
 		//GRISet==========================================================================================================================
 	};

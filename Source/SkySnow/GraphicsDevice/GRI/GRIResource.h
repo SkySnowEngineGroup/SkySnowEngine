@@ -142,16 +142,16 @@ namespace SkySnow
 		}
 	};
 	//渲染PipelineShader资源基类
-	class GRIPipelineShaderState : public GRIResource
+	class GRIPipelineShader : public GRIResource
 	{
 	public:
-		GRIPipelineShaderState()
+		GRIPipelineShader()
 			: GRIResource(EGRIResourceType::GRT_PipelineShaderState)
 		{
 		}
-		virtual ~GRIPipelineShaderState()
+		virtual ~GRIPipelineShader()
 		{
-			SN_LOG("GRIPipelineShaderState Destruct.");
+			SN_LOG("GRIPipelineShader Destruct.");
 		}
 	};
 	//渲染Pipeline资源基类
@@ -259,7 +259,7 @@ namespace SkySnow
 	//shader type vertex fragement compute
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
-	typedef RefCountPtr<GRIPipelineShaderState>		GRIPipelineShaderStateRef;
+	typedef RefCountPtr<GRIPipelineShader>			GRIPipelineShaderRef;
 	//rendercomandbuffer
     typedef RefCountPtr<GRIGraphicsPipeline>        GRIGraphicsPipelineRef;
     //computecommandbuffer

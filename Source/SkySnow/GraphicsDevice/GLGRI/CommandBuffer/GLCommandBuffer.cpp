@@ -87,10 +87,10 @@ namespace SkySnow
 		return handle;
 	}
 
-	GRIPipelineShaderStateRef GLRenderCommandBuffer::CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+	GRIPipelineShaderRef GLRenderCommandBuffer::CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
-		GRIPipelineShaderStateRef handle = new GLPipelineShaderState(vs,fs);
-		Alloc_CommandCreate(GRICreatePipelineShaderStateCommand,handle);
+		GRIPipelineShaderRef handle = new GLPipelineShader(vs,fs);
+		Alloc_CommandCreate(GRICreatePipelineShaderCommand,handle);
 		return handle;
 	}
 
@@ -116,9 +116,9 @@ namespace SkySnow
 	{
 		Alloc_CommandSet(CmdDrawPrimitiveCommand)(numPrimitive, numInstance);
 	}
-	void GLRenderCommandBuffer::CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	void GLRenderCommandBuffer::CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-		Alloc_CommandSet(CmdSetPipelineShaderStateCommand)(pipelineShaderState);
+		Alloc_CommandSet(CmdSetPipelineShaderCommand)(pipelineShaderState);
 	}
 	void GLRenderCommandBuffer::CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{

@@ -86,7 +86,7 @@ namespace SkySnow
 
         virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) = 0;
 
-        virtual GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
+        virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 
         virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) = 0;
 

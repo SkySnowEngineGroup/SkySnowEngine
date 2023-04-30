@@ -30,11 +30,11 @@
 #include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
-	class GLPipelineShaderState : public GRIPipelineShaderState
+	class GLPipelineShader : public GRIPipelineShader
 	{
 	public:
-		GLPipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
-			: GRIPipelineShaderState()
+		GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
+			: GRIPipelineShader()
 			, _ProgramId(0)
 			, _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
 			, _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))

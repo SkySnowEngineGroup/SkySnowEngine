@@ -29,7 +29,7 @@ namespace SkySnow
 	{
 	}
 
-    void GRIGLDrive::GRICreateComputePipeline(const GRICreateComputePipelineInfo* createInfo,GRIComputePipelineRef& handle)
+    void GRIGLDrive::GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle)
     {
     }
 }

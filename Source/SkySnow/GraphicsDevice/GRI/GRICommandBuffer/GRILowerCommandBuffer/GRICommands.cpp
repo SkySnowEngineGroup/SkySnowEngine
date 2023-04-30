@@ -41,9 +41,9 @@ namespace SkySnow
 	{
 		GRI->GRIDrawPrimitive(_NumPrimitive, _NumInstance);
 	}
-	void CmdSetPipelineShaderStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void CmdSetPipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetPipelineShaderState(_PipelineShaderState);
+		GRI->GRISetPipelineShader(_PipelineShaderState);
 	}
 	void CmdSetGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
@@ -60,9 +60,9 @@ namespace SkySnow
 		GRI->GRICreateFragmentShader(_FsCode, _Handle);
 	}
 
-	void GRICreatePipelineShaderStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void GRICreatePipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreatePipelineShaderState(_Handle);
+		GRI->GRICreatePipelineShader(_Handle);
 	}
 
 	void GRICreateBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
