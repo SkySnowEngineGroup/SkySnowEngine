@@ -26,16 +26,18 @@
 // render type interface for engine 
 namespace SkySnow
 {
-    //全局变量
+    class GRIPipelineCache;
+    //Globle var
     extern OSPlatform*              _GOSPlatform;
     extern GRIDrive*                GRI;
+    extern GRIPipelineCache*        _GPipelineCache;
     
-    //全局接口
+    //RHI init
     void GRIInit(const OSPlatformInfo& osPlatformInfo);
 
     void GRIExit();
  
-    //对外资源创建接口、全局接口
+    //Create VS
     GRIVertexShaderRef CreateVertexShader(const char* vsCode);
 
     GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);

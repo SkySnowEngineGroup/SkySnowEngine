@@ -20,64 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-
+#include "GRIPipelineCache.h"
 namespace SkySnow
 {
-	enum GRIFeature
-	{
-		ENone,
-		EVulkan,
-		EMetal,
-		EDx9, //not support
-		EDx10,//not support
-		EDx11,//not support
-		EDX12,//not support
-		EGLES,
-		EOpenGL,
-		ENum
-	};
-
-	enum EGRIResourceType
-	{
-		GRT_None,
-		GRT_VertexShader,
-		GRT_FragmentShader,
-		GRT_PipelineShaderState,
-		GRT_GraphicsPipeline,
-        GRT_ComputePipeline,
-		GRT_Buffer,
-        GRT_VertexDeclaration,
-		GRT_AssemblyState,
-        GRT_RasterizerState,
-        GRT_DepthStencilState,
-        GRT_BlendState,
-        GRT_SamplerState,
-        GRT_ViewportState,
-		GRT_Num
-	};
-
-	enum ShaderFrequency
-	{
-		SF_Vertex		= 0,
-		SF_Fragement	= 1,
-	};
-
-	enum BufferUsageType
-	{
-		BUT_None				= 0,
-		BUT_VertexBuffer		= 1 << 0,
-		BUT_IndexBuffer			= 1 << 1,
-		BUT_DynamicBuffer		= 1 << 2,
-		BUT_StructuredBuffer	= 1 << 3,
-	};
-
-	enum class PrimitiveType
-	{
-		PT_Lines,
-		PT_Point_Strip,
-		PT_Trangles,
-		PT_Trangle_Strip,
-		PT_Num,
-	};
+    GRIPipelineCache::GRIPipelineCache()
+    {
+        
+    }
+    GRIPipelineCache::~GRIPipelineCache()
+    {
+        
+    }
+    //刷新资源
+    void GRIPipelineCache::FlushResourceRelease()
+    {
+        _GraphicsPipelineCache.Discard();
+        _ComputePipelineCache.Discard();
+    }
+    void GRIPipelineCache::Shutdown()
+    {
+        _GraphicsPipelineCache.Discard();
+        _GraphicsPipelineCache.Discard();
+        _ComputePipelineCache.Discard();
+        _ComputePipelineCache.Discard();
+    }
+    //获取缓存的GraphicsPipeline
+    GRIGraphicsPipelineRef GRIPipelineCache::GetGraphicsPipeline(const GRICreateGraphicsPipelineInfo& pipelineInfo)
+    {
+        
+    }
+    //获取缓存的ComputePipeline
+    GRIComputePipelineRef GRIPipelineCache::GetComputePipeline(const GRICreateComputePipelineInfo& pipelineInfo)
+    {
+        
+    }
 }

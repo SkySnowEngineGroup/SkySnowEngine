@@ -37,4 +37,65 @@ namespace SkySnow
 	private:
 		pthread_mutex_t m_mutex;
 	};
+    //读写锁
+    //读模式下，多个线程可以同时读取共享资源，但不能写入
+    //写模式下，只有一个线程可以读写共享资源，其它线程不能读取或写入
+    class ThreadRWMutex : public NonCopyable
+    {
+    public:
+        ThreadRWMutex()
+        {
+            int err = pthread_rwlock_init(&_Mutex, nullptr);
+            if(err == 0)
+            {
+                SN_ERR("pthread_rwlock_init failed with error:%d",err);
+            }
+        }
+        ~ThreadRWMutex()
+        {
+            int err = pthread_rwlock_destroy(&_Mutex);
+            if(err == 0)
+            {
+                SN_ERR("pthread_rwlock_destroy failed with error: %d",err);
+            }
+        }
+        //read lock
+        void ReadLock()
+        {
+            int err = pthread_rwlock_rdlock(&_Mutex);
+            if(err == 0)
+            {
+                SN_ERR("pthread_rwlock_rdlock failed with error: %d",err);
+            }
+        }
+        //read unlock
+        void ReadUnLock()
+        {
+            int err = pthread_rwlock_unlock(&_Mutex);
+            if(err == 0)
+            {
+                SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
+            }
+        }
+        //write lock
+        void WriteLock()
+        {
+            int err = pthread_rwlock_wrlock(&_Mutex);
+            if(err == 0)
+            {
+                SN_ERR("pthread_rwlock_wrlock failed with error: %d",err);
+            }
+        }
+        //write unlock
+        void WriteUnlock()
+        {
+            int err = pthread_rwlock_unlock(&_Mutex);
+            if(err == 0)
+            {
+                SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
+            }
+        }
+    private:
+        pthread_rwlock_t _Mutex;
+    };
 }

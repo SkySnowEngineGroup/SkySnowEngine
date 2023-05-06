@@ -28,18 +28,16 @@
 #include "SNAtomicVar.h"
 namespace SkySnow
 {
-	//渲染资源基类
-	class GRIResource //: public RefThreadSafeCounted
+	//Resource base class
+	class GRIResource
 	{
 	public:
 		GRIResource()
-			//: RefThreadSafeCounted()
 			: m_GRIResourceType(EGRIResourceType::GRT_None)
 		{
 
 		}
 		GRIResource(EGRIResourceType grit)
-			//: RefThreadSafeCounted()
 			: m_GRIResourceType(grit)
 		{
 		}
@@ -51,14 +49,14 @@ namespace SkySnow
 		{
 			return m_GRIResourceType;
 		}
-		//计数器相关方法
+		//RefCount add
 		//-----------------------------------------------------------
 		int Add()
 		{
 			int newCount = m_Atomic.Add(std::memory_order_acquire);
 			return newCount;
 		}
-		//该处将使用风险指针进行内存管理
+		//RefCount sub
 		int Release()
 		{
 			int newCount = m_Atomic.Release(std::memory_order_release);
@@ -88,7 +86,8 @@ namespace SkySnow
 		const EGRIResourceType	m_GRIResourceType;
 		mutable AtomicCount		m_Atomic;
 	};
-	//Shader渲染资源基类
+	//Shader about
+    //ShaderStart=====================================================================================
 	class GRIShader : public GRIResource
 	{
 	public:
@@ -128,20 +127,9 @@ namespace SkySnow
 			SN_LOG("GRIFragmentShader DesConstruct.");
 		}
 	};
-
-	class GRIAssembly : public GRIResource
-	{
-	public:
-		GRIAssembly()
-			: GRIResource(EGRIResourceType::GRT_Assembly)
-		{
-		}
-		virtual ~GRIAssembly()
-		{
-			SN_LOG("GRIAssembly DesConstruct.");
-		}
-	};
-	//渲染PipelineShader资源基类
+    //ShaderEnd======================================================================================
+	//Pipeline about
+    //PipelineStateStart=============================================================================
 	class GRIPipelineShader : public GRIResource
 	{
 	public:
@@ -154,7 +142,7 @@ namespace SkySnow
 			SN_LOG("GRIPipelineShader Destruct.");
 		}
 	};
-	//渲染Pipeline资源基类
+	//Graphics Pipeline state
 	class GRIGraphicsPipeline : public GRIResource
 	{
 	public:
@@ -167,6 +155,7 @@ namespace SkySnow
 			SN_LOG("GRIGraphicsPipeline Destruct.");
 		}
 	};
+    //Compute Pipeline State
     class GRIComputePipeline : public GRIResource
     {
     public:
@@ -180,7 +169,9 @@ namespace SkySnow
             SN_LOG("GRIComputePipeline Destruct.");
         }
     };
-
+    //PipelineStateEnd=============================================================================
+    //Buffer about
+    //BufferStart==================================================================================
 	class GRIBuffer : public GRIResource
 	{
 	public:
@@ -242,20 +233,97 @@ namespace SkySnow
 		std::string		_BufferName;
 	};
 
-	class GRIVertexBindingDesc : public GRIResource
+	class GRIVertexDeclaration : public GRIResource
 	{
 	public:
-		GRIVertexBindingDesc()
-			: GRIResource(GRT_VertexBindingDesc)
+        GRIVertexDeclaration()
+			: GRIResource(GRT_VertexDeclaration)
 		{
 		}
-		virtual ~GRIVertexBindingDesc()
+		virtual ~GRIVertexDeclaration()
 		{
 			SN_LOG("GRIVertexBindingDesc Destruct.");
 		}
 	};
+    //BufferEnd===================================================================================
+    //State about
+    //StateStart==================================================================================
+    class GRIAssemblyState : public GRIResource
+    {
+    public:
+        GRIAssemblyState()
+            : GRIResource(EGRIResourceType::GRT_AssemblyState)
+        {
+        }
+        virtual ~GRIAssemblyState()
+        {
+            SN_LOG("GRIAssembly DesConstruct.");
+        }
+    };
+    class GRIRasterizerState : public GRIResource
+    {
+    public:
+        GRIRasterizerState()
+            : GRIResource(EGRIResourceType::GRT_RasterizerState)
+        {
+        }
+        virtual ~GRIRasterizerState()
+        {
+            SN_LOG("GRIRasterizerState DesConstruct.");
+        }
+    };
 
+    class GRIDepthStencilState : public GRIResource
+    {
+    public:
+        GRIDepthStencilState()
+            : GRIResource(EGRIResourceType::GRT_DepthStencilState)
+        {
+        }
+        virtual ~GRIDepthStencilState()
+        {
+            SN_LOG("GRIDepthStencilState DesConstruct.");
+        }
+    };
+    class GRIBlendState : public GRIResource
+    {
+    public:
+        GRIBlendState()
+            : GRIResource(EGRIResourceType::GRT_BlendState)
+        {
+        }
+        virtual ~GRIBlendState()
+        {
+            SN_LOG("GRIBlendState DesConstruct.");
+        }
+    };
 
+    class GRISamplerState : public GRIResource
+    {
+    public:
+        GRISamplerState()
+            : GRIResource(EGRIResourceType::GRT_SamplerState)
+        {
+        }
+        virtual ~GRISamplerState()
+        {
+            SN_LOG("GRISamplerState DesConstruct.");
+        }
+    };
+    //StateEnd===================================================================================
+    //OnScreen and OffScreen
+    class GRIViewportState : GRIResource
+    {
+    public:
+        GRIViewportState()
+            : GRIResource(EGRIResourceType::GRT_ViewportState)
+        {
+        }
+        virtual ~GRIViewportState()
+        {
+            SN_LOG("GRIViewport DesConstruct.");
+        }
+    };
 	//shader type vertex fragement compute
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
@@ -270,6 +338,12 @@ namespace SkySnow
 	typedef RefCountPtr<GRIVertexBuffer>			GRIVertexBufferRef;
 	typedef RefCountPtr<GRIIndexBuffer>				GRIIndexBufferRef;
 	typedef RefCountPtr<GRIBuffer>					GRIBufferRef;
-	typedef RefCountPtr<GRIVertexBindingDesc>		GRIVertexBindingDescRef;
-
+	typedef RefCountPtr<GRIVertexDeclaration>		GRIVertexDeclarationRef;
+    //rasterization assembly blend sampler DepthStencil
+    typedef RefCountPtr<GRIAssemblyState>           GRIAssemblyStateRef;
+    typedef RefCountPtr<GRIRasterizerState>         GRIRasterizerStateRef;
+    typedef RefCountPtr<GRIDepthStencilState>       GRIDepthStencilStateRef;
+    typedef RefCountPtr<GRIBlendState>              GRIBlendStateRef;
+    //OnScreen and OffScreen
+    typedef RefCountPtr<GRIViewportState>           GRIViewportStateRef;
 }
