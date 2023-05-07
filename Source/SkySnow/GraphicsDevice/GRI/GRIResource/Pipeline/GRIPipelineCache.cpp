@@ -44,14 +44,4 @@ namespace SkySnow
         _ComputePipelineCache.Discard();
         _ComputePipelineCache.Discard();
     }
-    //获取缓存的GraphicsPipeline
-    GRIGraphicsPipelineRef GRIPipelineCache::GetGraphicsPipeline(const GRICreateGraphicsPipelineInfo& pipelineInfo)
-    {
-        
-    }
-    //获取缓存的ComputePipeline
-    GRIComputePipelineRef GRIPipelineCache::GetComputePipeline(const GRICreateComputePipelineInfo& pipelineInfo)
-    {
-        
-    }
 }

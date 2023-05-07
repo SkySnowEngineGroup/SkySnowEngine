@@ -22,6 +22,7 @@
 #pragma once
 #include <unordered_map>
 #include "ThreadMutex.h"
+#include "Hash.h"
 namespace SkySnow
 {
     //ThreadSafe
@@ -36,8 +37,9 @@ namespace SkySnow
     template<typename MapKey,typename MapValue>
     class DoubleMapCache
     {
-        typedef std::unordered_map<MapKey,MapValue> SNMap;
     public:
+        using Hash_fun = HMapHashFn<MapKey>;
+        typedef std::unordered_map<MapKey, MapValue,Hash_fun> SNMap;
         DoubleMapCache()
         {
             _MainMap.clear();
@@ -88,7 +90,7 @@ namespace SkySnow
                 find_flag = true;
             }
             _RWLock.WriteUnlock();
-            return false;
+            return find_flag;
         }
         //先清空副表，接着交换主表数据到副表中
         //如果连续调用两次，将会把主表与副表全部清空

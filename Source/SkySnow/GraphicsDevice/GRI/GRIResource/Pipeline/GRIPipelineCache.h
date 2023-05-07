@@ -36,11 +36,39 @@ namespace SkySnow
         //引擎退出
         void Shutdown();
         //获取缓存的GraphicsPipeline
-        GRIGraphicsPipelineRef GetGraphicsPipeline(const GRICreateGraphicsPipelineInfo& pipelineInfo);
+        template<typename TypePipeline>
+        bool GetGraphicsPipeline(const GRICreateGraphicsPipelineInfo& pipelineInfo, GRIGraphicsPipelineRef& handle);
         //获取缓存的ComputePipeline
-        GRIComputePipelineRef GetComputePipeline(const GRICreateComputePipelineInfo& pipelineInfo);
+        template<typename TypePipeline>
+        bool GetComputePipeline(const GRICreateComputePipelineInfo& pipelineInfo, GRIComputePipelineRef& handle);
     private:
         DoubleMapCache<GRICreateGraphicsPipelineInfo,GRIGraphicsPipeline*>  _GraphicsPipelineCache;
-        DoubleMapCache<GRICreateComputePipelineInfo, GRIComputePipeline*>   _ComputePipelineCache;
+        DoubleMapCache<GRICreateComputePipelineInfo,GRIComputePipeline*>   _ComputePipelineCache;
     };
+
+
+    template<typename TypePipeline>
+    inline bool GRIPipelineCache::GetGraphicsPipeline(const GRICreateGraphicsPipelineInfo& pipelineInfo, GRIGraphicsPipelineRef& handle)
+    {
+        GRIGraphicsPipeline* outPipeline = nullptr;
+
+        bool find = _GraphicsPipelineCache.Find(pipelineInfo, outPipeline);
+        if (!find)
+        {
+            outPipeline = new TypePipeline(pipelineInfo);
+            _GraphicsPipelineCache.Add(pipelineInfo, outPipeline);
+        }
+
+        handle = outPipeline;
+        return find;
+    }
+    template<typename TypePipeline>
+    inline bool GRIPipelineCache::GetComputePipeline(const GRICreateComputePipelineInfo& pipelineInfo, GRIComputePipelineRef& handle)
+    {
+        GRIComputePipeline* outPipeline = nullptr;
+
+
+        handle = outPipeline;
+        return true;
+    }
 }

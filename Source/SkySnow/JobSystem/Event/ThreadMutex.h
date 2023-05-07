@@ -23,7 +23,7 @@
 #pragma once
 #include "NonCopyable.h"
 #include <pthread.h>
-
+#include "LogAssert.h"
 namespace SkySnow
 {
 	class ThreadMutex : public NonCopyable

@@ -22,15 +22,81 @@
 //
 #pragma once
 #include "GRICommons.h"
+#include "GRIResource.h"
 namespace SkySnow
 {
 	class GRICreateGraphicsPipelineInfo
 	{
 	public:
-		PrimitiveType _PrimitiveType;
+		GRICreateGraphicsPipelineInfo()
+			: _BlendState(nullptr)
+			, _RasterizerState(nullptr)
+			, _DepthStencilState(nullptr)
+			, _SamplerState(nullptr)
+			, _AssemblyState(nullptr)
+			, _PrimitiveType(PrimitiveType::PT_Trangles)
+			, _PipelineShader(nullptr)
+			, _VertexDeclaration(nullptr)
+		{
+		}
+		GRICreateGraphicsPipelineInfo(
+			GRIBlendState*			inBlendState,
+			GRIRasterizerState*		inRasterizerState,
+			GRIDepthStencilState*	inDepthStencilState,
+			GRISamplerState*		inSamplerState,
+			GRIAssemblyState*		inAssemblyState,
+			PrimitiveType			inPrimitiveType,
+			GRIPipelineShader*		inPipelineShader,
+			GRIVertexDeclaration*	inVertexDeclaration
+		)
+			: _BlendState(inBlendState)
+			, _RasterizerState(inRasterizerState)
+			, _DepthStencilState(inDepthStencilState)
+			, _SamplerState(inSamplerState)
+			, _AssemblyState(inAssemblyState)
+			, _PrimitiveType(inPrimitiveType)
+			, _PipelineShader(inPipelineShader)
+			, _VertexDeclaration(inVertexDeclaration)
+		{
+		}
+		size_t operator()(const GRICreateGraphicsPipelineInfo& other) const
+		{
+			return 0;
+		}
+		bool operator==(const GRICreateGraphicsPipelineInfo& other) const
+		{
+			if (_BlendState != other._BlendState ||
+				_RasterizerState != other._RasterizerState ||
+				_DepthStencilState != other._DepthStencilState ||
+				_SamplerState != other._SamplerState ||
+				_AssemblyState != other._AssemblyState ||
+				_PipelineShader != other._PipelineShader ||
+				_VertexDeclaration != other._VertexDeclaration)
+			{
+				return false;
+			}
+			return true;
+		}
+		PrimitiveType			_PrimitiveType;
+
+		GRIBlendState*			_BlendState;
+		GRIRasterizerState*		_RasterizerState;
+		GRIDepthStencilState*	_DepthStencilState;
+		GRISamplerState*		_SamplerState;
+		GRIAssemblyState*		_AssemblyState;
+
+		GRIPipelineShader*		_PipelineShader;
+		GRIVertexDeclaration*	_VertexDeclaration;
 	};
     class GRICreateComputePipelineInfo
     {
-        
+	public:
+		GRICreateComputePipelineInfo()
+		{
+		}
+		bool operator==(const GRICreateGraphicsPipelineInfo& other) const
+		{
+			return true;
+		}
     };
 }

@@ -25,6 +25,8 @@
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
 #include "GLPipelineResource.h"
+#include "GRIPipelineCache.h"
+#include "GRI.h"
 namespace SkySnow
 {
 	GLRenderCommandBuffer::GLRenderCommandBuffer()
@@ -103,8 +105,10 @@ namespace SkySnow
 
 	GRIGraphicsPipelineRef GLRenderCommandBuffer::CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
 	{
-		GRIGraphicsPipelineRef handle = new GLGraphicPipeline(createInfo);
-		Alloc_CommandCreate(GRICreateGraphicsPipelineCommand,createInfo, handle);
+		GRIGraphicsPipelineRef handle;
+		bool flag = _GPipelineCache->GetGraphicsPipeline<GLGraphicPipeline>(createInfo, handle);
+		if(!flag)
+			Alloc_CommandCreate(GRICreateGraphicsPipelineCommand,createInfo, handle);
 		return handle;
 	}
 	//ResourceSet====================================================================
