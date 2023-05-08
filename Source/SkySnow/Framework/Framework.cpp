@@ -48,7 +48,7 @@ namespace SkySnow
     {
         //main thread start
         _GQueue->BeginFrame();
-        SN_LOG("MainUpdate----------------");
+//        SN_LOG("MainUpdate----------------");
         
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();

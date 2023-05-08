@@ -23,8 +23,71 @@
 #pragma once
 #include "GRICommons.h"
 #include "GRIResource.h"
+#include <vector>
 namespace SkySnow
 {
+    class GRIVertexElement;
+    typedef std::vector<GRIVertexElement> VertexDeclarationElementList;
+    class GRIVertexElement
+    {
+    public:
+        GRIVertexElement()
+            : _GRIBuffer(nullptr)
+        {
+        }
+        GRIVertexElement(
+           uint8_t inBufferIndex,
+           GRIBuffer* inGRIBuffer,
+           uint8_t inOffset,
+           uint8_t inStrid,
+           uint8_t inAtttitubeIndex,
+           VertexElementType inVET_Type
+        )
+            : _BufferIndex(inBufferIndex)
+            , _GRIBuffer(inGRIBuffer)
+            , _Offset(inOffset)
+            , _Strid(inStrid)
+            , _AtttitubeIndex(inAtttitubeIndex)
+            , _VET_Type(inVET_Type)
+        {
+        }
+        
+        void operator=(const GRIVertexElement& other)
+        {
+            _BufferIndex    = other._BufferIndex;
+            _Offset         = other._Offset;
+            _Strid          = other._Strid;
+            _AtttitubeIndex = other._AtttitubeIndex;
+            _GRIBuffer      = other._GRIBuffer;
+            _VET_Type       = other._VET_Type;
+        }
+        //buffer key
+        uint8_t             _BufferIndex;       //数据存储的Key值
+        uint8_t             _Offset;            //偏移量
+        uint8_t             _Strid;             //间隔
+        uint8_t             _AtttitubeIndex;    //顶点变量索引id
+        GRIVertexBuffer*    _GRIBuffer;         //顶点数据对象
+        VertexElementType   _VET_Type;          //数据类型
+    };
+    class GRICreateShaderPipelineInfo
+    {
+    public:
+        GRICreateShaderPipelineInfo()
+            : _PipelineShader(nullptr)
+            , _VertexDeclaration(nullptr)
+        {
+        }
+        GRICreateShaderPipelineInfo(
+            GRIPipelineShader*       inPipelineShader,
+            GRIVertexDeclaration*    inVertexDeclaration
+        )
+            : _PipelineShader(inPipelineShader)
+            , _VertexDeclaration(inVertexDeclaration)
+        {
+        }
+        GRIPipelineShader*       _PipelineShader;
+        GRIVertexDeclaration*    _VertexDeclaration;
+    };
 	class GRICreateGraphicsPipelineInfo
 	{
 	public:
@@ -35,34 +98,27 @@ namespace SkySnow
 			, _SamplerState(nullptr)
 			, _AssemblyState(nullptr)
 			, _PrimitiveType(PrimitiveType::PT_Trangles)
-			, _PipelineShader(nullptr)
-			, _VertexDeclaration(nullptr)
 		{
 		}
 		GRICreateGraphicsPipelineInfo(
-			GRIBlendState*			inBlendState,
-			GRIRasterizerState*		inRasterizerState,
-			GRIDepthStencilState*	inDepthStencilState,
-			GRISamplerState*		inSamplerState,
-			GRIAssemblyState*		inAssemblyState,
-			PrimitiveType			inPrimitiveType,
-			GRIPipelineShader*		inPipelineShader,
-			GRIVertexDeclaration*	inVertexDeclaration
+			GRIBlendState*			    inBlendState,
+			GRIRasterizerState*		    inRasterizerState,
+			GRIDepthStencilState*	    inDepthStencilState,
+			GRISamplerState*		    inSamplerState,
+			GRIAssemblyState*		    inAssemblyState,
+			PrimitiveType			    inPrimitiveType,
+            GRICreateShaderPipelineInfo inShaderPipeline
 		)
-			: _BlendState(inBlendState)
+			: _ShaderPipelineInfo(inShaderPipeline)
+            , _BlendState(inBlendState)
 			, _RasterizerState(inRasterizerState)
 			, _DepthStencilState(inDepthStencilState)
 			, _SamplerState(inSamplerState)
 			, _AssemblyState(inAssemblyState)
 			, _PrimitiveType(inPrimitiveType)
-			, _PipelineShader(inPipelineShader)
-			, _VertexDeclaration(inVertexDeclaration)
 		{
 		}
-		size_t operator()(const GRICreateGraphicsPipelineInfo& other) const
-		{
-			return 0;
-		}
+
 		bool operator==(const GRICreateGraphicsPipelineInfo& other) const
 		{
 			if (_BlendState != other._BlendState ||
@@ -70,8 +126,8 @@ namespace SkySnow
 				_DepthStencilState != other._DepthStencilState ||
 				_SamplerState != other._SamplerState ||
 				_AssemblyState != other._AssemblyState ||
-				_PipelineShader != other._PipelineShader ||
-				_VertexDeclaration != other._VertexDeclaration)
+                _ShaderPipelineInfo._PipelineShader != other._ShaderPipelineInfo._PipelineShader ||
+                _ShaderPipelineInfo._VertexDeclaration != other._ShaderPipelineInfo._VertexDeclaration)
 			{
 				return false;
 			}
@@ -84,9 +140,9 @@ namespace SkySnow
 		GRIDepthStencilState*	_DepthStencilState;
 		GRISamplerState*		_SamplerState;
 		GRIAssemblyState*		_AssemblyState;
+        
+        GRICreateShaderPipelineInfo _ShaderPipelineInfo;
 
-		GRIPipelineShader*		_PipelineShader;
-		GRIVertexDeclaration*	_VertexDeclaration;
 	};
     class GRICreateComputePipelineInfo
     {

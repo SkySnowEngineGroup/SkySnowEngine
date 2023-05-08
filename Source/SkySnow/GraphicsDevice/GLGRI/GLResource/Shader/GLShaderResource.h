@@ -28,7 +28,7 @@
 namespace SkySnow
 {
 	//Shader Resource
-	class GLShaderBase //: public RefThreadSafeCounted
+	class GLShaderBase
 	{
 	public:
 		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency)
@@ -87,6 +87,4 @@ namespace SkySnow
 			SN_LOG("GLFragmentShader DesConstruct.");
 		}
 	};
-
-	
 }

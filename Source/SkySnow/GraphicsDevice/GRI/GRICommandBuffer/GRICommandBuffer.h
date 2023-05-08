@@ -61,7 +61,7 @@ namespace SkySnow
         virtual void CmdBeginViewport() = 0;
         virtual void CmdEndViewport() = 0;
 
-        virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+        virtual void CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) = 0;
         virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
         virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) = 0;
         virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) = 0;
@@ -115,11 +115,11 @@ namespace SkySnow
         
         void PresentQueue();
 
-        GRILowerCommandBuffer* GetLowerCommandBuffer();
+        GRICreateCommandBuffer* GetLowerCommandBuffer();
 
         bool IsLowerVerion();
     private:
-        GRILowerCommandBuffer*              _LowerComBuf;
+        GRICreateCommandBuffer*             _LowerComBuf;
         std::vector<GRICommandBufferBase*>  _ComBufList;
         RenderRunnable*                     _RenderRunnable;
         RunnableThread*                     _RenderThread;

@@ -24,19 +24,14 @@
 #include "GLProfiles.h"
 #include "GRIResource.h"
 #include "GLBuffer.h"
-
+#include <unordered_map>
 namespace SkySnow
 {
-	//IndexBuffer
-	//VertexBuffer
-	//UniformBuffer
-	//SSBO
-	//MapBuffer&unMapBuffer
-	//TranstBuffer
-	//PackPixelBuffer&unPackPixelBuffer
+    struct GLVertexElement;
+    struct GLVertexBufferObject;
+    typedef std::unordered_map<int,GLVertexElement>         GLVertexElements;
+    typedef std::unordered_map<int,GLVertexBufferObject>    GLVertexBuffers;
 
-
-	//GLBuffer其处理的主要对象为IndexBuffer、VertexBuffer、StructureBuffer(SSBO)
 	class GLBuffer : public GRIBuffer
 	{
 		friend class GRIGLDrive;
@@ -49,28 +44,18 @@ namespace SkySnow
 			, _Data(nullptr)
 		{
 		}
-		//streamDraw 暂时不用
-		//Static 表示VBO中的数据将不会被改动（一次指定多次使用）
-		//Dynamic 表示数据将会被频繁改动（反复指定与使用）
-		//Stream 表示每帧数据都要改变（一次指定一次使用）
-		//draw 表示数据将被发送到GPU以待绘制（应用程序到GL）
-		//read 表示数据将被客户端程序读取（GL到应用程序）
-		//copy 表示数据可用于绘制与读取（GL到GL）
-		//针对于indexBuffer  vertexBuffer  SSBO，即使用Draw即可
-		GLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
+		//
+        GLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride) 
 			, _Data(data)
 			, _StreamDraw(streamDraw)
 		{
-			
 		}
 
 		~GLBuffer()
 		{
 		}
-		//在GLES3.1及GL4.3以上，将顶点类型，顶点数据获取拆分为两个部分
-		//因此这里只是单独的创建Buffer即可，在DrawPrimitive的时候，在根据
-		//SetBuffer设置的类型进行<数据类型指定>与<数据类型如何获取>的设置
+        //Create Buffer with buffer type
 		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size)
 		{
 			_BufferType = bufferType;
@@ -78,12 +63,6 @@ namespace SkySnow
 			glBindBuffer(_BufferType, _GpuHandle);
 			glBufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 			glBindBuffer(_BufferType, 0);
-			float* vdata = (float*)_Data;
-			int num = size / sizeof(float);
-			for (int i = 0; i < num;i ++)
-			{
-				SN_LOG("vdata[%d]:%f",i, vdata[i]);
-			}
 		}
 
 	public:
@@ -92,6 +71,38 @@ namespace SkySnow
 	private:
 		bool		_StreamDraw;
 		const void* _Data;
-		
 	};
+    struct GLVertexElement
+    {
+        GLVertexElement()
+        {
+        }
+        //vertex element type:GL_FLOAT or GL_SHORT
+        GLenum  _Type;
+        GLuint  _Offset;
+        GLuint  _Size;
+        GLuint  _Stride;
+        uint8_t _AttritubeIndex;
+        uint8_t _bNormalized;
+        uint8_t _bConvertToFloat;
+    };
+    struct GLVertexBufferObject
+    {
+        GLenum              _BufferType;
+        GLuint              _GpuHandle;
+        GLuint              _Stride;
+        GLuint              _Offset;
+        GLVertexElements    _GLVertexElements;
+    };
+    struct GRIGLVertexDeclaration : public GRIVertexDeclaration
+    {
+    public:
+        GRIGLVertexDeclaration()
+            : GRIVertexDeclaration()
+        {
+        }
+        
+    public:
+        GLVertexBuffers    _GLVertexBuffers;
+    };
 }

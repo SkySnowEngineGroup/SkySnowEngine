@@ -25,13 +25,13 @@
 #include "GLBufferResource.h"
 namespace SkySnow
 {
-	//´´½¨IndexBuffer¡¢vertexBuffer¡¢SSBO
+    //Create Buffer,Buffer Type: indexbuffer\vertexbuffer\SSBO
 	void GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data, GRIBufferRef& handle)
 	{
 		GLenum bufferType = GL_ARRAY_BUFFER;
 		if (usageType == BUT_IndexBuffer)
 		{
-			bufferType = GL_ELEMENT_ARRAY_BUFFER;
+			bufferType = GL_ELEMENT_ARRAY_BUFFER;//IBO
 		}
 
 		GLBuffer* glBuffer = dynamic_cast<GLBuffer*>(handle.GetReference());
@@ -39,8 +39,11 @@ namespace SkySnow
 		glBuffer->_StreamDraw = true;
 		glBuffer->_BufferName = "a";
 	}
-
-
+    //Create Vertex Buffer Declaration
+    void GRIGLDrive::GRICreateVertexDeclaration(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle)
+    {
+        
+    }
 
 	namespace OGLBuffer
 	{

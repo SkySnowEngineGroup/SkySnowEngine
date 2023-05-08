@@ -74,47 +74,11 @@ namespace SkySnow
 	{
 		Alloc_CommandSet(CmdEndViewportCommand)();
 	}
-	//ResourceCreate====================================================================
-	GRIVertexShaderRef GLRenderCommandBuffer::CreateVertexShader(const char* vsCode)
-	{
-		GRIVertexShaderRef handle = new GLVertexShader();
-		Alloc_CommandCreate(GRICreateVertexShaderCommand, handle, vsCode);
-		return handle;
-	}
 
-	GRIFragmentShaderRef GLRenderCommandBuffer::CreateFragmentShader(const char* fsCode)
-	{
-		GRIFragmentShaderRef handle = new GLFragmentShader();
-		Alloc_CommandCreate(GRICreateFragmentShaderCommand,handle,fsCode);
-		return handle;
-	}
-
-	GRIPipelineShaderRef GLRenderCommandBuffer::CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
-	{
-		GRIPipelineShaderRef handle = new GLPipelineShader(vs,fs);
-		Alloc_CommandCreate(GRICreatePipelineShaderCommand,handle);
-		return handle;
-	}
-
-	GRIBufferRef GLRenderCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
-	{
-		GRIBufferRef handle = new GLBuffer(usageType, size, stride, data);
-		Alloc_CommandCreate(GRICreateBufferCommand,handle,usageType, size, stride, data);
-		return handle;
-	}
-
-	GRIGraphicsPipelineRef GLRenderCommandBuffer::CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
-	{
-		GRIGraphicsPipelineRef handle;
-		bool flag = _GPipelineCache->GetGraphicsPipeline<GLGraphicPipeline>(createInfo, handle);
-		if(!flag)
-			Alloc_CommandCreate(GRICreateGraphicsPipelineCommand,createInfo, handle);
-		return handle;
-	}
 	//ResourceSet====================================================================
-	void GLRenderCommandBuffer::CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
+	void GLRenderCommandBuffer::CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
-		Alloc_CommandSet(CmdSetBufferCommand)(BufferInfoId, buffer, offset);
+		Alloc_CommandSet(CmdSetBufferCommand)(bufferIndex, buffer, offset);
 	}
 	void GLRenderCommandBuffer::CmdDrawPrimitive(int numPrimitive, int numInstance)
 	{

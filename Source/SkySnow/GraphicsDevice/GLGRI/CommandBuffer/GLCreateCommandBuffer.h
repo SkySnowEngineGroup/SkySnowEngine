@@ -21,11 +21,26 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
+#include "GRILowerCommandBuffer.h"
 namespace SkySnow
 {
-	namespace OGLBuffer
+	class GLCreateCommandBuffer : public GRICreateCommandBuffer
 	{
+	public:
+		GLCreateCommandBuffer();
 
-	}
+		~GLCreateCommandBuffer();
+	public://Set Resource
+		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
+
+		virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) final override;
+
+		virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
+
+		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) final override;
+
+		virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) final override;
+
+		virtual GRIVertexDeclarationRef CreateVertexDeclaration(const VertexDeclarationElementList& vdel) final override;
+	};
 }

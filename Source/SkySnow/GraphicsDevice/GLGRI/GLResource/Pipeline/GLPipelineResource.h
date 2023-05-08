@@ -61,11 +61,10 @@ namespace SkySnow
 		}
 	public:
 		GLuint _ProgramId;
-	private:
 		//Cache Array or LRUCache
-		//temp is ptr
-		GLVertexShader*     _OGLVertexShader;
-		GLFragmentShader*   _OGLFragmentShader;
+        GRIGLVertexDeclaration* _OGLVertexDeclaration;
+		GLVertexShader*         _OGLVertexShader;
+		GLFragmentShader*       _OGLFragmentShader;
 		
 	};
     
@@ -81,6 +80,7 @@ namespace SkySnow
         GLGraphicPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
 			: GRIGraphicsPipeline()
 			, _PrimitiveType(createInfo._PrimitiveType)
+            , _OGLShaderPipeline(static_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader))
 		{
 		}
 
@@ -88,18 +88,13 @@ namespace SkySnow
 		{
 		}
 	public:
-		GLBufferInfo			_BufferInfo[Num_GL_Vertex_Attribute];
-		GLShaderStateInfo		_ShaderStateInfo;
 		PrimitiveType			_PrimitiveType;
+        GLPipelineShader*       _OGLShaderPipeline;
+        
 	};
     class GLComputePipeline : public GRIComputePipeline
     {
     public:
         
     };
-
-    class GLPipelineCache
-	{
-	public:
-	};
 }

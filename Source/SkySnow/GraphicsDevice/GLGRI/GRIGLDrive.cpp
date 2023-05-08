@@ -61,7 +61,7 @@ namespace SkySnow
 	//GRIRenderPipe===========================================================================================================================
 	void GRIGLDrive::GRIBeginViewport()
 	{
-		//暂时先放这里
+		//Swith glcontext
 		_GLContext->MakeCurrContext();
 	}
 	void GRIGLDrive::GRIEndViewport()
@@ -71,23 +71,29 @@ namespace SkySnow
 	//GRIRenderPipe===========================================================================================================================
 
 	//GRISet==================================================================================================================================
-	void GRIGLDrive::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
+	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
 		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
-		_PendingState._BufferInfo[BufferInfoId]._GpuHandle = bufferGL->_GpuHandle;
-		_PendingState._BufferInfo[BufferInfoId]._Stride = bufferGL->GetStride();
-		_PendingState._BufferInfo[BufferInfoId]._Offset = offset;
-		_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
+        GLVertexBufferObject& vboMeta = _PendingState._OGLShaderPipeline->_OGLVertexDeclaration->_GLVertexBuffers[bufferIndex];
+        vboMeta._GpuHandle = bufferGL->_GpuHandle;
+        vboMeta._Stride = bufferGL->GetStride();
+        vboMeta._BufferType = bufferGL->_BufferType;
+        vboMeta._Offset = offset;
+        if(vboMeta._GLVertexElements.size() == 1)
+        {
+            vboMeta._GLVertexElements[0]._Offset = offset;
+        }
 	}
 
 	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-		_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShader*>(pipelineShaderState)->_ProgramId;
+        _PendingState._OGLShaderPipeline = static_cast<GLPipelineShader*>(pipelineShaderState);
 	}
 
 	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
 		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipeline*>(pipelineState)->_PrimitiveType;
+        _PendingState._OGLShaderPipeline = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline;
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
@@ -96,33 +102,39 @@ namespace SkySnow
 		int numElements;
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
-		SetupVertexFormatBinding(_PendingState, _PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
+		SetupVertexFormatBinding(_PendingState, _PendingState._OGLShaderPipeline->_OGLVertexDeclaration, Num_GL_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
 
 		}
 		else
 		{
-			glUseProgram(_PendingState._ShaderStateInfo._GpuHandle);
+			glUseProgram(_PendingState._OGLShaderPipeline->_ProgramId);
 			glDrawArrays(drawMode, 0, numElements);
 		}
 	}
 	//GRISet==================================================================================================================================
 
 	//GRIprivate==============================================================================================================================
-	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
+	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDeclaration* vertexDec, int bufferIndex, int vertexCount)
 	{
-		if (OpenGL::SupportVertexFormatBinding())
-		{
-
-		}
-		else
-		{
-			GLBufferInfo& bInfo = bufferInfo[0];
-			glBindBuffer(bInfo._BufferType, bInfo._GpuHandle);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, bInfo._Stride,GL_FLOAT, GL_FALSE,bInfo._Stride * sizeof(GLfloat),(GLvoid*)bInfo._Offset);
-		}
+//		if (OpenGL::SupportVertexFormatBinding())
+//		{
+//
+//		}
+        GLVertexBuffers vertexBuffers = vertexDec->_GLVertexBuffers;
+        for(auto entry : vertexBuffers)
+        {
+            GLVertexBufferObject vbo = entry.second;
+            glBindBuffer(vbo._BufferType,vbo._GpuHandle);
+            GLVertexElements ves = vbo._GLVertexElements;
+            for(auto ve : ves)
+            {
+                GLVertexElement vMeta = ve.second;
+                glEnableVertexAttribArray(vMeta._AttritubeIndex);
+                glVertexAttribPointer(vMeta._AttritubeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Size,(GLvoid*)vMeta._Offset);
+            }
+        }
 	}
 	void GRIGLDrive::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)
 	{

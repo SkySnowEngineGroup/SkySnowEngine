@@ -63,6 +63,6 @@ namespace SkySnow
 
     void SceneRenderer::UpdateAllRenderers()
     {
-        SN_LOG("RenderNodes Size:%d",_RenderNodes.size());
+//        SN_LOG("RenderNodes Size:%d",_RenderNodes.size());
     }
 }

@@ -65,11 +65,13 @@ namespace SkySnow
         virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) = 0;
 		//Create Buffer:index vertex SSBO
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
+        //Create Vertex Declaration for VertexBuffer
+        virtual void GRICreateVertexDeclaration(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle) = 0;
 		//GRICreate=======================================================================================================================
 
 		//Lower Render Deive Interface,so vulkan&metal not override this interface
 		//GRISet==========================================================================================================================
-		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) {};
+		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) {};
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {};
 		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) {};
 		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) {};

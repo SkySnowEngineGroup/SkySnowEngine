@@ -22,7 +22,7 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
-
+#include "AllocMacros.h"
 namespace SkySnow
 {
     inline uint32_t murmur3(const uint32_t* key, size_t wordCount, uint32_t seed) noexcept 
@@ -52,7 +52,11 @@ namespace SkySnow
     {
         uint32_t operator()(const T& key) const noexcept 
         {
-            //static_assert(0 == (sizeof(key) & 3u), "Hashing requires a size that is a multiple of 4.");
+//            T& newKey = const_cast<T&>(key);
+//            T* newKey1 = AlignPointer(&newKey,4);//进行四字节对齐
+//            SN_LOG("origin key size:%d",sizeof(key));
+//            SN_LOG("align key size:%d",sizeof(newKey1));
+//            static_assert(0 == (sizeof(newKey1) & 3u), "Hashing requires a size that is a multiple of 4.");
             return murmur3((const uint32_t*)&key, sizeof(key) / 4, 0);
         }
     };

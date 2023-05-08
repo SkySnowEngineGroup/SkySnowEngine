@@ -23,6 +23,7 @@
 #include "GRICommandBuffer.h"
 #include "SkySnowConfigInfo.h"
 #include "GLCommandBuffer.h"
+#include "GLCreateCommandBuffer.h"
 #include "WindowOSPlatform.h"
 #include "AndroidOSPlatform.h"
 #include "IOSOSPlatform.h"
@@ -145,7 +146,7 @@ namespace SkySnow
             break;
         case SkySnow::EGLES:
         case SkySnow::EOpenGL:
-            _LowerComBuf = new GLRenderCommandBuffer();
+            _LowerComBuf = new GLCreateCommandBuffer();
             _RenderRunnable = new RenderRunnable();
             _RenderThread = RunnableThread::Create(_RenderRunnable);
             break;
@@ -205,7 +206,7 @@ namespace SkySnow
         return true;
     }
     
-    GRILowerCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()
+    GRICreateCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()
     {
         return _LowerComBuf;
     }

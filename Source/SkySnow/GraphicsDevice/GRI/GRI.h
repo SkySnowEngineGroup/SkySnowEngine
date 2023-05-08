@@ -32,19 +32,21 @@ namespace SkySnow
     extern GRIDrive*                GRI;
     extern GRIPipelineCache*        _GPipelineCache;
     
-    //RHI init
+    //RHI Init
     void GRIInit(const OSPlatformInfo& osPlatformInfo);
-
+    //RHI Exit
     void GRIExit();
  
     //Create VS
     GRIVertexShaderRef CreateVertexShader(const char* vsCode);
-
+    //Create Fs
     GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
-
+    //Create PipelineShader
     GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs);
-
+    //Create Buffer BufferType:IndexBuffer\VertexBuffer\SSBO
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
-
+    //Create Vertex Declaration
+    GRIVertexDeclarationRef CreateVertexDeclaration(const VertexDeclarationElementList& vdel);
+    //Create Pipeline
     GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo);
 }

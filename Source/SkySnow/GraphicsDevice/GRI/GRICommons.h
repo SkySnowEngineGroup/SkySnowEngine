@@ -71,7 +71,15 @@ namespace SkySnow
 		BUT_DynamicBuffer		= 1 << 2,
 		BUT_StructuredBuffer	= 1 << 3,
 	};
-
+    enum class VertexElementType
+    {
+        VET_None,
+        VET_Float1,
+        VET_Float2,
+        VET_Float3,
+        VET_Float4,
+        VET_Max
+    };
 	enum class PrimitiveType
 	{
 		PT_Lines,
