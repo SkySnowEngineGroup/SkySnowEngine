@@ -73,4 +73,11 @@ namespace SkySnow
 			Alloc_CommandCreate(GRICreateGraphicsPipelineCommand, createInfo, handle);
 		return handle;
 	}
+
+    GRIVertexDeclarationRef GLCreateCommandBuffer::CreateVertexDeclaration(const VertexDeclarationElementList& vdel)
+    {
+        GRIVertexDeclarationRef handle = new GRIGLVertexDeclaration();
+        Alloc_CommandCreate(GRICreateVertexDeclarationCommand, vdel, handle);
+        return handle;
+    }
 }

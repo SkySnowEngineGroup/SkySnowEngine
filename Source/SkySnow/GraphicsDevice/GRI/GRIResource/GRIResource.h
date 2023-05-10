@@ -91,8 +91,9 @@ namespace SkySnow
 	class GRIShader : public GRIResource
 	{
 	public:
-		GRIShader(EGRIResourceType grit)
+		GRIShader(EGRIResourceType grit, ShaderFrequency shaderFrequency)
 			: GRIResource(grit)
+			, _ShaderFrequency(shaderFrequency)
 		{
 		}
 
@@ -100,13 +101,32 @@ namespace SkySnow
 		{
 			SN_LOG("GRIShader DesConstruct.");
 		}
-	};
 
-	class GRIVertexShader : public GRIShader
+		ShaderFrequency GetShaderFrequency() const
+		{
+			return _ShaderFrequency;
+		}
+	private:
+		ShaderFrequency _ShaderFrequency;
+	};
+	//vertex\fragment\geometry
+	class GRIGraphicsShader : public GRIShader
+	{
+	public:
+		explicit GRIGraphicsShader(EGRIResourceType resourceType, ShaderFrequency shaderFrequency)
+			: GRIShader(resourceType, shaderFrequency)
+		{
+		}
+		virtual ~GRIGraphicsShader()
+		{
+			SN_LOG("GRIGraphicsShader DesConstruct.");
+		}
+	};
+	class GRIVertexShader : public GRIGraphicsShader
 	{
 	public:
 		GRIVertexShader()
-			: GRIShader(EGRIResourceType::GRT_VertexShader)
+			: GRIGraphicsShader(EGRIResourceType::GRT_VertexShader,ShaderFrequency::SF_Vertex)
 		{
 		}
 		virtual ~GRIVertexShader()
@@ -115,11 +135,11 @@ namespace SkySnow
 		}
 	};
 
-	class GRIFragmentShader : public GRIShader
+	class GRIFragmentShader : public GRIGraphicsShader
 	{
 	public:
 		GRIFragmentShader()
-			: GRIShader(EGRIResourceType::GRT_FragmentShader)
+			: GRIGraphicsShader(EGRIResourceType::GRT_FragmentShader, ShaderFrequency::SF_Fragement)
 		{
 		}
 		virtual ~GRIFragmentShader()
@@ -242,7 +262,7 @@ namespace SkySnow
 		}
 		virtual ~GRIVertexDeclaration()
 		{
-			SN_LOG("GRIVertexBindingDesc Destruct.");
+			SN_LOG("GRIVertexDeclaration Destruct.");
 		}
 	};
     //BufferEnd===================================================================================

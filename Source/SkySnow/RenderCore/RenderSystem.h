@@ -49,6 +49,8 @@ namespace SkySnow
         GRIVertexShaderRef          _vsRef;
         GRIFragmentShaderRef        _fsRef;
         GRIBufferRef                _VertexBufferRef;
+        GRIBufferRef                _ColorBufferRef;
+        GRIVertexDeclarationRef     _VertexDeclaration;
         GRIPipelineShaderRef        _PipelineShaderRef;
         GRIGraphicsPipelineRef      _PSORef;
         GRICommandBufferPool*       _CMBPool;

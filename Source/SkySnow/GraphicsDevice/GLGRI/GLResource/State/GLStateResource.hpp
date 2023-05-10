@@ -23,66 +23,8 @@
 #pragma once
 #include "GLProfiles.h"
 #include "GRICommons.h"
-#include "RefCounted.h"
 #include "GRIResource.h"
 namespace SkySnow
 {
-	//Shader Resource
-	class GLShaderBase
-	{
-	public:
-		GLShaderBase(GLenum GLTypeEnum)
-			: _GLTypeEnum(GLTypeEnum)
-			, _GpuHandle(0)
-#if Debug_Shader
-			, _ShaderCode(nullptr)
-			, mShaderName("")
-#endif
-		{
-		}
-		virtual ~GLShaderBase()
-		{
-			SN_LOG("GLShaderBase DesConstruct.");
-		}
 
-
-	public:
-		GLenum			_GLTypeEnum;//Shader Type at OGL
-		GLuint			_GpuHandle;
-#if Debug_Shader
-		const char*		_ShaderCode;
-		std::string		mShaderName;
-#endif
-	};
-
-	class GLVertexShader : public GLShaderBase , public GRIVertexShader
-	{
-	public:
-		GLVertexShader()
-			: GLShaderBase(GL_VERTEX_SHADER)
-			, GRIVertexShader()
-		{
-		}
-
-		~GLVertexShader()
-		{
-			SN_LOG("GLVertexShader DesConstruct.");
-		}
-	private:
-	};
-
-	class GLFragmentShader : public GLShaderBase , public GRIFragmentShader
-	{
-	public:
-		GLFragmentShader()
-			: GLShaderBase(GL_FRAGMENT_SHADER)
-			, GRIFragmentShader()
-		{
-		}
-
-		~GLFragmentShader()
-		{
-			SN_LOG("GLFragmentShader DesConstruct.");
-		}
-	};
 }

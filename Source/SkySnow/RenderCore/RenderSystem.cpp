@@ -23,6 +23,7 @@
 #include "RenderSystem.h"
 #include "Context.h"
 #include "SceneRenderer.h"
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
     RenderSystem::RenderSystem()
@@ -67,9 +68,22 @@ namespace SkySnow
                                                     sizeof(vertices),
                                                     3,
                                                     vertices);
-
+            static float colors[] = { 1.0f, 0.0f, 0.0f, 1.0,
+                                      0.0f, 1.0f, 0.0f, 1.0f,
+                                      0.0f, 0.0f, 1.0f, 1.0f};
+            _ColorBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+                                           sizeof(colors),
+                                           4,
+                                           colors);
+            VertexDeclarationElementList elementList;
+            elementList.push_back(GRIVertexElement(0,_VertexBufferRef,0,3,0,VertexElementType::VET_Float3));
+            elementList.push_back(GRIVertexElement(1,_ColorBufferRef,1,4,0,VertexElementType::VET_Float4));
+            _VertexDeclaration = CreateVertexDeclaration(elementList);
+            
             GRICreateGraphicsPipelineInfo psoCreateInfo;
             psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
+            psoCreateInfo._ShaderPipelineInfo._PipelineShader = _PipelineShaderRef;
+            psoCreateInfo._ShaderPipelineInfo._VertexDeclaration = _VertexDeclaration;
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             _TestInit = true;
         }
@@ -77,10 +91,11 @@ namespace SkySnow
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
         
         commandBuffer->CmdBeginViewport();
-        
-        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
-        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
         commandBuffer->CmdSetGraphicsPipeline(_PSORef);
+        
+//        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
+//        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
+        
         commandBuffer->CmdDrawPrimitive(1,1);
         
         commandBuffer->CmdEndViewport();

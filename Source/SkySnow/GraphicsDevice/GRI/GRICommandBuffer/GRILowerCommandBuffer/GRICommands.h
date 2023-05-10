@@ -183,4 +183,17 @@ namespace SkySnow
         GRICreateGraphicsPipelineInfo   _PsoInfo;
 		GRIGraphicsPipelineRef          _Handle;
 	};
+
+    struct GRICreateVertexDeclarationCommand : public GRICommand<GRICreateVertexDeclarationCommand>
+    {
+        //const VertexDeclarationElementList& vdel
+        GRICreateVertexDeclarationCommand(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle)
+            : _VertexElements(vdel)
+            , _Handle(handle)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIVertexDeclarationRef         _Handle;
+        VertexDeclarationElementList    _VertexElements;
+    };
 }

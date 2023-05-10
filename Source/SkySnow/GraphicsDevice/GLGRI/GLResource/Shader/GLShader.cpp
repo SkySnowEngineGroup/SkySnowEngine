@@ -80,10 +80,18 @@ namespace SkySnow
 			SN_ERR("ShaderCode is nullptr.");
 			return false;
 		}
-		//SN_LOG("OGL Shader Code:%s", shadercode);
+//		SN_LOG("OGL Shader Code:%s", shadercode);
 		int codeLength = strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);
+        GLint success;
+        glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &success);
+        if (!success)
+        {
+            GLchar infoLog[512];
+            glGetShaderInfoLog(shaderHandle, 512, NULL, infoLog);
+            SN_ERR("Shader::Compilation_Failed:%s",infoLog);
+        }
 		return true;
 	}
 

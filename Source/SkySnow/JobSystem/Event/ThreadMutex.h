@@ -92,7 +92,7 @@ namespace SkySnow
         void WriteUnlock()
         {
             int err = pthread_rwlock_unlock(&_Mutex);
-            if(err == 0)
+            if(err != 0)
             {
                 SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
             }

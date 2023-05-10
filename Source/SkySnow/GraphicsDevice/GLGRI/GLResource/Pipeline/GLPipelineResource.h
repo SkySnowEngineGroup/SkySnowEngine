@@ -86,6 +86,7 @@ namespace SkySnow
 
 		virtual ~GLGraphicPipeline()
 		{
+            SN_LOG("GLGraphicPipeline DesConstruct.");
 		}
 	public:
 		PrimitiveType			_PrimitiveType;

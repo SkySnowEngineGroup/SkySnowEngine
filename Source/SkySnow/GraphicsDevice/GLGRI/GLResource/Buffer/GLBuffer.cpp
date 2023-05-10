@@ -42,7 +42,8 @@ namespace SkySnow
     //Create Vertex Buffer Declaration
     void GRIGLDrive::GRICreateVertexDeclaration(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle)
     {
-        
+        GRIGLVertexDeclaration* vertexDecl = dynamic_cast<GRIGLVertexDeclaration*>(handle.GetReference());
+        vertexDecl->SetUp(vdel);
     }
 
 	namespace OGLBuffer

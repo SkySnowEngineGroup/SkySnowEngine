@@ -38,16 +38,16 @@ namespace SkySnow
         GRIVertexElement(
            uint8_t inBufferIndex,
            GRIBuffer* inGRIBuffer,
-           uint8_t inOffset,
-           uint8_t inStrid,
            uint8_t inAtttitubeIndex,
+           uint8_t inStrid,
+           uint8_t inOffset,
            VertexElementType inVET_Type
         )
             : _BufferIndex(inBufferIndex)
             , _GRIBuffer(inGRIBuffer)
-            , _Offset(inOffset)
-            , _Strid(inStrid)
             , _AtttitubeIndex(inAtttitubeIndex)
+            , _Strid(inStrid)
+            , _Offset(inOffset)
             , _VET_Type(inVET_Type)
         {
         }

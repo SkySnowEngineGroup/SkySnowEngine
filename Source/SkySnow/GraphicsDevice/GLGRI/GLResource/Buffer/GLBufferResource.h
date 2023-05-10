@@ -80,7 +80,6 @@ namespace SkySnow
         //vertex element type:GL_FLOAT or GL_SHORT
         GLenum  _Type;
         GLuint  _Offset;
-        GLuint  _Size;
         GLuint  _Stride;
         uint8_t _AttritubeIndex;
         uint8_t _bNormalized;
@@ -101,7 +100,60 @@ namespace SkySnow
             : GRIVertexDeclaration()
         {
         }
-        
+        void SetUp(const VertexDeclarationElementList& vdel)
+        {
+            int bufferIndex = -1;
+            for(int32_t index = 0; index < vdel.size(); index ++)
+            {
+                GRIVertexElement element = vdel[index];
+                if(bufferIndex != element._BufferIndex)
+                {
+                    GLVertexBufferObject vbo;
+                    GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(element._GRIBuffer);
+                    vbo._GpuHandle = bufferGL->_GpuHandle;
+                    vbo._BufferType = bufferGL->_BufferType;
+                    vbo._Stride = element._Strid;
+                    vbo._Offset = element._Offset;
+                    _GLVertexBuffers[element._BufferIndex] = vbo;
+                    bufferIndex = element._BufferIndex;
+                }
+                GLVertexElements& vertexElements = _GLVertexBuffers[element._BufferIndex]._GLVertexElements;
+                GLVertexElement glElement;
+                glElement._AttritubeIndex = element._AtttitubeIndex;
+                glElement._Offset = element._Offset;
+                switch(element._VET_Type)
+                {
+                    case VertexElementType::VET_Float1:
+                        glElement._Type = GL_FLOAT;
+                        glElement._Stride = 1;
+                        glElement._bNormalized = false;
+                        glElement._bConvertToFloat = true;
+                        break;
+                    case VertexElementType::VET_Float2:
+                        glElement._Type = GL_FLOAT;
+                        glElement._Stride = 2;
+                        glElement._bNormalized = false;
+                        glElement._bConvertToFloat = true;
+                        break;
+                    case VertexElementType::VET_Float3:
+                        glElement._Type = GL_FLOAT;
+                        glElement._Stride = 3;
+                        glElement._bNormalized = false;
+                        glElement._bConvertToFloat = true;
+                        break;
+                    case VertexElementType::VET_Float4:
+                        glElement._Type = GL_FLOAT;
+                        glElement._Stride = 4;
+                        glElement._bNormalized = false;
+                        glElement._bConvertToFloat = true;
+                        break;
+                    default:
+                        SN_ERR("Unknown GRI vertex element type %u",element._VET_Type);
+                        break;
+                }
+                vertexElements[element._AtttitubeIndex] = glElement;
+            }
+        }
     public:
         GLVertexBuffers    _GLVertexBuffers;
     };

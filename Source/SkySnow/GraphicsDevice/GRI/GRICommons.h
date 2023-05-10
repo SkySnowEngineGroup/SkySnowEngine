@@ -24,6 +24,7 @@
 
 namespace SkySnow
 {
+#define Max_Num_Vertex_Attribute 16
 	enum GRIFeature
 	{
 		ENone,
@@ -71,6 +72,16 @@ namespace SkySnow
 		BUT_DynamicBuffer		= 1 << 2,
 		BUT_StructuredBuffer	= 1 << 3,
 	};
+    
+    enum class UniformBufferUsageType
+    {
+        //used for single drawcall then discard
+        UBT_SingleDraw = 0,
+        //used for multi drawcall at once frame then discard
+        UBT_SingleFrame,
+        //used for multi drawcall at multi frame
+        UBT_MultiFrame
+    };
     enum class VertexElementType
     {
         VET_None,

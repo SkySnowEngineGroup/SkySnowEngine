@@ -94,6 +94,7 @@ namespace SkySnow
 	{
 		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipeline*>(pipelineState)->_PrimitiveType;
         _PendingState._OGLShaderPipeline = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline;
+        _PendingState._OGLShaderPipeline->_OGLVertexDeclaration = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLVertexDeclaration;
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
@@ -132,7 +133,7 @@ namespace SkySnow
             {
                 GLVertexElement vMeta = ve.second;
                 glEnableVertexAttribArray(vMeta._AttritubeIndex);
-                glVertexAttribPointer(vMeta._AttritubeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Size,(GLvoid*)vMeta._Offset);
+                glVertexAttribPointer(vMeta._AttritubeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
             }
         }
 	}

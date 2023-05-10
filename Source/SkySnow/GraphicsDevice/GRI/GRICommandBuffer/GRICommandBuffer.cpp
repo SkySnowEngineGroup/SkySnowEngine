@@ -256,7 +256,17 @@ namespace SkySnow
         }
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
     }
-
+    
+    GRIVertexDeclarationRef CreateVertexDeclaration(const VertexDeclarationElementList& vdel)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIVertexDeclarationRef handle;
+            GRI->GRICreateVertexDeclaration(vdel, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateVertexDeclaration(vdel);
+    }
     GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
     {
         if (!_GQueue->IsLowerVerion())
