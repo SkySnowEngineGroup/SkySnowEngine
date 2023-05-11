@@ -37,11 +37,11 @@ namespace SkySnow
         }
         GRIVertexElement(
            uint8_t inBufferIndex,
-           GRIBuffer* inGRIBuffer,
            uint8_t inAtttitubeIndex,
            uint8_t inStrid,
            uint8_t inOffset,
-           VertexElementType inVET_Type
+           VertexElementType inVET_Type,
+           GRIBuffer* inGRIBuffer = nullptr
         )
             : _BufferIndex(inBufferIndex)
             , _GRIBuffer(inGRIBuffer)

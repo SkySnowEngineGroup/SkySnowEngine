@@ -252,7 +252,7 @@ namespace SkySnow
 		int				_Stride;
 		std::string		_BufferName;
 	};
-
+    //顶点流描述
 	class GRIVertexDeclaration : public GRIResource
 	{
 	public:
@@ -265,9 +265,23 @@ namespace SkySnow
 			SN_LOG("GRIVertexDeclaration Destruct.");
 		}
 	};
+    //统一变量
+    class GRIUniformBuffer : public GRIResource
+    {
+    public:
+        GRIUniformBuffer()
+            : GRIResource(EGRIResourceType::GRT_UniformBuffer)
+        {
+        }
+        virtual ~GRIUniformBuffer()
+        {
+            SN_LOG("GRIUniformBuffer Destruct.");
+        }
+    };
     //BufferEnd===================================================================================
     //State about
     //StateStart==================================================================================
+    //图元装配状态
     class GRIAssemblyState : public GRIResource
     {
     public:
@@ -280,6 +294,7 @@ namespace SkySnow
             SN_LOG("GRIAssembly DesConstruct.");
         }
     };
+    //光栅化状态
     class GRIRasterizerState : public GRIResource
     {
     public:
@@ -292,7 +307,7 @@ namespace SkySnow
             SN_LOG("GRIRasterizerState DesConstruct.");
         }
     };
-
+    //深度模版状态
     class GRIDepthStencilState : public GRIResource
     {
     public:
@@ -305,6 +320,7 @@ namespace SkySnow
             SN_LOG("GRIDepthStencilState DesConstruct.");
         }
     };
+    //混合状态
     class GRIBlendState : public GRIResource
     {
     public:
@@ -317,7 +333,7 @@ namespace SkySnow
             SN_LOG("GRIBlendState DesConstruct.");
         }
     };
-
+    //采样器状态
     class GRISamplerState : public GRIResource
     {
     public:

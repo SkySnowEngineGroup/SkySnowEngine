@@ -31,7 +31,7 @@ namespace SkySnow
 #elif PLATFORM == PLATFORM_MAC
 	static const std::string g_MediaPath = "/Users/SS3D/"; //Mac Path
 #endif
-	static const std::string g_RelativeMaterialPath = "SkySnowEngine/Script/Media/Material/";
+	static const std::string g_RelativeMaterialPath = "SkySnowEngine/Resource/Media/Material/";
 	static const int g_String_Buffer_MaxLength = 128;
 	static char g_Null_Char = 0;
 	static const int g_Min_Capacity = 8;//ื๎ะก8byte

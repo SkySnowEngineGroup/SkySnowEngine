@@ -103,7 +103,7 @@ namespace SkySnow
 		int numElements;
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
-		SetupVertexFormatBinding(_PendingState, _PendingState._OGLShaderPipeline->_OGLVertexDeclaration, Num_GL_Vertex_Attribute, numElements);
+		SetupVertexFormatBinding(_PendingState, _PendingState._OGLShaderPipeline->_OGLVertexDeclaration, Max_Num_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
 

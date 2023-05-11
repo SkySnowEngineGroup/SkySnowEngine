@@ -101,6 +101,27 @@ namespace SkySnow
 		glAttachShader(program, vshandle);
 		glAttachShader(program, fshandle);
 		glLinkProgram(program);
+        
+        if(!OpenGLBase::SupportUniformBuffer())
+        {
+            //Collect Uniform Var
+            GLint numUniforms = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
+            
+            GLint maxLength = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
+            GLchar* uniformName = new GLchar[maxLength];
+            for (GLint i = 0; i < numUniforms; i++)
+            {
+                GLint size = 0;
+                GLenum type = 0;
+                GLint location = -1;
+                glGetActiveUniform(program, i, maxLength, nullptr, &size, &type, uniformName);
+                location = glGetUniformLocation(program, uniformName);
+                SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,type,location,size);
+            }
+        }
+
 		return true;
 	}
 	//===============================================================================================

@@ -51,7 +51,7 @@ namespace SkySnow
 		return handle;
 	}
 
-	GRIPipelineShaderRef GLCreateCommandBuffer::CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
+	GRIPipelineShaderRef GLCreateCommandBuffer::CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDeclaration* vertexDec)
 	{
 		GRIPipelineShaderRef handle = new GLPipelineShader(vs, fs);
 		Alloc_CommandCreate(GRICreatePipelineShaderCommand, handle);

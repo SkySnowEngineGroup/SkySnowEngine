@@ -76,9 +76,12 @@ namespace SkySnow
                                            4,
                                            colors);
             VertexDeclarationElementList elementList;
-            elementList.push_back(GRIVertexElement(0,_VertexBufferRef,0,3,0,VertexElementType::VET_Float3));
-            elementList.push_back(GRIVertexElement(1,_ColorBufferRef,1,4,0,VertexElementType::VET_Float4));
+            //bufferindex attritubeindex stride offset
+            elementList.push_back(GRIVertexElement(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
+            elementList.push_back(GRIVertexElement(1,1,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
             _VertexDeclaration = CreateVertexDeclaration(elementList);
+            
+//            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef,_VertexDeclaration);
             
             GRICreateGraphicsPipelineInfo psoCreateInfo;
             psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;

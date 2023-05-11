@@ -48,6 +48,7 @@ namespace SkySnow
 		GRT_GraphicsPipeline,
         GRT_ComputePipeline,
 		GRT_Buffer,
+        GRT_UniformBuffer,
         GRT_VertexDeclaration,
 		GRT_AssemblyState,
         GRT_RasterizerState,

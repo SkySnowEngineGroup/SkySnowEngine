@@ -1,9 +1,14 @@
  #version 330 core
  layout (location = 0) in vec3 aPos;
  layout (location = 1) in vec4 aColor;
+ uniform vec4 test1;
+ uniform vec4 test2;
+ uniform vec4 test3;
+ uniform vec4 test4[3];
  out vec4 vColor;
  void main()
  {
     gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+    vec4 tss = test1 + test2 + test3 + test4[0] + test4[1] + test4[2];
     vColor = aColor;
  }

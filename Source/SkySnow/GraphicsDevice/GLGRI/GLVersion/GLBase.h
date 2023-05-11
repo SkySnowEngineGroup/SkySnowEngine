@@ -40,6 +40,7 @@ namespace SkySnow
         //default None Support
 		static inline GRIFeature GetFeatureType() { return ENone; }
         static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
+        static inline bool SupportUniformBuffer(){return false;}
         
         static inline GLuint GetMajorVersion() { return _MajorVersion; };
         

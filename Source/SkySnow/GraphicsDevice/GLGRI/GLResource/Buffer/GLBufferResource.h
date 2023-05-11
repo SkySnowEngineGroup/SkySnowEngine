@@ -72,6 +72,8 @@ namespace SkySnow
 		bool		_StreamDraw;
 		const void* _Data;
 	};
+    //Vertex Declaration layout
+    //vdlStart==============================================================================================
     struct GLVertexElement
     {
         GLVertexElement()
@@ -110,8 +112,8 @@ namespace SkySnow
                 {
                     GLVertexBufferObject vbo;
                     GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(element._GRIBuffer);
-                    vbo._GpuHandle = bufferGL->_GpuHandle;
-                    vbo._BufferType = bufferGL->_BufferType;
+                    vbo._GpuHandle = bufferGL? bufferGL->_GpuHandle : -1;
+                    vbo._BufferType = bufferGL ? bufferGL->_BufferType : -1;
                     vbo._Stride = element._Strid;
                     vbo._Offset = element._Offset;
                     _GLVertexBuffers[element._BufferIndex] = vbo;
@@ -156,5 +158,22 @@ namespace SkySnow
         }
     public:
         GLVertexBuffers    _GLVertexBuffers;
+    };
+    //vdlEnd================================================================================================
+
+    //UniformBuffer
+    class GRIGLUniformBuffer : public GRIUniformBuffer
+    {
+    public:
+        GRIGLUniformBuffer()
+        {
+        }
+        
+        ~GRIGLUniformBuffer()
+        {
+        }
+    public:
+        GLuint          _GpuHandle;
+        GLuint          _BindingIndex;
     };
 }
