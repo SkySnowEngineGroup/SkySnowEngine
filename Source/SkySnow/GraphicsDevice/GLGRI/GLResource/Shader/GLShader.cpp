@@ -111,6 +111,10 @@ namespace SkySnow
     {
         //Collect Uniform Var
         {
+            glUseProgram(program);
+            //Uniform Buffer Block;
+            GLUniformBufferSlot block;
+            
             GLint numUniforms = 0;
             glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
             
@@ -128,16 +132,17 @@ namespace SkySnow
                 //Filter out parameters in UniformBlock
                 if(location != -1)
                 {
-                    UniformSlot uSlot;
-                    uSlot._Type = type;
+                    GLUniformSlot uSlot;
+                    uSlot._Type     = type;
                     uSlot._Location = location;
-                    uSlot._Size = size;
-                    //uSlot._Name = new char[maxLength];
-                    //std::strcpy(uSlot._Name, uniformName);
-                    pipelineShader->_UniformSlots[String2Hash(uniformName)] = uSlot;
-                    SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+                    uSlot._Size     = size;
+                    uSlot._Offset   = 0;
+                    block._UniformSlots[String2Hash(uniformName)] = uSlot;
+                    //SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
                 }
             }
+            //0 is SingleDraw
+            pipelineShader->_UniformBuffers[0] = block;
             delete[] uniformName;
             uniformName = nullptr;
         }
@@ -165,7 +170,7 @@ namespace SkySnow
                 location = glGetUniformBlockIndex(program, uniformBlockName);
                 if(location != -1)
                 {
-                    UniformBufferBlock uBlock;
+                    GLUniformBufferSlot uBlock;
                     if(bindingIndex == -1)
                     {
                         glUniformBlockBinding(program,location,i);
@@ -173,15 +178,49 @@ namespace SkySnow
                     }
                     uBlock._Location = location;
                     uBlock._Offset = offset;
-                    //uBlock._Name = new char[maxLength];
-                    //std::strcpy(uBlock._Name, uniformBlockName);
+                    //Get UniformBlock UniformSlot
+                    GLint u_numSlots = 0;
+                    glGetActiveUniformBlockiv(program, location,GL_UNIFORM_BLOCK_ACTIVE_UNIFORMS, (GLint*)&u_numSlots);
+                    GLint* u_uniformLocations = new GLint[u_numSlots];
+                    glGetActiveUniformBlockiv(program, location,GL_UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES, u_uniformLocations);
+                    GLint u_maxLength = 0;
+                    glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &u_maxLength);
+                    GLchar* u_uniformName = new GLchar[u_maxLength];
+                    for (int i = 0; i < u_numSlots; i ++)
+                    {
+                        GLUniformSlot u_slot;
+                        GLint u_location = u_uniformLocations[i];
+                        GLsizei um_size = 0;
+                        GLint   u_offset;
+                        GLenum  u_type;
+                        glGetActiveUniformName(program,u_location, u_maxLength,&um_size,u_uniformName);
+
+                        glGetActiveUniformsiv(program,1,(GLuint*)&u_location,GL_UNIFORM_SIZE,&um_size);
+                        glGetActiveUniformsiv(program,1,(GLuint*)&u_location,GL_UNIFORM_OFFSET,&u_offset);
+                        glGetActiveUniformsiv(program,1,(GLuint*)&u_location,GL_UNIFORM_TYPE,(GLint*)&u_type);
+
+                        u_slot._Location = u_location;
+                        u_slot._Type     = u_type;
+                        u_slot._Size     = um_size;
+                        u_slot._Offset   = u_offset;
+                        uBlock._UniformSlots[String2Hash(u_uniformName)] = u_slot;
+                        //SN_LOG("uniformBlockName:%s uniformName:%s type:%d location:%d size:%ld Offset:%d", uniformBlockName,u_uniformName, u_type, u_location, um_size, u_offset);
+                        //if (GL_FLOAT_VEC4 == u_type)
+                        //{
+                        //    SN_LOG("Is GL_FLOAT_VEC4");
+                        //}
+                    }
+                    delete[] u_uniformName;
+                    u_uniformName = nullptr;
                     pipelineShader->_UniformBuffers[String2Hash(uniformBlockName)] = uBlock;
-                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d Location:%d",uniformBlockName,uBlock._BindingIndex,uBlock._Offset,uBlock._Location);
+                    SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
+                    //SN_LOG("uniformBlockName:%s Binding:%d Offset:%d Location:%d",uniformBlockName,uBlock._BindingIndex,uBlock._Offset,uBlock._Location);
                 }
             }
             delete[] uniformBlockName;
             uniformBlockName = nullptr;
         }
+        glUseProgram(0);
         return true;
     }
 	//===============================================================================================

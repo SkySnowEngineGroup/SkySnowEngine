@@ -29,9 +29,9 @@
 namespace SkySnow
 {
     class GRIVertexElement;
-    struct UniformBufferSlot;
+    struct UniformBufferSlotDesc;
     typedef std::vector<GRIVertexElement> VertexDescriptorElementList;
-    typedef std::unordered_map<size_t, UniformBufferSlot> UniformBufferList;
+    typedef std::unordered_map<size_t, UniformBufferSlotDesc> UniformBufferList;
     class GRIVertexElement
     {
     public:
@@ -85,18 +85,22 @@ namespace SkySnow
         GRICreateShaderPipelineInfo()
             : _PipelineShader(nullptr)
             , _VertexDescriptor(nullptr)
+            , _UniformBufferDescriptor(nullptr)
         {
         }
         GRICreateShaderPipelineInfo(
             GRIPipelineShader*       inPipelineShader,
-            GRIVertexDescriptor*     inVertexDescriptor
+            GRIVertexDescriptor*     inVertexDescriptor,
+            GRIUniformBufferDescriptor* inUniformBufferDescriptor
         )
             : _PipelineShader(inPipelineShader)
             , _VertexDescriptor(inVertexDescriptor)
+            , _UniformBufferDescriptor(inUniformBufferDescriptor)
         {
         }
-        GRIPipelineShader*       _PipelineShader;
-        GRIVertexDescriptor*     _VertexDescriptor;
+        GRIPipelineShader*          _PipelineShader;
+        GRIVertexDescriptor*        _VertexDescriptor;
+        GRIUniformBufferDescriptor* _UniformBufferDescriptor;
     };
     //Graphics Pipeline Create Info
 	class GRICreateGraphicsPipelineInfo
@@ -108,7 +112,6 @@ namespace SkySnow
 			, _DepthStencilState(nullptr)
 			, _SamplerState(nullptr)
 			, _AssemblyState(nullptr)
-            , _UniformBufferDescriptor(nullptr)
 			, _PrimitiveType(PrimitiveType::PT_Trangles)
 		{
 		}
@@ -119,7 +122,6 @@ namespace SkySnow
 			GRISamplerState*		    inSamplerState,
 			GRIAssemblyState*		    inAssemblyState,
 			PrimitiveType			    inPrimitiveType,
-            GRIUniformBufferDescriptor* inUniformBufferDescriptor,
             GRICreateShaderPipelineInfo inShaderPipeline
 		)
 			: _ShaderPipelineInfo(inShaderPipeline)
@@ -128,7 +130,6 @@ namespace SkySnow
 			, _DepthStencilState(inDepthStencilState)
 			, _SamplerState(inSamplerState)
 			, _AssemblyState(inAssemblyState)
-            , _UniformBufferDescriptor(inUniformBufferDescriptor)
 			, _PrimitiveType(inPrimitiveType)
 		{
 		}
@@ -141,8 +142,7 @@ namespace SkySnow
 				_SamplerState != other._SamplerState ||
 				_AssemblyState != other._AssemblyState ||
                 _ShaderPipelineInfo._PipelineShader != other._ShaderPipelineInfo._PipelineShader ||
-                _ShaderPipelineInfo._VertexDescriptor != other._ShaderPipelineInfo._VertexDescriptor ||
-                _UniformBufferDescriptor != other._UniformBufferDescriptor)
+                _ShaderPipelineInfo._VertexDescriptor != other._ShaderPipelineInfo._VertexDescriptor)
 			{
 				return false;
 			}
@@ -156,7 +156,7 @@ namespace SkySnow
 		GRISamplerState*		_SamplerState;
 		GRIAssemblyState*		_AssemblyState;
         
-        GRIUniformBufferDescriptor* _UniformBufferDescriptor;
+        
         GRICreateShaderPipelineInfo _ShaderPipelineInfo;
 
 	};
@@ -172,8 +172,39 @@ namespace SkySnow
 			return true;
 		}
     };
-    
+    //UniformBuffer Create About Info
     struct UniformBufferSlot
+    {
+    public:
+        UniformBufferSlot() = delete;
+        UniformBufferSlot(const char* inName,UniformBufferUsageType inUBType)
+            : _UBHashKey(String2Hash(inName))
+            , _UsageType(inUBType)
+        {
+        }
+        ~UniformBufferSlot()
+        {
+            for (auto iter = _UniformSlots.begin();iter != _UniformSlots.end();)
+            {
+                void* data = iter->second;
+                delete[] data;
+                data = nullptr;
+                iter = _UniformSlots.erase(iter);
+            }
+        }
+        void AddUniformSlot(const char* inName,void* inData,int8_t size)
+        {
+            //TODO Memory Manager
+            char* dest = new char[size];
+            std::memcpy(dest, inData, size);
+            _UniformSlots[String2Hash(inName)] = dest;
+        }
+    private:
+        UniformBufferUsageType  _UsageType;
+        size_t                  _UBHashKey;
+        std::unordered_map<size_t, void*> _UniformSlots;
+    };
+    struct UniformBufferSlotDesc
     {
         //A single draw is a list of uniform buffer owned by the current draw
         UniformBufferUsageType  _UBType;
@@ -189,7 +220,7 @@ namespace SkySnow
         }
         void AddUniformBuffer(uint8_t bufferIndex,const char* inName, UniformBufferUsageType inUBType)
         {
-            UniformBufferSlot ubs;
+            UniformBufferSlotDesc ubs;
             ubs._UBType     = inUBType;
             ubs._UBHashKey  = String2Hash(inName);
             _UniformBuffers[bufferIndex] = ubs;

@@ -78,8 +78,9 @@ namespace SkySnow
     
     enum class UniformBufferUsageType
     {
-        //used for single drawcall then discard
-        UBT_SingleDraw = 0,
+        //used for single drawcall then discard; uv is uniform variable
+		UBT_UV_SingleDraw = 0,
+        UBT_SingleDraw,
         //used for multi drawcall at once frame then discard
         UBT_SingleFrame,
         //used for multi drawcall at multi frame

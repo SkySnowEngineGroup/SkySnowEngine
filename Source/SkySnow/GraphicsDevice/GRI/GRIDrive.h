@@ -68,7 +68,7 @@ namespace SkySnow
         //Create Vertex Declaration for VertexBuffer
         virtual void GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle) = 0;
         ////Create Uniform Buffer
-        //virtual void GRICreateUniformBuffer(const void* contents,UniformBufferUsageType usageType,GRIUniformBufferRef& handle) = 0;
+        //virtual void GRICreateUniformBuffer(const UniformBufferSlot* contents,UniformBufferUsageType usageType,GRIUniformBufferRef& handle) = 0;
         ////Create Uniform Buffer Declaration
         //virtual void GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info,GRIUniformBufferDescriptorRef& handle) = 0;
 		//GRICreate=======================================================================================================================
@@ -78,7 +78,7 @@ namespace SkySnow
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
 		virtual void GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor) {}
 		//Update Uniform Buffer Data or Update Uniform Data
-		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,int bufferIndex, int32_t bytesSize,const void* contents) {}
+		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformBufferSlot* contents) {}
 		//Set Curr ShaderPipeline Uniform Buffer Index
 		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) {}
 		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) {}

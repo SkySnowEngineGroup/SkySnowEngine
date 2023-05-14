@@ -158,21 +158,23 @@ namespace SkySnow
         GLVertexBuffers    _GLVertexBuffers;
     };
     //vdlEnd================================================================================================
-    
     //Uniform Slot Parameter
-    struct UniformSlot
+    struct GLUniformSlot
     {
         GLenum _Type;
         GLuint _Location;
         GLint  _Size;
+        GLint  _Offset;
         //char*  _Name;
     };
+
     //Uniform Buffer Block
-    struct UniformBufferBlock
+    struct GLUniformBufferSlot
     {
-        GLuint _BindingIndex = -1;
-        GLuint _Location = -1;
-        GLint  _Offset;
+        GLuint          _BindingIndex = -1;
+        GLuint          _Location = -1;
+        GLint           _Offset;
+        std::unordered_map<size_t, GLUniformSlot>    _UniformSlots;
         //char*  _Name;
     };
     //UniformBuffer
@@ -192,7 +194,7 @@ namespace SkySnow
     public:
         GLuint          _GpuHandle;
     };
-    struct UniformBufferSlotDes
+    struct GLUniformBufferSlotDesc
     {
         //A single draw is a list of uniform buffer owned by the current draw
         UniformBufferUsageType  _UBType;
@@ -201,7 +203,7 @@ namespace SkySnow
     //UniformBuffer Descriptor
     class GRIGLUniformBufferDescriptor : public GRIUniformBufferDescriptor
     {
-        typedef std::unordered_map<int, UniformBufferSlotDes> GLUniformBufferDesList;
+        typedef std::unordered_map<int, GLUniformBufferSlotDesc> GLUniformBufferDesList;
     public:
         GRIGLUniformBufferDescriptor()
             : GRIUniformBufferDescriptor()
@@ -217,16 +219,16 @@ namespace SkySnow
         {
             for (auto iter = list.begin(); iter != list.end(); iter ++)
             {
-                UniformBufferSlotDes ubDescriptor;
-                UniformBufferSlot ubs = iter->second;
+                GLUniformBufferSlotDesc ubDescriptor;
+                UniformBufferSlotDesc ubs = iter->second;
 
                 ubDescriptor._UBType = ubs._UBType;
                 ubDescriptor._UBHashKey = ubs._UBHashKey;
 
-                _UniformBuffersDes[iter->first] = ubDescriptor;
+                _GLUniformBuffersDes[iter->first] = ubDescriptor;
             }
         }
     public:
-        GLUniformBufferDesList _UniformBuffersDes;
+        GLUniformBufferDesList _GLUniformBuffersDes;
     };
 }

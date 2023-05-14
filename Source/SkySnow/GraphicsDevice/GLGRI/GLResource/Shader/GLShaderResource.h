@@ -28,8 +28,6 @@
 #include "GLBufferResource.h"
 namespace SkySnow
 {
-    typedef std::unordered_map<size_t,UniformBufferBlock> UniformBuffers;
-    typedef std::unordered_map<size_t,UniformSlot>        UniformSlots;
 	//Shader Resource Base Class Internal
 	class GLShaderBase
 	{
@@ -92,6 +90,7 @@ namespace SkySnow
     //GL Program
     class GLPipelineShader : public GRIPipelineShader
     {
+        typedef std::unordered_map<size_t, GLUniformBufferSlot> UniformBuffers;
     public:
         GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
             : GRIPipelineShader()
@@ -105,7 +104,6 @@ namespace SkySnow
         ~GLPipelineShader()
         {
             _UniformBuffers.clear();
-            _UniformSlots.clear();
             SN_LOG("GLPipelineShader DesConstruct");
         }
         inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
@@ -133,8 +131,7 @@ namespace SkySnow
         GLVertexShader*         _OGLVertexShader;
         GLFragmentShader*       _OGLFragmentShader;
         //UBO会在此列表存储
+        //0 is SingleDraw
         UniformBuffers          _UniformBuffers;
-        //Uniform变量在此列表存储
-        UniformSlots            _UniformSlots;
     };
 }

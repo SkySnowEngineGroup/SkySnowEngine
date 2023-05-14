@@ -91,11 +91,14 @@ namespace SkySnow
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             _TestInit = true;
             
-            std::string test = "UniformBuffer_0";
+            /*std::string test = "UniformBuffer_0";
             size_t hash = String2Hash(test);
             std::string test2 = "UniformBuffer_0";
             size_t hash2 = String2Hash(test2);
-            SN_LOG("hash:%zu  hash2:%ld",hash,hash2);
+            SN_LOG("hash:%zu  hash2:%ld",hash,hash2);*/
+            std::string ubn = "TestUniformBlock";
+            SN_LOG("TestUniformBlock HashKey:%ld", String2Hash(ubn));
+            UniformBufferSlot ubSlot;
         }
         
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
