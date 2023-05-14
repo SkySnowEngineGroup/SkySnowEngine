@@ -253,19 +253,19 @@ namespace SkySnow
 		std::string		_BufferName;
 	};
     //顶点流描述
-	class GRIVertexDeclaration : public GRIResource
+	class GRIVertexDescriptor : public GRIResource
 	{
 	public:
-        GRIVertexDeclaration()
-			: GRIResource(GRT_VertexDeclaration)
+        GRIVertexDescriptor()
+			: GRIResource(GRT_VertexDescriptor)
 		{
 		}
-		virtual ~GRIVertexDeclaration()
+		virtual ~GRIVertexDescriptor()
 		{
-			SN_LOG("GRIVertexDeclaration Destruct.");
+			SN_LOG("GRIVertexDescriptor Destruct.");
 		}
 	};
-    //统一变量
+    //统一变量 Uniform Buffer
     class GRIUniformBuffer : public GRIResource
     {
     public:
@@ -276,6 +276,19 @@ namespace SkySnow
         virtual ~GRIUniformBuffer()
         {
             SN_LOG("GRIUniformBuffer Destruct.");
+        }
+    };
+    //描述符 Uniform Buffer Declaration
+    class GRIUniformBufferDescriptor : public GRIResource
+    {
+    public:
+        GRIUniformBufferDescriptor()
+            : GRIResource(GRT_UniformBufferDescriptor)
+        {
+        }
+        virtual ~GRIUniformBufferDescriptor()
+        {
+            SN_LOG("GRIUniformBufferDescriptor Destruct.");
         }
     };
     //BufferEnd===================================================================================
@@ -374,7 +387,10 @@ namespace SkySnow
 	typedef RefCountPtr<GRIVertexBuffer>			GRIVertexBufferRef;
 	typedef RefCountPtr<GRIIndexBuffer>				GRIIndexBufferRef;
 	typedef RefCountPtr<GRIBuffer>					GRIBufferRef;
-	typedef RefCountPtr<GRIVertexDeclaration>		GRIVertexDeclarationRef;
+	typedef RefCountPtr<GRIVertexDescriptor>		GRIVertexDescriptorRef;
+    //UniformBuffer
+    typedef RefCountPtr<GRIUniformBuffer>           GRIUniformBufferRef;
+    typedef RefCountPtr<GRIUniformBufferDescriptor> GRIUniformBufferDescriptorRef;
     //rasterization assembly blend sampler DepthStencil
     typedef RefCountPtr<GRIAssemblyState>           GRIAssemblyStateRef;
     typedef RefCountPtr<GRIRasterizerState>         GRIRasterizerStateRef;

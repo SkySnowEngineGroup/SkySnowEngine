@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "GLProfiles.h"
+#include "GLShaderResource.h"
 namespace SkySnow
 {
 	//可以看做是Shader的Util全局工具函数，但是使用OGLShader标记命名空间
@@ -38,7 +39,9 @@ namespace SkySnow
 
 		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
 
-		bool CreateProgram(const GLuint vshandle,const GLuint fshandle,GLuint& program);
+		bool CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle,const GLuint fshandle,GLuint& program);
+    
+        bool CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program);
 
 	}
 }

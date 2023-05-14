@@ -75,8 +75,8 @@ namespace SkySnow
 		GRI->GRICreateGraphicsPipeline(_PsoInfo,_Handle);
 	}
 
-    void GRICreateVertexDeclarationCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    void GRICreateVertexDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateVertexDeclaration(_VertexElements, _Handle);
+        GRI->GRICreateVertexDescriptor(_VertexElements, _Handle);
     }
 }

@@ -235,7 +235,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(fsCode);
     }
 
-    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDeclaration* vertexDec)
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDescriptor* vertexDec)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -257,15 +257,15 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
     }
     
-    GRIVertexDeclarationRef CreateVertexDeclaration(const VertexDeclarationElementList& vdel)
+    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel)
     {
         if (!_GQueue->IsLowerVerion())
         {
-            GRIVertexDeclarationRef handle;
-            GRI->GRICreateVertexDeclaration(vdel, handle);
+            GRIVertexDescriptorRef handle;
+            GRI->GRICreateVertexDescriptor(vdel, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateVertexDeclaration(vdel);
+        return _GQueue->GetLowerCommandBuffer()->CreateVertexDescriptor(vdel);
     }
     GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
     {

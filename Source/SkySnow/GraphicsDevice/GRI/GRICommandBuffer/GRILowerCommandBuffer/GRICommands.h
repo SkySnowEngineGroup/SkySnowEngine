@@ -184,16 +184,16 @@ namespace SkySnow
 		GRIGraphicsPipelineRef          _Handle;
 	};
 
-    struct GRICreateVertexDeclarationCommand : public GRICommand<GRICreateVertexDeclarationCommand>
+    struct GRICreateVertexDescriptorCommand : public GRICommand<GRICreateVertexDescriptorCommand>
     {
         //const VertexDeclarationElementList& vdel
-        GRICreateVertexDeclarationCommand(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle)
+        GRICreateVertexDescriptorCommand(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle)
             : _VertexElements(vdel)
             , _Handle(handle)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        GRIVertexDeclarationRef         _Handle;
-        VertexDeclarationElementList    _VertexElements;
+        GRIVertexDescriptorRef         _Handle;
+        VertexDescriptorElementList    _VertexElements;
     };
 }

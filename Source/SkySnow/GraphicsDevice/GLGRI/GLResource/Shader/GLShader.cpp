@@ -25,7 +25,7 @@
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 #include "GLPipelineResource.h"
-
+#include "Hash.h"
 namespace SkySnow
 {
 	using namespace OGLShader;
@@ -45,7 +45,7 @@ namespace SkySnow
 		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(handle.GetReference());
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(shaderPipe->GetVertexShader());
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(shaderPipe->GetFragmentShader());
-		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
+		OGLShader::CreateProgram(shaderPipe,glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
 	}
 
 	//Shader 创建的模板类方法(公共方法)
@@ -95,34 +95,94 @@ namespace SkySnow
 		return true;
 	}
 
-	bool OGLShader::CreateProgram(const GLuint vshandle, const GLuint fshandle, GLuint& program)
+	bool OGLShader::CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle, const GLuint fshandle, GLuint& program)
 	{
 		program = glCreateProgram();
 		glAttachShader(program, vshandle);
 		glAttachShader(program, fshandle);
 		glLinkProgram(program);
-        
-        if(!OpenGLBase::SupportUniformBuffer())
+        //Collect Uniform And UniformBuffer
+        CollectUniformBuffer(pipelineShader,program);
+
+		return true;
+	}
+
+    bool OGLShader::CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program)
+    {
+        //Collect Uniform Var
         {
-            //Collect Uniform Var
             GLint numUniforms = 0;
             glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
             
             GLint maxLength = 0;
             glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
-            GLchar* uniformName = new GLchar[maxLength];
+            char* uniformName = new char[maxLength];
             for (GLint i = 0; i < numUniforms; i++)
             {
-                GLint size = 0;
-                GLenum type = 0;
-                GLint location = -1;
+                GLenum type;
+                GLuint location;
+                GLint  size;
+                
                 glGetActiveUniform(program, i, maxLength, nullptr, &size, &type, uniformName);
                 location = glGetUniformLocation(program, uniformName);
-                SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,type,location,size);
+                //Filter out parameters in UniformBlock
+                if(location != -1)
+                {
+                    UniformSlot uSlot;
+                    uSlot._Type = type;
+                    uSlot._Location = location;
+                    uSlot._Size = size;
+                    //uSlot._Name = new char[maxLength];
+                    //std::strcpy(uSlot._Name, uniformName);
+                    pipelineShader->_UniformSlots[String2Hash(uniformName)] = uSlot;
+                    SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+                }
             }
+            delete[] uniformName;
+            uniformName = nullptr;
         }
-
-		return true;
-	}
+        //If Support UniformBuffer Collect UniformBlock
+        if(OpenGLBase::SupportUniformBuffer())
+        {
+            GLint numUniformBlock = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORM_BLOCKS, &numUniformBlock);
+            GLint maxLength = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &maxLength);
+            GLchar* uniformBlockName = new GLchar[maxLength];
+            for(int i = 0; i < numUniformBlock; i ++)
+            {
+                
+                GLuint bindingIndex = -1;
+                GLuint location = -1;
+                GLint  offset;
+                //Get Block Name
+                glGetActiveUniformBlockName(program, i, maxLength, NULL, uniformBlockName);
+                //Get Block Binding Index
+                glGetActiveUniformBlockiv(program, i, GL_UNIFORM_BLOCK_INDEX, (GLint*)&bindingIndex);
+                //Get Block Offset
+                glGetActiveUniformBlockiv(program, i, GL_UNIFORM_BLOCK_DATA_SIZE, &offset);
+                //Get Block Name
+                location = glGetUniformBlockIndex(program, uniformBlockName);
+                if(location != -1)
+                {
+                    UniformBufferBlock uBlock;
+                    if(bindingIndex == -1)
+                    {
+                        glUniformBlockBinding(program,location,i);
+                        uBlock._BindingIndex = i;
+                    }
+                    uBlock._Location = location;
+                    uBlock._Offset = offset;
+                    //uBlock._Name = new char[maxLength];
+                    //std::strcpy(uBlock._Name, uniformBlockName);
+                    pipelineShader->_UniformBuffers[String2Hash(uniformBlockName)] = uBlock;
+                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d Location:%d",uniformBlockName,uBlock._BindingIndex,uBlock._Offset,uBlock._Location);
+                }
+            }
+            delete[] uniformBlockName;
+            uniformBlockName = nullptr;
+        }
+        return true;
+    }
 	//===============================================================================================
 }

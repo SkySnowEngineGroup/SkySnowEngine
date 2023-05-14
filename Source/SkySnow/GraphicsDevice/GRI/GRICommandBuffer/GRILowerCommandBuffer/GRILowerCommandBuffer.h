@@ -89,13 +89,13 @@ namespace SkySnow
 
         virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) = 0;
 
-        virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDeclaration* vertexDec = nullptr) = 0;
+        virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDescriptor* vertexDec = nullptr) = 0;
 
         virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) = 0;
 
         virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) = 0;
 
-        virtual GRIVertexDeclarationRef CreateVertexDeclaration(const VertexDeclarationElementList& vdel) = 0;
+        virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel) = 0;
 
         virtual void ResourceCreateExecutor();
     private:

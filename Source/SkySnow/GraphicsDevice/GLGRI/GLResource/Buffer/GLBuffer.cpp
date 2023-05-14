@@ -40,9 +40,9 @@ namespace SkySnow
 		glBuffer->_BufferName = "a";
 	}
     //Create Vertex Buffer Declaration
-    void GRIGLDrive::GRICreateVertexDeclaration(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle)
+    void GRIGLDrive::GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle)
     {
-        GRIGLVertexDeclaration* vertexDecl = dynamic_cast<GRIGLVertexDeclaration*>(handle.GetReference());
+        GRIGLVertexDescriptor* vertexDecl = dynamic_cast<GRIGLVertexDescriptor*>(handle.GetReference());
         vertexDecl->SetUp(vdel);
     }
 

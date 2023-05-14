@@ -24,6 +24,7 @@
 #include "Context.h"
 #include "SceneRenderer.h"
 #include "GRIResourceCreateInfo.h"
+#include "Hash.h"
 namespace SkySnow
 {
     RenderSystem::RenderSystem()
@@ -75,20 +76,26 @@ namespace SkySnow
                                            sizeof(colors),
                                            4,
                                            colors);
-            VertexDeclarationElementList elementList;
+            VertexDescriptorElementList elementList;
             //bufferindex attritubeindex stride offset
             elementList.push_back(GRIVertexElement(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
             elementList.push_back(GRIVertexElement(1,1,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
-            _VertexDeclaration = CreateVertexDeclaration(elementList);
+            _VertexDescriptor = CreateVertexDescriptor(elementList);
             
 //            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef,_VertexDeclaration);
             
             GRICreateGraphicsPipelineInfo psoCreateInfo;
             psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
             psoCreateInfo._ShaderPipelineInfo._PipelineShader = _PipelineShaderRef;
-            psoCreateInfo._ShaderPipelineInfo._VertexDeclaration = _VertexDeclaration;
+            psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             _TestInit = true;
+            
+            std::string test = "UniformBuffer_0";
+            size_t hash = String2Hash(test);
+            std::string test2 = "UniformBuffer_0";
+            size_t hash2 = String2Hash(test2);
+            SN_LOG("hash:%zu  hash2:%ld",hash,hash2);
         }
         
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();

@@ -74,7 +74,7 @@ namespace SkySnow
 	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
 		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
-        GLVertexBufferObject& vboMeta = _PendingState._OGLShaderPipeline->_OGLVertexDeclaration->_GLVertexBuffers[bufferIndex];
+        GLVertexBufferObject& vboMeta = _PendingState._OGLShaderPipeline->_OGLVertexDescriptor->_GLVertexBuffers[bufferIndex];
         vboMeta._GpuHandle = bufferGL->_GpuHandle;
         vboMeta._Stride = bufferGL->GetStride();
         vboMeta._BufferType = bufferGL->_BufferType;
@@ -94,7 +94,7 @@ namespace SkySnow
 	{
 		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipeline*>(pipelineState)->_PrimitiveType;
         _PendingState._OGLShaderPipeline = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline;
-        _PendingState._OGLShaderPipeline->_OGLVertexDeclaration = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLVertexDeclaration;
+        _PendingState._OGLShaderPipeline->_OGLVertexDescriptor = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLVertexDescriptor;
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
@@ -103,7 +103,7 @@ namespace SkySnow
 		int numElements;
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
-		SetupVertexFormatBinding(_PendingState, _PendingState._OGLShaderPipeline->_OGLVertexDeclaration, Max_Num_Vertex_Attribute, numElements);
+		SetupVertexFormatBinding(_PendingState, _PendingState._OGLShaderPipeline->_OGLVertexDescriptor, Max_Num_Vertex_Attribute, numElements);
 		if (numInstance > 1)
 		{
 
@@ -117,7 +117,7 @@ namespace SkySnow
 	//GRISet==================================================================================================================================
 
 	//GRIprivate==============================================================================================================================
-	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDeclaration* vertexDec, int bufferIndex, int vertexCount)
+	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount)
 	{
 //		if (OpenGL::SupportVertexFormatBinding())
 //		{

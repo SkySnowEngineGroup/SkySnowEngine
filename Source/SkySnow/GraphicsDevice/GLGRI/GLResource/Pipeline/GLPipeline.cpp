@@ -31,7 +31,7 @@ namespace SkySnow
         GLPipelineShader* shaderPipeline = dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader);
         glPipeline->_PrimitiveType = createInfo._PrimitiveType;
         glPipeline->_OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader);
-        glPipeline->_OGLShaderPipeline->_OGLVertexDeclaration = dynamic_cast<GRIGLVertexDeclaration*>(createInfo._ShaderPipelineInfo._VertexDeclaration);
+        glPipeline->_OGLShaderPipeline->_OGLVertexDescriptor = dynamic_cast<GRIGLVertexDescriptor*>(createInfo._ShaderPipelineInfo._VertexDescriptor);
 	}
 
     void GRIGLDrive::GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle)

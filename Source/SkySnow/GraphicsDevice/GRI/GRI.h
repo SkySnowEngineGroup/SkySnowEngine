@@ -42,11 +42,11 @@ namespace SkySnow
     //Create Fs
     GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
     //Create PipelineShader
-    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDeclaration* vertexDec = nullptr);
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDescriptor* vertexDec = nullptr);
     //Create Buffer BufferType:IndexBuffer\VertexBuffer\SSBO
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
     //Create Vertex Declaration
-    GRIVertexDeclarationRef CreateVertexDeclaration(const VertexDeclarationElementList& vdel);
+    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel);
     //Create Pipeline
     GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo);
 }

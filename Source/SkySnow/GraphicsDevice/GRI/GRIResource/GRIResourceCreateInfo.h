@@ -23,16 +23,25 @@
 #pragma once
 #include "GRICommons.h"
 #include "GRIResource.h"
+#include "Hash.h"
 #include <vector>
+#include <unordered_map>
 namespace SkySnow
 {
     class GRIVertexElement;
-    typedef std::vector<GRIVertexElement> VertexDeclarationElementList;
+    struct UniformBufferSlot;
+    typedef std::vector<GRIVertexElement> VertexDescriptorElementList;
+    typedef std::unordered_map<size_t, UniformBufferSlot> UniformBufferList;
     class GRIVertexElement
     {
     public:
         GRIVertexElement()
             : _GRIBuffer(nullptr)
+            , _BufferIndex(-1)
+            , _Offset(0)
+            , _Strid(0)
+            , _AtttitubeIndex(0)
+            , _VET_Type(VertexElementType::VET_None)
         {
         }
         GRIVertexElement(
@@ -69,25 +78,27 @@ namespace SkySnow
         GRIVertexBuffer*    _GRIBuffer;         //顶点数据对象
         VertexElementType   _VET_Type;          //数据类型
     };
+    //Program Create Info
     class GRICreateShaderPipelineInfo
     {
     public:
         GRICreateShaderPipelineInfo()
             : _PipelineShader(nullptr)
-            , _VertexDeclaration(nullptr)
+            , _VertexDescriptor(nullptr)
         {
         }
         GRICreateShaderPipelineInfo(
             GRIPipelineShader*       inPipelineShader,
-            GRIVertexDeclaration*    inVertexDeclaration
+            GRIVertexDescriptor*     inVertexDescriptor
         )
             : _PipelineShader(inPipelineShader)
-            , _VertexDeclaration(inVertexDeclaration)
+            , _VertexDescriptor(inVertexDescriptor)
         {
         }
         GRIPipelineShader*       _PipelineShader;
-        GRIVertexDeclaration*    _VertexDeclaration;
+        GRIVertexDescriptor*     _VertexDescriptor;
     };
+    //Graphics Pipeline Create Info
 	class GRICreateGraphicsPipelineInfo
 	{
 	public:
@@ -97,6 +108,7 @@ namespace SkySnow
 			, _DepthStencilState(nullptr)
 			, _SamplerState(nullptr)
 			, _AssemblyState(nullptr)
+            , _UniformBufferDescriptor(nullptr)
 			, _PrimitiveType(PrimitiveType::PT_Trangles)
 		{
 		}
@@ -107,6 +119,7 @@ namespace SkySnow
 			GRISamplerState*		    inSamplerState,
 			GRIAssemblyState*		    inAssemblyState,
 			PrimitiveType			    inPrimitiveType,
+            GRIUniformBufferDescriptor* inUniformBufferDescriptor,
             GRICreateShaderPipelineInfo inShaderPipeline
 		)
 			: _ShaderPipelineInfo(inShaderPipeline)
@@ -115,6 +128,7 @@ namespace SkySnow
 			, _DepthStencilState(inDepthStencilState)
 			, _SamplerState(inSamplerState)
 			, _AssemblyState(inAssemblyState)
+            , _UniformBufferDescriptor(inUniformBufferDescriptor)
 			, _PrimitiveType(inPrimitiveType)
 		{
 		}
@@ -127,7 +141,8 @@ namespace SkySnow
 				_SamplerState != other._SamplerState ||
 				_AssemblyState != other._AssemblyState ||
                 _ShaderPipelineInfo._PipelineShader != other._ShaderPipelineInfo._PipelineShader ||
-                _ShaderPipelineInfo._VertexDeclaration != other._ShaderPipelineInfo._VertexDeclaration)
+                _ShaderPipelineInfo._VertexDescriptor != other._ShaderPipelineInfo._VertexDescriptor ||
+                _UniformBufferDescriptor != other._UniformBufferDescriptor)
 			{
 				return false;
 			}
@@ -141,9 +156,11 @@ namespace SkySnow
 		GRISamplerState*		_SamplerState;
 		GRIAssemblyState*		_AssemblyState;
         
+        GRIUniformBufferDescriptor* _UniformBufferDescriptor;
         GRICreateShaderPipelineInfo _ShaderPipelineInfo;
 
 	};
+    //Create Compute Pipeline Info
     class GRICreateComputePipelineInfo
     {
 	public:
@@ -154,5 +171,35 @@ namespace SkySnow
 		{
 			return true;
 		}
+    };
+    
+    struct UniformBufferSlot
+    {
+        //A single draw is a list of uniform buffer owned by the current draw
+        UniformBufferUsageType  _UBType;
+        size_t                  _UBHashKey;
+    };
+    //Create Uniform Buffer Descriptor Info
+    //Depth RenderLoop Descriptor,or Light RenderLoop Descriptor ext
+    class GRICreateUniformBufferDescriptorInfo
+    {
+    public:
+        GRICreateUniformBufferDescriptorInfo()
+        {
+        }
+        void AddUniformBuffer(uint8_t bufferIndex,const char* inName, UniformBufferUsageType inUBType)
+        {
+            UniformBufferSlot ubs;
+            ubs._UBType     = inUBType;
+            ubs._UBHashKey  = String2Hash(inName);
+            _UniformBuffers[bufferIndex] = ubs;
+        }
+
+        const UniformBufferList& GetUniformBuffers()
+        {
+            return _UniformBuffers;
+        }
+    private:
+        UniformBufferList _UniformBuffers;
     };
 }

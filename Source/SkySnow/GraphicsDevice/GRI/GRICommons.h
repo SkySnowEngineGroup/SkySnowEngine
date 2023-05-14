@@ -25,6 +25,7 @@
 namespace SkySnow
 {
 #define Max_Num_Vertex_Attribute 16
+#define Max_ShaderPipeline_UniformBuffer 6
 	enum GRIFeature
 	{
 		ENone,
@@ -49,7 +50,8 @@ namespace SkySnow
         GRT_ComputePipeline,
 		GRT_Buffer,
         GRT_UniformBuffer,
-        GRT_VertexDeclaration,
+        GRT_UniformBufferDescriptor,
+        GRT_VertexDescriptor,
 		GRT_AssemblyState,
         GRT_RasterizerState,
         GRT_DepthStencilState,

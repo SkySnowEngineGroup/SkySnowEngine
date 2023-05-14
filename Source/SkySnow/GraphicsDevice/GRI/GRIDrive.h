@@ -66,15 +66,25 @@ namespace SkySnow
 		//Create Buffer:index vertex SSBO
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
         //Create Vertex Declaration for VertexBuffer
-        virtual void GRICreateVertexDeclaration(const VertexDeclarationElementList& vdel,GRIVertexDeclarationRef& handle) = 0;
+        virtual void GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle) = 0;
+        ////Create Uniform Buffer
+        //virtual void GRICreateUniformBuffer(const void* contents,UniformBufferUsageType usageType,GRIUniformBufferRef& handle) = 0;
+        ////Create Uniform Buffer Declaration
+        //virtual void GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info,GRIUniformBufferDescriptorRef& handle) = 0;
 		//GRICreate=======================================================================================================================
 
 		//Lower Render Deive Interface,so vulkan&metal not override this interface
 		//GRISet==========================================================================================================================
-		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) {};
-		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {};
-		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) {};
-		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) {};
+		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
+		virtual void GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor) {}
+		//Update Uniform Buffer Data or Update Uniform Data
+		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,int bufferIndex, int32_t bytesSize,const void* contents) {}
+		//Set Curr ShaderPipeline Uniform Buffer Index
+		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) {}
+		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) {}
+		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {}
+		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) {}
+		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) {}
 		//GRISet==========================================================================================================================
 	};
 };

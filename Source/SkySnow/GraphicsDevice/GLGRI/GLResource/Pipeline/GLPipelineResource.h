@@ -25,49 +25,9 @@
 #include "GRIResource.h"
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
-#include "GLBuffer.h"
-#include "GLShader.h"
 #include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
-	class GLPipelineShader : public GRIPipelineShader
-	{
-	public:
-		GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
-			: GRIPipelineShader()
-			, _ProgramId(0)
-			, _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
-			, _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
-		{
-		}
-
-		inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
-		inline GLFragmentShader* GetFragmentShader() { return _OGLFragmentShader; }
-
-		const GLShaderBase* GetShader(ShaderFrequency sf)
-		{
-			switch (sf)
-			{
-			case SkySnow::SF_Vertex:
-				return GetVertexShader();
-				break;
-			case SkySnow::SF_Fragement:
-				return GetFragmentShader();
-				break;
-			default:
-				break;
-			}
-			return nullptr;
-		}
-	public:
-		GLuint _ProgramId;
-		//Cache Array or LRUCache
-        GRIGLVertexDeclaration* _OGLVertexDeclaration;
-		GLVertexShader*         _OGLVertexShader;
-		GLFragmentShader*       _OGLFragmentShader;
-		
-	};
-    
 	class GLGraphicPipeline : public GRIGraphicsPipeline
 	{
 	public:

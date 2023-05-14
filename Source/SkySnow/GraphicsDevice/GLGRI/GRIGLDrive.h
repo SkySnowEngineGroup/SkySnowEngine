@@ -68,7 +68,7 @@ namespace SkySnow
         virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) final override;
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
         //Create Vertex Declaration for VertexBuffer
-		virtual void GRICreateVertexDeclaration(const VertexDeclarationElementList& vdel, GRIVertexDeclarationRef& handle) final override;
+		virtual void GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
 		//GRISet====================================================================================================================================
@@ -83,7 +83,7 @@ namespace SkySnow
 
 	private:
         //vertex Element setup
-		void SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDeclaration* vertexDec, int bufferIndex, int vertexCount);
+		void SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount);
 		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
 	private:
 		//this drawcall setup GraphicsPipeline state

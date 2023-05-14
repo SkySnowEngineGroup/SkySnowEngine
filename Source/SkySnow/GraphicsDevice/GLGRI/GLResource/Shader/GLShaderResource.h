@@ -25,9 +25,12 @@
 #include "GRICommons.h"
 #include "RefCounted.h"
 #include "GRIResource.h"
+#include "GLBufferResource.h"
 namespace SkySnow
 {
-	//Shader Resource
+    typedef std::unordered_map<size_t,UniformBufferBlock> UniformBuffers;
+    typedef std::unordered_map<size_t,UniformSlot>        UniformSlots;
+	//Shader Resource Base Class Internal
 	class GLShaderBase
 	{
 	public:
@@ -54,7 +57,7 @@ namespace SkySnow
 		std::string		mShaderName;
 #endif
 	};
-
+    //顶点着色器
 	class GLVertexShader : public GLShaderBase , public GRIVertexShader
 	{
 	public:
@@ -70,7 +73,7 @@ namespace SkySnow
 		}
 	private:
 	};
-
+    //片元着色器
 	class GLFragmentShader : public GLShaderBase , public GRIFragmentShader
 	{
 	public:
@@ -85,4 +88,53 @@ namespace SkySnow
 			SN_LOG("GLFragmentShader DesConstruct.");
 		}
 	};
+
+    //GL Program
+    class GLPipelineShader : public GRIPipelineShader
+    {
+    public:
+        GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
+            : GRIPipelineShader()
+            , _ProgramId(0)
+            , _OGLVertexDescriptor(nullptr)
+            , _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
+            , _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
+        {
+        }
+        
+        ~GLPipelineShader()
+        {
+            _UniformBuffers.clear();
+            _UniformSlots.clear();
+            SN_LOG("GLPipelineShader DesConstruct");
+        }
+        inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
+        inline GLFragmentShader* GetFragmentShader() { return _OGLFragmentShader; }
+
+        const GLShaderBase* GetShader(ShaderFrequency sf)
+        {
+            switch (sf)
+            {
+            case SkySnow::SF_Vertex:
+                return GetVertexShader();
+                break;
+            case SkySnow::SF_Fragement:
+                return GetFragmentShader();
+                break;
+            default:
+                break;
+            }
+            return nullptr;
+        }
+    public:
+        GLuint                  _ProgramId;
+        //Cache Array or LRUCache
+        GRIGLVertexDescriptor*  _OGLVertexDescriptor;
+        GLVertexShader*         _OGLVertexShader;
+        GLFragmentShader*       _OGLFragmentShader;
+        //UBO会在此列表存储
+        UniformBuffers          _UniformBuffers;
+        //Uniform变量在此列表存储
+        UniformSlots            _UniformSlots;
+    };
 }

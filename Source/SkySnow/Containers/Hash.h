@@ -60,4 +60,11 @@ namespace SkySnow
             return murmur3((const uint32_t*)&key, sizeof(key) / 4, 0);
         }
     };
+
+    static size_t String2Hash(const std::string& str)
+    {
+        std::hash<std::string> hash_fn;
+        size_t hash = hash_fn(str);
+        return hash;
+    }
 }
