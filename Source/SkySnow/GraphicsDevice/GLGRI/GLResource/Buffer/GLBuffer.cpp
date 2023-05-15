@@ -45,7 +45,27 @@ namespace SkySnow
         GRIGLVertexDescriptor* vertexDecl = dynamic_cast<GRIGLVertexDescriptor*>(handle.GetReference());
         vertexDecl->SetUp(vdel);
     }
+	//Create Uniform Buffer
+	void GRIGLDrive::GRICreateUniformBuffer(const UniformBufferSlot& contents, GRIUniformBufferRef& handle)
+	{
+		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(handle.GetReference());
+		uniformBuffer->SetUp(const_cast<UniformBufferSlot*>(&contents));
+	}
+	//Update Uniform Buffer
+	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformBufferSlot& contents)
+	{
 
+	}
+	//Create Uniform Buffer Declaration
+	void GRIGLDrive::GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info, GRIUniformBufferDescriptorRef& handle)
+	{
+
+	}
+	//Set UniformBuffer Descriptor
+	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor)
+	{
+
+	}
 	namespace OGLBuffer
 	{
 		

@@ -34,6 +34,7 @@ namespace SkySnow
         GLGraphicPipeline()
 			: GRIGraphicsPipeline()
 			, _PrimitiveType(PrimitiveType::PT_Num)
+			, _OGLShaderPipeline(nullptr)
 		{
 		}
 

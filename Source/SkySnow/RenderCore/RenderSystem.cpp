@@ -98,7 +98,8 @@ namespace SkySnow
             SN_LOG("hash:%zu  hash2:%ld",hash,hash2);*/
             std::string ubn = "TestUniformBlock";
             SN_LOG("TestUniformBlock HashKey:%ld", String2Hash(ubn));
-            UniformBufferSlot ubSlot;
+            //UniformBufferSlot ubSlot;
+            
         }
         
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();

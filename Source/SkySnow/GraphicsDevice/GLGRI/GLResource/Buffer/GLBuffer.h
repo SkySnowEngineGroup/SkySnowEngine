@@ -22,8 +22,56 @@
 //
 #pragma once
 #include "GLProfiles.h"
+#include <unordered_map>
 namespace SkySnow
 {
+	struct GLVertexElement;
+	struct GLVertexBufferObject;
+	typedef std::unordered_map<int, GLVertexElement>         GLVertexElements;
+	typedef std::unordered_map<int, GLVertexBufferObject>    GLVertexBuffers;
+    //Vertex Element Info
+    struct GLVertexElement
+    {
+        //vertex element type:GL_FLOAT or GL_SHORT
+        GLenum  _Type;
+        GLuint  _Offset;
+        GLuint  _Stride;
+        uint8_t _AttritubeIndex;
+        uint8_t _bNormalized;
+        uint8_t _bConvertToFloat;
+    };
+    struct GLVertexBufferObject
+    {
+        GLenum              _BufferType;
+        GLuint              _GpuHandle;
+        GLuint              _Stride;
+        GLuint              _Offset;
+        GLVertexElements    _GLVertexElements;
+    };
+    //Uniform Slot Parameter
+    struct GLUniformSlot
+    {
+        GLenum _Type;
+        GLuint _Location;
+        GLint  _Size;
+        GLint  _Offset;
+        //char*  _Name;
+    };
+    //Uniform Buffer Block
+    struct GLUniformBufferSlot
+    {
+        GLuint          _BindingIndex = -1;
+        GLuint          _Location = -1;
+        GLint           _Offset;
+        std::unordered_map<size_t, GLUniformSlot>    _UniformSlots;
+        //char*  _Name;
+    };
+    struct GLUniformBufferSlotDesc
+    {
+        //A single draw is a list of uniform buffer owned by the current draw
+        UniformBufferUsageType  _UBType;
+        size_t                  _UBHashKey;
+    };
 	namespace OGLBuffer
 	{
 

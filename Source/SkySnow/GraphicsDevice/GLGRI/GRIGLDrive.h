@@ -69,9 +69,19 @@ namespace SkySnow
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
         //Create Vertex Declaration for VertexBuffer
 		virtual void GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle) final override;
+		//Create Uniform Buffer
+		virtual void GRICreateUniformBuffer(const UniformBufferSlot& contents, GRIUniformBufferRef& handle) final override;
+		//Create Uniform Buffer Declaration
+		virtual void GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info, GRIUniformBufferDescriptorRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
 		//GRISet====================================================================================================================================
+		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
+		virtual void GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor) final override;
+		//Update Uniform Buffer Data or Update Uniform Data
+		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformBufferSlot& contents) final override;
+		//Set Curr ShaderPipeline Uniform Buffer Index
+		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex) final override;
 		//Set Buffer
 		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) final override;
 		//set ShaderPipelineState

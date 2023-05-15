@@ -28,11 +28,6 @@
 #include <unordered_map>
 namespace SkySnow
 {
-    struct GLVertexElement;
-    struct GLVertexBufferObject;
-    typedef std::unordered_map<int,GLVertexElement>         GLVertexElements;
-    typedef std::unordered_map<int,GLVertexBufferObject>    GLVertexBuffers;
-
 	class GLBuffer : public GRIBuffer
 	{
 		friend class GRIGLDrive;
@@ -75,24 +70,6 @@ namespace SkySnow
 	};
     //Vertex Declaration layout
     //vdlStart==============================================================================================
-    struct GLVertexElement
-    {
-        //vertex element type:GL_FLOAT or GL_SHORT
-        GLenum  _Type;
-        GLuint  _Offset;
-        GLuint  _Stride;
-        uint8_t _AttritubeIndex;
-        uint8_t _bNormalized;
-        uint8_t _bConvertToFloat;
-    };
-    struct GLVertexBufferObject
-    {
-        GLenum              _BufferType;
-        GLuint              _GpuHandle;
-        GLuint              _Stride;
-        GLuint              _Offset;
-        GLVertexElements    _GLVertexElements;
-    };
     struct GRIGLVertexDescriptor : public GRIVertexDescriptor
     {
     public:
@@ -158,25 +135,6 @@ namespace SkySnow
         GLVertexBuffers    _GLVertexBuffers;
     };
     //vdlEnd================================================================================================
-    //Uniform Slot Parameter
-    struct GLUniformSlot
-    {
-        GLenum _Type;
-        GLuint _Location;
-        GLint  _Size;
-        GLint  _Offset;
-        //char*  _Name;
-    };
-
-    //Uniform Buffer Block
-    struct GLUniformBufferSlot
-    {
-        GLuint          _BindingIndex = -1;
-        GLuint          _Location = -1;
-        GLint           _Offset;
-        std::unordered_map<size_t, GLUniformSlot>    _UniformSlots;
-        //char*  _Name;
-    };
     //UniformBuffer
     class GRIGLUniformBuffer : public GRIUniformBuffer
     {
@@ -184,22 +142,60 @@ namespace SkySnow
         GRIGLUniformBuffer()
             : GRIUniformBuffer()
             , _GpuHandle(-1)
+            , _UniformBufferUsagType(UniformBufferUsageType::UBT_None)
+            , _Size(0)
         {
         }
         
         ~GRIGLUniformBuffer()
         {
             SN_LOG("GRIGLUniformBuffer Destruct");
+            for (auto iter = _UniformBufferData.begin();iter != _UniformBufferData.end();)
+            {
+                void* data = iter->second;
+                delete[] data;
+                data = nullptr;
+                iter = _UniformBufferData.erase(iter);
+            }
+        }
+
+        void SetUp(UniformBufferSlot* ubSlot)
+        {
+            _UniformBufferUsagType = ubSlot->GetUsageType();
+            _HashKey = ubSlot->GetUniformBufferKey();
+            _Size = ubSlot->GetSize();
+            std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
+            if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
+            {
+                _HashKey = 0;
+                for (auto iter = inData.begin();iter != inData.end();iter ++)
+                {
+                    char* inData = static_cast<char*>(iter->second);
+                    int lenght = strlen(inData);
+                    char* newData = new char[lenght];
+                    std::memcpy(newData, inData, lenght);
+                    _UniformBufferData.push_back(std::make_pair(iter->first, newData));
+                }
+                return;
+            }
+            if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
+            {
+                bool stream = (_UniformBufferUsagType == UniformBufferUsageType::UBT_SingleDraw || _UniformBufferUsagType == UniformBufferUsageType::UBT_SingleFrame);
+                glGenBuffers(1,&_GpuHandle);
+                glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
+                //TODO Map Buffer Object
+                glBufferData(GL_UNIFORM_BUFFER, _Size, inData.data(), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
+            }
         }
     public:
-        GLuint          _GpuHandle;
+        int                                 _Size;
+        GLuint                              _GpuHandle;
+        size_t                              _HashKey;
+        UniformBufferUsageType              _UniformBufferUsagType;
+        std::vector<std::pair<size_t, void*>>   _UniformBufferData;
     };
-    struct GLUniformBufferSlotDesc
-    {
-        //A single draw is a list of uniform buffer owned by the current draw
-        UniformBufferUsageType  _UBType;
-        size_t                  _UBHashKey;
-    };
+
     //UniformBuffer Descriptor
     class GRIGLUniformBufferDescriptor : public GRIUniformBufferDescriptor
     {

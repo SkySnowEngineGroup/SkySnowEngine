@@ -180,6 +180,7 @@ namespace SkySnow
         UniformBufferSlot(const char* inName,UniformBufferUsageType inUBType)
             : _UBHashKey(String2Hash(inName))
             , _UsageType(inUBType)
+            , _Size(0)
         {
         }
         ~UniformBufferSlot()
@@ -195,14 +196,32 @@ namespace SkySnow
         void AddUniformSlot(const char* inName,void* inData,int8_t size)
         {
             //TODO Memory Manager
+            _Size = _Size + size;
             char* dest = new char[size];
             std::memcpy(dest, inData, size);
-            _UniformSlots[String2Hash(inName)] = dest;
+            _UniformSlots.push_back(std::make_pair(String2Hash(inName), dest));
+        }
+        std::vector<std::pair<size_t, void*>>& GetUniformBuffers()
+        {
+            return _UniformSlots;
+        }
+        UniformBufferUsageType GetUsageType() const
+        {
+            return _UsageType;
+        }
+        size_t GetUniformBufferKey() const
+        {
+            return _UBHashKey;
+        }
+        int GetSize() const
+        {
+            return _Size;
         }
     private:
+        int                     _Size;
         UniformBufferUsageType  _UsageType;
         size_t                  _UBHashKey;
-        std::unordered_map<size_t, void*> _UniformSlots;
+        std::vector<std::pair<size_t, void*>> _UniformSlots;
     };
     struct UniformBufferSlotDesc
     {
