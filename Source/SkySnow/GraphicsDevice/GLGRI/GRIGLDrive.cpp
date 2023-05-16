@@ -89,12 +89,21 @@ namespace SkySnow
 	{
         _PendingState._OGLShaderPipeline = static_cast<GLPipelineShader*>(pipelineShaderState);
 	}
+	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
+	{
 
+	}
+	//Set UniformBuffer Descriptor
+	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
+	{
+		_PendingState._OGLShaderPipeline->_OGLUBDescriptor = static_cast<GRIGLUniformBufferDescriptor*>(descriptor);
+	}
 	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
 		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipeline*>(pipelineState)->_PrimitiveType;
         _PendingState._OGLShaderPipeline = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline;
         _PendingState._OGLShaderPipeline->_OGLVertexDescriptor = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLVertexDescriptor;
+		_PendingState._OGLShaderPipeline->_OGLUBDescriptor = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLUBDescriptor;
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)

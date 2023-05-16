@@ -96,6 +96,7 @@ namespace SkySnow
             : GRIPipelineShader()
             , _ProgramId(0)
             , _OGLVertexDescriptor(nullptr)
+			, _OGLUBDescriptor(nullptr)
             , _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
             , _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
         {
@@ -103,7 +104,7 @@ namespace SkySnow
         
         ~GLPipelineShader()
         {
-            _UniformBuffers.clear();
+			_InternalUBs.clear();
             SN_LOG("GLPipelineShader DesConstruct");
         }
         inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
@@ -125,13 +126,16 @@ namespace SkySnow
             return nullptr;
         }
     public:
-        GLuint                  _ProgramId;
-        //Cache Array or LRUCache
-        GRIGLVertexDescriptor*  _OGLVertexDescriptor;
-        GLVertexShader*         _OGLVertexShader;
-        GLFragmentShader*       _OGLFragmentShader;
+        GLuint							_ProgramId;
+        //Vertex Buffer Object Element Descriptor
+        GRIGLVertexDescriptor*			_OGLVertexDescriptor;
+		//VertexShader
+        GLVertexShader*					_OGLVertexShader;
+		//FragmentShader
+        GLFragmentShader*				_OGLFragmentShader;
+		GRIGLUniformBufferDescriptor*	_OGLUBDescriptor;
         //UBO会在此列表存储
         //0 is SingleDraw
-        UniformBuffers          _UniformBuffers;
+        UniformBuffers					_InternalUBs;
     };
 }

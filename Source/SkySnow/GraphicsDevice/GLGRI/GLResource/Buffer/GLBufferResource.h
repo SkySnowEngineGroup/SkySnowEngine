@@ -144,19 +144,15 @@ namespace SkySnow
             , _GpuHandle(-1)
             , _UniformBufferUsagType(UniformBufferUsageType::UBT_None)
             , _Size(0)
+            , _HashKey(0)
+            , _Dirty(false)
         {
         }
         
         ~GRIGLUniformBuffer()
         {
             SN_LOG("GRIGLUniformBuffer Destruct");
-            for (auto iter = _UniformBufferData.begin();iter != _UniformBufferData.end();)
-            {
-                void* data = iter->second;
-                delete[] data;
-                data = nullptr;
-                iter = _UniformBufferData.erase(iter);
-            }
+            ClearUniformData();
         }
 
         void SetUp(UniformBufferSlot* ubSlot)
@@ -164,20 +160,9 @@ namespace SkySnow
             _UniformBufferUsagType = ubSlot->GetUsageType();
             _HashKey = ubSlot->GetUniformBufferKey();
             _Size = ubSlot->GetSize();
+            
+            RecordUniformData(ubSlot);
             std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
-            if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
-            {
-                _HashKey = 0;
-                for (auto iter = inData.begin();iter != inData.end();iter ++)
-                {
-                    char* inData = static_cast<char*>(iter->second);
-                    int lenght = strlen(inData);
-                    char* newData = new char[lenght];
-                    std::memcpy(newData, inData, lenght);
-                    _UniformBufferData.push_back(std::make_pair(iter->first, newData));
-                }
-                return;
-            }
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
                 bool stream = (_UniformBufferUsagType == UniformBufferUsageType::UBT_SingleDraw || _UniformBufferUsagType == UniformBufferUsageType::UBT_SingleFrame);
@@ -187,8 +172,51 @@ namespace SkySnow
                 glBufferData(GL_UNIFORM_BUFFER, _Size, inData.data(), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
             }
+            _Dirty = true;
+        }
+
+        void UpdateUniformBuffer(UniformBufferSlot* ubSlot)
+        {
+            RecordUniformData(ubSlot);
+            if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
+            {
+                std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
+                glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, _Size, inData.data());
+            }
+            _Dirty = true;
+        }
+    private:
+        void RecordUniformData(UniformBufferSlot* ubSlot)
+        {
+            ClearUniformData();
+            std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
+            if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
+            {
+                _HashKey = 0;
+                for (auto iter = inData.begin();iter != inData.end();iter++)
+                {
+                    char* inData = static_cast<char*>(iter->second);
+                    int lenght = strlen(inData);
+                    char* newData = new char[lenght];
+                    std::memcpy(newData, inData, lenght);
+                    _UniformBufferData.push_back(std::make_pair(iter->first, newData));
+                }
+            }
+        }
+        void ClearUniformData()
+        {
+            for (auto iter = _UniformBufferData.begin();iter != _UniformBufferData.end();)
+            {
+                void* data = iter->second;
+                delete[] data;
+                data = nullptr;
+                iter = _UniformBufferData.erase(iter);
+            }
+            _UniformBufferData.clear();
         }
     public:
+        int8_t                              _Dirty;
         int                                 _Size;
         GLuint                              _GpuHandle;
         size_t                              _HashKey;

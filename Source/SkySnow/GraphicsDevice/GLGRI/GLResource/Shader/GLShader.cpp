@@ -47,10 +47,7 @@ namespace SkySnow
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(shaderPipe->GetFragmentShader());
 		OGLShader::CreateProgram(shaderPipe,glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
 	}
-    void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
-    {
 
-    }
 	//Shader 创建的模板类方法(公共方法)
 	//===============================================================================================
 	//在GLShader中声明全局函数，主要原因是为了代码清晰度
@@ -145,7 +142,7 @@ namespace SkySnow
                 }
             }
             //0 is SingleDraw
-            pipelineShader->_UniformBuffers[0] = block;
+            pipelineShader->_InternalUBs[0] = block;
             delete[] uniformName;
             uniformName = nullptr;
         }
@@ -213,7 +210,7 @@ namespace SkySnow
                     //}
                     //delete[] u_uniformName;
                     //u_uniformName = nullptr;
-                    pipelineShader->_UniformBuffers[String2Hash(uniformBlockName)] = uBlock;
+                    pipelineShader->_InternalUBs[String2Hash(uniformBlockName)] = uBlock;
                     SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
                     //SN_LOG("uniformBlockName:%s Binding:%d Offset:%d Location:%d",uniformBlockName,uBlock._BindingIndex,uBlock._Offset,uBlock._Location);
                 }

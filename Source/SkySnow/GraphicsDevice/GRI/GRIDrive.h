@@ -76,7 +76,7 @@ namespace SkySnow
 		//Lower Render Deive Interface,so vulkan&metal not override this interface
 		//GRISet==========================================================================================================================
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
-		virtual void GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor) {}
+		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) {}
 		//Update Uniform Buffer Data or Update Uniform Data
 		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformBufferSlot& contents) {}
 		//Set Curr ShaderPipeline Uniform Buffer Index

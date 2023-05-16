@@ -77,7 +77,7 @@ namespace SkySnow
 
 		//GRISet====================================================================================================================================
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
-		virtual void GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor) final override;
+		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
 		//Update Uniform Buffer Data or Update Uniform Data
 		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformBufferSlot& contents) final override;
 		//Set Curr ShaderPipeline Uniform Buffer Index

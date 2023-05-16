@@ -54,17 +54,15 @@ namespace SkySnow
 	//Update Uniform Buffer
 	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformBufferSlot& contents)
 	{
-
+		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
+		uniformBuffer->UpdateUniformBuffer(const_cast<UniformBufferSlot*>(&contents));
 	}
 	//Create Uniform Buffer Declaration
 	void GRIGLDrive::GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info, GRIUniformBufferDescriptorRef& handle)
 	{
-
-	}
-	//Set UniformBuffer Descriptor
-	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIVertexDescriptor* descriptor)
-	{
-
+		GRIGLUniformBufferDescriptor* glHandle = dynamic_cast<GRIGLUniformBufferDescriptor*>(handle.GetReference());
+		UniformBufferList ulist = const_cast<GRICreateUniformBufferDescriptorInfo*>(&info)->GetUniformBuffers();
+		glHandle->SetUp(ulist);
 	}
 	namespace OGLBuffer
 	{
