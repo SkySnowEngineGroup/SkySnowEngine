@@ -95,6 +95,7 @@ namespace SkySnow
         //vertex Element setup
 		void SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount);
 		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
+		void CommitUniformBuffer();
 	private:
 		//this drawcall setup GraphicsPipeline state
 		GLGraphicPipeline		    _PendingState;

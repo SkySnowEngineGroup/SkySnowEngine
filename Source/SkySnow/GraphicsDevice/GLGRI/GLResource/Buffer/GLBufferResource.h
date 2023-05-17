@@ -142,10 +142,10 @@ namespace SkySnow
         GRIGLUniformBuffer()
             : GRIUniformBuffer()
             , _GpuHandle(-1)
+            , _BindingIndex(-1)
             , _UniformBufferUsagType(UniformBufferUsageType::UBT_None)
             , _Size(0)
             , _HashKey(0)
-            , _Dirty(false)
         {
         }
         
@@ -171,8 +171,9 @@ namespace SkySnow
                 //TODO Map Buffer Object
                 glBufferData(GL_UNIFORM_BUFFER, _Size, inData.data(), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
+                _BindingIndex = OGLBuffer::UBCounter::ICInstance().GetCount();
+                OGLBuffer::UBCounter::ICInstance().AddCount();
             }
-            _Dirty = true;
         }
 
         void UpdateUniformBuffer(UniformBufferSlot* ubSlot)
@@ -184,7 +185,6 @@ namespace SkySnow
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
                 glBufferSubData(GL_UNIFORM_BUFFER, 0, _Size, inData.data());
             }
-            _Dirty = true;
         }
     private:
         void RecordUniformData(UniformBufferSlot* ubSlot)
@@ -216,9 +216,9 @@ namespace SkySnow
             _UniformBufferData.clear();
         }
     public:
-        int8_t                              _Dirty;
         int                                 _Size;
         GLuint                              _GpuHandle;
+        GLuint                              _BindingIndex;
         size_t                              _HashKey;
         UniformBufferUsageType              _UniformBufferUsagType;
         std::vector<std::pair<size_t, void*>>   _UniformBufferData;

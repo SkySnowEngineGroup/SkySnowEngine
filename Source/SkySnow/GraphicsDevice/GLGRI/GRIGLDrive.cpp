@@ -91,7 +91,25 @@ namespace SkySnow
 	}
 	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
 	{
+		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(graphicsShader);
+		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
+		if (uniformBuffer->_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw && OpenGL::SupportUniformBuffer())
+		{
+			GLuint bindingPoint = shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._BindingIndex;
+			if (bindingPoint == -1)
+			{
+				bindingPoint = uniformBuffer->_BindingIndex;
+				GLuint blockIndex = shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._BlockIndex;
+				glUniformBlockBinding(shaderPipe->_ProgramId, blockIndex, bindingPoint);
 
+				shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._BindingIndex = bindingPoint;
+				shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._UBGpuHandle = uniformBuffer->_GpuHandle;
+			}
+		}
+		GLUniformBufferSlotDesc ubDescriptor;
+		ubDescriptor._UBType = uniformBuffer->_UniformBufferUsagType;
+		ubDescriptor._UBHashKey = uniformBuffer->_HashKey;
+		_PendingState._OGLShaderPipeline->_OGLUBDescriptor->_GLUniformBuffersDes[bufferIndex] = ubDescriptor;
 	}
 	//Set UniformBuffer Descriptor
 	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
@@ -113,6 +131,7 @@ namespace SkySnow
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
 		SetupVertexFormatBinding(_PendingState, _PendingState._OGLShaderPipeline->_OGLVertexDescriptor, Max_Num_Vertex_Attribute, numElements);
+		CommitUniformBuffer();
 		if (numInstance > 1)
 		{
 

@@ -54,17 +54,14 @@ namespace SkySnow
         GLenum _Type;
         GLuint _Location;
         GLint  _Size;
-        GLint  _Offset;
-        //char*  _Name;
     };
     //Uniform Buffer Block
     struct GLUniformBufferSlot
     {
         GLuint          _BindingIndex = -1;
-        GLuint          _Location = -1;
-        GLint           _Offset;
+        GLuint          _BlockIndex = -1;
+        GLuint          _UBGpuHandle = -1;
         std::unordered_map<size_t, GLUniformSlot>    _UniformSlots;
-        //char*  _Name;
     };
     struct GLUniformBufferSlotDesc
     {
@@ -74,6 +71,27 @@ namespace SkySnow
     };
 	namespace OGLBuffer
 	{
-
+        class UBCounter : public SkySnow::NonCopyable
+        {
+        private:
+            UBCounter() {}
+            ~UBCounter() {}
+        public:
+            static UBCounter& ICInstance()
+            {
+                static UBCounter instance;
+                return instance;
+            }
+            void AddCount()
+            {
+                _UBCount = _UBCount + 1;
+            }
+            int GetCount() const
+            {
+                return _UBCount;
+            }
+        private:
+            int _UBCount = 0;
+        };
 	}
 }
