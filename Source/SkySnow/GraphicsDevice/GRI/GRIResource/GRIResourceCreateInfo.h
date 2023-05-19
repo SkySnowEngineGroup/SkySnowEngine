@@ -228,6 +228,7 @@ namespace SkySnow
         //A single draw is a list of uniform buffer owned by the current draw
         UniformBufferUsageType  _UBType;
         size_t                  _UBHashKey;
+        GRIUniformBuffer*       _UniformBuffer;
     };
     //Create Uniform Buffer Descriptor Info
     //Depth RenderLoop Descriptor,or Light RenderLoop Descriptor ext
@@ -237,11 +238,12 @@ namespace SkySnow
         GRICreateUniformBufferDescriptorInfo()
         {
         }
-        void AddUniformBuffer(uint8_t bufferIndex,const char* inName, UniformBufferUsageType inUBType)
+        void AddUniformBuffer(uint8_t bufferIndex,const char* inUBName, UniformBufferUsageType inUBType,GRIUniformBuffer* inUB = nullptr)
         {
             UniformBufferSlotDesc ubs;
             ubs._UBType     = inUBType;
-            ubs._UBHashKey  = String2Hash(inName);
+            ubs._UBHashKey  = String2Hash(inUBName);
+            ubs._UniformBuffer = inUB;
             _UniformBuffers[bufferIndex] = ubs;
         }
 

@@ -45,6 +45,7 @@ namespace SkySnow
 			: GRIBuffer(usageType, size, stride) 
 			, _Data(data)
 			, _StreamDraw(streamDraw)
+            , _GpuHandle(-1)
 		{
 		}
 
@@ -183,6 +184,7 @@ namespace SkySnow
             {
                 std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
+                //TODO Map Buffer Object
                 glBufferSubData(GL_UNIFORM_BUFFER, 0, _Size, inData.data());
             }
         }
@@ -225,9 +227,10 @@ namespace SkySnow
     };
 
     //UniformBuffer Descriptor
+    typedef std::unordered_map<int, GLUniformBufferSlotDesc> GLUniformBufferDesList;
     class GRIGLUniformBufferDescriptor : public GRIUniformBufferDescriptor
     {
-        typedef std::unordered_map<int, GLUniformBufferSlotDesc> GLUniformBufferDesList;
+        
     public:
         GRIGLUniformBufferDescriptor()
             : GRIUniformBufferDescriptor()
@@ -248,7 +251,7 @@ namespace SkySnow
 
                 ubDescriptor._UBType = ubs._UBType;
                 ubDescriptor._UBHashKey = ubs._UBHashKey;
-
+                ubDescriptor._UinformBuffer = dynamic_cast<GRIGLUniformBuffer*>(ubs._UniformBuffer);
                 _GLUniformBuffersDes[iter->first] = ubDescriptor;
             }
         }

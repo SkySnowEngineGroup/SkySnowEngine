@@ -74,54 +74,141 @@ namespace SkySnow
 	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
 		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
-        GLVertexBufferObject& vboMeta = _PendingState._OGLShaderPipeline->_OGLVertexDescriptor->_GLVertexBuffers[bufferIndex];
-        vboMeta._GpuHandle = bufferGL->_GpuHandle;
-        vboMeta._Stride = bufferGL->GetStride();
-        vboMeta._BufferType = bufferGL->_BufferType;
-        vboMeta._Offset = offset;
-        if(vboMeta._GLVertexElements.size() == 1)
-        {
-            vboMeta._GLVertexElements[0]._Offset = offset;
-        }
+
+		if (_PendingState._OGLShaderPipeline == nullptr)
+		{
+			SN_ERR("Set GRIPipelineShader first, and then set GRISetBuffer.");
+			return;
+		}
+		if (_PendingState._OGLShaderPipeline->_OGLVertexDescriptor == nullptr)
+		{
+			SN_ERR("You need to set the GRIVertexDescriptor first, and then you need to set the GRISetBuffer.");
+			return;
+		}
+
+		GLVertexBuffers& vbos = _PendingState._OGLShaderPipeline->_OGLVertexDescriptor->_GLVertexBuffers;
+		if (vbos.find(bufferIndex) != vbos.end())
+		{
+			GLVertexBufferObject& vboMeta = vbos[bufferIndex];
+			vboMeta._GpuHandle = bufferGL->_GpuHandle;
+			vboMeta._Stride = bufferGL->GetStride();
+			vboMeta._BufferType = bufferGL->_BufferType;
+			vboMeta._Offset = offset;
+			if (vboMeta._GLVertexElements.size() == 1)
+			{
+				vboMeta._GLVertexElements[0]._Offset = offset;
+			}
+		}
+		else
+		{
+			GLVertexBufferObject vboMeta;
+			vboMeta._GpuHandle = bufferGL->_GpuHandle;
+			vboMeta._Stride = bufferGL->GetStride();
+			vboMeta._BufferType = bufferGL->_BufferType;
+			vboMeta._Offset = offset;
+			vbos[bufferIndex] = vboMeta;
+			if (vboMeta._GLVertexElements.size() == 1)
+			{
+				vboMeta._GLVertexElements[0]._Offset = offset;
+			}
+		}
 	}
 
 	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-        _PendingState._OGLShaderPipeline = static_cast<GLPipelineShader*>(pipelineShaderState);
+        _PendingState._OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(pipelineShaderState);
 	}
 	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
 	{
 		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(graphicsShader);
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
+		if (_PendingState._OGLShaderPipeline == nullptr)
+		{
+			_PendingState._OGLShaderPipeline = shaderPipe;
+		}
+		if (shaderPipe->_OGLUBDescriptor == nullptr)
+		{
+			SN_ERR("Need to set the GRIUniformBufferDescriptor first and then the call GRISetShaderParameter.");
+			return;
+		}
+		GLUniformBufferDesList& ubDesc = _PendingState._OGLShaderPipeline->_OGLUBDescriptor->_GLUniformBuffersDes;
+		if (ubDesc.find(bufferIndex) != ubDesc.end())
+		{
+			ubDesc[bufferIndex]._UBType = uniformBuffer->_UniformBufferUsagType;
+			ubDesc[bufferIndex]._UBHashKey = uniformBuffer->_HashKey;
+			ubDesc[bufferIndex]._UinformBuffer = uniformBuffer;
+		}
+		else {
+			GLUniformBufferSlotDesc ubDescriptor;
+			ubDescriptor._UBType = uniformBuffer->_UniformBufferUsagType;
+			ubDescriptor._UBHashKey	= uniformBuffer->_HashKey;
+			ubDescriptor._UinformBuffer = uniformBuffer;
+			ubDesc[bufferIndex]	= ubDescriptor;
+		}
+		//将UBO绑定到对应的绑定点上
 		if (uniformBuffer->_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw && OpenGL::SupportUniformBuffer())
 		{
-			GLuint bindingPoint = shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._BindingIndex;
-			if (bindingPoint == -1)
+			UniformBuffers& internalUBs = shaderPipe->_InternalUBs; 
+			if (internalUBs.find(uniformBuffer->_HashKey) == internalUBs.end())
 			{
-				bindingPoint = uniformBuffer->_BindingIndex;
-				GLuint blockIndex = shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._BlockIndex;
-				glUniformBlockBinding(shaderPipe->_ProgramId, blockIndex, bindingPoint);
-
-				shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._BindingIndex = bindingPoint;
-				shaderPipe->_InternalUBs[uniformBuffer->_HashKey]._UBGpuHandle = uniformBuffer->_GpuHandle;
+				//当前Program没有对应的UBO名字，不进行绑定
+				SN_WARN("CurrDraw Program Not Has UniformBlock.");
+				return;
+			}
+			GLuint binding = internalUBs[uniformBuffer->_HashKey]._BindingIndex;
+			if (binding == -1)
+			{
+				binding = uniformBuffer->_BindingIndex;
+				GLuint blockIndex = internalUBs[uniformBuffer->_HashKey]._BlockIndex;
+				glUniformBlockBinding(shaderPipe->_ProgramId, blockIndex, binding);
+				internalUBs[uniformBuffer->_HashKey]._BindingIndex = binding;
+				internalUBs[uniformBuffer->_HashKey]._UBGpuHandle = uniformBuffer->_GpuHandle;
 			}
 		}
-		GLUniformBufferSlotDesc ubDescriptor;
-		ubDescriptor._UBType = uniformBuffer->_UniformBufferUsagType;
-		ubDescriptor._UBHashKey = uniformBuffer->_HashKey;
-		_PendingState._OGLShaderPipeline->_OGLUBDescriptor->_GLUniformBuffersDes[bufferIndex] = ubDescriptor;
 	}
 	//Set UniformBuffer Descriptor
 	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
 	{
-		_PendingState._OGLShaderPipeline->_OGLUBDescriptor = static_cast<GRIGLUniformBufferDescriptor*>(descriptor);
+		if (_PendingState._OGLShaderPipeline == nullptr)
+		{
+			SN_ERR("You need to set up GRIPipelineShader first.");
+			return;
+		}
+		_PendingState._OGLShaderPipeline->_OGLUBDescriptor = dynamic_cast<GRIGLUniformBufferDescriptor*>(descriptor);
 	}
 	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
-		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipeline*>(pipelineState)->_PrimitiveType;
-        _PendingState._OGLShaderPipeline = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline;
-        _PendingState._OGLShaderPipeline->_OGLVertexDescriptor = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLVertexDescriptor;
-		_PendingState._OGLShaderPipeline->_OGLUBDescriptor = static_cast<GLGraphicPipeline*>(pipelineState)->_OGLShaderPipeline->_OGLUBDescriptor;
+		GLGraphicPipeline* gPipeline = dynamic_cast<GLGraphicPipeline*>(pipelineState);
+		if (gPipeline->_PrimitiveType != PrimitiveType::PT_Num)
+		{
+			_PendingState._PrimitiveType = gPipeline->_PrimitiveType;
+		}
+		else
+		{
+			SN_ERR("Need Set PrimitiveType.");
+		}
+		if (gPipeline->_OGLShaderPipeline == nullptr)
+		{
+			SN_ERR("GRIPipelineShader Not Attach GRIGraphicsPipeline,Need Attach Or Set GRIPipelineShader.");
+			return;
+		}
+		_PendingState._OGLShaderPipeline = gPipeline->_OGLShaderPipeline;
+		if (_PendingState._OGLShaderPipeline->_OGLVertexDescriptor == nullptr)
+		{
+			_PendingState._OGLShaderPipeline->_OGLVertexDescriptor = gPipeline->_OGLShaderPipeline->_OGLVertexDescriptor;
+		}
+		else
+		{
+			SN_ERR("GRIVertexDescriptor Not Attach GRIPipelineShader,Need Attach Or Set GRIVertexDescriptor.");
+		}
+		if (_PendingState._OGLShaderPipeline->_OGLUBDescriptor)
+		{
+			_PendingState._OGLShaderPipeline->_OGLUBDescriptor = gPipeline->_OGLShaderPipeline->_OGLUBDescriptor;
+		}
+		else
+		{
+			SN_ERR("GRIUniformBufferDescriptor Not Attach GRIPipelineShader,Need Attach Or Call GRISetUniformBufferDescriptor.");
+		}
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
@@ -157,9 +244,9 @@ namespace SkySnow
             GLVertexBufferObject vbo = entry.second;
             glBindBuffer(vbo._BufferType,vbo._GpuHandle);
             GLVertexElements ves = vbo._GLVertexElements;
-            for(auto ve : ves)
+            for(auto iter = ves.begin(); iter != ves.end(); iter ++)
             {
-                GLVertexElement vMeta = ve.second;
+                GLVertexElement vMeta = iter->second;
                 glEnableVertexAttribArray(vMeta._AttritubeIndex);
                 glVertexAttribPointer(vMeta._AttritubeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
             }

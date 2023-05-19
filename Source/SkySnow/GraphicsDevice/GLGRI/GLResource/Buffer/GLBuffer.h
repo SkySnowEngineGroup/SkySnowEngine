@@ -25,6 +25,7 @@
 #include <unordered_map>
 namespace SkySnow
 {
+    class GRIGLUniformBuffer;
 	struct GLVertexElement;
 	struct GLVertexBufferObject;
 	typedef std::unordered_map<int, GLVertexElement>         GLVertexElements;
@@ -68,6 +69,7 @@ namespace SkySnow
         //A single draw is a list of uniform buffer owned by the current draw
         UniformBufferUsageType  _UBType;
         size_t                  _UBHashKey;
+        GRIGLUniformBuffer*     _UinformBuffer;
     };
 	namespace OGLBuffer
 	{

@@ -88,9 +88,10 @@ namespace SkySnow
 	};
 
     //GL Program
+	typedef std::unordered_map<size_t, GLUniformBufferSlot> UniformBuffers;
     class GLPipelineShader : public GRIPipelineShader
     {
-        typedef std::unordered_map<size_t, GLUniformBufferSlot> UniformBuffers;
+        
     public:
         GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
             : GRIPipelineShader()
