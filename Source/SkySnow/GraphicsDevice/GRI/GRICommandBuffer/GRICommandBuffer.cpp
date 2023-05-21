@@ -235,7 +235,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(fsCode);
     }
 
-    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDescriptor* vertexDec)
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -243,7 +243,7 @@ namespace SkySnow
             GRI->GRICreatePipelineShader(handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs,vertexDec);
+        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs);
     }
 
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
@@ -276,5 +276,27 @@ namespace SkySnow
             return handle;
         }
         return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
+    }
+
+    GRIUniformBufferRef CreateUniformBuffer(const UniformBufferSlot& contents)
+    {
+        if(!_GQueue->IsLowerVerion())
+        {
+            GRIUniformBufferRef handle;
+            GRI->GRICreateUniformBuffer(contents, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateUniformBuffer(contents);
+    }
+    
+    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info)
+    {
+        if(!_GQueue->IsLowerVerion())
+        {
+            GRIUniformBufferDescriptorRef handle;
+            GRI->GRICreateUniformDescriptor(info, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(info);
     }
 }

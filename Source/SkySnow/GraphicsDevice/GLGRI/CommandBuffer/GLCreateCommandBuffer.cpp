@@ -51,7 +51,7 @@ namespace SkySnow
 		return handle;
 	}
 
-    GRIPipelineShaderRef GLCreateCommandBuffer::CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDescriptor* vertexDec)
+    GRIPipelineShaderRef GLCreateCommandBuffer::CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
 	{
 		GRIPipelineShaderRef handle = new GLPipelineShader(vs, fs);
 		Alloc_CommandCreate(GRICreatePipelineShaderCommand, handle);
@@ -78,6 +78,20 @@ namespace SkySnow
     {
         GRIVertexDescriptorRef handle = new GRIGLVertexDescriptor();
         Alloc_CommandCreate(GRICreateVertexDescriptorCommand, vdel, handle);
+        return handle;
+    }
+
+    GRIUniformBufferRef GLCreateCommandBuffer::CreateUniformBuffer(const UniformBufferSlot& contents)
+    {
+        GRIUniformBufferRef handle = new GRIGLUniformBuffer();
+        Alloc_CommandCreate(GRICreateUniformBufferCommand,contents,handle);
+        return handle;
+    }
+
+    GRIUniformBufferDescriptorRef GLCreateCommandBuffer::CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info)
+    {
+        GRIUniformBufferDescriptorRef handle = new GRIGLUniformBufferDescriptor();
+        Alloc_CommandCreate(GRICreateUniformDescriptorCommand,info,handle);
         return handle;
     }
 }

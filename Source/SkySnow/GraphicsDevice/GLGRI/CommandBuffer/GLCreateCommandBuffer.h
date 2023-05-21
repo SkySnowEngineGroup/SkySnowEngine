@@ -35,12 +35,16 @@ namespace SkySnow
 
 		virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) final override;
 
-		virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs,GRIVertexDescriptor* vertexDec = nullptr) final override;
+		virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
 
 		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) final override;
 
 		virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) final override;
 
 		virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel) final override;
+        
+        virtual GRIUniformBufferRef CreateUniformBuffer(const UniformBufferSlot& contents) final override;
+        
+        virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info) final override;
 	};
 }

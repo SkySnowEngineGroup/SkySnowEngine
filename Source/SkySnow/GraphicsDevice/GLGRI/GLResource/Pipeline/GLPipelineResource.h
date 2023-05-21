@@ -35,6 +35,8 @@ namespace SkySnow
 			: GRIGraphicsPipeline()
 			, _PrimitiveType(PrimitiveType::PT_Num)
 			, _OGLShaderPipeline(nullptr)
+            , _OGLVertexDescriptor(nullptr)
+            , _OGLUBDescriptor(nullptr)
 		{
 		}
 
@@ -52,6 +54,9 @@ namespace SkySnow
 	public:
 		PrimitiveType			_PrimitiveType;
         GLPipelineShader*       _OGLShaderPipeline;
+        //Vertex Buffer Object Element Descriptor
+        GRIGLVertexDescriptor*           _OGLVertexDescriptor;
+        GRIGLUniformBufferDescriptor*    _OGLUBDescriptor;
         
 	};
     class GLComputePipeline : public GRIComputePipeline

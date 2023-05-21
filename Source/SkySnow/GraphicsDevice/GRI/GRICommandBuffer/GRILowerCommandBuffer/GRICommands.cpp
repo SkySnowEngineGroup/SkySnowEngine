@@ -79,4 +79,14 @@ namespace SkySnow
     {
         GRI->GRICreateVertexDescriptor(_VertexElements, _Handle);
     }
+
+    void GRICreateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRICreateUniformBuffer(_UBSlot, _Handle);
+    }
+    
+    void GRICreateUniformDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRICreateUniformDescriptor(_Info, _Handle);
+    }
 }

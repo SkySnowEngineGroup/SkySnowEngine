@@ -31,7 +31,7 @@ namespace SkySnow
     class GRIVertexElement;
     struct UniformBufferSlotDesc;
     typedef std::vector<GRIVertexElement> VertexDescriptorElementList;
-    typedef std::unordered_map<size_t, UniformBufferSlotDesc> UniformBufferList;
+    typedef std::unordered_map<int, UniformBufferSlotDesc> UniformBufferList;
     class GRIVertexElement
     {
     public:
@@ -173,6 +173,11 @@ namespace SkySnow
 		}
     };
     //UniformBuffer Create About Info
+    struct UniformSlot
+    {
+        uint8_t _Size;
+        void*   _Data;
+    };
     struct UniformBufferSlot
     {
     public:
@@ -185,13 +190,13 @@ namespace SkySnow
         }
         ~UniformBufferSlot()
         {
-            for (auto iter = _UniformSlots.begin();iter != _UniformSlots.end();)
-            {
-                void* data = iter->second;
-                delete[] data;
-                data = nullptr;
-                iter = _UniformSlots.erase(iter);
-            }
+            //for (auto iter = _UniformSlots.begin();iter != _UniformSlots.end();)
+            //{
+            //    void* data = iter->second;
+            //    delete[] data;
+            //    data = nullptr;
+            //    iter = _UniformSlots.erase(iter);
+            //}
         }
         void AddUniformSlot(const char* inName,void* inData,int8_t size)
         {
@@ -199,9 +204,13 @@ namespace SkySnow
             _Size = _Size + size;
             char* dest = new char[size];
             std::memcpy(dest, inData, size);
-            _UniformSlots.push_back(std::make_pair(String2Hash(inName), dest));
+            
+            UniformSlot slot;
+            slot._Size = size;
+            slot._Data = dest;
+            _UniformSlots.push_back(std::make_pair(String2Hash(inName), slot));
         }
-        std::vector<std::pair<size_t, void*>>& GetUniformBuffers()
+        std::vector<std::pair<size_t, UniformSlot>>& GetUniformSlots()
         {
             return _UniformSlots;
         }
@@ -221,7 +230,8 @@ namespace SkySnow
         int                     _Size;
         UniformBufferUsageType  _UsageType;
         size_t                  _UBHashKey;
-        std::vector<std::pair<size_t, void*>> _UniformSlots;
+        std::vector<std::pair<size_t, UniformSlot>>  _UniformSlots;
+
     };
     struct UniformBufferSlotDesc
     {

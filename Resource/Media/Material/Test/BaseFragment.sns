@@ -1,7 +1,16 @@
 #version 330 core
 out vec4 FragColor;
+ layout (std140) uniform TestUniformBlock
+ {
+    vec4 uColor;
+    vec4 uColor2;
+ };
+ uniform vec4 test1;
+ uniform vec4 test2;
+ uniform vec4 test3;
 in vec4 vColor;
 void main()
 {
-	FragColor = vec4(vColor.r, vColor.g, vColor.b,1.0f);
+	vec4 utest = test1 + test2 + test3 + uColor + uColor2;
+	FragColor = vec4(test3.xyz,1.0f);
 }

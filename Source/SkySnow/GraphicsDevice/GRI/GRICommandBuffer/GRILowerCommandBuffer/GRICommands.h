@@ -183,7 +183,7 @@ namespace SkySnow
         GRICreateGraphicsPipelineInfo   _PsoInfo;
 		GRIGraphicsPipelineRef          _Handle;
 	};
-
+    //Create VertexDesc
     struct GRICreateVertexDescriptorCommand : public GRICommand<GRICreateVertexDescriptorCommand>
     {
         //const VertexDeclarationElementList& vdel
@@ -195,5 +195,30 @@ namespace SkySnow
         void Execute(GRICommandBufferBase& cmdBuffer);
         GRIVertexDescriptorRef         _Handle;
         VertexDescriptorElementList    _VertexElements;
+    };
+
+    struct GRICreateUniformBufferCommand : public GRICommand<GRICreateUniformBufferCommand>
+    {
+        GRICreateUniformBufferCommand(const UniformBufferSlot& contents,GRIUniformBufferRef& handle)
+            : _UBSlot(contents)
+            , _Handle(handle)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        UniformBufferSlot   _UBSlot;
+        GRIUniformBufferRef _Handle;
+    };
+
+    struct GRICreateUniformDescriptorCommand : public GRICommand<GRICreateUniformDescriptorCommand>
+    {
+        GRICreateUniformDescriptorCommand(const GRICreateUniformBufferDescriptorInfo& info,GRIUniformBufferDescriptorRef& handle)
+            : _Info(info)
+            , _Handle(handle)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        
+        GRICreateUniformBufferDescriptorInfo _Info;
+        GRIUniformBufferDescriptorRef        _Handle;
     };
 }

@@ -91,13 +91,10 @@ namespace SkySnow
 	typedef std::unordered_map<size_t, GLUniformBufferSlot> UniformBuffers;
     class GLPipelineShader : public GRIPipelineShader
     {
-        
     public:
         GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
             : GRIPipelineShader()
             , _ProgramId(0)
-            , _OGLVertexDescriptor(nullptr)
-			, _OGLUBDescriptor(nullptr)
             , _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
             , _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
         {
@@ -128,13 +125,10 @@ namespace SkySnow
         }
     public:
         GLuint							_ProgramId;
-        //Vertex Buffer Object Element Descriptor
-        GRIGLVertexDescriptor*			_OGLVertexDescriptor;
 		//VertexShader
         GLVertexShader*					_OGLVertexShader;
 		//FragmentShader
         GLFragmentShader*				_OGLFragmentShader;
-		GRIGLUniformBufferDescriptor*	_OGLUBDescriptor;
         //UBO会在此列表存储
         //0 is SingleDraw
         UniformBuffers					_InternalUBs;

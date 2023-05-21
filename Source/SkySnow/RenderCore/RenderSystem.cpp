@@ -57,7 +57,31 @@ namespace SkySnow
             _FsData = new Data();
             _File->ReadData(vsShaderPath, _VsData);
             _File->ReadData(fsShaderPath, _FsData);
-
+            
+            
+            //Create UniformBuffer
+            float uColor[] = {0,1,0,0};
+            float uColor2[] = {1.0,0,0,0};
+            UniformBufferSlot ubSlot1("TestUniformBlock",UniformBufferUsageType::UBT_MultiFrame);
+            ubSlot1.AddUniformSlot("uColor", uColor, 4 * sizeof(float));
+            ubSlot1.AddUniformSlot("uColor2", uColor2, 4 * sizeof(float));
+            _UBO_Md = CreateUniformBuffer(ubSlot1);
+            
+            //Create Uniform Array
+            float test1[] = {0.5,0,0,0};
+            float test2[] = {0,0.5,0,0};
+            float test3[] = {0,0,0.5,0};
+            UniformBufferSlot ubSlot2("UniformArray",UniformBufferUsageType::UBT_UV_SingleDraw);
+            ubSlot2.AddUniformSlot("test1", test1, 4 * sizeof(float));
+            ubSlot2.AddUniformSlot("test2", test2, 4 * sizeof(float));
+            ubSlot2.AddUniformSlot("test3", test3, 4 * sizeof(float));
+            _UBO_Sd = CreateUniformBuffer(ubSlot2);
+            
+            GRICreateUniformBufferDescriptorInfo descInfo;
+            descInfo.AddUniformBuffer(0, "UniformArray", UniformBufferUsageType::UBT_UV_SingleDraw,_UBO_Sd);
+            descInfo.AddUniformBuffer(1, "TestUniformBlock", UniformBufferUsageType::UBT_MultiFrame,_UBO_Md);
+            _UBODesc = CreateUniformDescriptor(descInfo);
+            
             _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
             _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
             _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
@@ -88,6 +112,7 @@ namespace SkySnow
             psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
             psoCreateInfo._ShaderPipelineInfo._PipelineShader = _PipelineShaderRef;
             psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
+            psoCreateInfo._ShaderPipelineInfo._UniformBufferDescriptor = _UBODesc;
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             _TestInit = true;
             

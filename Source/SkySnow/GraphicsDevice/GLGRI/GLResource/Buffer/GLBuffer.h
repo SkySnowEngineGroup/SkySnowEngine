@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "GLProfiles.h"
+#include "NonCopyable.h"
 #include <unordered_map>
 namespace SkySnow
 {
@@ -73,6 +74,8 @@ namespace SkySnow
     };
 	namespace OGLBuffer
 	{
+        void UniformVariableUpdate(const std::vector<std::pair<size_t, void*>>& newValue,GLUniformBufferSlot& internalValue);
+        //TODO Consider: Whether to use singletons for UBO count in the engine
         class UBCounter : public SkySnow::NonCopyable
         {
         private:

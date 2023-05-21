@@ -147,6 +147,7 @@ namespace SkySnow
             , _UniformBufferUsagType(UniformBufferUsageType::UBT_None)
             , _Size(0)
             , _HashKey(0)
+            , _Dirty(false)
         {
         }
         
@@ -161,20 +162,34 @@ namespace SkySnow
             _UniformBufferUsagType = ubSlot->GetUsageType();
             _HashKey = ubSlot->GetUniformBufferKey();
             _Size = ubSlot->GetSize();
-            
+
             RecordUniformData(ubSlot);
-            std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
+                std::vector<std::pair<size_t, UniformSlot>> inData = ubSlot->GetUniformSlots();
                 bool stream = (_UniformBufferUsagType == UniformBufferUsageType::UBT_SingleDraw || _UniformBufferUsagType == UniformBufferUsageType::UBT_SingleFrame);
                 glGenBuffers(1,&_GpuHandle);
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
                 //TODO Map Buffer Object
-                glBufferData(GL_UNIFORM_BUFFER, _Size, inData.data(), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
+                char* combindData = new char[_Size];
+                uint8_t offset = 0;
+                for (int i = 0; i < inData.size(); i ++)
+                {
+                    uint8_t c_offset = inData[i].second._Size;
+                    void* data = inData[i].second._Data;
+                    float* test = (float*)data;
+                    //SN_LOG("Data Size:%d Value:(%f,%f,%f,%f)", c_offset, test[0], test[1], test[2], test[3]);
+                    std::memcpy(static_cast<char*>(combindData + offset), data, c_offset);
+                    offset = offset + c_offset;
+                }
+                glBufferData(GL_UNIFORM_BUFFER, _Size, (void*)(combindData), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
                 _BindingIndex = OGLBuffer::UBCounter::ICInstance().GetCount();
                 OGLBuffer::UBCounter::ICInstance().AddCount();
+                delete[] combindData;
+                combindData = nullptr;
             }
+            _Dirty = true;
         }
 
         void UpdateUniformBuffer(UniformBufferSlot* ubSlot)
@@ -182,48 +197,60 @@ namespace SkySnow
             RecordUniformData(ubSlot);
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
-                std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
+                std::vector<std::pair<size_t, UniformSlot>> inData = ubSlot->GetUniformSlots();
+                char* combindData = new char[_Size];
+                uint8_t offset = 0;
+                for (int i = 0; i < inData.size(); i++)
+                {
+                    uint8_t c_offset = inData[i].second._Size;
+                    void* data = inData[i].second._Data;
+                    std::memcpy(static_cast<char*>(combindData + offset), data, c_offset);
+                    offset = offset + c_offset;
+                }
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
                 //TODO Map Buffer Object
-                glBufferSubData(GL_UNIFORM_BUFFER, 0, _Size, inData.data());
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, _Size, (void*)combindData);
+                delete[] combindData;
+                combindData = nullptr;
             }
+            _Dirty = true;
         }
     private:
         void RecordUniformData(UniformBufferSlot* ubSlot)
         {
             ClearUniformData();
-            std::vector<std::pair<size_t, void*>> inData = ubSlot->GetUniformBuffers();
             if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
             {
+                std::vector<std::pair<size_t, UniformSlot>> inData = ubSlot->GetUniformSlots();
                 _HashKey = 0;
-                for (auto iter = inData.begin();iter != inData.end();iter++)
+                for (int i = 0; i < inData.size(); i ++)
                 {
-                    char* inData = static_cast<char*>(iter->second);
-                    int lenght = strlen(inData);
-                    char* newData = new char[lenght];
-                    std::memcpy(newData, inData, lenght);
-                    _UniformBufferData.push_back(std::make_pair(iter->first, newData));
+                    size_t hash = inData[i].first;
+                    void* data  = inData[i].second._Data;
+                    
+                    _UniformBufferData.push_back(std::make_pair(hash, data));
                 }
             }
         }
         void ClearUniformData()
         {
-            for (auto iter = _UniformBufferData.begin();iter != _UniformBufferData.end();)
-            {
-                void* data = iter->second;
-                delete[] data;
-                data = nullptr;
-                iter = _UniformBufferData.erase(iter);
-            }
+//            for (auto iter = _UniformBufferData.begin();iter != _UniformBufferData.end();)
+//            {
+//                void* data = iter->second;
+//                delete[] data;
+//                data = nullptr;
+//                iter = _UniformBufferData.erase(iter);
+//            }
             _UniformBufferData.clear();
         }
     public:
+        bool                                _Dirty;
         int                                 _Size;
         GLuint                              _GpuHandle;
         GLuint                              _BindingIndex;
         size_t                              _HashKey;
         UniformBufferUsageType              _UniformBufferUsagType;
-        std::vector<std::pair<size_t, void*>>   _UniformBufferData;
+        std::vector<std::pair<size_t,void*>>   _UniformBufferData;
     };
 
     //UniformBuffer Descriptor

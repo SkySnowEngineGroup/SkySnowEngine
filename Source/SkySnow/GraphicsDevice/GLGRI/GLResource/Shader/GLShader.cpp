@@ -48,20 +48,16 @@ namespace SkySnow
 		OGLShader::CreateProgram(shaderPipe,glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
 	}
 
-	//Shader 创建的模板类方法(公共方法)
+	//Shader Intern Function
 	//===============================================================================================
-	//在GLShader中声明全局函数，主要原因是为了代码清晰度
-	//其实可以在cpp文件中声明函数，使用static标记，进行隐藏，使此cpp可访问，对其它cpp文件进行隐藏
-	//然后针对于隐藏，加了一个明明空间OGLShader，依次来提醒后续拓展，不要将此命名空间的全局函数在其
-	//它命名空间下调用
-
+    //Create Shader
 	template<typename GRIShaderType,typename OGLShaderType>
 	void OGLShader::CreateShader(const char* shadercode, GRIShaderType* handle)
 	{
 		OGLShaderType* shaderObject = dynamic_cast<OGLShaderType*>(handle);
 		CompileShader<OGLShaderType>(shadercode, shaderObject);
 	}
-
+    //Compile Shader
 	template<typename OGLShaderType>
 	void OGLShader::CompileShader(const char* shadercode,OGLShaderType* handle)
 	{
@@ -72,7 +68,7 @@ namespace SkySnow
 			SN_ERR("Compile Shader fail.");
 		}
 	}
-
+    //Compile Shader
 	bool OGLShader::CompileCurrentShader(const GLuint shaderHandle, const char* shadercode)
 	{
 		if (shadercode == nullptr)
@@ -94,7 +90,7 @@ namespace SkySnow
         }
 		return true;
 	}
-
+    // Create Program and Link Program
 	bool OGLShader::CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle, const GLuint fshandle, GLuint& program)
 	{
 		program = glCreateProgram();
@@ -137,7 +133,7 @@ namespace SkySnow
                     uSlot._Location = location;
                     uSlot._Size     = size;
                     block._UniformSlots[String2Hash(uniformName)] = uSlot;
-                    //SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+                    SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
                 }
             }
             //0 is SingleDraw
@@ -173,7 +169,7 @@ namespace SkySnow
                     uBlock._BlockIndex = blockIndex;
                     pipelineShader->_InternalUBs[String2Hash(uniformBlockName)] = uBlock;
                     SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
-                    //SN_LOG("uniformBlockName:%s Binding:%d Offset:%d Location:%d",uniformBlockName,uBlock._BindingIndex,uBlock._Offset,uBlock._Location);
+                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d BlockIndex:%d",uniformBlockName,uBlock._BindingIndex,offset,uBlock._BlockIndex);
                 }
             }
             delete[] uniformBlockName;
