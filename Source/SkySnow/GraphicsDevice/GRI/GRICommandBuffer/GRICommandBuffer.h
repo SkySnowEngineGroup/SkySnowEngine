@@ -60,11 +60,14 @@ namespace SkySnow
         //this interface will move blitcommandbuffer
         virtual void CmdBeginViewport() = 0;
         virtual void CmdEndViewport() = 0;
-
+        //Set Buffer Handle
         virtual void CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) = 0;
         virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
         virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) = 0;
         virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) = 0;
+        virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) = 0;
+        virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) = 0;
+        virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) = 0;
     protected:
     };
     //compute shader is a single pipeline

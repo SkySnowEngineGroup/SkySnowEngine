@@ -95,11 +95,11 @@ namespace SkySnow
 
         virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) = 0;
 
-        virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel) = 0;
+        virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel) = 0;
         
-        virtual GRIUniformBufferRef CreateUniformBuffer(const UniformBufferSlot& contents) = 0;
+        virtual GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType) = 0;
         
-        virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info) = 0;
+        virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) = 0;
 
         virtual void ResourceCreateExecutor();
     private:

@@ -66,11 +66,11 @@ namespace SkySnow
 		//Create Buffer:index vertex SSBO
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
         //Create Vertex Declaration for VertexBuffer
-        virtual void GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle) = 0;
+        virtual void GRICreateVertexDescriptor(const VertexElementList& vdel,GRIVertexDescriptorRef& handle) = 0;
         //Create Uniform Buffer
-        virtual void GRICreateUniformBuffer(const UniformBufferSlot& contents,GRIUniformBufferRef& handle) = 0;
+        virtual void GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle) = 0;
         //Create Uniform Buffer Declaration
-        virtual void GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info,GRIUniformBufferDescriptorRef& handle) = 0;
+        virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl,GRIUniformBufferDescriptorRef& handle) = 0;
 		//GRICreate=======================================================================================================================
 
 		//Lower Render Deive Interface,so vulkan&metal not override this interface
@@ -78,7 +78,7 @@ namespace SkySnow
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
 		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) {}
 		//Update Uniform Buffer Data or Update Uniform Data
-		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformBufferSlot& contents) {}
+		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) {}
 		//Set Curr ShaderPipeline Uniform Buffer Index
 		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) {}
 		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) {}

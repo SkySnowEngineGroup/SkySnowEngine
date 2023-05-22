@@ -257,7 +257,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
     }
     
-    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel)
+    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -278,25 +278,25 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
     }
 
-    GRIUniformBufferRef CreateUniformBuffer(const UniformBufferSlot& contents)
+    GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
     {
         if(!_GQueue->IsLowerVerion())
         {
             GRIUniformBufferRef handle;
-            GRI->GRICreateUniformBuffer(contents, handle);
+            GRI->GRICreateUniformBuffer(contents,ubName,ubType, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateUniformBuffer(contents);
+        return _GQueue->GetLowerCommandBuffer()->CreateUniformBuffer(contents,ubName,ubType);
     }
     
-    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info)
+    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl)
     {
         if(!_GQueue->IsLowerVerion())
         {
             GRIUniformBufferDescriptorRef handle;
-            GRI->GRICreateUniformDescriptor(info, handle);
+            GRI->GRICreateUniformDescriptor(ubl, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(info);
+        return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
     }
 }

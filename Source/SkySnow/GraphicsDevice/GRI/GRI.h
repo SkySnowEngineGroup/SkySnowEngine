@@ -46,11 +46,11 @@ namespace SkySnow
     //Create Buffer BufferType:IndexBuffer\VertexBuffer\SSBO
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
     //Create Vertex Declaration
-    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel);
+    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel);
     //Create Pipeline
     GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo);
     //Create UniformBuffer
-    GRIUniformBufferRef CreateUniformBuffer(const UniformBufferSlot& contents);
+    GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType);
     //Create UniformBufferList Desc
-    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info);
+    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl);
 }

@@ -60,7 +60,7 @@ namespace SkySnow
 
 	GRIBufferRef GLCreateCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
 	{
-		GRIBufferRef handle = new GLBuffer(usageType, size, stride, data);
+		GRIBufferRef handle = new GRIGLBuffer(usageType, size, stride, data);
 		Alloc_CommandCreate(GRICreateBufferCommand, handle, usageType, size, stride, data);
 		return handle;
 	}
@@ -74,24 +74,24 @@ namespace SkySnow
 		return handle;
 	}
 
-    GRIVertexDescriptorRef GLCreateCommandBuffer::CreateVertexDescriptor(const VertexDescriptorElementList& vdel)
+    GRIVertexDescriptorRef GLCreateCommandBuffer::CreateVertexDescriptor(const VertexElementList& vdel)
     {
         GRIVertexDescriptorRef handle = new GRIGLVertexDescriptor();
         Alloc_CommandCreate(GRICreateVertexDescriptorCommand, vdel, handle);
         return handle;
     }
 
-    GRIUniformBufferRef GLCreateCommandBuffer::CreateUniformBuffer(const UniformBufferSlot& contents)
+    GRIUniformBufferRef GLCreateCommandBuffer::CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
     {
         GRIUniformBufferRef handle = new GRIGLUniformBuffer();
-        Alloc_CommandCreate(GRICreateUniformBufferCommand,contents,handle);
+        Alloc_CommandCreate(GRICreateUniformBufferCommand,contents,ubName,ubType,handle);
         return handle;
     }
 
-    GRIUniformBufferDescriptorRef GLCreateCommandBuffer::CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info)
+    GRIUniformBufferDescriptorRef GLCreateCommandBuffer::CreateUniformDescriptor(const UniformBufferList& ubl)
     {
         GRIUniformBufferDescriptorRef handle = new GRIGLUniformBufferDescriptor();
-        Alloc_CommandCreate(GRICreateUniformDescriptorCommand,info,handle);
+        Alloc_CommandCreate(GRICreateUniformDescriptorCommand,ubl,handle);
         return handle;
     }
 }

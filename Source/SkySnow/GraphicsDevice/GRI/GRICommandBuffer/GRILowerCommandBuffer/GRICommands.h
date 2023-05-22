@@ -112,6 +112,40 @@ namespace SkySnow
 		void Execute(GRICommandBufferBase& cmdBuffer);
 		GRIGraphicsPipeline* _PipelineState;
 	};
+
+    struct CmdSetShaderParameterCommand : public GRICommand<CmdSetShaderParameterCommand>
+    {
+        CmdSetShaderParameterCommand(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex)
+            : _PipelineShader(graphicsShader)
+            , _UniformBuffer(buffer)
+            , _UBIndex(bufferIndex)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIPipelineShader*      _PipelineShader;
+        GRIUniformBuffer*       _UniformBuffer;
+        int32_t                 _UBIndex;
+    };
+    struct CmdUpdateUniformBufferCommand : public GRICommand<CmdUpdateUniformBufferCommand>
+    {
+        CmdUpdateUniformBufferCommand(GRIUniformBuffer* buffer,const UniformSlotList& contents)
+            : _UniformBuffer(buffer)
+            , _UBData(contents)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIUniformBuffer* _UniformBuffer;
+        UniformSlotList   _UBData;
+    };
+    struct CmdSetUniformBufferDescriptorCommand : GRICommand<CmdSetUniformBufferDescriptorCommand>
+    {
+        CmdSetUniformBufferDescriptorCommand(GRIUniformBufferDescriptor* descriptor)
+            : _UBDescriptor(descriptor)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIUniformBufferDescriptor*     _UBDescriptor;
+    };
 	//======================================================================================================================
 	// RenderResource Create
 	// CreateVertexShader
@@ -187,38 +221,42 @@ namespace SkySnow
     struct GRICreateVertexDescriptorCommand : public GRICommand<GRICreateVertexDescriptorCommand>
     {
         //const VertexDeclarationElementList& vdel
-        GRICreateVertexDescriptorCommand(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle)
-            : _VertexElements(vdel)
+        GRICreateVertexDescriptorCommand(const VertexElementList& vdel,GRIVertexDescriptorRef& handle)
+            : _VertexElementList(vdel)
             , _Handle(handle)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
         GRIVertexDescriptorRef         _Handle;
-        VertexDescriptorElementList    _VertexElements;
+        VertexElementList              _VertexElementList;
     };
 
     struct GRICreateUniformBufferCommand : public GRICommand<GRICreateUniformBufferCommand>
     {
-        GRICreateUniformBufferCommand(const UniformBufferSlot& contents,GRIUniformBufferRef& handle)
-            : _UBSlot(contents)
+        GRICreateUniformBufferCommand(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle)
+            : _USlotList(contents)
+            , _UBName(const_cast<char*>(ubName))
+            , _UBType(ubType)
             , _Handle(handle)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        UniformBufferSlot   _UBSlot;
-        GRIUniformBufferRef _Handle;
+        char*                   _UBName;
+        UniformBufferUsageType  _UBType;
+        UniformSlotList         _USlotList;
+        GRIUniformBufferRef     _Handle;
     };
 
     struct GRICreateUniformDescriptorCommand : public GRICommand<GRICreateUniformDescriptorCommand>
     {
-        GRICreateUniformDescriptorCommand(const GRICreateUniformBufferDescriptorInfo& info,GRIUniformBufferDescriptorRef& handle)
-            : _Info(info)
+        GRICreateUniformDescriptorCommand(const UniformBufferList& ubl,GRIUniformBufferDescriptorRef& handle)
+            : _UBSlotList(ubl)
             , _Handle(handle)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
         
-        GRICreateUniformBufferDescriptorInfo _Info;
-        GRIUniformBufferDescriptorRef        _Handle;
+        UniformBufferList               _UBSlotList;
+        GRIUniformBufferDescriptorRef   _Handle;
     };
 }

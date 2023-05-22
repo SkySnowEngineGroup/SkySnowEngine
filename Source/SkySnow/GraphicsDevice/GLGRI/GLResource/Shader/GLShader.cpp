@@ -133,7 +133,7 @@ namespace SkySnow
                     uSlot._Location = location;
                     uSlot._Size     = size;
                     block._UniformSlots[String2Hash(uniformName)] = uSlot;
-                    SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+//                    SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
                 }
             }
             //0 is SingleDraw
@@ -168,8 +168,8 @@ namespace SkySnow
                     GLUniformBufferSlot uBlock;
                     uBlock._BlockIndex = blockIndex;
                     pipelineShader->_InternalUBs[String2Hash(uniformBlockName)] = uBlock;
-                    SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
-                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d BlockIndex:%d",uniformBlockName,uBlock._BindingIndex,offset,uBlock._BlockIndex);
+//                    SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
+//                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d BlockIndex:%d",uniformBlockName,uBlock._BindingIndex,offset,uBlock._BlockIndex);
                 }
             }
             delete[] uniformBlockName;

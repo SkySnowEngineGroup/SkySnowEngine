@@ -41,10 +41,10 @@ namespace SkySnow
 
 		virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) final override;
 
-		virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexDescriptorElementList& vdel) final override;
+		virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel) final override;
         
-        virtual GRIUniformBufferRef CreateUniformBuffer(const UniformBufferSlot& contents) final override;
+        virtual GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType) final override;
         
-        virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info) final override;
+        virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) final override;
 	};
 }

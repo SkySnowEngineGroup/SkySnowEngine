@@ -49,6 +49,19 @@ namespace SkySnow
 	{
 		GRI->GRISetGraphicsPipeline(_PipelineState);
 	}
+    void CmdSetShaderParameterCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRISetShaderParameter(_PipelineShader, _UniformBuffer, _UBIndex);
+    }
+    void CmdUpdateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRIUpdateUniformBuffer(_UniformBuffer, _UBData);
+    }
+
+    void CmdSetUniformBufferDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRISetUniformBufferDescriptor(_UBDescriptor);
+    }
 	//===============================================================================
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
@@ -77,16 +90,16 @@ namespace SkySnow
 
     void GRICreateVertexDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateVertexDescriptor(_VertexElements, _Handle);
+        GRI->GRICreateVertexDescriptor(_VertexElementList, _Handle);
     }
 
     void GRICreateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateUniformBuffer(_UBSlot, _Handle);
+        GRI->GRICreateUniformBuffer(_USlotList,_UBName,_UBType,_Handle);
     }
     
     void GRICreateUniformDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateUniformDescriptor(_Info, _Handle);
+        GRI->GRICreateUniformDescriptor(_UBSlotList, _Handle);
     }
 }

@@ -68,18 +68,18 @@ namespace SkySnow
         virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) final override;
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
         //Create Vertex Declaration for VertexBuffer
-		virtual void GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle) final override;
+		virtual void GRICreateVertexDescriptor(const VertexElementList& vdel,GRIVertexDescriptorRef& handle) final override;
 		//Create Uniform Buffer
-		virtual void GRICreateUniformBuffer(const UniformBufferSlot& contents, GRIUniformBufferRef& handle) final override;
+		virtual void GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle) final override;
 		//Create Uniform Buffer Declaration
-		virtual void GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info, GRIUniformBufferDescriptorRef& handle) final override;
+		virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
 		//GRISet====================================================================================================================================
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
 		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
 		//Update Uniform Buffer Data or Update Uniform Data
-		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformBufferSlot& contents) final override;
+		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents) final override;
 		//Set Curr ShaderPipeline Uniform Buffer Index
 		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex) final override;
 		//Set Buffer

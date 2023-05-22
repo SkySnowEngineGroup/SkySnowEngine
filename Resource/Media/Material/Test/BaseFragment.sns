@@ -12,5 +12,5 @@ in vec4 vColor;
 void main()
 {
 	vec4 utest = test1 + test2 + test3 + uColor + uColor2;
-	FragColor = vec4(test3.xyz,1.0f);
+	FragColor = vec4(test1.xyz + uColor.xyz,1.0f);
 }

@@ -45,7 +45,6 @@ namespace SkySnow
     void RenderSystem::Update()
     {
         Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
-        
         if(!_TestInit)
         {
             _CMBPool = new GRICommandBufferPool();
@@ -55,57 +54,61 @@ namespace SkySnow
             _File = new File();
             _VsData = new Data();
             _FsData = new Data();
+            //TODO Shader SourceData Manage
             _File->ReadData(vsShaderPath, _VsData);
             _File->ReadData(fsShaderPath, _FsData);
-            
-            
-            //Create UniformBuffer
-            float uColor[] = {0,1,0,0};
-            float uColor2[] = {1.0,0,0,0};
-            UniformBufferSlot ubSlot1("TestUniformBlock",UniformBufferUsageType::UBT_MultiFrame);
-            ubSlot1.AddUniformSlot("uColor", uColor, 4 * sizeof(float));
-            ubSlot1.AddUniformSlot("uColor2", uColor2, 4 * sizeof(float));
-            _UBO_Md = CreateUniformBuffer(ubSlot1);
-            
-            //Create Uniform Array
-            float test1[] = {0.5,0,0,0};
-            float test2[] = {0,0.5,0,0};
-            float test3[] = {0,0,0.5,0};
-            UniformBufferSlot ubSlot2("UniformArray",UniformBufferUsageType::UBT_UV_SingleDraw);
-            ubSlot2.AddUniformSlot("test1", test1, 4 * sizeof(float));
-            ubSlot2.AddUniformSlot("test2", test2, 4 * sizeof(float));
-            ubSlot2.AddUniformSlot("test3", test3, 4 * sizeof(float));
-            _UBO_Sd = CreateUniformBuffer(ubSlot2);
-            
-            GRICreateUniformBufferDescriptorInfo descInfo;
-            descInfo.AddUniformBuffer(0, "UniformArray", UniformBufferUsageType::UBT_UV_SingleDraw,_UBO_Sd);
-            descInfo.AddUniformBuffer(1, "TestUniformBlock", UniformBufferUsageType::UBT_MultiFrame,_UBO_Md);
-            _UBODesc = CreateUniformDescriptor(descInfo);
-            
+            //Create VS And PS
             _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
             _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
+            //Create ShaderPipeline
             _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
-            static float vertices[] = { -0.5f, -0.5f, 0.0f,
-                                        0.5f,  -0.5f, 0.0f,
-                                        0.0f,  0.5f,  0.0f};
-            SN_LOG("Vertex Size:%d",sizeof(vertices));
+            //Create UniformBuffer
+            //TODO UniformBuffer SourceData Manage
+            float* uColor  = new float[]{0,1,0,0};
+            float* uColor2 = new float[]{1,0,0,0};
+            UniformSlotList uSlot1;
+            uSlot1.push_back(UniformSlot("uColor", uColor, 4 * sizeof(float)));
+            uSlot1.push_back(UniformSlot("uColor2", uColor2, 4 * sizeof(float)));
+            _UBO_Md = CreateUniformBuffer(uSlot1,"TestUniformBlock",UniformBufferUsageType::UBT_MultiFrame);
+            
+            //Create Uniform Array
+            //TODO UniformBuffer SourceData Manage
+            float* test1 = new float[]{1,0,0,0};
+            float* test2 = new float[]{0,1,0,0};
+            float* test3 = new float[]{0,0,1,0};
+            UniformSlotList uSlot2;
+            uSlot2.push_back(UniformSlot("test1", test1, 4 * sizeof(float)));
+            uSlot2.push_back(UniformSlot("test2", test2, 4 * sizeof(float)));
+            uSlot2.push_back(UniformSlot("test3", test3, 4 * sizeof(float)));
+            _UBO_Sd = CreateUniformBuffer(uSlot2,"UniformArray",UniformBufferUsageType::UBT_UV_SingleDraw);
+            
+            UniformBufferList ubSlot;
+            ubSlot.push_back(UniformBufferSlot(0, "UniformArray",UniformBufferUsageType::UBT_UV_SingleDraw,_UBO_Sd));
+            ubSlot.push_back(UniformBufferSlot(1, "TestUniformBlock",UniformBufferUsageType::UBT_MultiFrame,_UBO_Md));
+            _UBODesc = CreateUniformDescriptor(ubSlot);
+            
+            //TODO UniformBuffer SourceData Manage
+            float* vertices = new float[]{ -0.5f, -0.5f, 0.0f,
+                                           0.5f,  -0.5f, 0.0f,
+                                           0.0f,  0.5f,  0.0f};
             _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-                                                    sizeof(vertices),
-                                                    3,
-                                                    vertices);
-            static float colors[] = { 1.0f, 0.0f, 0.0f, 1.0,
-                                      0.0f, 1.0f, 0.0f, 1.0f,
-                                      0.0f, 0.0f, 1.0f, 1.0f};
+                                            9 * sizeof(float),
+                                            3,
+                                            vertices);
+            //TODO UniformBuffer SourceData Manage
+            float* colors = new float[]{ 1.0f, 0.0f, 0.0f, 1.0,
+                                         0.0f, 1.0f, 0.0f, 1.0f,
+                                         0.0f, 0.0f, 1.0f, 1.0f};
             _ColorBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-                                           sizeof(colors),
+                                           12 * sizeof(float),
                                            4,
                                            colors);
-            VertexDescriptorElementList elementList;
+            VertexElementList veList;
             //bufferindex attritubeindex stride offset
-            elementList.push_back(GRIVertexElement(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
-            elementList.push_back(GRIVertexElement(1,1,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
-            _VertexDescriptor = CreateVertexDescriptor(elementList);
-            
+            veList.push_back(VertexElementSlot(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
+            veList.push_back(VertexElementSlot(1,1,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
+            _VertexDescriptor = CreateVertexDescriptor(veList);
+            //Consider: Need?
 //            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef,_VertexDeclaration);
             
             GRICreateGraphicsPipelineInfo psoCreateInfo;
@@ -115,18 +118,7 @@ namespace SkySnow
             psoCreateInfo._ShaderPipelineInfo._UniformBufferDescriptor = _UBODesc;
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             _TestInit = true;
-            
-            /*std::string test = "UniformBuffer_0";
-            size_t hash = String2Hash(test);
-            std::string test2 = "UniformBuffer_0";
-            size_t hash2 = String2Hash(test2);
-            SN_LOG("hash:%zu  hash2:%ld",hash,hash2);*/
-            std::string ubn = "TestUniformBlock";
-            SN_LOG("TestUniformBlock HashKey:%ld", String2Hash(ubn));
-            //UniformBufferSlot ubSlot;
-            
         }
-        
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
         
         commandBuffer->CmdBeginViewport();
@@ -134,8 +126,12 @@ namespace SkySnow
         
 //        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
 //        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
+        int tCount = 3;
+        for (int i = 0; i < tCount; i ++)
+        {
+            commandBuffer->CmdDrawPrimitive(1, 1);
+        }
         
-        commandBuffer->CmdDrawPrimitive(1,1);
         
         commandBuffer->CmdEndViewport();
         

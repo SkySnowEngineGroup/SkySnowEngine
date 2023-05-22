@@ -28,11 +28,11 @@
 #include <unordered_map>
 namespace SkySnow
 {
-	class GLBuffer : public GRIBuffer
+	class GRIGLBuffer : public GRIBuffer
 	{
 		friend class GRIGLDrive;
 	public:
-		GLBuffer()
+        GRIGLBuffer()
 			: GRIBuffer()
 			, _BufferType(0)
 			, _GpuHandle(0)
@@ -41,7 +41,7 @@ namespace SkySnow
 		{
 		}
 		//
-        GLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
+        GRIGLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride) 
 			, _Data(data)
 			, _StreamDraw(streamDraw)
@@ -49,7 +49,7 @@ namespace SkySnow
 		{
 		}
 
-		~GLBuffer()
+		~GRIGLBuffer()
 		{
 		}
         //Create Buffer with buffer type
@@ -78,16 +78,16 @@ namespace SkySnow
             : GRIVertexDescriptor()
         {
         }
-        void SetUp(const VertexDescriptorElementList& vdel)
+        void SetUp(const VertexElementList& vdel)
         {
             int bufferIndex = -1;
             for(int32_t index = 0; index < vdel.size(); index ++)
             {
-                GRIVertexElement element = vdel[index];
+                VertexElementSlot element = vdel[index];
                 if(bufferIndex != element._BufferIndex)
                 {
-                    GLVertexBufferObject vbo;
-                    GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(element._GRIBuffer);
+                    GLVertexBufferSlot vbo;
+                    GRIGLBuffer* bufferGL = dynamic_cast<GRIGLBuffer*>(element._GRIBuffer);
                     vbo._GpuHandle = bufferGL? bufferGL->_GpuHandle : -1;
                     vbo._BufferType = bufferGL ? bufferGL->_BufferType : -1;
                     vbo._Stride = element._Strid;
@@ -97,7 +97,7 @@ namespace SkySnow
                 }
                 GLVertexElements& vertexElements = _GLVertexBuffers[element._BufferIndex]._GLVertexElements;
                 GLVertexElement glElement;
-                glElement._AttritubeIndex = element._AtttitubeIndex;
+                glElement._AttributeIndex = element._AttributeIndex;
                 glElement._Offset = element._Offset;
                 switch(element._VET_Type)
                 {
@@ -129,7 +129,7 @@ namespace SkySnow
                         SN_ERR("Unknown GRI vertex element type %u",element._VET_Type);
                         break;
                 }
-                vertexElements[element._AtttitubeIndex] = glElement;
+                vertexElements[element._AttributeIndex] = glElement;
             }
         }
     public:
@@ -157,30 +157,27 @@ namespace SkySnow
             ClearUniformData();
         }
 
-        void SetUp(UniformBufferSlot* ubSlot)
+        void SetUp(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
         {
-            _UniformBufferUsagType = ubSlot->GetUsageType();
-            _HashKey = ubSlot->GetUniformBufferKey();
-            _Size = ubSlot->GetSize();
-
-            RecordUniformData(ubSlot);
+            _UniformBufferUsagType = ubType;
+            _HashKey = String2Hash(ubName);
+            for (int i = 0; i < contents.size(); i ++)
+            {
+                _Size += contents[i]._Size;
+            }
+            RecordUniformData(contents);
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
-                std::vector<std::pair<size_t, UniformSlot>> inData = ubSlot->GetUniformSlots();
                 bool stream = (_UniformBufferUsagType == UniformBufferUsageType::UBT_SingleDraw || _UniformBufferUsagType == UniformBufferUsageType::UBT_SingleFrame);
                 glGenBuffers(1,&_GpuHandle);
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
                 //TODO Map Buffer Object
                 char* combindData = new char[_Size];
                 uint8_t offset = 0;
-                for (int i = 0; i < inData.size(); i ++)
+                for (int i = 0; i < contents.size(); i ++)
                 {
-                    uint8_t c_offset = inData[i].second._Size;
-                    void* data = inData[i].second._Data;
-                    float* test = (float*)data;
-                    //SN_LOG("Data Size:%d Value:(%f,%f,%f,%f)", c_offset, test[0], test[1], test[2], test[3]);
-                    std::memcpy(static_cast<char*>(combindData + offset), data, c_offset);
-                    offset = offset + c_offset;
+                    std::memcpy(static_cast<char*>(combindData + offset), contents[i]._Data, contents[i]._Size);
+                    offset = offset + contents[i]._Size;
                 }
                 glBufferData(GL_UNIFORM_BUFFER, _Size, (void*)(combindData), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -192,20 +189,17 @@ namespace SkySnow
             _Dirty = true;
         }
 
-        void UpdateUniformBuffer(UniformBufferSlot* ubSlot)
+        void UpdateUniformBuffer(const UniformSlotList& contents)
         {
-            RecordUniformData(ubSlot);
+            RecordUniformData(contents);
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
-                std::vector<std::pair<size_t, UniformSlot>> inData = ubSlot->GetUniformSlots();
                 char* combindData = new char[_Size];
                 uint8_t offset = 0;
-                for (int i = 0; i < inData.size(); i++)
+                for (int i = 0; i < contents.size(); i++)
                 {
-                    uint8_t c_offset = inData[i].second._Size;
-                    void* data = inData[i].second._Data;
-                    std::memcpy(static_cast<char*>(combindData + offset), data, c_offset);
-                    offset = offset + c_offset;
+                    std::memcpy(static_cast<char*>(combindData + offset), contents[i]._Data, contents[i]._Size);
+                    offset = offset + contents[i]._Size;
                 }
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
                 //TODO Map Buffer Object
@@ -216,31 +210,20 @@ namespace SkySnow
             _Dirty = true;
         }
     private:
-        void RecordUniformData(UniformBufferSlot* ubSlot)
+        void RecordUniformData(const UniformSlotList& contents)
         {
             ClearUniformData();
             if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
             {
-                std::vector<std::pair<size_t, UniformSlot>> inData = ubSlot->GetUniformSlots();
                 _HashKey = 0;
-                for (int i = 0; i < inData.size(); i ++)
+                for (int i = 0; i < contents.size(); i ++)
                 {
-                    size_t hash = inData[i].first;
-                    void* data  = inData[i].second._Data;
-                    
-                    _UniformBufferData.push_back(std::make_pair(hash, data));
+                    _UniformBufferData.push_back(std::make_pair(contents[i]._Hash, contents[i]._Data));
                 }
             }
         }
         void ClearUniformData()
         {
-//            for (auto iter = _UniformBufferData.begin();iter != _UniformBufferData.end();)
-//            {
-//                void* data = iter->second;
-//                delete[] data;
-//                data = nullptr;
-//                iter = _UniformBufferData.erase(iter);
-//            }
             _UniformBufferData.clear();
         }
     public:
@@ -269,17 +252,17 @@ namespace SkySnow
             SN_LOG("GRIGLUniformBufferDescriptor Destruct");
         }
 
-        void SetUp(UniformBufferList& list)
+        void SetUp(const UniformBufferList& list)
         {
-            for (auto iter = list.begin(); iter != list.end(); iter ++)
+            for (int i = 0; i < list.size(); i ++)
             {
-                GLUniformBufferSlotDesc ubDescriptor;
-                UniformBufferSlotDesc ubs = iter->second;
+                UniformBufferSlot ubSlot = list[i];
+                GLUniformBufferSlotDesc ubSlotDesc;
 
-                ubDescriptor._UBType = ubs._UBType;
-                ubDescriptor._UBHashKey = ubs._UBHashKey;
-                ubDescriptor._UinformBuffer = dynamic_cast<GRIGLUniformBuffer*>(ubs._UniformBuffer);
-                _GLUniformBuffersDes[iter->first] = ubDescriptor;
+                ubSlotDesc._UBType        = ubSlot._UBType;
+                ubSlotDesc._UBHashKey     = ubSlot._UBHashKey;
+                ubSlotDesc._UinformBuffer = dynamic_cast<GRIGLUniformBuffer*>(ubSlot._UniformBuffer);
+                _GLUniformBuffersDes[ubSlot._UBIndex] = ubSlotDesc;
             }
         }
     public:

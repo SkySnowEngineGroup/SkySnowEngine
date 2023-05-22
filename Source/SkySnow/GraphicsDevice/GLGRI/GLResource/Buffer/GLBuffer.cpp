@@ -34,35 +34,34 @@ namespace SkySnow
 			bufferType = GL_ELEMENT_ARRAY_BUFFER;//IBO
 		}
 
-		GLBuffer* glBuffer = dynamic_cast<GLBuffer*>(handle.GetReference());
+        GRIGLBuffer* glBuffer = dynamic_cast<GRIGLBuffer*>(handle.GetReference());
 		glBuffer->CreateBuffer(bufferType,usageType, size);
 		glBuffer->_StreamDraw = true;
 		glBuffer->_BufferName = "a";
 	}
     //Create Vertex Buffer Declaration
-    void GRIGLDrive::GRICreateVertexDescriptor(const VertexDescriptorElementList& vdel,GRIVertexDescriptorRef& handle)
+    void GRIGLDrive::GRICreateVertexDescriptor(const VertexElementList& vdel,GRIVertexDescriptorRef& handle)
     {
         GRIGLVertexDescriptor* vertexDecl = dynamic_cast<GRIGLVertexDescriptor*>(handle.GetReference());
         vertexDecl->SetUp(vdel);
     }
 	//Create Uniform Buffer
-	void GRIGLDrive::GRICreateUniformBuffer(const UniformBufferSlot& contents, GRIUniformBufferRef& handle)
+    void GRIGLDrive::GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle)
 	{
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(handle.GetReference());
-		uniformBuffer->SetUp(const_cast<UniformBufferSlot*>(&contents));
+		uniformBuffer->SetUp(contents,ubName,ubType);
 	}
 	//Update Uniform Buffer
-	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformBufferSlot& contents)
+	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents)
 	{
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
-		uniformBuffer->UpdateUniformBuffer(const_cast<UniformBufferSlot*>(&contents));
+		uniformBuffer->UpdateUniformBuffer(contents);
 	}
 	//Create Uniform Buffer Declaration
-	void GRIGLDrive::GRICreateUniformDescriptor(const GRICreateUniformBufferDescriptorInfo& info, GRIUniformBufferDescriptorRef& handle)
+	void GRIGLDrive::GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle)
 	{
 		GRIGLUniformBufferDescriptor* glHandle = dynamic_cast<GRIGLUniformBufferDescriptor*>(handle.GetReference());
-		UniformBufferList ulist = const_cast<GRICreateUniformBufferDescriptorInfo*>(&info)->GetUniformBuffers();
-		glHandle->SetUp(ulist);
+		glHandle->SetUp(ubl);
 	}
     void GRIGLDrive::BindUniformBuffer(GLGraphicPipeline& contextState)
     {
@@ -160,7 +159,6 @@ namespace SkySnow
                                 glUniform4fv(uSlot._Location, uSlot._Size,(GLfloat*)(data));
                             }else{
                                 float* array = (GLfloat*)(data);
-                                SN_LOG("Uniform Slot Data:(%f,%f,%f,%f)",array[0],array[1],array[2],array[3]);
                                 glUniform4f(uSlot._Location,array[0],array[1],array[2],array[3]);
                             }
                             break;
@@ -224,9 +222,9 @@ namespace SkySnow
 
                     }
                 }
-                //
+                //====Single UniformSlot End
             }
-            //
+            //==== Single UniformSlot Array End
         }
 	}
 }

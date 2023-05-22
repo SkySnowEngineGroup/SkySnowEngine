@@ -50,6 +50,10 @@ namespace SkySnow
 		virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) final override;
 		virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
 		virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
+        
+        virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) final override;
+        virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) final override;
+        virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
 	private:
 
 	};

@@ -28,25 +28,27 @@
 #include <unordered_map>
 namespace SkySnow
 {
-    class GRIVertexElement;
-    struct UniformBufferSlotDesc;
-    typedef std::vector<GRIVertexElement> VertexDescriptorElementList;
-    typedef std::unordered_map<int, UniformBufferSlotDesc> UniformBufferList;
-    class GRIVertexElement
+    struct UniformSlot;
+    struct UniformBufferSlot;
+    class VertexElementSlot;
+    typedef std::vector<VertexElementSlot>  VertexElementList;
+    typedef std::vector<UniformSlot>        UniformSlotList;
+    typedef std::vector<UniformBufferSlot>  UniformBufferList;
+    class VertexElementSlot
     {
     public:
-        GRIVertexElement()
+        VertexElementSlot()
             : _GRIBuffer(nullptr)
             , _BufferIndex(-1)
             , _Offset(0)
             , _Strid(0)
-            , _AtttitubeIndex(0)
+            , _AttributeIndex(0)
             , _VET_Type(VertexElementType::VET_None)
         {
         }
-        GRIVertexElement(
-           uint8_t inBufferIndex,
-           uint8_t inAtttitubeIndex,
+        VertexElementSlot(
+           uint8_t inBufferIndex,//VBO Index
+           uint8_t inAttributeIndex,//Vertex Attri
            uint8_t inStrid,
            uint8_t inOffset,
            VertexElementType inVET_Type,
@@ -54,19 +56,19 @@ namespace SkySnow
         )
             : _BufferIndex(inBufferIndex)
             , _GRIBuffer(inGRIBuffer)
-            , _AtttitubeIndex(inAtttitubeIndex)
+            , _AttributeIndex(inAttributeIndex)
             , _Strid(inStrid)
             , _Offset(inOffset)
             , _VET_Type(inVET_Type)
         {
         }
         
-        void operator=(const GRIVertexElement& other)
+        void operator=(const VertexElementSlot& other)
         {
             _BufferIndex    = other._BufferIndex;
             _Offset         = other._Offset;
             _Strid          = other._Strid;
-            _AtttitubeIndex = other._AtttitubeIndex;
+            _AttributeIndex = other._AttributeIndex;
             _GRIBuffer      = other._GRIBuffer;
             _VET_Type       = other._VET_Type;
         }
@@ -74,7 +76,7 @@ namespace SkySnow
         uint8_t             _BufferIndex;       //数据存储的Key值
         uint8_t             _Offset;            //偏移量
         uint8_t             _Strid;             //间隔
-        uint8_t             _AtttitubeIndex;    //顶点变量索引id
+        uint8_t             _AttributeIndex;    //顶点变量索引id
         GRIVertexBuffer*    _GRIBuffer;         //顶点数据对象
         VertexElementType   _VET_Type;          //数据类型
     };
@@ -175,93 +177,31 @@ namespace SkySnow
     //UniformBuffer Create About Info
     struct UniformSlot
     {
+        UniformSlot(const char* inName,void* inData,uint8_t size)
+            : _Hash(String2Hash(inName))
+            , _Data(inData)
+            , _Size(size)
+        { 
+        }
         uint8_t _Size;
         void*   _Data;
-    };
-    struct UniformBufferSlot
-    {
-    public:
-        UniformBufferSlot() = delete;
-        UniformBufferSlot(const char* inName,UniformBufferUsageType inUBType)
-            : _UBHashKey(String2Hash(inName))
-            , _UsageType(inUBType)
-            , _Size(0)
-        {
-        }
-        ~UniformBufferSlot()
-        {
-            //for (auto iter = _UniformSlots.begin();iter != _UniformSlots.end();)
-            //{
-            //    void* data = iter->second;
-            //    delete[] data;
-            //    data = nullptr;
-            //    iter = _UniformSlots.erase(iter);
-            //}
-        }
-        void AddUniformSlot(const char* inName,void* inData,int8_t size)
-        {
-            //TODO Memory Manager
-            _Size = _Size + size;
-            char* dest = new char[size];
-            std::memcpy(dest, inData, size);
-            
-            UniformSlot slot;
-            slot._Size = size;
-            slot._Data = dest;
-            _UniformSlots.push_back(std::make_pair(String2Hash(inName), slot));
-        }
-        std::vector<std::pair<size_t, UniformSlot>>& GetUniformSlots()
-        {
-            return _UniformSlots;
-        }
-        UniformBufferUsageType GetUsageType() const
-        {
-            return _UsageType;
-        }
-        size_t GetUniformBufferKey() const
-        {
-            return _UBHashKey;
-        }
-        int GetSize() const
-        {
-            return _Size;
-        }
-    private:
-        int                     _Size;
-        UniformBufferUsageType  _UsageType;
-        size_t                  _UBHashKey;
-        std::vector<std::pair<size_t, UniformSlot>>  _UniformSlots;
-
-    };
-    struct UniformBufferSlotDesc
-    {
-        //A single draw is a list of uniform buffer owned by the current draw
-        UniformBufferUsageType  _UBType;
-        size_t                  _UBHashKey;
-        GRIUniformBuffer*       _UniformBuffer;
+        size_t  _Hash;
     };
     //Create Uniform Buffer Descriptor Info
     //Depth RenderLoop Descriptor,or Light RenderLoop Descriptor ext
-    class GRICreateUniformBufferDescriptorInfo
+    struct UniformBufferSlot
     {
-    public:
-        GRICreateUniformBufferDescriptorInfo()
+        UniformBufferSlot(uint8_t inUBIndex,const char* inUBName,UniformBufferUsageType inType,GRIUniformBuffer* inUB = nullptr)
+            : _UBIndex(inUBIndex)
+            , _UBType(inType)
+            , _UBHashKey(String2Hash(inUBName))
+            , _UniformBuffer(inUB)
         {
         }
-        void AddUniformBuffer(uint8_t bufferIndex,const char* inUBName, UniformBufferUsageType inUBType,GRIUniformBuffer* inUB = nullptr)
-        {
-            UniformBufferSlotDesc ubs;
-            ubs._UBType     = inUBType;
-            ubs._UBHashKey  = String2Hash(inUBName);
-            ubs._UniformBuffer = inUB;
-            _UniformBuffers[bufferIndex] = ubs;
-        }
-
-        const UniformBufferList& GetUniformBuffers()
-        {
-            return _UniformBuffers;
-        }
-    private:
-        UniformBufferList _UniformBuffers;
+        //A single draw is a list of uniform buffer owned by the current draw
+        uint8_t                 _UBIndex;
+        UniformBufferUsageType  _UBType;
+        size_t                  _UBHashKey;
+        GRIUniformBuffer*       _UniformBuffer;
     };
 }

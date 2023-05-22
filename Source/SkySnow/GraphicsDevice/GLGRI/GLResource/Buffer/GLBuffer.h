@@ -28,21 +28,22 @@ namespace SkySnow
 {
     class GRIGLUniformBuffer;
 	struct GLVertexElement;
-	struct GLVertexBufferObject;
+	struct GLVertexBufferSlot;
 	typedef std::unordered_map<int, GLVertexElement>         GLVertexElements;
-	typedef std::unordered_map<int, GLVertexBufferObject>    GLVertexBuffers;
-    //Vertex Element Info
+	typedef std::unordered_map<int, GLVertexBufferSlot>      GLVertexBuffers;
+    //Vertex Element Info:Vertex Attritube Info
     struct GLVertexElement
     {
         //vertex element type:GL_FLOAT or GL_SHORT
         GLenum  _Type;
         GLuint  _Offset;
         GLuint  _Stride;
-        uint8_t _AttritubeIndex;
+        uint8_t _AttributeIndex;
         uint8_t _bNormalized;
         uint8_t _bConvertToFloat;
     };
-    struct GLVertexBufferObject
+    //Vectex Buffer Object Info
+    struct GLVertexBufferSlot
     {
         GLenum              _BufferType;
         GLuint              _GpuHandle;
@@ -50,14 +51,14 @@ namespace SkySnow
         GLuint              _Offset;
         GLVertexElements    _GLVertexElements;
     };
-    //Uniform Slot Parameter
+    //Uniform Slot Parameter PipelineShader 内部使用
     struct GLUniformSlot
     {
         GLenum _Type;
         GLuint _Location;
         GLint  _Size;
     };
-    //Uniform Buffer Block
+    //Uniform Buffer Block PipelineShader 内部使用
     struct GLUniformBufferSlot
     {
         GLuint          _BindingIndex = -1;

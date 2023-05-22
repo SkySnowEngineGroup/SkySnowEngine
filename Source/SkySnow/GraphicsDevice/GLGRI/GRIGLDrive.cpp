@@ -73,7 +73,7 @@ namespace SkySnow
 	//GRISet==================================================================================================================================
 	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
-		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
+        GRIGLBuffer* bufferGL = dynamic_cast<GRIGLBuffer*>(buffer);
 		if (_PendingState._OGLVertexDescriptor == nullptr)
 		{
 			SN_ERR("GRISetBuffer set GRIBuffer is nullptr.");
@@ -83,7 +83,7 @@ namespace SkySnow
 		GLVertexBuffers& vbos = _PendingState._OGLVertexDescriptor->_GLVertexBuffers;
 		if (vbos.find(bufferIndex) != vbos.end())
 		{
-			GLVertexBufferObject& vboMeta = vbos[bufferIndex];
+            GLVertexBufferSlot& vboMeta = vbos[bufferIndex];
 			vboMeta._GpuHandle = bufferGL->_GpuHandle;
 			vboMeta._Stride = bufferGL->GetStride();
 			vboMeta._BufferType = bufferGL->_BufferType;
@@ -95,7 +95,7 @@ namespace SkySnow
 		}
 		else
 		{
-			GLVertexBufferObject vboMeta;
+            GLVertexBufferSlot vboMeta;
 			vboMeta._GpuHandle = bufferGL->_GpuHandle;
 			vboMeta._Stride = bufferGL->GetStride();
 			vboMeta._BufferType = bufferGL->_BufferType;
@@ -203,14 +203,14 @@ namespace SkySnow
         GLVertexBuffers vertexBuffers = vertexDec->_GLVertexBuffers;
         for(auto entry : vertexBuffers)
         {
-            GLVertexBufferObject vbo = entry.second;
+            GLVertexBufferSlot vbo = entry.second;
             glBindBuffer(vbo._BufferType,vbo._GpuHandle);
             GLVertexElements ves = vbo._GLVertexElements;
             for(auto iter = ves.begin(); iter != ves.end(); iter ++)
             {
                 GLVertexElement vMeta = iter->second;
-                glEnableVertexAttribArray(vMeta._AttritubeIndex);
-                glVertexAttribPointer(vMeta._AttritubeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
+                glEnableVertexAttribArray(vMeta._AttributeIndex);
+                glVertexAttribPointer(vMeta._AttributeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
             }
         }
 	}
