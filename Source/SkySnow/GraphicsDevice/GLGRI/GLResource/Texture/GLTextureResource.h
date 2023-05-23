@@ -21,24 +21,66 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GLTexture.h"
 #include "GLProfiles.h"
-#include "GLShaderResource.h"
+#include "GRICommons.h"
+#include "RefCounted.h"
+#include "GRIResource.h"
 namespace SkySnow
 {
-	//Internal Namespace
-	namespace OGLShader
-	{
-		template<typename GRIShaderType, typename OGLShaderType>
-		void CreateShader(const char* shadercode, GRIShaderType* handle);
-		//Internal Function
-		template<typename OGLShaderType>
-		void CompileShader(const char* shadercode,OGLShaderType* handle);
+    class GLBaseTexture
+    {
+    public:
+        GLBaseTexture()
+        {
+        }
+        virtual ~GLBaseTexture()
+        {
+        }
+    protected:
+        void CreateTexture();
+    public:
+        GLint   _GpuHandle;
+        GLenum  _Type;
+    };
 
-		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
+    class GRIGLTexture2D : public GRITexture2D , public GLBaseTexture
+    {
+    public:
+        GRIGLTexture2D()
+            : GRITexture2D(GRT_Texture2D)
+            , GLBaseTexture()
+        {
+        }
+    };
 
-		bool CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle,const GLuint fshandle,GLuint& program);
-    
-        bool CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program);
+    class GRIGLTexture2DArray : public GRITexture2DArray , public GLBaseTexture
+    {
+    public:
+        GRIGLTexture2DArray()
+            : GRITexture2DArray()
+            , GLBaseTexture()
+        {
+        }
+    };
 
-	}
+    class GRIGLTexture3D : public GRITexture3D , public GLBaseTexture
+    {
+    public:
+        GRIGLTexture3D()
+            : GRITexture3D(GRT_Texture3D)
+            , GLBaseTexture()
+        {
+        }
+    };
+
+    class GRIGLTextureCube : public GRITextureCube , public GLBaseTexture
+    {
+    public:
+        GRIGLTextureCube()
+            : GRITextureCube()
+            , GLBaseTexture()
+        {
+        }
+    }
 }

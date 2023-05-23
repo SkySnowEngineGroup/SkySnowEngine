@@ -21,24 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLProfiles.h"
-#include "GLShaderResource.h"
+
 namespace SkySnow
 {
-	//Internal Namespace
-	namespace OGLShader
-	{
-		template<typename GRIShaderType, typename OGLShaderType>
-		void CreateShader(const char* shadercode, GRIShaderType* handle);
-		//Internal Function
-		template<typename OGLShaderType>
-		void CompileShader(const char* shadercode,OGLShaderType* handle);
 
-		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
-
-		bool CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle,const GLuint fshandle,GLuint& program);
+    //Texture Internal call function
+    namespace OGLTexture
+    {
     
-        bool CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program);
-
-	}
+    }
 }

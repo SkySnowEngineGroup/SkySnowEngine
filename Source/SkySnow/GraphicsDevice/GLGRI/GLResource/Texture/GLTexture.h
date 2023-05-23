@@ -21,15 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GLProfiles.h"
+#include "GLShaderResource.h"
 namespace SkySnow
 {
-	//2D、2DArray纹理
-	//3D、3DArray纹理
-	//CubeMap纹理
-	//Npot不可变纹理
-	//mipmap纹理
-	//srgb纹理
-	//压缩纹理:ASTC、ETC1、EAC、ETC2
-	//采样器对象
+    //Texture2D/Texture2DArray
+    //Texture3D
+    //TextureCube
+    //UnPackBuffer
+    //Sampler:2D/2DArray/3D/Cube
+
+    namespace OGLTexture
+    {
+    
+    }
 }

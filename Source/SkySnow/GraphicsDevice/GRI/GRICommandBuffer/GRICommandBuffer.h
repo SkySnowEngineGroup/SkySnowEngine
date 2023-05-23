@@ -27,7 +27,7 @@
 #include "RunnableThread.h"
 namespace SkySnow
 {
-    //vulkan 中关于资源创建，资源命令设置以及同步等操作的渲染接口，一共约130个
+    //Height Api ex:Vulkan\metal,Low Api ex: OpenGL\ES
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
     class RenderRunnable;

@@ -189,6 +189,68 @@ namespace SkySnow
             SN_LOG("GRIComputePipeline Destruct.");
         }
     };
+    //Texture
+    //2D/2DArray  3D/3DArray  Cube
+    class GRITexture : public GRIResource
+    {
+    public:
+        GRITexture(EGRIResourceType grt)
+            : GRIResource(grt)
+        {
+        }
+        virtual ~GRITexture()
+        {
+            SN_LOG("GRITexture Destruct.");
+        }
+    };
+    class GRITexture2D : public GRITexture
+    {
+    public:
+        GRITexture2D(EGRIResourceType grt)
+            : GRITexture(GRT_Texture2D)
+        {
+        }
+        virtual ~GRITexture2D()
+        {
+            SN_LOG("GRITexture2D Destruct.");
+        }
+    };
+    class GRITexture2DArray : public GRITexture2D
+    {
+    public:
+        GRITexture2DArray()
+            : GRITexture2D(GRT_Texture2DArray)
+        {
+        }
+        virtual ~GRITexture2DArray()
+        {
+            SN_LOG("GRITexture2DArray Destruct.");
+        }
+    };
+    class GRITexture3D : public GRITexture
+    {
+    public:
+        GRITexture3D(EGRIResourceType grt)
+            : GRITexture(GRT_Texture3D)
+        {
+        }
+        virtual ~GRITexture3D()
+        {
+            SN_LOG("GRITexture3D Destruct.");
+        }
+    };
+    class GRITextureCube : public GRITexture
+    {
+    public:
+        GRITextureCube()
+            : GRITexture(GRT_TextureCube)
+        {
+        }
+        virtual ~GRITextureCube()
+        {
+            SN_LOG("GRITextureCube Destruct.");
+        }
+    };
     //PipelineStateEnd=============================================================================
     //Buffer about
     //BufferStart==================================================================================
@@ -373,6 +435,13 @@ namespace SkySnow
             SN_LOG("GRIViewport DesConstruct.");
         }
     };
+    //Texture: Texture2D/Array Texture3D/Array TextureCube
+    typedef RefCountPtr<GRITexture2D>               GRITexture2DRef;
+    typedef RefCountPtr<GRITexture2DArray>          GRITexture2DArrayRef;
+    typedef RefCountPtr<GRITexture3D>               GRITexture3DRef;
+    typedef RefCountPtr<GRITextureCube>             GRITextureCubeRef;
+    //Sampler
+    typedef RefCountPtr<GRISamplerState>            GRISamplerStateRef;
 	//shader type vertex fragement compute
 	typedef RefCountPtr<GRIVertexShader>			GRIVertexShaderRef;
 	typedef RefCountPtr<GRIFragmentShader>			GRIFragmentShaderRef;
