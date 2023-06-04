@@ -204,4 +204,63 @@ namespace SkySnow
         size_t                  _UBHashKey;
         GRIUniformBuffer*       _UniformBuffer;
     };
+    //Sampler Create Info
+    struct SamplerState
+    {
+
+    };
+    //Texture2D Update Sub Data
+    struct Texture2DRegion
+    {
+        Texture2DRegion()
+            : _OffsetX(0)
+            , _OffsetY(0)
+            , _Width(0)
+            , _Height(0)
+        {
+        }
+        Texture2DRegion(uint32 inOffsetX, uint32 inOffset, uint32 inWidth, uint32 inHeight)
+            : _OffsetX(inOffsetX)
+            , _OffsetY(inOffset)
+            , _Width(inWidth)
+            , _Height(inHeight)
+        {
+        }
+        //offset in texture
+        uint32 _OffsetX;
+        uint32 _OffsetY;
+        //target texture size
+        uint32 _Width;
+        uint32 _Height;
+    };
+    //Texture3D Update Sub Data
+    struct Texture3DRegion
+    {
+        Texture3DRegion()
+            : _OffsetX(0)
+            , _OffsetY(0)
+            , _OffsetZ(0)
+            , _Width(0)
+            , _Height(0)
+            , _Depth(0)
+        {
+        }
+        Texture3DRegion(uint32 inOffsetX,uint32 inOffsetY,uint32 inOffsetZ,uint32 inWidth,uint32 inHeight,uint32 inDepth)
+            : _OffsetX(inOffsetX)
+            , _OffsetY(inOffsetY)
+            , _OffsetZ(inOffsetZ)
+            , _Width(inWidth)
+            , _Height(inHeight)
+            , _Depth(inDepth)
+        {
+        }
+        //offset in texture
+        uint32 _OffsetX;
+        uint32 _OffsetY;
+        uint32 _OffsetZ;
+        //target texture size
+        uint32 _Width;
+        uint32 _Height;
+        uint32 _Depth;
+    };
 }

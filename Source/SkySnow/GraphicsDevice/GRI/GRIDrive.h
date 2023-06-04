@@ -71,27 +71,27 @@ namespace SkySnow
         virtual void GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle) = 0;
         //Create Uniform Buffer Declaration
         virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl,GRIUniformBufferDescriptorRef& handle) = 0;
-        //Create Texture
-        //Texture2D/Array
-        //Texture3D/Array
-        //TextureCube
-        virtual void GRICreateTexture2D(GRITexture2DRef& handle) = 0;
-        virtual void GRICreateTexture2DArray(GRITexture2DArrayRef& handle) = 0;
-        virtual void GRICreateTexture3D(GRITexture3DRef& handle) = 0;
-        virtual void GRICreateTextureCube(GRITextureCubeRef& handle) = 0;
+        //Texture2D
+        virtual void GRICreateTexture2D(uint32 sizex,uint32 sizey,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,GRITexture2DRef& handle) = 0;
+        //Texture2DArray
+		virtual void GRICreateTexture2DArray(uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,GRITexture2DArrayRef& handle) = 0;
+		//Texture3D
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,GRITexture3DRef& handle) = 0;
+		//TextureCube
+		virtual void GRICreateTextureCube(uint32 size, uint8 format,uint32 numMips, TextureUsageType usageType,GRITextureCubeRef& handle) = 0;
         //SamplerState
-        virtual void GRICreateSampler(GRISamplerStateRef& handle) = 0;
+        virtual void GRICreateSampler(const SamplerState& sState,GRISamplerStateRef& handle) = 0;
 		//GRICreate=======================================================================================================================
 
 		//Lower Render Deive Interface,so vulkan&metal not override this interface
 		//GRISet==========================================================================================================================
         //Grahpichs Pipeline Interface
         //Texture Update Data
-        virtual void GRIUpdateTexture2D(GRITexture2D* tex2D) {};
-        virtual void GRIUpdateTexture3D(GRITexture3D* tex3D) {};
+        virtual void GRIUpdateTexture2D(GRITexture2D* tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,const uint8* data) {};
+        virtual void GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel,Texture2DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};
         virtual void GRIUpdateTextureCube(GRITextureCube* texCube) {};
-        virtual void GRISetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture) {};
-        virtual void GRISetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler) {}
+        virtual void GRISetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex) {};
+        virtual void GRISetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex) {}
         
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
 		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) {}

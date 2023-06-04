@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "VarType.h"
 namespace SkySnow
 {
 #define Max_Num_Vertex_Attribute 16
@@ -80,7 +80,7 @@ namespace SkySnow
 		BUT_DynamicBuffer		= 1 << 2,
 		BUT_StructuredBuffer	= 1 << 3,
 	};
-    
+
     enum class UniformBufferUsageType
     {
 		UBT_None = 0,
@@ -108,5 +108,87 @@ namespace SkySnow
 		PT_Trangles,
 		PT_Trangle_Strip,
 		PT_Num,
+	};
+	enum class SamplerFilter
+	{
+		SF_Point,
+		SF_Bilinear,
+		SF_Trilinear,
+		SF_AnisotropicPoint
+	};
+	enum class SamplerAddressMode
+	{
+		SAM_Wrap,
+		SAM_Clamp,
+		SAM_Mirror,
+		SAM_Border
+	};
+	enum class TextureUsageType : uint64
+	{
+		//No Use
+		TUT_None = 0,
+		//As RT Resolve
+		TUT_RenderTarget	= 1 << 0,
+		//Use a Shader Resource
+		TUT_ShaderResource	= 1 << 1
+	};
+
+	enum class PixelFormat
+	{
+		PF_None,
+		PF_R8,
+		PF_R8_UINT,
+		PR_R8_SINT,
+		PF_R16F,
+		PF_R16F_FILTER,
+		PF_R16_UINT,
+		PF_R16_SINT,
+		PF_R32F,
+		PF_R32_UINT,
+		PF_R32_SINT,
+		PF_R64_UINT,
+		PF_G8,
+		PF_G16,
+		PF_A8,
+		PF_R8G8,
+		PF_R8G8_UINT,
+		PF_R16G16_UINT,
+		PF_R32G32_UINT,
+		PF_G16R16,
+		PF_G16R16F,
+		PF_G16R16F_FILTER,
+		PF_G16R16_SNORM,
+		PF_G32R32F,
+		PF_R5G6B5_UNORM,
+		PF_R8G8B8A8,
+		PF_RGB_Float,
+		PF_R11G11B10_Float,
+		PF_R32G32B32_UINT,
+		PF_R32G32B32_SINT,
+		PF_R32G32B32F,
+		PF_R8G8B8A8_UINT,
+		PF_R8G8B8A8_SNORM,
+		PF_R16G16B16A16_UINT,
+		PF_R16G16B16A16_SINT,
+		PF_RGBA_Float,
+		PF_B5G5R5A1_UNORM,
+		PF_A8R8G8B8,
+		PF_A16B16G16R16,
+		PF_A2B10G10R10,
+		PF_A32B32G32R32F,
+		PF_ASTC_4x4,//8.00 bpp
+		PF_ASTC_6x6,//3.56 bpp
+		PF_ASTC_8x8,//2.00 bpp
+		PF_ASTC_10x10,//1.28 bpp
+		PF_ASTC_12x12,//0.89 bpp
+		PF_ETC1,
+		PF_ETC2_RGB,
+		PF_ETC2_RGBA,
+		PF_ETC2_R11_EAC,
+		PF_ETC2_RG11_EAC,
+		PF_D24,
+		PF_DepthStencil,
+		PF_ShadowDepth,
+		PF_End
 	};
 }

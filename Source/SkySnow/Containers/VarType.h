@@ -19,52 +19,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#define PLATFORM_UNKNOW 0
-#define PLATFORM_ANDROID 1
-#define PLATFORM_IOS 2
-#define PLATFORM_WINDOW 3
-#define PLATFORM_MAC 4
-#define PLATFORM_LINUX 5
-
-#define DEBUG 1
-
-
-#define DEFAUT_WADTH 800
-#define DEFAUT_HEIGHT 600
-#define SkySnow_LOG_TAG "SkySnow:"
-#define SkySnow_Name "SkySnowEngine"
-#define MAX_BUFFER_SIZE 1024*4
-#define PLATFORM PLATFORM_UNKNOW
-#include <iostream>
-#include "VarType.h"
-//config various platforms
-#if defined(__ANDROID__) || defined(ANDROID)
-#	undef  PLATFORM
-#	define PLATFORM PLATFORM_ANDROID
-#	include <android/log.h>
-#	include <trace_log.h>
-#elif defined(__APPLE__)
-#	undef  PLATFORM
-#	if defined(__arm__) || (TARGET_IPHONE_SIMULATOR)
-#		define PLATFORM PLATFORM_IOS
-#	else 
-#		define PLATFORM PLATFORM_MAC
-#	endif
-#	include <syslog.h>
-#	include <sys/fcntl.h>
-#	include <unistd.h>
-#elif defined(LINUX) || defined(__LINUX) || defined(__LINUX__) || defined(linux) || defined(__unix__)
-#	undef  PLATFORM
-#	define PLATFORM PLATFORM_LINUX
-#	include <syslog.h>
-#	include <sys/fcntl.h>
-#	include <unistd.h>
-#elif defined(_WIN32)||defined(__WIN32__)
-#	undef  PLATFORM
-#	define PLATFORM PLATFORM_WINDOW
-#	include <windows.h>
-#	include <fcntl.h>
-#	include <io.h>
-#endif
+#include <cstdint>
+namespace SkySnow
+{
+	using int8		= std::int8_t;
+	using uint8		= std::uint8_t;
+	using int16		= std::int16_t;
+	using uint16	= std::uint16_t;
+	using int32		= std::int32_t;
+	using uint32	= std::uint32_t;
+	using int64		= std::int64_t;
+	using uint64	= std::uint64_t;
+}
