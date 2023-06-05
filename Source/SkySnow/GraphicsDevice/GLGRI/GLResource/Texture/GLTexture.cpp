@@ -21,10 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GRIGLDrive.h"
 namespace SkySnow
 {
+    void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, GRITexture2DRef& handle)
+    {
 
+    }
     //Texture Internal call function
     namespace OGLTexture
     {

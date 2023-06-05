@@ -73,24 +73,46 @@ namespace SkySnow
 		virtual void GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle) final override;
 		//Create Uniform Buffer Declaration
 		virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle) final override;
+		//Texture2D
+		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, GRITexture2DRef& handle) final override;
+		//Texture2DArray
+		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, GRITexture2DArrayRef& handle) final override;
+		//Texture3D
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, GRITexture3DRef& handle) final override;
+		//TextureCube
+		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, GRITextureCubeRef& handle) final override;
+		//SamplerState
+		virtual void GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
-		//GRISet====================================================================================================================================
+		//GRIUpdateData=============================================================================================================================
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
 		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
 		//Update Uniform Buffer Data or Update Uniform Data
 		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents) final override;
-		//Set Curr ShaderPipeline Uniform Buffer Index
-		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex) final override;
-		//Set Buffer
+		//Update Texture2D Data
+		virtual void GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
+		//Update Texture3D Data and Texture2DArray
+		virtual void GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
+		//Update TextureCube Data
+		virtual void GRIUpdateTextureCube(GRITextureCube* texCube) final override;
+		//GRISet====================================================================================================================================
+		//Set Buffer VertexBuffer(StreamSource)
 		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) final override;
 		//set ShaderPipelineState
 		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
+		//Set Graphics Pipeline State
+		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
+		//Set Curr ShaderPipeline Uniform Buffer Index
+		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex) final override;
+		//Set Texture2D Texture2DArray Texture3D  TextureCube
+		virtual void GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex) final override;
+		//Set Texture Sampler State
+		virtual void GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex) final override;
+		//GRISet====================================================================================================================================
+		//GRIDraw Submit============================================================================================================================
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
-		//GRISet====================================================================================================================================
-
 	private:
         //vertex Element setup
 		void SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount);

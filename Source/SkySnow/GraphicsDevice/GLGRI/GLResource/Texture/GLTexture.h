@@ -30,9 +30,17 @@ namespace SkySnow
     //TextureCube
     //UnPackBuffer
     //Sampler:2D/2DArray/3D/Cube
-
+    //Texture Stage
     namespace OGLTexture
     {
-    
+        GRITexture* CreateGLTexture2D()
+        {
+
+        }
+
+        GRITexture* CreateTexture2DArray()
+        {
+
+        }
     }
 }

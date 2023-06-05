@@ -31,11 +31,28 @@ namespace SkySnow
     class GLBaseTexture
     {
     public:
-        GLBaseTexture()
+        GLBaseTexture(
+            uint32 inSizeX,
+            uint32 inSizeY,
+            uint32 inSizeZ,
+            uint32 inNumLevel,
+            uint32 inNumSamples,
+            uint32 inArraySize,
+            PixelFormat inFormat,
+            bool inIsCubemap,
+            TextureUsageType inTUT
+        )
+            : _GpuHandle(-1)
+            , _Type(-1)
         {
         }
         virtual ~GLBaseTexture()
         {
+        }
+
+        GLuint GetGpuHandle()
+        {
+            return _GpuHandle;
         }
     protected:
         void CreateTexture();
@@ -74,7 +91,7 @@ namespace SkySnow
         }
     };
 
-    class GRIGLTextureCube : public GRITextureCube , public GLBaseTexture
+    class GRIGLTextureCube : public GRITextureCube, public GLBaseTexture
     {
     public:
         GRIGLTextureCube()
@@ -82,5 +99,5 @@ namespace SkySnow
             , GLBaseTexture()
         {
         }
-    }
+    };
 }
