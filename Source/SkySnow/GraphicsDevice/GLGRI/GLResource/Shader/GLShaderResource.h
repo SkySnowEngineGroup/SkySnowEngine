@@ -132,5 +132,7 @@ namespace SkySnow
         //UBO会在此列表存储
         //0 is SingleDraw
         UniformBuffers					_InternalUBs;
+        //Sampler Uniform Info
+        GLUniformBufferSlot             _InternalUSamplers;
     };
 }

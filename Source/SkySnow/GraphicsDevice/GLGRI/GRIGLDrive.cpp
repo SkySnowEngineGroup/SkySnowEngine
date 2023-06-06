@@ -22,6 +22,7 @@
 //
 #include "GRIGLDrive.h"
 #include "GLShader.h"
+#include "GLTexture.h"
 namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
@@ -50,6 +51,7 @@ namespace SkySnow
 //            _GLContext = new GLContextLinux();
 #endif
         _GLContext->CreateGLContext();
+		OGLTexture::InitTextureFormat();
 		//OpenGL::InitialExtensions();
     }
 
@@ -107,7 +109,16 @@ namespace SkySnow
 			}
 		}
 	}
-
+    
+    void GRIGLDrive::GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex)
+    {
+        
+    }
+    
+    void GRIGLDrive::GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex)
+    {
+        
+    }
 	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
         _PendingState._OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(pipelineShaderState);

@@ -77,7 +77,7 @@ namespace SkySnow
 			return false;
 		}
 //		SN_LOG("OGL Shader Code:%s", shadercode);
-		int codeLength = strlen(shadercode);
+		int codeLength = (int)strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);
         GLint success;
@@ -102,7 +102,7 @@ namespace SkySnow
 
 		return true;
 	}
-
+    //Collect uniform var location and uniformBuffer location,binding at first runtime frame setup
     bool OGLShader::CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program)
     {
         //Collect Uniform Var
@@ -124,16 +124,23 @@ namespace SkySnow
                 GLint  size;
                 
                 glGetActiveUniform(program, i, maxLength, nullptr, &size, &type, uniformName);
+                std::string uStr = uniformName;
                 location = glGetUniformLocation(program, uniformName);
-                //Filter out parameters in UniformBlock
-                if(location != -1)
+                bool isUVar = uStr.find("_Sampler") == std::string::npos;
+                //收集Uniform变量分类收集，包含: UniformVar、UniformSampler、UniformSSBO ext
+                if(location != -1 && isUVar)//单纯收集Uniform Var
                 {
                     GLUniformSlot uSlot;
                     uSlot._Type     = type;
                     uSlot._Location = location;
                     uSlot._Size     = size;
                     block._UniformSlots[String2Hash(uniformName)] = uSlot;
-//                    SN_LOG("uniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+                    SN_LOG("Var UniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+                }
+                else if(location != -1 && !isUVar)//收集Sampler并设置绑定点
+                {
+                    CollectSamplerAndBinding(uniformName,type,location,size,pipelineShader);
+                    SN_LOG("Sampler UniformName:%s type:%d location:%d size:%d",uniformName,type,location,size);
                 }
             }
             //0 is SingleDraw
@@ -177,6 +184,23 @@ namespace SkySnow
         }
         glUseProgram(0);
         return true;
+    }
+    //Collect the sampler object, bind the location of the sampler object to the corresponding texture unit
+    //(the format of the sampler name is xx_0, this _0 is added when the material is parsed and recorded in
+    //the ShaderParameter of the material), bind the location of the sampler object to texture unit 0.
+    bool OGLShader::CollectSamplerAndBinding(char* uSName,GLenum type,GLuint location,GLint size,GLPipelineShader* pShader)
+    {
+        std::string uSStr = uSName;
+        std::string unitStr = uSStr.substr(uSStr.find("_Sampler") + 8);
+        int unitNum = std::stoi(unitStr);
+        GLUniformSlot uSlot;
+        uSlot._Location = location;
+        uSlot._Type     = type;
+        uSlot._Size     = size;
+        glUniform1i(uSlot._Location, unitNum);
+        pShader->_InternalUSamplers._UniformSlots[unitNum] = uSlot;
+        SN_LOG("Sampler Texture Unit Is:%d",unitNum);
+        //TODO: Support Bindless Texture
     }
 	//===============================================================================================
 }

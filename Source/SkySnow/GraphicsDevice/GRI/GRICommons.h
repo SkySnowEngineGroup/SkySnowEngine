@@ -133,7 +133,7 @@ namespace SkySnow
 		TUT_ShaderResource	= 1 << 1
 	};
 
-	enum class PixelFormat
+	enum PixelFormat
 	{
 		PF_None,
 		PF_R8,

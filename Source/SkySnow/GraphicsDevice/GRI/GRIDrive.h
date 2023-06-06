@@ -72,13 +72,13 @@ namespace SkySnow
         //Create Uniform Buffer Declaration
         virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl,GRIUniformBufferDescriptorRef& handle) = 0;
         //Texture2D
-        virtual void GRICreateTexture2D(uint32 sizex,uint32 sizey,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,GRITexture2DRef& handle) = 0;
+        virtual void GRICreateTexture2D(uint32 sizex,uint32 sizey,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data,GRITexture2DRef& handle) = 0;
         //Texture2DArray
-		virtual void GRICreateTexture2DArray(uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,GRITexture2DArrayRef& handle) = 0;
+		virtual void GRICreateTexture2DArray(uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle) = 0;
 		//Texture3D
-		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,GRITexture3DRef& handle) = 0;
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,uint8* data,GRITexture3DRef& handle) = 0;
 		//TextureCube
-		virtual void GRICreateTextureCube(uint32 size, uint8 format,uint32 numMips, TextureUsageType usageType,GRITextureCubeRef& handle) = 0;
+		virtual void GRICreateTextureCube(uint32 size, uint8 format,uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle) = 0;
         //SamplerState
         virtual void GRICreateSampler(const SamplerState& sState,GRISamplerStateRef& handle) = 0;
 		//GRICreate=======================================================================================================================

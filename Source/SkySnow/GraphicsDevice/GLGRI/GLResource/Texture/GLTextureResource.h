@@ -28,6 +28,7 @@
 #include "GRIResource.h"
 namespace SkySnow
 {
+    extern GLTextureFormat GGLTextureFormat[PixelFormat::PF_End];
     class GLBaseTexture
     {
     public:

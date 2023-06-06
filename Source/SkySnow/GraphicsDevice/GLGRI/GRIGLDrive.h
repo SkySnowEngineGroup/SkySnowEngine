@@ -41,6 +41,7 @@ namespace SkySnow
 			   Different rendering APIs inherit from this class and implement the functions of 
 			   different APIs with the same capability
 	*/
+    //TODO: Function description and parameter description
 	class GRIGLDrive : public GRIDrive
 	{
 	public:
@@ -74,13 +75,13 @@ namespace SkySnow
 		//Create Uniform Buffer Declaration
 		virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle) final override;
 		//Texture2D
-		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, GRITexture2DRef& handle) final override;
+		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle) final override;
 		//Texture2DArray
-		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, GRITexture2DArrayRef& handle) final override;
+		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle) final override;
 		//Texture3D
-		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, GRITexture3DRef& handle) final override;
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,uint8* data,GRITexture3DRef& handle) final override;
 		//TextureCube
-		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, GRITextureCubeRef& handle) final override;
+		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle) final override;
 		//SamplerState
 		virtual void GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle) final override;
 		//GRICreate=================================================================================================================================
@@ -119,6 +120,7 @@ namespace SkySnow
 		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
         void BindPipelineShaderState(GLGraphicPipeline& contextState);
         void BindUniformBuffer(GLGraphicPipeline& contextState);
+        void BindTextureForDraw(GLGraphicPipeline& contextState);
 	private:
 		//this drawcall setup GraphicsPipeline state
 		GLGraphicPipeline		    _PendingState;

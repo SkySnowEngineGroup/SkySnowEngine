@@ -24,7 +24,11 @@
 #include "GLProfiles.h"
 #include "GRICommons.h"
 #include "GRIResource.h"
+#include "GRIGLDrive.h"
 namespace SkySnow
 {
-
+    void GRIGLDrive::GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle)
+    {
+        
+    }
 }

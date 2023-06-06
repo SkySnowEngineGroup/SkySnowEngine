@@ -39,6 +39,7 @@ namespace SkySnow
 		bool CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle,const GLuint fshandle,GLuint& program);
     
         bool CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program);
-
+        //Collect Sampler
+        bool CollectSamplerAndBinding(char* uSName,GLenum type,GLuint location,GLint size,GLPipelineShader* pShader);
 	}
 }

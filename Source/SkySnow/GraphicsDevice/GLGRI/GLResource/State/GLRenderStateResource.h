@@ -27,4 +27,15 @@
 namespace SkySnow
 {
 
+    class GRIGLSamplerState : public GRISamplerState
+    {
+    public:
+        GRIGLSamplerState()
+            : GRISamplerState()
+            , _GpuHandle(-1)
+        {
+        }
+    public:
+        GLuint  _GpuHandle;
+    };
 }
