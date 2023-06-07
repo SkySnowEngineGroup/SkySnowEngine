@@ -206,8 +206,8 @@ namespace SkySnow
     class GRITexture2D : public GRITexture
     {
     public:
-        GRITexture2D(EGRIResourceType grt)
-            : GRITexture(GRT_Texture2D)
+        GRITexture2D(EGRIResourceType grt = GRT_None)
+            : GRITexture(grt != GRT_None ? grt : GRT_Texture2D)
         {
         }
         virtual ~GRITexture2D()

@@ -30,15 +30,29 @@ namespace SkySnow
     void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle)
     {
         GRIGLTexture2D* tex2D = dynamic_cast<GRIGLTexture2D*>(handle.GetReference());
+        PixelFormat pFormat = (PixelFormat)format;
+        const GLTextureFormat& gpFormat = GOpenGLTextureFormats[pFormat];
+        bool isSrgb = (uint64)usageType & (uint64)TextureUsageType::TUT_sRGB;
+        GLenum target = GL_TEXTURE_2D;
         GLuint texId;
         glGenTextures(1, &texId);
-        glBindTexture(GL_TEXTURE_2D, texId);
+        glBindTexture(target, texId);
         //不可变纹理
-        glTexStorage2D(GL_TEXTURE_2D, 0, GL_RGB, sizex, sizey);
-        glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, sizex, sizey, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glBindTexture(GL_TEXTURE_2D, 0);
+        glTexStorage2D(target, numMips,gpFormat._GLSizeInternalFormat[isSrgb], sizex, sizey);
+        if (gpFormat._IsCompressed)
+        {
+            //TODO:Image Size
+            //glCompressedTexSubImage2D(target,numMips, 0, 0, sizex, sizey, gpFormat._GLFormat, imageSize, data);
+        }
+        else
+        {
+            glTexSubImage2D(target, numMips, 0, 0, sizex, sizey, gpFormat._GLFormat, gpFormat._GLType, data);
+        }
+        
+        glBindTexture(target, 0);
         
         tex2D->_GpuHandle = texId;
+        tex2D->_Target    = target;
     }
     
     void GRIGLDrive::GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle)
@@ -80,5 +94,10 @@ namespace SkySnow
         {
             
         }
+
+		void OGLTexture::SetupTextureFormat(PixelFormat pFormat, const GLTextureFormat& glFormat)
+		{
+			GOpenGLTextureFormats[pFormat] = glFormat;
+		}
     }
 }

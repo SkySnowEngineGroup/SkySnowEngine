@@ -130,7 +130,8 @@ namespace SkySnow
 		//As RT Resolve
 		TUT_RenderTarget	= 1 << 0,
 		//Use a Shader Resource
-		TUT_ShaderResource	= 1 << 1
+		TUT_ShaderResource	= 1 << 1,
+		TUT_sRGB			= 1 << 2
 	};
 
 	enum PixelFormat

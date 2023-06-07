@@ -74,12 +74,15 @@ namespace SkySnow
     namespace OGLTexture
     {
         GRITexture* CreateGLTextureInternal();
+
+		void SetupTextureFormat(PixelFormat pFormat, const GLTextureFormat& glFormat);
+
 		void InitTextureFormat()
 		{
             // Initial texture format
-			for (int32 PF = 0; PF < PF_MAX; ++PF)
+			for (int32 i = 0; i < PF_End; ++i)
 			{
-				SetupTextureFormat(PixelFormat(PF), GLTextureFormat());
+				SetupTextureFormat(PixelFormat(i), GLTextureFormat());
 			}
 			SetupTextureFormat(PF_None, GLTextureFormat());
 			//GLTexture Format: InternalFormat InternalFormatSRGB Format Type bCompressed bBGRA
@@ -138,11 +141,6 @@ namespace SkySnow
 			SetupTextureFormat(PF_DepthStencil, GLTextureFormat(GL_DEPTH24_STENCIL8,				GL_NONE,									GL_DEPTH_STENCIL,	GL_UNSIGNED_INT_24_8, false, false));
 			SetupTextureFormat(PF_ShadowDepth,	GLTextureFormat(GL_DEPTH_COMPONENT16,				GL_DEPTH_COMPONENT16,						GL_DEPTH_COMPONENT, GL_UNSIGNED_INT,  false, false));//todo
 		}
-
-        inline void SetupTextureFormat(PixelFormat pFormat,const GLTextureFormat& glFormat)
-        {
-            GOpenGLTextureFormats[pFormat] = glFormat;
-        }
     }
 
 

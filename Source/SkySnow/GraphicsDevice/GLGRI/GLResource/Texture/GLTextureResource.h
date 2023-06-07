@@ -38,13 +38,20 @@ namespace SkySnow
             uint32 inSizeZ,
             uint32 inNumLevel,
             uint32 inNumSamples,
-            uint32 inArraySize,
             PixelFormat inFormat,
             bool inIsCubemap,
             TextureUsageType inTUT
         )
-            : _GpuHandle(-1)
-            , _Type(-1)
+            : _GpuHandle(0)
+            , _Target(-1)
+            , _SizeX(inSizeX)
+            , _SizeY(inSizeY)
+            , _SizeZ(inSizeZ)
+            , _NumLevel(inNumLevel)
+            , _NumSamples(inNumSamples)
+            , _PixelFormat(inFormat)
+            , _IsCubemap(inIsCubemap)
+            , _TextureUT(inTUT)
         {
         }
         virtual ~GLBaseTexture()
@@ -58,16 +65,31 @@ namespace SkySnow
     protected:
         void CreateTexture();
     public:
-        GLint   _GpuHandle;
-        GLenum  _Type;
+        bool                _IsCubemap;
+        GLuint              _GpuHandle;
+        GLenum              _Target;
+        uint32              _SizeX;
+        uint32              _SizeY;
+        uint32              _SizeZ;
+        uint32              _NumLevel;
+        uint32              _NumSamples;
+        PixelFormat         _PixelFormat;
+        TextureUsageType    _TextureUT;
     };
 
     class GRIGLTexture2D : public GRITexture2D , public GLBaseTexture
     {
     public:
-        GRIGLTexture2D()
+		GRIGLTexture2D(
+            uint32 inSizeX,
+			uint32 inSizeY,
+			uint32 inNumLevel,
+			uint32 inNumSamples,
+			PixelFormat inFormat,
+			TextureUsageType inTUT
+        )
             : GRITexture2D(GRT_Texture2D)
-            , GLBaseTexture()
+            , GLBaseTexture(inSizeX,inSizeY,0,inNumLevel,inNumSamples,inFormat,false,inTUT)
         {
         }
     };
@@ -75,9 +97,17 @@ namespace SkySnow
     class GRIGLTexture2DArray : public GRITexture2DArray , public GLBaseTexture
     {
     public:
-        GRIGLTexture2DArray()
+		GRIGLTexture2DArray(
+            uint32 inSizeX,
+			uint32 inSizeY,
+			uint32 inSizeZ,
+			uint32 inNumLevel,
+			uint32 inNumSamples,
+			PixelFormat inFormat,
+			TextureUsageType inTUT
+        )
             : GRITexture2DArray()
-            , GLBaseTexture()
+            , GLBaseTexture(inSizeX, inSizeY, inSizeZ, inNumLevel, inNumSamples,inFormat, false, inTUT)
         {
         }
     };
@@ -85,9 +115,17 @@ namespace SkySnow
     class GRIGLTexture3D : public GRITexture3D , public GLBaseTexture
     {
     public:
-        GRIGLTexture3D()
+		GRIGLTexture3D(
+            uint32 inSizeX,
+			uint32 inSizeY,
+			uint32 inSizeZ,
+			uint32 inNumLevel,
+			uint32 inNumSamples,
+			PixelFormat inFormat,
+			TextureUsageType inTUT
+        )
             : GRITexture3D(GRT_Texture3D)
-            , GLBaseTexture()
+            , GLBaseTexture(inSizeX, inSizeY, inSizeZ, inNumLevel, inNumSamples,inFormat, false, inTUT)
         {
         }
     };
@@ -95,9 +133,15 @@ namespace SkySnow
     class GRIGLTextureCube : public GRITextureCube, public GLBaseTexture
     {
     public:
-        GRIGLTextureCube()
+		GRIGLTextureCube(
+            uint32 inSize,
+			uint32 inNumLevel,
+			uint32 inNumSamples,
+			PixelFormat inFormat,
+			TextureUsageType inTUT
+        )
             : GRITextureCube()
-            , GLBaseTexture()
+            , GLBaseTexture(inSize,inSize,0,inNumLevel,inNumSamples,inFormat,true,inTUT)
         {
         }
     };
