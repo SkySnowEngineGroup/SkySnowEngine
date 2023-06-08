@@ -263,4 +263,27 @@ namespace SkySnow
         uint32 _Height;
         uint32 _Depth;
     };
+    extern PixelFormatInfo GPixelFormats[PF_End];
+	struct PixelFormatInfo
+	{
+		PixelFormatInfo() = delete;
+        PixelFormatInfo(
+            PixelFormat inPFormat,
+            const char* inName,
+            int32	inBlockSizeX,
+            int32	inBlockSizeY,
+            int32	inBlockSizeZ,
+            int32	inByteSize,
+            int32	inNumComponents,
+            bool	inIsSupport);
+
+		const char* _Name;
+		PixelFormat		_PFormat;
+		int32			_BlockSizeX;
+		int32			_BlockSizeY;
+		int32			_BlockSizeZ;
+		int32			_ByteSize;
+		int32			_NumComponents;
+		bool			_IsSupport;
+	};
 }
