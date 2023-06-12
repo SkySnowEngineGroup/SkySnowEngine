@@ -202,6 +202,9 @@ namespace SkySnow
         {
             SN_LOG("GRITexture Destruct.");
         }
+    private:
+        PixelFormat _Format;
+        
     };
     class GRITexture2D : public GRITexture
     {

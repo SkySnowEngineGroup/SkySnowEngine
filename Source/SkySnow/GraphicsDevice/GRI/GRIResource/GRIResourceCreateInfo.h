@@ -263,7 +263,7 @@ namespace SkySnow
         uint32 _Height;
         uint32 _Depth;
     };
-    extern PixelFormatInfo GPixelFormats[PF_End];
+    //Pixel block size and byteSizes
 	struct PixelFormatInfo
 	{
 		PixelFormatInfo() = delete;
@@ -286,4 +286,5 @@ namespace SkySnow
 		int32			_NumComponents;
 		bool			_IsSupport;
 	};
+    extern PixelFormatInfo GPixelFormats[PF_End];
 }

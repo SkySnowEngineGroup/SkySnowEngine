@@ -75,6 +75,7 @@ namespace SkySnow
 		//Create Uniform Buffer Declaration
 		virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle) final override;
 		//Texture2D
+        //create mipmap texture,you will pack all mipmap data to one data,SkySnowEngine not support generate mipmap texture
 		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle) final override;
 		//Texture2DArray
 		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle) final override;
@@ -92,10 +93,13 @@ namespace SkySnow
 		//Update Uniform Buffer Data or Update Uniform Data
 		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents) final override;
 		//Update Texture2D Data
+        //if updload mipmap data,you need call this function for numMap count
 		virtual void GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
 		//Update Texture3D Data and Texture2DArray
+        //if updload mipmap data,you need call this function for numMap count
 		virtual void GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
 		//Update TextureCube Data
+        //if updload mipmap data,you need call this function for numMap count
 		virtual void GRIUpdateTextureCube(GRITextureCube* texCube) final override;
 		//GRISet====================================================================================================================================
 		//Set Buffer VertexBuffer(StreamSource)

@@ -21,14 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GLTexture.h"
 #include "GLProfiles.h"
-#include "GRICommons.h"
-#include "RefCounted.h"
 #include "GRIResource.h"
+#include "GLTexture.h"
 namespace SkySnow
 {
-    extern GLTextureFormat GGLTextureFormat[PixelFormat::PF_End];
     class GLBaseTexture
     {
     public:
