@@ -32,7 +32,7 @@ namespace SkySnow
         PixelFormat pFormat = (PixelFormat)format;
         const GLTextureFormat& gpFormat = GGLTextureFormat[pFormat];
         bool isSrgb = (uint64)usageType & (uint64)TextureUsageType::TUT_sRGB;
-        GLenum target = GL_TEXTURE_2D;
+        GLenum target = numSamples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
         GLuint texId;
         glGenTextures(1, &texId);
         glBindTexture(target, texId);
@@ -71,7 +71,9 @@ namespace SkySnow
 
     void GRIGLDrive::GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
     {
-        
+        const Texture2DRegion uRegion = region;
+
+        const PixelFormatInfo formatInfo = GPixelFormats[tex2D->GetFormat()];
     }
 
     void GRIGLDrive::GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)

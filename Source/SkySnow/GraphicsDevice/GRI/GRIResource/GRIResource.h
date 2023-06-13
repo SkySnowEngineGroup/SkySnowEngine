@@ -191,68 +191,147 @@ namespace SkySnow
     };
     //Texture
     //2D/2DArray  3D/3DArray  Cube
-    class GRITexture : public GRIResource
-    {
-    public:
-        GRITexture(EGRIResourceType grt)
-            : GRIResource(grt)
-        {
-        }
-        virtual ~GRITexture()
-        {
-            SN_LOG("GRITexture Destruct.");
-        }
+	class GRITexture : public GRIResource
+	{
+	public:
+		GRITexture(EGRIResourceType grt, uint32 inNumMips, uint32 inNumSample, PixelFormat inFormat, TextureUsageType inTUT)
+			: GRIResource(grt)
+			, _NumMips(inNumMips)
+			, _NumSamples(inNumSample)
+			, _Format(inFormat)
+			, _TextureUseType(inTUT)
+		{
+		}
+		virtual ~GRITexture()
+		{
+			SN_LOG("GRITexture Destruct.");
+		}
+
+		uint32 GetNumMaps() const
+		{
+			return _NumMips;
+		}
+
+		uint32 GetNumSamples() const
+		{
+			return _NumSamples;
+		}
+
+		bool IsMultiSample() const
+		{
+			return _NumSamples > 1;
+		}
+
+		PixelFormat GetFormat() const
+		{
+			return _Format;
+		}
+
+		TextureUsageType GetTextureUsageType() const
+		{
+			return _TextureUseType;
+		}
     private:
-        PixelFormat _Format;
+		uint32				_NumMips;
+		uint32				_NumSamples;
+        PixelFormat			_Format;
+		TextureUsageType	_TextureUseType;
         
     };
     class GRITexture2D : public GRITexture
     {
     public:
-        GRITexture2D(EGRIResourceType grt = GRT_None)
-            : GRITexture(grt != GRT_None ? grt : GRT_Texture2D)
+        GRITexture2D(uint32 inSizeX,uint32 inSizeY,uint32 inNumMips, uint32 inNumSample, PixelFormat inFormat, TextureUsageType inTUT,EGRIResourceType grt = GRT_None)
+            : GRITexture(grt != GRT_None ? grt : GRT_Texture2D,inNumMips,inNumSample,inFormat,inTUT)
+			, _SizeX(inSizeX)
+			, _SizeY(inSizeY)
         {
         }
         virtual ~GRITexture2D()
         {
             SN_LOG("GRITexture2D Destruct.");
         }
+		uint32 GetSizeX() const
+		{
+			return _SizeX;
+		}
+		uint32 GetSizeY() const
+		{
+			return _SizeY;
+		}
+	private:
+		uint32 _SizeX;
+		uint32 _SizeY;
     };
     class GRITexture2DArray : public GRITexture2D
     {
     public:
-        GRITexture2DArray()
-            : GRITexture2D(GRT_Texture2DArray)
+        GRITexture2DArray(uint32 inSizeX, uint32 inSizeY,uint32 inSizeZ,uint32 inNumMips, uint32 inNumSample, PixelFormat inFormat, TextureUsageType inTUT)
+            : GRITexture2D(inSizeX, inSizeY,inNumMips,inNumSample, inFormat, inTUT,GRT_Texture2DArray)
+			, _SizeZ(inSizeZ)
         {
         }
         virtual ~GRITexture2DArray()
         {
             SN_LOG("GRITexture2DArray Destruct.");
         }
+		uint32 GetSizeZ() const
+		{
+			return _SizeZ;
+		}
+	private:
+		uint32 _SizeZ;
     };
     class GRITexture3D : public GRITexture
     {
     public:
-        GRITexture3D(EGRIResourceType grt)
-            : GRITexture(GRT_Texture3D)
+        GRITexture3D(uint32 inSizeX, uint32 inSizeY, uint32 inSizeZ, uint32 inNumMips, uint32 inNumSample, PixelFormat inFormat, TextureUsageType inTUT)
+            : GRITexture(GRT_Texture3D, inNumMips, 1, inFormat, inTUT)
+			, _SizeX(inSizeX)
+			, _SizeY(inSizeY)
+			, _SizeZ(inSizeZ)
         {
         }
         virtual ~GRITexture3D()
         {
             SN_LOG("GRITexture3D Destruct.");
         }
+
+		uint32 GetSizeX() const
+		{
+			return _SizeX;
+		}
+		uint32 GetSizeY() const
+		{
+			return _SizeY;
+		}
+		uint32 GetSizeZ() const
+		{
+			return _SizeZ;
+		}
+	private:
+		uint32 _SizeX;
+		uint32 _SizeY;
+		uint32 _SizeZ;
     };
     class GRITextureCube : public GRITexture
     {
     public:
-        GRITextureCube()
-            : GRITexture(GRT_TextureCube)
+        GRITextureCube(uint32 inSize,uint32 inNumMips, uint32 inNumSample, PixelFormat inFormat, TextureUsageType inTUT)
+            : GRITexture(GRT_TextureCube,inNumMips,1,inFormat,inTUT)
+			, _Size(inSize)
         {
         }
         virtual ~GRITextureCube()
         {
             SN_LOG("GRITextureCube Destruct.");
         }
+		uint32 GetSize() const
+		{
+			return _Size;
+		}
+	private:
+		uint32 _Size;
     };
     //PipelineStateEnd=============================================================================
     //Buffer about

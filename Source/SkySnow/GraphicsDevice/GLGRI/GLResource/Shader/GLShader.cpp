@@ -201,6 +201,7 @@ namespace SkySnow
         pShader->_InternalUSamplers._UniformSlots[unitNum] = uSlot;
         SN_LOG("Sampler Texture Unit Is:%d",unitNum);
         //TODO: Support Bindless Texture
+        return true;
     }
 	//===============================================================================================
 }
