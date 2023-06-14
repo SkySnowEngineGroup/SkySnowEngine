@@ -76,20 +76,20 @@ namespace SkySnow
 	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
         GRIGLBuffer* bufferGL = dynamic_cast<GRIGLBuffer*>(buffer);
-		if (_PendingState._OGLVertexDescriptor == nullptr)
+		if (_PendingState.GetVertexDescriptor() == nullptr)
 		{
 			SN_ERR("GRISetBuffer set GRIBuffer is nullptr.");
 			return;
 		}
-
-		GLVertexBuffers& vbos = _PendingState._OGLVertexDescriptor->_GLVertexBuffers;
+        GRIGLVertexDescriptor* oglVd = _PendingState.GetVertexDescriptor();
+		GLVertexBuffers& vbos = oglVd->_GLVertexBuffers;
 		if (vbos.find(bufferIndex) != vbos.end())
 		{
             GLVertexBufferSlot& vboMeta = vbos[bufferIndex];
-			vboMeta._GpuHandle = bufferGL->_GpuHandle;
-			vboMeta._Stride = bufferGL->GetStride();
+			vboMeta._GpuHandle  = bufferGL->_GpuHandle;
+			vboMeta._Stride     = bufferGL->GetStride();
 			vboMeta._BufferType = bufferGL->_BufferType;
-			vboMeta._Offset = offset;
+			vboMeta._Offset     = offset;
 			if (vboMeta._GLVertexElements.size() == 1)
 			{
 				vboMeta._GLVertexElements[0]._Offset = offset;
@@ -98,11 +98,11 @@ namespace SkySnow
 		else
 		{
             GLVertexBufferSlot vboMeta;
-			vboMeta._GpuHandle = bufferGL->_GpuHandle;
-			vboMeta._Stride = bufferGL->GetStride();
+			vboMeta._GpuHandle  = bufferGL->_GpuHandle;
+			vboMeta._Stride     = bufferGL->GetStride();
 			vboMeta._BufferType = bufferGL->_BufferType;
-			vboMeta._Offset = offset;
-			vbos[bufferIndex] = vboMeta;
+			vboMeta._Offset     = offset;
+			vbos[bufferIndex]   = vboMeta;
 			if (vboMeta._GLVertexElements.size() == 1)
 			{
 				vboMeta._GLVertexElements[0]._Offset = offset;
@@ -121,28 +121,32 @@ namespace SkySnow
     }
 	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-        _PendingState._OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(pipelineShaderState);
+//        _PendingState._OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(pipelineShaderState);
+        _PendingState._ShaderPipeline = pipelineShaderState;
 	}
 	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
 	{
-		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(graphicsShader);
+//		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(graphicsShader);
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
-		if (_PendingState._OGLShaderPipeline == nullptr)
+		if (_PendingState._ShaderPipeline.GetReference() != graphicsShader)
 		{
-			_PendingState._OGLShaderPipeline = shaderPipe;
+			_PendingState._ShaderPipeline = graphicsShader;
 		}
-		GLUniformBufferDesList& ubDesc = _PendingState._OGLUBDescriptor->_GLUniformBuffersDes;
+//        GLUniformBufferDesList& ubDesc = _PendingState._OGLUBDescriptor->_GLUniformBuffersDes;
+        GRIGLUniformBufferDescriptor* oglUBDesc = dynamic_cast<GRIGLUniformBufferDescriptor*>(_PendingState._UBODescriptor.GetReference());
+		GLUniformBufferDesList& ubDesc = oglUBDesc->_GLUniformBuffersDes;
+        
 		if (ubDesc.find(bufferIndex) != ubDesc.end())
 		{
 			ubDesc[bufferIndex]._UBType = uniformBuffer->_UniformBufferUsagType;
 			ubDesc[bufferIndex]._UBHashKey = uniformBuffer->_HashKey;
-			ubDesc[bufferIndex]._UinformBuffer = uniformBuffer;
+			ubDesc[bufferIndex]._UniformBuffer = buffer;
 		}
 		else {
 			GLUniformBufferSlotDesc ubDescriptor;
 			ubDescriptor._UBType = uniformBuffer->_UniformBufferUsagType;
 			ubDescriptor._UBHashKey	= uniformBuffer->_HashKey;
-			ubDescriptor._UinformBuffer = uniformBuffer;
+			ubDescriptor._UniformBuffer = buffer;
 			ubDesc[bufferIndex]	= ubDescriptor;
 		}
 	}
@@ -155,7 +159,8 @@ namespace SkySnow
 			SN_ERR("GRISetUniformBufferDescriptor set GRIUniformBufferDescriptor is nullptor.");
 			return;
 		}
-		_PendingState._OGLUBDescriptor = ides;
+//		_PendingState._OGLUBDescriptor = ides;
+        _PendingState._UBODescriptor = descriptor;
 	}
 	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
@@ -164,17 +169,17 @@ namespace SkySnow
 		{
 			_PendingState._PrimitiveType = gPipeline->_PrimitiveType;
 		}
-		if (gPipeline->_OGLShaderPipeline)
+		if (gPipeline->GetPipelineShader())
 		{
-            _PendingState._OGLShaderPipeline = gPipeline->_OGLShaderPipeline;
+            _PendingState._ShaderPipeline = gPipeline->_ShaderPipeline;
 		}
-		if (gPipeline->_OGLVertexDescriptor)
+		if (gPipeline->GetVertexDescriptor())
 		{
-			_PendingState._OGLVertexDescriptor = gPipeline->_OGLVertexDescriptor;
+			_PendingState._VertexDescriptor = gPipeline->_VertexDescriptor;
 		}
-		if (gPipeline->_OGLUBDescriptor)
+		if (gPipeline->GetUniformBufferDescriptor())
 		{
-			_PendingState._OGLUBDescriptor = gPipeline->_OGLUBDescriptor;
+			_PendingState._UBODescriptor = gPipeline->_UBODescriptor;
 		}
 	}
 
@@ -186,10 +191,10 @@ namespace SkySnow
 		int numElements;
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
-		SetupVertexFormatBinding(_PendingState, _PendingState._OGLVertexDescriptor, Max_Num_Vertex_Attribute, numElements);
+		SetupVertexFormatBinding(_PendingState, _PendingState.GetVertexDescriptor(), Max_Num_Vertex_Attribute, numElements);
 		
         //TODO Instance numInstance>1
-        glUseProgram(_PendingState._OGLShaderPipeline->_ProgramId);
+        glUseProgram(_PendingState.GetPipelineShader()->_ProgramId);
         glDrawArrays(drawMode, 0, numElements);
 	}
 	//GRISet==================================================================================================================================
@@ -197,7 +202,7 @@ namespace SkySnow
 	//GRIprivate==============================================================================================================================
     void GRIGLDrive::BindPipelineShaderState(GLGraphicPipeline& contextState)
     {
-        GLPipelineShader* shaderPipe = contextState._OGLShaderPipeline;
+        GLPipelineShader* shaderPipe = contextState.GetPipelineShader();
         //PepelineShader State
         glUseProgram(shaderPipe->_ProgramId);
         

@@ -117,25 +117,25 @@ namespace SkySnow
             psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
             psoCreateInfo._ShaderPipelineInfo._UniformBufferDescriptor = _UBODesc;
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
+            SN_LOG("_PipelineShaderRef Count:%d",_PipelineShaderRef.GetRefCount());
             _TestInit = true;
         }
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        
+//        SN_LOG("_PipelineShaderRef Start Count:%d",_PipelineShaderRef.GetRefCount());
         commandBuffer->CmdBeginViewport();
         commandBuffer->CmdSetGraphicsPipeline(_PSORef);
         
 //        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
 //        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
-        int tCount = 3;
-        for (int i = 0; i < tCount; i ++)
-        {
-            commandBuffer->CmdDrawPrimitive(1, 1);
-        }
+        
+        commandBuffer->CmdDrawPrimitive(1, 1);
         
         
         commandBuffer->CmdEndViewport();
         
         _GQueue->SubmitQueue(commandBuffer);
+//        SN_LOG("_PipelineShaderRef End Count:%d",_PipelineShaderRef.GetRefCount());
+//        SN_LOG("_PSORef Count:%d",_PSORef.GetRefCount());
     }
 
     void RenderSystem::PostUpdate()

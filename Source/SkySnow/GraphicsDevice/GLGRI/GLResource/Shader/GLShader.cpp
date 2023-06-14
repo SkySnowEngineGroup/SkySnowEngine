@@ -135,12 +135,12 @@ namespace SkySnow
                     uSlot._Location = location;
                     uSlot._Size     = size;
                     block._UniformSlots[String2Hash(uniformName)] = uSlot;
-                    SN_LOG("Var UniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+//                    SN_LOG("Var UniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
                 }
                 else if(location != -1 && !isUVar)//收集Sampler并设置绑定点
                 {
                     CollectSamplerAndBinding(uniformName,type,location,size,pipelineShader);
-                    SN_LOG("Sampler UniformName:%s type:%d location:%d size:%d",uniformName,type,location,size);
+//                    SN_LOG("Sampler UniformName:%s type:%d location:%d size:%d",uniformName,type,location,size);
                 }
             }
             //0 is SingleDraw
@@ -199,7 +199,7 @@ namespace SkySnow
         uSlot._Size     = size;
         glUniform1i(uSlot._Location, unitNum);
         pShader->_InternalUSamplers._UniformSlots[unitNum] = uSlot;
-        SN_LOG("Sampler Texture Unit Is:%d",unitNum);
+//        SN_LOG("Sampler Texture Unit Is:%d",unitNum);
         //TODO: Support Bindless Texture
         return true;
     }

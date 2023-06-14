@@ -34,18 +34,18 @@ namespace SkySnow
         GLGraphicPipeline()
 			: GRIGraphicsPipeline()
 			, _PrimitiveType(PrimitiveType::PT_Num)
-			, _OGLShaderPipeline(nullptr)
-            , _OGLVertexDescriptor(nullptr)
-            , _OGLUBDescriptor(nullptr)
+			, _ShaderPipeline(nullptr)
+            , _VertexDescriptor(nullptr)
+            , _UBODescriptor(nullptr)
 		{
 		}
 
         GLGraphicPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
 			: GRIGraphicsPipeline()
 			, _PrimitiveType(createInfo._PrimitiveType)
-            , _OGLShaderPipeline(dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader))
-			, _OGLUBDescriptor(dynamic_cast<GRIGLUniformBufferDescriptor*>(createInfo._ShaderPipelineInfo._UniformBufferDescriptor))
-			, _OGLVertexDescriptor(dynamic_cast<GRIGLVertexDescriptor*>(createInfo._ShaderPipelineInfo._VertexDescriptor))
+            , _ShaderPipeline(createInfo._ShaderPipelineInfo._PipelineShader)
+			, _VertexDescriptor(createInfo._ShaderPipelineInfo._VertexDescriptor)
+			, _UBODescriptor(createInfo._ShaderPipelineInfo._UniformBufferDescriptor)
 		{
 		}
 
@@ -53,12 +53,28 @@ namespace SkySnow
 		{
             SN_LOG("GLGraphicPipeline DesConstruct.");
 		}
+        
+        PrimitiveType   GetPrimitiveType() const
+        {
+            return _PrimitiveType;
+        }
+        GLPipelineShader* GetPipelineShader()
+        {
+            return dynamic_cast<GLPipelineShader*>(_ShaderPipeline.GetReference());
+        }
+        GRIGLVertexDescriptor* GetVertexDescriptor()
+        {
+            return dynamic_cast<GRIGLVertexDescriptor*>(_VertexDescriptor.GetReference());
+        }
+        GRIGLUniformBufferDescriptor* GetUniformBufferDescriptor()
+        {
+            return dynamic_cast<GRIGLUniformBufferDescriptor*>(_UBODescriptor.GetReference());
+        }
 	public:
-		PrimitiveType			_PrimitiveType;
-        GLPipelineShader*       _OGLShaderPipeline;
-        //Vertex Buffer Object Element Descriptor
-        GRIGLVertexDescriptor*           _OGLVertexDescriptor;
-        GRIGLUniformBufferDescriptor*    _OGLUBDescriptor;
+		PrimitiveType			        _PrimitiveType;
+        GRIPipelineShaderRef            _ShaderPipeline;
+        GRIVertexDescriptorRef          _VertexDescriptor;
+        GRIUniformBufferDescriptorRef   _UBODescriptor;
         
 	};
     class GLComputePipeline : public GRIComputePipeline

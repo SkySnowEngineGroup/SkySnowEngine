@@ -155,6 +155,7 @@ namespace SkySnow
         {
             SN_LOG("GRIGLUniformBuffer Destruct");
             ClearUniformData();
+            OGLBuffer::UBBitSet::BSInstance().ReleaseUBBindingIndex(_BindingIndex);
         }
 
         void SetUp(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
@@ -181,8 +182,7 @@ namespace SkySnow
                 }
                 glBufferData(GL_UNIFORM_BUFFER, _Size, (void*)(combindData), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
-                _BindingIndex = OGLBuffer::UBCounter::ICInstance().GetCount();
-                OGLBuffer::UBCounter::ICInstance().AddCount();
+                _BindingIndex = OGLBuffer::UBBitSet::BSInstance().GetUBBindingIndex();
                 delete[] combindData;
                 combindData = nullptr;
             }
@@ -261,7 +261,7 @@ namespace SkySnow
 
                 ubSlotDesc._UBType        = ubSlot._UBType;
                 ubSlotDesc._UBHashKey     = ubSlot._UBHashKey;
-                ubSlotDesc._UinformBuffer = dynamic_cast<GRIGLUniformBuffer*>(ubSlot._UniformBuffer);
+                ubSlotDesc._UniformBuffer = ubSlot._UniformBuffer;
                 _GLUniformBuffersDes[ubSlot._UBIndex] = ubSlotDesc;
             }
         }

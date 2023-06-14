@@ -28,11 +28,11 @@ namespace SkySnow
 	void GRIGLDrive::GRICreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle)
 	{
         GLGraphicPipeline* glPipeline = dynamic_cast<GLGraphicPipeline*>(handle.GetReference());
-        GLPipelineShader* shaderPipeline = dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader);
-        glPipeline->_PrimitiveType = createInfo._PrimitiveType;
-        glPipeline->_OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader);
-        glPipeline->_OGLVertexDescriptor = dynamic_cast<GRIGLVertexDescriptor*>(createInfo._ShaderPipelineInfo._VertexDescriptor);
-        glPipeline->_OGLUBDescriptor = dynamic_cast<GRIGLUniformBufferDescriptor*>(createInfo._ShaderPipelineInfo._UniformBufferDescriptor);
+//        GLPipelineShader* shaderPipeline = dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader);
+//        glPipeline->_PrimitiveType = createInfo._PrimitiveType;
+//        glPipeline->_OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(createInfo._ShaderPipelineInfo._PipelineShader);
+//        glPipeline->_OGLVertexDescriptor = dynamic_cast<GRIGLVertexDescriptor*>(createInfo._ShaderPipelineInfo._VertexDescriptor);
+//        glPipeline->_OGLUBDescriptor = dynamic_cast<GRIGLUniformBufferDescriptor*>(createInfo._ShaderPipelineInfo._UniformBufferDescriptor);
 	}
 
     void GRIGLDrive::GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle)

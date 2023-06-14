@@ -21,9 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRIResource.h"
 #include "GLProfiles.h"
 #include "NonCopyable.h"
 #include <unordered_map>
+#include <bitset>
 namespace SkySnow
 {
     class GRIGLUniformBuffer;
@@ -71,33 +73,59 @@ namespace SkySnow
         //A single draw is a list of uniform buffer owned by the current draw
         UniformBufferUsageType  _UBType;
         size_t                  _UBHashKey;
-        GRIGLUniformBuffer*     _UinformBuffer;
+        GRIUniformBufferRef     _UniformBuffer;
+        GRIGLUniformBuffer* GetUniformBuffer();
     };
 	namespace OGLBuffer
 	{
         void UniformVariableUpdate(const std::vector<std::pair<size_t, void*>>& newValue,GLUniformBufferSlot& internalValue);
-        //TODO Consider: Whether to use singletons for UBO count in the engine
-        class UBCounter : public SkySnow::NonCopyable
+        //使用std::bitset数据结构表达每一个UniformBuffer独一无二的Binding绑定点: 0表达未占用，1表达占用
+        class UBBitSet : public SkySnow::NonCopyable
         {
         private:
-            UBCounter() {}
-            ~UBCounter() {}
-        public:
-            static UBCounter& ICInstance()
+            UBBitSet()
             {
-                static UBCounter instance;
+                _BitSet.reset();
+            }
+            ~UBBitSet(){}
+        public:
+            static UBBitSet& BSInstance()
+            {
+                static UBBitSet instance;
                 return instance;
             }
-            void AddCount()
+            
+            int GetUBBindingIndex()
             {
-                _UBCount = _UBCount + 1;
+                int valueIndex = -1;
+                for(int i = 0; i < _BitSet.size(); i ++)
+                {
+                    if(!_BitSet[i])
+                    {
+                        valueIndex = i;
+                        break;
+                    }
+                }
+                if(valueIndex == -1)
+                {
+                    SN_WARN("The UBO has run out of bindingIndex 256.");
+                }
+                else
+                {
+                    _BitSet.set(valueIndex,1);
+                }
+                return valueIndex;
             }
-            int GetCount() const
+            
+            void ReleaseUBBindingIndex(const int bindingIndex)
             {
-                return _UBCount;
+                if(bindingIndex >= 0 && bindingIndex < _BitSet.size())
+                {
+                    _BitSet.set(bindingIndex,0);
+                }
             }
         private:
-            int _UBCount = 0;
+            std::bitset<256> _BitSet;
         };
 	}
 }

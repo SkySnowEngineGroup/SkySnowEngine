@@ -29,6 +29,7 @@
 namespace SkySnow
 {
 	//Resource base class
+    //as RefCounted base class, not extend RefCounted
 	class GRIResource
 	{
 	public:
@@ -51,13 +52,13 @@ namespace SkySnow
 		}
 		//RefCount add
 		//-----------------------------------------------------------
-		int Add()
+		inline int Add()
 		{
 			int newCount = m_Atomic.Add(std::memory_order_acquire);
 			return newCount;
 		}
 		//RefCount sub
-		int Release()
+		inline int Release()
 		{
 			int newCount = m_Atomic.Release(std::memory_order_release);
 			if (newCount == 0)
@@ -66,11 +67,11 @@ namespace SkySnow
 			}
 			return newCount;
 		}
-		int GetRefCount()
+		inline int RefCount()
 		{
 			return m_Atomic.GetCountRef(std::memory_order_relaxed);
 		}
-		bool IsValid()
+		inline bool IsValid()
 		{
 			return m_Atomic.IsValid(std::memory_order_relaxed);
 		}

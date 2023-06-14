@@ -20,30 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include <string>
-#include "ResourcePathConfig.h"
-namespace SkySnow
-{
-	//声明全局变量，并用extern标记，即声明又定义，保证定义
-	//只在该处进行定义初始化，别的地方定义初始化会报错
-	static const std::string g_RelativeMaterialPath = std::string(Resource_Path) + "/Media/Material/";
-	static const int g_String_Buffer_MaxLength = 128;
-	static char g_Null_Char = 0;
-	static const int g_Min_Capacity = 8;//最小8byte
-	static const unsigned NPOS = 0xffffffff;
-    static const uint64_t g_DefaultCullingMask = 1ULL << 63;
-    typedef int SkySnowSceneHandle;
-	//globle Function
-	static std::string GetMaterialAllPath(const std::string mpath)
-	{
-		return g_RelativeMaterialPath + mpath;
-	}
+#pragma once 
 
-#define Delete_Object(object) \
-		if(object) \
-		{ \
-			delete object; \
-			object = nullptr; \
-		}
-}
+#define Resource_Path "E:/SkySnowEngine/Resource"

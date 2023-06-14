@@ -25,6 +25,7 @@
 #include "GRIResource.h"
 namespace SkySnow
 {
+    //TODO: 核实计数器，Mark标记出所有计数位置
 	void GRIResource::FlushResourceRelease()
 	{
 	}

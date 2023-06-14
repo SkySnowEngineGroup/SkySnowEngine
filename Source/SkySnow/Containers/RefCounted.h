@@ -162,7 +162,7 @@ namespace SkySnow
 			return inputRef.m_Referenced != nullptr;
 		}
 
-		inline Referenced* GetReference()
+		inline Referenced* GetReference() const
 		{
 			return m_Referenced;
 		}

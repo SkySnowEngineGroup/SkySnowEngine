@@ -65,18 +65,18 @@ namespace SkySnow
 	}
     void GRIGLDrive::BindUniformBuffer(GLGraphicPipeline& contextState)
     {
-        GLPipelineShader* shaderPipe = contextState._OGLShaderPipeline;
-        GRIGLUniformBufferDescriptor* ubDesc = contextState._OGLUBDescriptor;
+        GLPipelineShader* shaderPipe = contextState.GetPipelineShader();
+        GRIGLUniformBufferDescriptor* ubDesc = contextState.GetUniformBufferDescriptor();
         if(ubDesc == nullptr)
         {
             //SN_ERR("Not set GRIUniformBufferDescriptor descriptor for UniformBuffer related processing.");
             return;
         }
         //UniformBuffer State
-        GLUniformBufferDesList& ubList = contextState._OGLUBDescriptor->_GLUniformBuffersDes;
+        GLUniformBufferDesList& ubList = ubDesc->_GLUniformBuffersDes;
         for(auto iter = ubList.begin(); iter != ubList.end(); iter ++)
         {
-            GRIGLUniformBuffer*  uniformBuffer = iter->second._UinformBuffer;
+            GRIGLUniformBuffer*  uniformBuffer = iter->second.GetUniformBuffer();
             UniformBuffers& internalUBs = shaderPipe->_InternalUBs;
             bool find_ub = internalUBs.find(uniformBuffer->_HashKey) != internalUBs.end();
             //Program Bind Binding
@@ -103,6 +103,11 @@ namespace SkySnow
                 uniformBuffer->_Dirty = false;
             }
         }
+    }
+    //Get Raw Pointer
+    GRIGLUniformBuffer* GLUniformBufferSlotDesc::GetUniformBuffer()
+    {
+        return dynamic_cast<GRIGLUniformBuffer*>(_UniformBuffer.GetReference());
     }
 	namespace OGLBuffer
 	{

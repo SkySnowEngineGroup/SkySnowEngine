@@ -1,6 +1,6 @@
 #
-# Copyright (c) 2020-2022 the NuwaEngine project.
-# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+# Copyright (c) 2020-2022 the SkySnowEngine project.
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,33 +20,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-#======
-# cmake文件，编译各个平台对应的IDE工程
-# 其中vs和xcode的工程文件是可以动态调试源码
-# android工程的是打包为aar或者so包，然后android中自己配置cmake链接源码进行动态调试
-#======
-#指定cmake版本
-#该链接是讲解如何使用camke的文件，可以参考使用
-#https://www.cnblogs.com/hgwang/p/9100343.html
 
-cmake_minimum_required(VERSION 3.10)
-
-#camke 准则
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
-	cmake_policy(SET CMP0074 NEW)
-endif()
-
-#工程名字
-project(SkySnow)
-
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-include(SkySnowCommon)
-include(SkySnowResourceConfig)
-
-set(DEST_INCLUDE_DIR include/Source)
-
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/Binaries)
-#设置exe文件运行存储路径
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries)
-
-add_subdirectory(Source)
+#配置资源路径到项目中
+set(Resource_Path "${CMAKE_SOURCE_DIR}/Resource")
+configure_file(
+    ${CMAKE_SOURCE_DIR}/Source/SkySnow/ResourcePathConfig.h.in
+    ${CMAKE_SOURCE_DIR}/Source/SkySnow/ResourcePathConfig.h
+)
+include_directories(${CMAKE_SOURCE_DIR}/Source/SkySnow)

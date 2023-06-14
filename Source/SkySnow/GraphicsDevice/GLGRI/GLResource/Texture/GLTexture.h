@@ -75,6 +75,8 @@ namespace SkySnow
     {
         GRITexture* CreateGLTextureInternal();
     
+        bool HasTextureUsageType(TextureUsageType curr,TextureUsageType target);
+    
         void InitTexParameterInternal();
 
 		void SetupTextureFormat(PixelFormat pFormat, const GLTextureFormat& glFormat);

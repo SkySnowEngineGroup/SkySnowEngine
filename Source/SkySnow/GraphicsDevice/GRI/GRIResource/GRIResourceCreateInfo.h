@@ -100,9 +100,9 @@ namespace SkySnow
             , _UniformBufferDescriptor(inUniformBufferDescriptor)
         {
         }
-        GRIPipelineShader*          _PipelineShader;
-        GRIVertexDescriptor*        _VertexDescriptor;
-        GRIUniformBufferDescriptor* _UniformBufferDescriptor;
+        GRIPipelineShaderRef          _PipelineShader;
+        GRIVertexDescriptorRef        _VertexDescriptor;
+        GRIUniformBufferDescriptorRef _UniformBufferDescriptor;
     };
     //Graphics Pipeline Create Info
 	class GRICreateGraphicsPipelineInfo
@@ -150,13 +150,13 @@ namespace SkySnow
 			}
 			return true;
 		}
-		PrimitiveType			_PrimitiveType;
+		PrimitiveType			    _PrimitiveType;
 
-		GRIBlendState*			_BlendState;
-		GRIRasterizerState*		_RasterizerState;
-		GRIDepthStencilState*	_DepthStencilState;
-		GRISamplerState*		_SamplerState;
-		GRIAssemblyState*		_AssemblyState;
+		GRIBlendStateRef			_BlendState;
+		GRIRasterizerStateRef		_RasterizerState;
+		GRIDepthStencilStateRef	    _DepthStencilState;
+		GRISamplerStateRef		    _SamplerState;
+		GRIAssemblyStateRef		    _AssemblyState;
         
         
         GRICreateShaderPipelineInfo _ShaderPipelineInfo;
@@ -202,7 +202,7 @@ namespace SkySnow
         uint8_t                 _UBIndex;
         UniformBufferUsageType  _UBType;
         size_t                  _UBHashKey;
-        GRIUniformBuffer*       _UniformBuffer;
+        GRIUniformBufferRef     _UniformBuffer;
     };
     //Sampler Create Info
     struct SamplerState
@@ -219,8 +219,10 @@ namespace SkySnow
             , _Height(0)
         {
         }
-        Texture2DRegion(uint32 inOffsetX, uint32 inOffset, uint32 inWidth, uint32 inHeight)
-            : _OffsetX(inOffsetX)
+        Texture2DRegion(uint32 inDestX,uint32 inDestY,uint32 inOffsetX, uint32 inOffset, uint32 inWidth, uint32 inHeight)
+            : _DestX(inDestX)
+            , _DestY(inDestY)
+            , _OffsetX(inOffsetX)
             , _OffsetY(inOffset)
             , _Width(inWidth)
             , _Height(inHeight)
@@ -229,6 +231,9 @@ namespace SkySnow
         //offset in texture
         uint32 _OffsetX;
         uint32 _OffsetY;
+        //image source data offset
+        uint32 _DestX;
+        uint32 _DestY;
         //target texture size
         uint32 _Width;
         uint32 _Height;
@@ -245,8 +250,11 @@ namespace SkySnow
             , _Depth(0)
         {
         }
-        Texture3DRegion(uint32 inOffsetX,uint32 inOffsetY,uint32 inOffsetZ,uint32 inWidth,uint32 inHeight,uint32 inDepth)
-            : _OffsetX(inOffsetX)
+        Texture3DRegion(uint32 inDestX,uint32 inDestY,uint32 inDestZ,uint32 inOffsetX,uint32 inOffsetY,uint32 inOffsetZ,uint32 inWidth,uint32 inHeight,uint32 inDepth)
+            : _DestX(inDestX)
+            , _DestY(inDestY)
+            , _DestZ(inDestZ)
+            , _OffsetX(inOffsetX)
             , _OffsetY(inOffsetY)
             , _OffsetZ(inOffsetZ)
             , _Width(inWidth)
@@ -258,6 +266,10 @@ namespace SkySnow
         uint32 _OffsetX;
         uint32 _OffsetY;
         uint32 _OffsetZ;
+        //image source data offset
+        uint32 _DestX;
+        uint32 _DestY;
+        uint32 _DestZ;
         //target texture size
         uint32 _Width;
         uint32 _Height;

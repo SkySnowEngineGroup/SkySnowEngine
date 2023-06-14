@@ -43,12 +43,11 @@ namespace SkySnow
         {
             return _GpuHandle;
         }
-    protected:
-        void CreateTexture();
     public:
         bool                _IsCubemap;
         GLuint              _GpuHandle;
         GLenum              _Target;
+        GLenum              _Attachment;
     };
 
     class GRIGLTexture2D : public GRITexture2D , public GLBaseTexture
