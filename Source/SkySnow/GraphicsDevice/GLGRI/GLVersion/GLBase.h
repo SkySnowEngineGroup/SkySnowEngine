@@ -42,6 +42,7 @@ namespace SkySnow
         static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
         static inline bool SupportUniformBuffer(){return true;}
         static inline bool SupportASTC(){return  false;}
+        static inline bool SupportStorageTexture() {return true;}
         
         static inline GLuint GetMajorVersion() { return _MajorVersion; };
         

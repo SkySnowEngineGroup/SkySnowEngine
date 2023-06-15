@@ -23,40 +23,131 @@
 #include "GRIGLDrive.h"
 #include "GLTextureResource.h"
 #include "GLTexture.h"
+#include <iostream>
+#include <algorithm>
 namespace SkySnow
 {
     GLTextureFormat GGLTextureFormat[PixelFormat::PF_End];
     void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle)
     {
         GRIGLTexture2D* tex2D = dynamic_cast<GRIGLTexture2D*>(handle.GetReference());
-        PixelFormat pFormat = (PixelFormat)format;
-        const GLTextureFormat& gpFormat = GGLTextureFormat[pFormat];
-        bool isSrgb = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
-        GLenum attachment = GL_NONE;
+        
+        const PixelFormat pFormat        = (PixelFormat)format;
+        const GLTextureFormat& gpFormat  = GGLTextureFormat[pFormat];
+        const PixelFormatInfo formatInfo = GPixelFormats[tex2D->GetFormat()];
+        
+        bool isSrgb                      = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
+        GLenum glFormat                  = gpFormat._GLFormat;
+        GLenum glType                    = gpFormat._GLType;
+        GLenum internalFotmat            = gpFormat._GLInternalFormat[isSrgb];
+        //if numSimples not 1, so this mrt texture(Msaa)
+        GLenum target                    = numSamples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
+        GLenum attachment                = GL_NONE;
+		//numMip = 0 Indicates a complete mip structure
+		//numMip = 1 mipmap is disabled
+		//numMip > 1 Externally defined Mipmap chain.Externally, divide the widthand height by 2 for jumping data
+        if (numMips == 0 && numSamples <= 1)
+        {
+            numMips = OGLTexture::CalMaxMipmapLevel(sizex, sizey);
+        }
+        else if (numMips == 0 && numSamples > 1)
+        {
+            numMips = 1;
+        }
+        //创建纹理对象
+        GLuint texId;
+        glGenTextures(1, &texId);
+        glBindTexture(target, texId);
+
+        if(numSamples > 1)//
+        {
+            glTexImage2DMultisample(target, numSamples, internalFotmat, sizex, sizey, GL_TRUE);
+        }
+        else//
+        {
+			//Texture Paramerer State
+			glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			if (OGLTexture::IsPowerOftwo(sizex) || OGLTexture::IsPowerOftwo(sizey))
+			{
+				glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			}
+			else
+			{
+				glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+				glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			}
+			//TODO: GL_TEXTURE_MAX_ANISOTROPY_EXT
+			glTexParameteri(target, GL_TEXTURE_MIN_FILTER, numMips > 1 ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST);
+			glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
+			glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, numMips - 1);
+
+            //分配纹理内存
+            if(OpenGL::SupportStorageTexture() && !gpFormat._IsCompressed)
+            {
+                glTexStorage2D(target, numMips,internalFotmat, sizex, sizey);
+            }
+            else
+            {
+                for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
+                {
+                    if(!gpFormat._IsCompressed)
+                    {
+                        glTexImage2D(
+                                     target,
+                                     mipIndex,
+                                     internalFotmat,
+                                     std::max<uint32>(1,sizex >> mipIndex),
+                                     std::max<uint32>(1,sizey >> mipIndex),
+                                     0,
+                                     glFormat,
+                                     glType,
+                                     nullptr);
+                    }
+                    else
+                    {
+                        uint32 image_w = std::max<uint32>(1,sizex >> mipIndex);
+                        uint32 image_h = std::max<uint32>(1,sizey >> mipIndex);
+                        const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
+                        glCompressedTexImage2D(
+                                               target,
+                                               mipIndex,
+                                               internalFotmat,
+                                               image_w,
+                                               image_h,
+                                               0,
+                                               imageSize,
+                                               nullptr);
+                    }
+                }
+            }
+            //更新纹理数据到纹理对象
+            if(data != nullptr)
+            {
+                const uint8* curData  = data;
+                GLenum internalFotmat = gpFormat._GLInternalFormat[isSrgb];
+                for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
+                {
+                    const int image_w = std::max<uint32>(1,sizex >> mipIndex);
+                    const int image_h = std::max<uint32>(1,sizey >> mipIndex);
+                    const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
+                    if(gpFormat._IsCompressed && OpenGL::SupportASTC())
+                    {
+                        glCompressedTexSubImage2D(target, mipIndex, 0, 0, image_w, image_h, glFormat, imageSize, curData);
+                    }
+                    else if(!gpFormat._IsCompressed)
+                    {
+                        glTexSubImage2D(target, mipIndex,0, 0, image_w, image_h, glFormat, glType, curData);
+                    }
+                    curData     += imageSize;
+                }
+            }
+        }
+        
         //TODO: depthstencil and resovle(MRT to normal rt)
         if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_RenderTarget))
         {
             GLenum attachment = GL_COLOR_ATTACHMENT0;
-        }
-        //if numSimples not 1, so this mrt texture(Msaa)
-        GLenum target = numSamples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
-        GLuint texId;
-        glGenTextures(1, &texId);
-        glBindTexture(target, texId);
-        //不可变纹理
-        glTexStorage2D(target, numMips,gpFormat._GLSizeInternalFormat[isSrgb], sizex, sizey);
-        if (gpFormat._IsCompressed)
-        {
-            if(OpenGL::SupportASTC())//Mac not check this Ext,with support window\android\ios
-            {
-                int imageSize = (sizex/GPixelFormats[pFormat]._BlockSizeX) * (sizex/GPixelFormats[pFormat]._BlockSizeY) * GPixelFormats[pFormat]._ByteSize;
-                glCompressedTexSubImage2D(target,numMips, 0, 0, sizex, sizey, gpFormat._GLInternalFormat[isSrgb], imageSize, data);
-            }
-        }
-        else
-        {
-            //TODO: Mipmap Data UpLoad To Texture,mipmap image source data update is not currently supported
-            glTexSubImage2D(target, numMips, 0, 0, sizex, sizey, gpFormat._GLFormat, gpFormat._GLType, data);
         }
         glBindTexture(target, 0);
         tex2D->_GpuHandle   = texId;
@@ -79,22 +170,31 @@ namespace SkySnow
 
     void GRIGLDrive::GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
     {
-        const Texture2DRegion uRegion = region;
-        const PixelFormatInfo formatInfo = GPixelFormats[tex2D->GetFormat()];
-        const GLTextureFormat glFormat   = GGLTextureFormat[tex2D->GetFormat()];
-        if(glFormat._IsCompressed)
-        {
-            SN_WARN("SkySnowEngine Not Support Update Compressed Image Data.");
-            return;
-        }
-        //TODO: Need support once update mipmap image source data
         GRIGLTexture2D* glTexture = dynamic_cast<GRIGLTexture2D*>(tex2D);
-        uint32 formatBpp = formatInfo._ByteSize;
+        
+        const Texture2DRegion uRegion    = region;
+        const PixelFormatInfo formatInfo = GPixelFormats[tex2D->GetFormat()];
+        const GLTextureFormat texFormat  = GGLTextureFormat[tex2D->GetFormat()];
+        
+        bool isCompressed          = texFormat._IsCompressed;
+        GLenum glFormat            = texFormat._GLFormat;
+        GLenum glType              = texFormat._GLType;
+        GLenum glTarget            = glTexture->_Target;
+        uint32 formatBpp           = formatInfo._ByteSize;
         //Row align
         glPixelStorei(GL_UNPACK_ROW_LENGTH, pitch / formatBpp);
         //pixel align
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glTexSubImage2D(glTexture->_Target, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, glFormat._GLFormat, glFormat._GLType, data);
+        if (isCompressed)
+        {
+            const int imageSize = (uRegion._Width / formatInfo._BlockSizeX) * (uRegion._Height / formatInfo._BlockSizeY) * formatInfo._ByteSize;
+            glCompressedTexSubImage2D(glTarget, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, imageSize,glFormat, data);
+        }
+        else
+        {
+            glTexSubImage2D(glTarget, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, glFormat, glType, data);
+        }
+        
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
@@ -117,19 +217,11 @@ namespace SkySnow
     //Texture Internal call function
     namespace OGLTexture
     {
-        //Init TexParameter
-        void InitTexParameterInternal()
-        {
-            
-        }
         bool HasTextureUsageType(TextureUsageType curr,TextureUsageType target)
         {
             return ((uint64)curr) & ((uint64)target);
         }
-        GRITexture* CreateGLTextureInternal()
-        {
-            return nullptr;
-        }
+        
         void SetupTextureFormat(PixelFormat pFormat, const GLTextureFormat& glFormat)
 		{
             GGLTextureFormat[pFormat] = glFormat;

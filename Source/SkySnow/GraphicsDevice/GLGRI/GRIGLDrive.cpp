@@ -121,18 +121,15 @@ namespace SkySnow
     }
 	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-//        _PendingState._OGLShaderPipeline = dynamic_cast<GLPipelineShader*>(pipelineShaderState);
         _PendingState._ShaderPipeline = pipelineShaderState;
 	}
 	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
 	{
-//		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(graphicsShader);
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
 		if (_PendingState._ShaderPipeline.GetReference() != graphicsShader)
 		{
 			_PendingState._ShaderPipeline = graphicsShader;
 		}
-//        GLUniformBufferDesList& ubDesc = _PendingState._OGLUBDescriptor->_GLUniformBuffersDes;
         GRIGLUniformBufferDescriptor* oglUBDesc = dynamic_cast<GRIGLUniformBufferDescriptor*>(_PendingState._UBODescriptor.GetReference());
 		GLUniformBufferDesList& ubDesc = oglUBDesc->_GLUniformBuffersDes;
         
@@ -159,7 +156,6 @@ namespace SkySnow
 			SN_ERR("GRISetUniformBufferDescriptor set GRIUniformBufferDescriptor is nullptor.");
 			return;
 		}
-//		_PendingState._OGLUBDescriptor = ides;
         _PendingState._UBODescriptor = descriptor;
 	}
 	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)

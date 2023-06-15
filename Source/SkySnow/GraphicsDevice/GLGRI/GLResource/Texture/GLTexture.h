@@ -73,11 +73,29 @@ namespace SkySnow
     //Texture Stage(引擎只支持不可变纹理)
     namespace OGLTexture
     {
-        GRITexture* CreateGLTextureInternal();
-    
+        inline uint32 CalMaxMipmapLevel(uint32 size)
+        {
+            uint32 mipCount = 1;
+            while(size >>= 1)
+            {
+                mipCount ++;
+            }
+            return mipCount;
+        }
+        inline uint32 CalMaxMipmapLevel(uint32 width,uint32 height)
+        {
+            return CalMaxMipmapLevel(width > height ? width : height);
+        }
+
+        inline bool IsPowerOftwo(uint32 value)
+        {
+            return ((value & (value - 1)) == 0);
+        }
+        inline uint32 CalMaxMipmapLevel(uint32 width,uint32 height,uint32 depth)
+        {
+            return CalMaxMipmapLevel(width > height ? width : height,depth);
+        }
         bool HasTextureUsageType(TextureUsageType curr,TextureUsageType target);
-    
-        void InitTexParameterInternal();
 
 		void SetupTextureFormat(PixelFormat pFormat, const GLTextureFormat& glFormat);
 

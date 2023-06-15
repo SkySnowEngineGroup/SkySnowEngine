@@ -25,12 +25,11 @@
 #include "ResourcePathConfig.h"
 namespace SkySnow
 {
-	//声明全局变量，并用extern标记，即声明又定义，保证定义
-	//只在该处进行定义初始化，别的地方定义初始化会报错
+    //Globle config for engine
 	static const std::string g_RelativeMaterialPath = std::string(Resource_Path) + "/Media/Material/";
 	static const int g_String_Buffer_MaxLength = 128;
 	static char g_Null_Char = 0;
-	static const int g_Min_Capacity = 8;//最小8byte
+	static const int g_Min_Capacity = 8;//min cap is 8byte
 	static const unsigned NPOS = 0xffffffff;
     static const uint64_t g_DefaultCullingMask = 1ULL << 63;
     typedef int SkySnowSceneHandle;
