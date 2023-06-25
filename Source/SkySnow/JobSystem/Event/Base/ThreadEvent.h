@@ -20,24 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RunnableThread.h"
-#include "RunnablePThread.h"
+#pragma once
+#include "NonCopyable.h"
+#include "LogAssert.h"
+#include <pthread.h>
+
 namespace SkySnow
 {
-
-	RunnableThread::RunnableThread()
+	class ThreadEvent
 	{
+	public:
+		ThreadEvent();
+		~ThreadEvent();
 
-	}
-	RunnableThread::~RunnableThread()
-	{
+		void Signal();
 
-	}
-	RunnableThread* RunnableThread::Create(Runnable* runable)
-	{
-		//Create real thread
-		RunnableThread* runnableThread = new RunnablePThread();
-		runnableThread->CreateThread(runable);
-		return runnableThread;
-	}
+		void Wait();
+
+		void Wait(int timeDelta);
+	private:
+		inline void LockEventMutex()
+		{
+			pthread_mutex_lock(&_Mutex);
+		}
+
+		inline void UnlockEventMutex()
+		{
+			pthread_mutex_unlock(&_Mutex);
+		}
+	private:
+		bool			_Initial = false;
+		pthread_mutex_t _Mutex;
+		pthread_cond_t	_Condition;
+	};
 }

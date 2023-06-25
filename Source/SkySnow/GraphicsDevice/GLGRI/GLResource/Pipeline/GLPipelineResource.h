@@ -26,6 +26,7 @@
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
 #include "GRIResourceCreateInfo.h"
+#include <vector>
 namespace SkySnow
 {
 	class GLGraphicPipeline : public GRIGraphicsPipeline
@@ -54,7 +55,7 @@ namespace SkySnow
             SN_LOG("GLGraphicPipeline DesConstruct.");
 		}
         
-        PrimitiveType   GetPrimitiveType() const
+        PrimitiveType GetPrimitiveType() const
         {
             return _PrimitiveType;
         }
@@ -70,12 +71,19 @@ namespace SkySnow
         {
             return dynamic_cast<GRIGLUniformBufferDescriptor*>(_UBODescriptor.GetReference());
         }
+        //this function use for _PendingState,other not use this function
+        void InitialPipelineState()
+        {
+            _Textures.resize(Max_Num_Texture_Unit);
+            _Samplers.resize(Max_Num_Sampler_Unit);
+        }
 	public:
 		PrimitiveType			        _PrimitiveType;
         GRIPipelineShaderRef            _ShaderPipeline;
         GRIVertexDescriptorRef          _VertexDescriptor;
         GRIUniformBufferDescriptorRef   _UBODescriptor;
-        
+        std::vector<GRITextureRef>      _Textures;
+        std::vector<GRISamplerStateRef> _Samplers;
 	};
     class GLComputePipeline : public GRIComputePipeline
     {

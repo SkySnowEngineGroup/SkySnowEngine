@@ -22,7 +22,6 @@
 //
 #pragma once
 #include "IJob.h"
-
 namespace SkySnow
 {
 	class AsyncJob : public IJob

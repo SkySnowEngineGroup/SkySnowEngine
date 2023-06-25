@@ -20,24 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RunnableThread.h"
-#include "RunnablePThread.h"
+#include "ThreadMutex.h"
 namespace SkySnow
 {
-
-	RunnableThread::RunnableThread()
+	ThreadMutex::ThreadMutex()
 	{
-
+		pthread_mutexattr_t    attr;
+		pthread_mutexattr_init(&attr);
+		pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+		pthread_mutex_init(&m_mutex, &attr);
+		pthread_mutexattr_destroy(&attr);
 	}
-	RunnableThread::~RunnableThread()
-	{
 
-	}
-	RunnableThread* RunnableThread::Create(Runnable* runable)
+	ThreadMutex::~ThreadMutex()
 	{
-		//Create real thread
-		RunnableThread* runnableThread = new RunnablePThread();
-		runnableThread->CreateThread(runable);
-		return runnableThread;
+		pthread_mutex_destroy(&m_mutex);
+	}
+
+	void ThreadMutex::Lock()
+	{
+		pthread_mutex_lock(&m_mutex);
+	}
+
+	void ThreadMutex::UnLock()
+	{
+		pthread_mutex_unlock(&m_mutex);
+	}
+
+	bool ThreadMutex::TryLock()
+	{
+		return pthread_mutex_trylock(&m_mutex) == 0;
 	}
 }

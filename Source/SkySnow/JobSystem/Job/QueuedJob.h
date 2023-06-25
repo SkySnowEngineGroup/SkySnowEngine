@@ -20,24 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RunnableThread.h"
-#include "RunnablePThread.h"
+#pragma once
+#include "IJob.h"
 namespace SkySnow
 {
-
-	RunnableThread::RunnableThread()
+	class QueuedJob : public IJob
 	{
-
-	}
-	RunnableThread::~RunnableThread()
-	{
-
-	}
-	RunnableThread* RunnableThread::Create(Runnable* runable)
-	{
-		//Create real thread
-		RunnableThread* runnableThread = new RunnablePThread();
-		runnableThread->CreateThread(runable);
-		return runnableThread;
-	}
+	public:
+		virtual void Execute() override;
+	};
 }

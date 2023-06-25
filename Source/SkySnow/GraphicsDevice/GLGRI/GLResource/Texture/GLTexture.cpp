@@ -147,7 +147,26 @@ namespace SkySnow
         //TODO: depthstencil and resovle(MRT to normal rt)
         if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_RenderTarget))
         {
-            GLenum attachment = GL_COLOR_ATTACHMENT0;
+            attachment = GL_COLOR_ATTACHMENT0;
+        }
+        else if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_DepthStencilRenderTarget))
+        {
+            attachment = (format == PF_DepthStencil) ? GL_DEPTH_STENCIL_ATTACHMENT : GL_DEPTH_ATTACHMENT;
+        }
+        else if(OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_ResolveRenderTarget))
+        {
+            if(format == PF_DepthStencil)
+            {
+                attachment = GL_DEPTH_STENCIL_ATTACHMENT;
+            }
+            else if(format == PF_ShadowDepth || format == PF_D24)
+            {
+                attachment = GL_DEPTH_ATTACHMENT;
+            }
+            else
+            {
+                attachment = GL_COLOR_ATTACHMENT0;
+            }
         }
         glBindTexture(target, 0);
         tex2D->_GpuHandle   = texId;
@@ -210,10 +229,6 @@ namespace SkySnow
         
     }
 
-    void GRIGLDrive::BindTextureForDraw(GLGraphicPipeline& contextState)
-    {
-        
-    }
     //Texture Internal call function
     namespace OGLTexture
     {

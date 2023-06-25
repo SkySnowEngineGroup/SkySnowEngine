@@ -20,24 +20,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RunnableThread.h"
-#include "RunnablePThread.h"
+#pragma once
+
 namespace SkySnow
 {
-
-	RunnableThread::RunnableThread()
-	{
-
-	}
-	RunnableThread::~RunnableThread()
-	{
-
-	}
-	RunnableThread* RunnableThread::Create(Runnable* runable)
-	{
-		//Create real thread
-		RunnableThread* runnableThread = new RunnablePThread();
-		runnableThread->CreateThread(runable);
-		return runnableThread;
-	}
+    class IEvent
+    {
+        
+    };
 }

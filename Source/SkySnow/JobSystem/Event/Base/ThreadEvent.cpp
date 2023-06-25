@@ -20,24 +20,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RunnableThread.h"
-#include "RunnablePThread.h"
+#include "ThreadEvent.h"
+
 namespace SkySnow
 {
-
-	RunnableThread::RunnableThread()
+	ThreadEvent::ThreadEvent()
 	{
-
+		if (pthread_mutex_init(&_Mutex, nullptr) == 0)
+		{
+			if (pthread_cond_init(&_Condition, nullptr) == 0)
+			{
+				_Initial = true;
+			}
+			else
+			{
+				pthread_mutex_destroy(&_Mutex);
+				SN_ERR("Create Mutex Fail.\n");
+			}
+		}
 	}
-	RunnableThread::~RunnableThread()
+	ThreadEvent::~ThreadEvent()
 	{
-
+		if (_Initial)
+		{
+			Signal();
+			LockEventMutex();
+			pthread_cond_destroy(&_Condition);
+			UnlockEventMutex();
+			pthread_mutex_destroy(&_Mutex);
+		}
 	}
-	RunnableThread* RunnableThread::Create(Runnable* runable)
+
+	void ThreadEvent::Signal()
 	{
-		//Create real thread
-		RunnableThread* runnableThread = new RunnablePThread();
-		runnableThread->CreateThread(runable);
-		return runnableThread;
+		LockEventMutex();
+		//todo multi threads
+		pthread_cond_signal(&_Condition);
+		UnlockEventMutex();
+	}
+
+	void ThreadEvent::Wait()
+	{
+		LockEventMutex();
+		pthread_cond_wait(&_Condition, &_Mutex);
+		UnlockEventMutex();
 	}
 }

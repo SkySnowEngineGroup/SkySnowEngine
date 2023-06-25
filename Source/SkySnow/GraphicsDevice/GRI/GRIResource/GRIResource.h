@@ -519,6 +519,7 @@ namespace SkySnow
         }
     };
     //Texture: Texture2D/Array Texture3D/Array TextureCube
+    typedef RefCountPtr<GRITexture>                 GRITextureRef;//Base class use for PipelineState
     typedef RefCountPtr<GRITexture2D>               GRITexture2DRef;
     typedef RefCountPtr<GRITexture2DArray>          GRITexture2DArrayRef;
     typedef RefCountPtr<GRITexture3D>               GRITexture3DRef;

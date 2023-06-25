@@ -25,6 +25,8 @@
 namespace SkySnow
 {
 #define Max_Num_Vertex_Attribute 16
+#define Max_Num_Texture_Unit 16
+#define Max_Num_Sampler_Unit 16
 #define Max_ShaderPipeline_UniformBuffer 6
 	enum GRIFeature
 	{

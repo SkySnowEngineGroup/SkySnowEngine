@@ -23,6 +23,8 @@
 #include "GRIGLDrive.h"
 #include "GLShader.h"
 #include "GLTexture.h"
+#include "GLTextureResource.h"
+#include "GLRenderStateResource.h"
 namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
@@ -53,6 +55,7 @@ namespace SkySnow
         _GLContext->CreateGLContext();
         OpenGL::InitialExtensions();
 		OGLTexture::InitTextureFormat();
+        _PendingState.InitialPipelineState();
     }
 
     void GRIGLDrive::Exit()
@@ -112,12 +115,14 @@ namespace SkySnow
     
     void GRIGLDrive::GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex)
     {
-        
+        GRITextureRef& texRef = _PendingState._Textures[textureIndex];
+        texRef = texture;
     }
     
     void GRIGLDrive::GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex)
     {
-        
+        GRISamplerStateRef& samplerRef = _PendingState._Samplers[samplerIndex];
+        samplerRef = sampler;
     }
 	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
@@ -183,6 +188,7 @@ namespace SkySnow
 	{
         //Bind Some About PipelineShader State
         BindPipelineShaderState(_PendingState);
+        BindTextureForDraw(_PendingState);
 		GLenum drawMode = GL_TRIANGLES;
 		int numElements;
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
@@ -196,6 +202,27 @@ namespace SkySnow
 	//GRISet==================================================================================================================================
 
 	//GRIprivate==============================================================================================================================
+    void GRIGLDrive::BindTextureForDraw(GLGraphicPipeline& contextState)
+    {
+        for(int iUnit = 0; iUnit < Max_Num_Texture_Unit; iUnit ++)
+        {
+            GRITextureRef texture = contextState._Textures[iUnit];
+            if(texture.GetReference() == nullptr)
+            {
+                continue;
+            }
+            glActiveTexture(GL_TEXTURE0 + iUnit);
+            GLBaseTexture* glTex = dynamic_cast<GLBaseTexture*>(texture.GetReference());
+            glBindTexture(glTex->_Target, glTex->_GpuHandle);
+            
+            GRISamplerStateRef sampler = contextState._Samplers[iUnit];
+            if(sampler.GetReference() != nullptr)
+            {
+                GRIGLSamplerState* glSampler = dynamic_cast<GRIGLSamplerState*>(sampler.GetReference());
+                glBindSampler(iUnit, glSampler->_GpuHandle);
+            }
+        }
+    }
     void GRIGLDrive::BindPipelineShaderState(GLGraphicPipeline& contextState)
     {
         GLPipelineShader* shaderPipe = contextState.GetPipelineShader();
@@ -208,6 +235,7 @@ namespace SkySnow
 
 	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount)
 	{
+        //TODO: VFB
 //		if (OpenGL::SupportVertexFormatBinding())
 //		{
 //
