@@ -95,6 +95,11 @@ namespace SkySnow
         {
             return CalMaxMipmapLevel(width > height ? width : height,depth);
         }
+        //如果是不可变纹理，将不会使用此接口
+        void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data);
+        void TexSubImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLenum type,const GLvoid* data);
+        void CompressedTexImage(GLenum target,GLint mipLevel,GLenum internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLsizei imageSize,const GLvoid* data);
+        void CompressedTexSubImage(GLenum target,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLsizei imageSize,const GLvoid* data);
         bool HasTextureUsageType(TextureUsageType curr,TextureUsageType target);
 
 		void SetupTextureFormat(PixelFormat pFormat, const GLTextureFormat& glFormat);

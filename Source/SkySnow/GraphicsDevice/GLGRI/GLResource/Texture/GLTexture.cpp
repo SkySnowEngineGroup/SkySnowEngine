@@ -232,6 +232,78 @@ namespace SkySnow
     //Texture Internal call function
     namespace OGLTexture
     {
+        void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data)
+        {
+            //GL_PROXY_TEXTURE_3D 代理纹理，用于查询是否支持某种格式(较为鸡肋功能)
+            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_CUBE_MAP_ARRAY || target == GL_TEXTURE_2D_ARRAY)
+            {
+                //GL_TEXTURE_CUBE_MAP_ARRAY GLES3.2\GL4.x
+                glTexImage3D(target,mipLevel,internalFormat,sizex,sizey,sizez,border,format,type,data);
+            }
+            else if (target == GL_TEXTURE_2D_MULTISAMPLE)//TODO: GL_TEXTURE_2D_MULTISAMPLE_ARRAY
+            {
+                glTexImage2DMultisample(target,numSamples,internalFormat,sizex,sizey,GL_TRUE);
+            }
+            else if(target == GL_TEXTURE_2D_MULTISAMPLE_ARRAY)
+            {
+                //TODO:
+            }
+            else//target: GL_TEXTURE_2D、GL_TEXTURE_CUBE_MAP_XX_X.....
+            {
+                glTexImage2D(target,mipLevel,internalFormat,sizex,sizey,border,format,type,data);
+            }
+        }
+        
+        void TexSubImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLenum type,const GLvoid* data)
+        {
+            if(data == nullptr)
+            {
+                SN_WARN("TextureData is Nullptr.");
+                return;
+            }
+            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY)
+            {
+                glTexSubImage3D(target,mipLevel,offsetx,offsety,offsetz,sizex,sizey,sizez,format,type,data);
+            }
+            else if(target == GL_TEXTURE_2D_MULTISAMPLE)
+            {
+                glTexImage2DMultisample(target,numSamples,format,sizex,sizey,false);
+            }
+            else if(target == GL_TEXTURE_2D_MULTISAMPLE_ARRAY)
+            {
+                //TODO: 如果有这方面的多重采样数组需求，可以去支持，目前看暂时没有什么场景需要这个能力
+            }
+            else//target: GL_TEXTURE_2D、GL_TEXTURE_CUBE_MAP_XX_X.....
+            {
+                glTexSubImage2D(target,mipLevel,offsetx,offsety,sizex,sizey,format,type,data);
+            }
+        }
+        
+        void CompressedTexImage(GLenum target,GLint mipLevel,GLenum internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLsizei imageSize,const GLvoid* data)
+        {
+            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY)
+            {
+                //GL_TEXTURE_CUBE_MAP_ARRAY: GLES3.2(width == height,otherwiser go wrong)
+                glCompressedTexImage3D(target,mipLevel,internalFormat,sizex,sizey,sizez,border,imageSize,data);
+            }
+            else//target: GL_TEXTURE_2D,GL_TEXTURE_CUBE_MAP_XXX_X....
+            {
+                glCompressedTexImage2D(target,mipLevel,internalFormat,sizex,sizey,border,imageSize,data);
+            }
+        }
+        
+        void CompressedTexSubImage(GLenum target,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLsizei imageSize,const GLvoid* data)
+        {
+            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY)
+            {
+                glCompressedTexSubImage3D(target,mipLevel,offsetx,offsety,offsetz,sizex,sizey,sizez,format,imageSize,data);
+            }
+            else//target: GL_TEXTURE_2D,GL_TEXTURE_CUBE_MAP_XXX_X....
+            {
+                glCompressedTexSubImage2D(target,mipLevel,offsetx,offsety,sizex,sizey,format,imageSize,data);
+            }
+        }
+        
         bool HasTextureUsageType(TextureUsageType curr,TextureUsageType target)
         {
             return ((uint64)curr) & ((uint64)target);
