@@ -23,6 +23,8 @@
 #include "RenderSystem.h"
 #include "Context.h"
 #include "SceneRenderer.h"
+#include "GRIResourceCreateInfo.h"
+#include "Hash.h"
 namespace SkySnow
 {
     RenderSystem::RenderSystem()
@@ -43,7 +45,6 @@ namespace SkySnow
     void RenderSystem::Update()
     {
         Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
-        
         if(!_TestInit)
         {
             _CMBPool = new GRICommandBufferPool();
@@ -53,39 +54,88 @@ namespace SkySnow
             _File = new File();
             _VsData = new Data();
             _FsData = new Data();
+            //TODO Shader SourceData Manage
             _File->ReadData(vsShaderPath, _VsData);
             _File->ReadData(fsShaderPath, _FsData);
-
+            //Create VS And PS
             _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
             _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
-            _PipelineShaderStateRef = CreatePipelineShaderState(_vsRef, _fsRef);
-            static float vertices[] = { -0.5f, -0.5f, 0.0f,
-                                        0.5f,  -0.5f, 0.0f,
-                                        0.0f,  0.5f,  0.0f};
-            SN_LOG("Vertex Size:%d",sizeof(vertices));
+            //Create ShaderPipeline
+            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
+            //Create UniformBuffer
+            //TODO UniformBuffer SourceData Manage
+            float* uColor  = new float[]{0,1,0,0};
+            float* uColor2 = new float[]{1,0,0,0};
+            UniformSlotList uSlot1;
+            uSlot1.push_back(UniformSlot("uColor", uColor, 4 * sizeof(float)));
+            uSlot1.push_back(UniformSlot("uColor2", uColor2, 4 * sizeof(float)));
+            _UBO_Md = CreateUniformBuffer(uSlot1,"TestUniformBlock",UniformBufferUsageType::UBT_MultiFrame);
+            
+            //Create Uniform Array
+            //TODO UniformBuffer SourceData Manage
+            float* test1 = new float[]{1,0,0,0};
+            float* test2 = new float[]{0,1,0,0};
+            float* test3 = new float[]{0,0,1,0};
+            UniformSlotList uSlot2;
+            uSlot2.push_back(UniformSlot("test1", test1, 4 * sizeof(float)));
+            uSlot2.push_back(UniformSlot("test2", test2, 4 * sizeof(float)));
+            uSlot2.push_back(UniformSlot("test3", test3, 4 * sizeof(float)));
+            _UBO_Sd = CreateUniformBuffer(uSlot2,"UniformArray",UniformBufferUsageType::UBT_UV_SingleDraw);
+            
+            UniformBufferList ubSlot;
+            ubSlot.push_back(UniformBufferSlot(0, "UniformArray",UniformBufferUsageType::UBT_UV_SingleDraw,_UBO_Sd));
+            ubSlot.push_back(UniformBufferSlot(1, "TestUniformBlock",UniformBufferUsageType::UBT_MultiFrame,_UBO_Md));
+            _UBODesc = CreateUniformDescriptor(ubSlot);
+            
+            //TODO UniformBuffer SourceData Manage
+            float* vertices = new float[]{ -0.5f, -0.5f, 0.0f,
+                                           0.5f,  -0.5f, 0.0f,
+                                           0.0f,  0.5f,  0.0f};
             _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-                                                    sizeof(vertices),
-                                                    3,
-                                                    vertices);
-
-            GRICreateGraphicsPipelineStateInfo psoCreateInfo;
+                                            9 * sizeof(float),
+                                            3,
+                                            vertices);
+            //TODO UniformBuffer SourceData Manage
+            float* colors = new float[]{ 1.0f, 0.0f, 0.0f, 1.0,
+                                         0.0f, 1.0f, 0.0f, 1.0f,
+                                         0.0f, 0.0f, 1.0f, 1.0f};
+            _ColorBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+                                           12 * sizeof(float),
+                                           4,
+                                           colors);
+            VertexElementList veList;
+            //bufferindex attritubeindex stride offset
+            veList.push_back(VertexElementSlot(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
+            veList.push_back(VertexElementSlot(1,1,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
+            _VertexDescriptor = CreateVertexDescriptor(veList);
+            //Consider: Need?
+//            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef,_VertexDeclaration);
+            
+            GRICreateGraphicsPipelineInfo psoCreateInfo;
             psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
-            _PSORef = CreateGraphicsPipelineState(psoCreateInfo);
+            psoCreateInfo._ShaderPipelineInfo._PipelineShader = _PipelineShaderRef;
+            psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
+            psoCreateInfo._ShaderPipelineInfo._UniformBufferDescriptor = _UBODesc;
+            _PSORef = CreateGraphicsPipeline(psoCreateInfo);
+            SN_LOG("_PipelineShaderRef Count:%d",_PipelineShaderRef.GetRefCount());
             _TestInit = true;
         }
-        
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        
+//        SN_LOG("_PipelineShaderRef Start Count:%d",_PipelineShaderRef.GetRefCount());
         commandBuffer->CmdBeginViewport();
+        commandBuffer->CmdSetGraphicsPipeline(_PSORef);
         
-        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
-        commandBuffer->CmdSetPipelineShaderState(_PipelineShaderStateRef);
-        commandBuffer->CmdSetGraphicsPipelineState(_PSORef);
-        commandBuffer->CmdDrawPrimitive(1,1);
+//        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
+//        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
+        
+        commandBuffer->CmdDrawPrimitive(1, 1);
+        
         
         commandBuffer->CmdEndViewport();
         
         _GQueue->SubmitQueue(commandBuffer);
+//        SN_LOG("_PipelineShaderRef End Count:%d",_PipelineShaderRef.GetRefCount());
+//        SN_LOG("_PSORef Count:%d",_PSORef.GetRefCount());
     }
 
     void RenderSystem::PostUpdate()

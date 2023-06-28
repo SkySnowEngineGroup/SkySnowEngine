@@ -41,14 +41,27 @@ namespace SkySnow
 	{
 		GRI->GRIDrawPrimitive(_NumPrimitive, _NumInstance);
 	}
-	void CmdSetPipelineShaderStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void CmdSetPipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetPipelineShaderState(_PipelineShaderState);
+		GRI->GRISetPipelineShader(_PipelineShaderState);
 	}
-	void CmdSetGraphicsPipelineStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void CmdSetGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetGraphicsPipelineState(_PipelineState);
+		GRI->GRISetGraphicsPipeline(_PipelineState);
 	}
+    void CmdSetShaderParameterCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRISetShaderParameter(_PipelineShader, _UniformBuffer, _UBIndex);
+    }
+    void CmdUpdateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRIUpdateUniformBuffer(_UniformBuffer, _UBData);
+    }
+
+    void CmdSetUniformBufferDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRISetUniformBufferDescriptor(_UBDescriptor);
+    }
 	//===============================================================================
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
@@ -60,9 +73,9 @@ namespace SkySnow
 		GRI->GRICreateFragmentShader(_FsCode, _Handle);
 	}
 
-	void GRICreatePipelineShaderStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void GRICreatePipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreatePipelineShaderState(_Handle);
+		GRI->GRICreatePipelineShader(_Handle);
 	}
 
 	void GRICreateBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
@@ -70,8 +83,23 @@ namespace SkySnow
 		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data, _Handle);
 	}
 
-	void GRICreateGraphicsPipelineStateCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	void GRICreateGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateGraphicsPipelineState(_PsoInfo,_Handle);
+		GRI->GRICreateGraphicsPipeline(_PsoInfo,_Handle);
 	}
+
+    void GRICreateVertexDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRICreateVertexDescriptor(_VertexElementList, _Handle);
+    }
+
+    void GRICreateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRICreateUniformBuffer(_USlotList,_UBName,_UBType,_Handle);
+    }
+    
+    void GRICreateUniformDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRICreateUniformDescriptor(_UBSlotList, _Handle);
+    }
 }

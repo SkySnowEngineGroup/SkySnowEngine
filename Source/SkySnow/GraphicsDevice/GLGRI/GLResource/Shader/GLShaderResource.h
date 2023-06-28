@@ -25,15 +25,15 @@
 #include "GRICommons.h"
 #include "RefCounted.h"
 #include "GRIResource.h"
+#include "GLBufferResource.h"
 namespace SkySnow
 {
-	//Shader Resource
-	class GLShaderBase //: public RefThreadSafeCounted
+	//Shader Resource Base Class Internal
+	class GLShaderBase
 	{
 	public:
-		GLShaderBase(GLenum GLTypeEnum, ShaderFrequency shaderFrequency)
+		GLShaderBase(GLenum GLTypeEnum)
 			: _GLTypeEnum(GLTypeEnum)
-			, _ShaderFrequency(shaderFrequency)
 			, _GpuHandle(0)
 #if Debug_Shader
 			, _ShaderCode(nullptr)
@@ -49,19 +49,18 @@ namespace SkySnow
 
 	public:
 		GLenum			_GLTypeEnum;//Shader Type at OGL
-		ShaderFrequency _ShaderFrequency;
 		GLuint			_GpuHandle;
 #if Debug_Shader
 		const char*		_ShaderCode;
 		std::string		mShaderName;
 #endif
 	};
-
+    //顶点着色器
 	class GLVertexShader : public GLShaderBase , public GRIVertexShader
 	{
 	public:
 		GLVertexShader()
-			: GLShaderBase(GL_VERTEX_SHADER,SF_Vertex)
+			: GLShaderBase(GL_VERTEX_SHADER)
 			, GRIVertexShader()
 		{
 		}
@@ -72,12 +71,12 @@ namespace SkySnow
 		}
 	private:
 	};
-
+    //片元着色器
 	class GLFragmentShader : public GLShaderBase , public GRIFragmentShader
 	{
 	public:
 		GLFragmentShader()
-			: GLShaderBase(GL_FRAGMENT_SHADER, SF_Fragement)
+			: GLShaderBase(GL_FRAGMENT_SHADER)
 			, GRIFragmentShader()
 		{
 		}
@@ -88,5 +87,52 @@ namespace SkySnow
 		}
 	};
 
-	
+    //GL Program
+	typedef std::unordered_map<size_t, GLUniformBufferSlot> UniformBuffers;
+    class GLPipelineShader : public GRIPipelineShader
+    {
+    public:
+        GLPipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
+            : GRIPipelineShader()
+            , _ProgramId(0)
+            , _VertexShader(vs)
+            , _FragmentShader(fs)
+        {
+        }
+        
+        ~GLPipelineShader()
+        {
+			_InternalUBs.clear();
+            SN_LOG("GLPipelineShader DesConstruct");
+        }
+        inline GLVertexShader* GetVertexShader() { return dynamic_cast<GLVertexShader*>(_VertexShader.GetReference()); }
+        inline GLFragmentShader* GetFragmentShader() { return dynamic_cast<GLFragmentShader*>(_FragmentShader.GetReference()); }
+
+        const GLShaderBase* GetShader(ShaderFrequency sf)
+        {
+            switch (sf)
+            {
+            case SkySnow::SF_Vertex:
+                return GetVertexShader();
+                break;
+            case SkySnow::SF_Fragement:
+                return GetFragmentShader();
+                break;
+            default:
+                break;
+            }
+            return nullptr;
+        }
+    public:
+        GLuint							_ProgramId;
+		//VertexShader
+        GRIVertexShaderRef              _VertexShader;
+		//FragmentShader
+        GRIFragmentShaderRef            _FragmentShader;
+        //UBO会在此列表存储
+        //0 is SingleDraw
+        UniformBuffers					_InternalUBs;
+        //Sampler Uniform Info
+        GLUniformBufferSlot             _InternalUSamplers;
+    };
 }

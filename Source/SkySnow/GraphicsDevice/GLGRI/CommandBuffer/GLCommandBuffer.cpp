@@ -25,6 +25,8 @@
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
 #include "GLPipelineResource.h"
+#include "GRIPipelineCache.h"
+#include "GRI.h"
 namespace SkySnow
 {
 	GLRenderCommandBuffer::GLRenderCommandBuffer()
@@ -72,58 +74,36 @@ namespace SkySnow
 	{
 		Alloc_CommandSet(CmdEndViewportCommand)();
 	}
-	//ResourceCreate====================================================================
-	GRIVertexShaderRef GLRenderCommandBuffer::CreateVertexShader(const char* vsCode)
-	{
-		GRIVertexShaderRef handle = new GLVertexShader();
-		Alloc_CommandCreate(GRICreateVertexShaderCommand, handle, vsCode);
-		return handle;
-	}
 
-	GRIFragmentShaderRef GLRenderCommandBuffer::CreateFragmentShader(const char* fsCode)
-	{
-		GRIFragmentShaderRef handle = new GLFragmentShader();
-		Alloc_CommandCreate(GRICreateFragmentShaderCommand,handle,fsCode);
-		return handle;
-	}
-
-	GRIPipelineShaderStateRef GLRenderCommandBuffer::CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
-	{
-		GRIPipelineShaderStateRef handle = new GLPipelineShaderState(vs,fs);
-		Alloc_CommandCreate(GRICreatePipelineShaderStateCommand,handle);
-		return handle;
-	}
-
-	GRIBufferRef GLRenderCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
-	{
-		GRIBufferRef handle = new GLBuffer(usageType, size, stride, data);
-		Alloc_CommandCreate(GRICreateBufferCommand,handle,usageType, size, stride, data);
-		return handle;
-	}
-
-	GRIGraphicsPipelineStateRef GLRenderCommandBuffer::CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
-	{
-		GRIGraphicsPipelineStateRef handle = new GLGraphicPipelineState(createInfo);
-		Alloc_CommandCreate(GRICreateGraphicsPipelineStateCommand,createInfo, handle);
-		return handle;
-	}
 	//ResourceSet====================================================================
-	void GLRenderCommandBuffer::CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
+	void GLRenderCommandBuffer::CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
-		Alloc_CommandSet(CmdSetBufferCommand)(BufferInfoId, buffer, offset);
+		Alloc_CommandSet(CmdSetBufferCommand)(bufferIndex, buffer, offset);
 	}
 	void GLRenderCommandBuffer::CmdDrawPrimitive(int numPrimitive, int numInstance)
 	{
 		Alloc_CommandSet(CmdDrawPrimitiveCommand)(numPrimitive, numInstance);
 	}
-	void GLRenderCommandBuffer::CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+	void GLRenderCommandBuffer::CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-		Alloc_CommandSet(CmdSetPipelineShaderStateCommand)(pipelineShaderState);
+		Alloc_CommandSet(CmdSetPipelineShaderCommand)(pipelineShaderState);
 	}
-	void GLRenderCommandBuffer::CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	void GLRenderCommandBuffer::CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
 	{
-		Alloc_CommandSet(CmdSetGraphicsPipelineStateCommand)(pipelineState);
+		Alloc_CommandSet(CmdSetGraphicsPipelineCommand)(pipelineState);
 	}
+    void GLRenderCommandBuffer::CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex)
+    {
+        Alloc_CommandSet(CmdSetShaderParameterCommand)(graphicsShader,buffer,bufferIndex);
+    }
+    void GLRenderCommandBuffer::CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents)
+    {
+        Alloc_CommandSet(CmdUpdateUniformBufferCommand)(buffer,contents);
+    }
+    void GLRenderCommandBuffer::CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
+    {
+        Alloc_CommandSet(CmdSetUniformBufferDescriptorCommand)(descriptor);
+    }
 	void GLRenderCommandBuffer::CmdResourceSetExecutor()
 	{
         GRICommandBase* cmd = _Head;

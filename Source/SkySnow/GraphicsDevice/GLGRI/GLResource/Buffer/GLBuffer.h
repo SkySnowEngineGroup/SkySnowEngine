@@ -21,28 +21,111 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRIResource.h"
 #include "GLProfiles.h"
+#include "NonCopyable.h"
+#include <unordered_map>
+#include <bitset>
 namespace SkySnow
 {
-	//Buffer Desicr infor��vertex index SSBO
-	struct GLBufferInfo
-	{
-		GLBufferInfo()
-			: _GpuHandle(0)
-			, _BufferType(0)
-			, _Stride(0)
-			, _Offset(0)
-		{
-		}
-		GLuint		_GpuHandle;
-		GLenum		_BufferType;
-		int			_Stride;
-		int			_Offset;
-	};
-
-
+    class GRIGLUniformBuffer;
+	struct GLVertexElement;
+	struct GLVertexBufferSlot;
+	typedef std::unordered_map<int, GLVertexElement>         GLVertexElements;
+	typedef std::unordered_map<int, GLVertexBufferSlot>      GLVertexBuffers;
+    //Vertex Element Info:Vertex Attritube Info
+    struct GLVertexElement
+    {
+        //vertex element type:GL_FLOAT or GL_SHORT
+        GLenum  _Type;
+        GLuint  _Offset;
+        GLuint  _Stride;
+        uint8_t _AttributeIndex;
+        uint8_t _bNormalized;
+        uint8_t _bConvertToFloat;
+    };
+    //Vectex Buffer Object Info
+    struct GLVertexBufferSlot
+    {
+        GLenum              _BufferType;
+        GLuint              _GpuHandle;
+        GLuint              _Stride;
+        GLuint              _Offset;
+        GLVertexElements    _GLVertexElements;
+    };
+    //Uniform Slot Parameter PipelineShader 内部使用
+    struct GLUniformSlot
+    {
+        GLenum _Type;
+        GLuint _Location;
+        GLint  _Size;
+    };
+    //Uniform Buffer Block PipelineShader 内部使用
+    struct GLUniformBufferSlot
+    {
+        GLuint          _BindingIndex = -1;
+        GLuint          _BlockIndex = -1;
+        GLuint          _UBGpuHandle = -1;
+        std::unordered_map<size_t, GLUniformSlot>    _UniformSlots;
+    };
+    struct GLUniformBufferSlotDesc
+    {
+        //A single draw is a list of uniform buffer owned by the current draw
+        UniformBufferUsageType  _UBType;
+        size_t                  _UBHashKey;
+        GRIUniformBufferRef     _UniformBuffer;
+        GRIGLUniformBuffer* GetUniformBuffer();
+    };
 	namespace OGLBuffer
 	{
-
+        void UniformVariableUpdate(const std::vector<std::pair<size_t, void*>>& newValue,GLUniformBufferSlot& internalValue);
+        //使用std::bitset数据结构表达每一个UniformBuffer独一无二的Binding绑定点: 0表达未占用，1表达占用
+        class UBBitSet : public SkySnow::NonCopyable
+        {
+        private:
+            UBBitSet()
+            {
+                _BitSet.reset();
+            }
+            ~UBBitSet(){}
+        public:
+            static UBBitSet& BSInstance()
+            {
+                static UBBitSet instance;
+                return instance;
+            }
+            
+            int GetUBBindingIndex()
+            {
+                int valueIndex = -1;
+                for(int i = 0; i < _BitSet.size(); i ++)
+                {
+                    if(!_BitSet[i])
+                    {
+                        valueIndex = i;
+                        break;
+                    }
+                }
+                if(valueIndex == -1)
+                {
+                    SN_WARN("The UBO has run out of bindingIndex 256.");
+                }
+                else
+                {
+                    _BitSet.set(valueIndex,1);
+                }
+                return valueIndex;
+            }
+            
+            void ReleaseUBBindingIndex(const int bindingIndex)
+            {
+                if(bindingIndex >= 0 && bindingIndex < _BitSet.size())
+                {
+                    _BitSet.set(bindingIndex,0);
+                }
+            }
+        private:
+            std::bitset<256> _BitSet;
+        };
 	}
 }

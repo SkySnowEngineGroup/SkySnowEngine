@@ -59,7 +59,7 @@ namespace SkySnow
     void RenderRunnable::OnRenderFrame()
     {
         _RenderSem.WaitForSignal();
-        SN_LOG("RenderUpdate++++++++++++++");
+//        SN_LOG("RenderUpdate++++++++++++++");
         _GQueue->PresentQueue();
         _MainSem.Signal();
     }

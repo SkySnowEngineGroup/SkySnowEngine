@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #pragma once
-
 #define PLATFORM_UNKNOW 0
 #define PLATFORM_ANDROID 1
 #define PLATFORM_IOS 2
@@ -30,8 +29,7 @@
 #define PLATFORM_LINUX 5
 
 #define DEBUG 1
-//Debug Shader
-#define Debug_Shader 0
+
 
 #define DEFAUT_WADTH 800
 #define DEFAUT_HEIGHT 600
@@ -40,6 +38,7 @@
 #define MAX_BUFFER_SIZE 1024*4
 #define PLATFORM PLATFORM_UNKNOW
 #include <iostream>
+#include "VarType.h"
 //config various platforms
 #if defined(__ANDROID__) || defined(ANDROID)
 #	undef  PLATFORM

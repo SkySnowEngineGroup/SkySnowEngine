@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
 #include "RunnableThread.h"
 #include "RunnablePThread.h"
 namespace SkySnow
@@ -36,7 +35,7 @@ namespace SkySnow
 	}
 	RunnableThread* RunnableThread::Create(Runnable* runable)
 	{
-		//目前只会创建PThread线程
+		//Create real thread
 		RunnableThread* runnableThread = new RunnablePThread();
 		runnableThread->CreateThread(runable);
 		return runnableThread;

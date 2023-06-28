@@ -27,28 +27,17 @@
 #include "ThreadMutex.h"
 namespace SkySnow
 {
-    //The CommandBuffer is a wrapper for Opengl and Dx instructions that 
-    //do not support parallel commit.The lower version of the CommandBuffer 
-    //also supports concurrent commit, but encapsulates a layer of processing 
-    //associated with the renderthread in the CommandBuffer interface with the driver
-    //If there are many resources that need to be uploaded to the gpu, for example, 
-    //you can start several RenderThread sand use the shared context to handle the 
-    //time - consuming problem of uploading resources to the gpu
-    class GRILowerCommandBuffer
+    //Resource Set CommandBuffer Base Class For LowerVersion API
+    class GRISetCommandBuffer
     {
     public:
-        GRILowerCommandBuffer();
-        virtual ~GRILowerCommandBuffer();
-
-    protected:
-        // Command分配将不能采用此种模式，这种模式分配不是线程安全的
-        // 多个线程可以<创建渲染资源指令>，并可全局使用，单个渲染线程消费<渲染资源创建指令>
-        // MPSC无锁队列很合适:但是MPSC又会涉及到内存安全问题，比较复杂 TODO
+        GRISetCommandBuffer();
+        virtual ~GRISetCommandBuffer();
         inline void* AllocCommandSet(int64_t cmdSize, int32_t cmdAlign)
         {
             GRICommandBase* cmd = (GRICommandBase*)_StackMem.Alloc(cmdSize, cmdAlign);
             _NumCommands++;
-            if(_Head == nullptr)
+            if (_Head == nullptr)
             {
                 _Head = cmd;
                 _Curr = cmd;
@@ -60,15 +49,29 @@ namespace SkySnow
             }
             return cmd;
         }
-
-        template<typename T,typename... Args>
+    protected:
+        int                 _NumCommands;
+        GRICommandBase*     _Curr;
+        GRICommandBase*     _Head{ _Curr };
+        MemStack            _StackMem;
+    };
+//GPUResourceSet use this on OpenGL & GLES & DX9 & DX11
+#define Alloc_CommandSet(...) new(AllocCommandSet(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__
+    //============================================================================================================
+    //Resource Create CommandBuffer Base Class For LowerVersion API
+    class GRICreateCommandBuffer
+    {
+    public:
+        GRICreateCommandBuffer();
+        virtual ~GRICreateCommandBuffer();
+        template<typename T, typename... Args>
         void AllocCommandCreate(Args&&... args)
         {
             _Lock.Lock();
             GRICommandBase* mem = (GRICommandBase*)_StackMem.Alloc(sizeof(T), alignof(T));
             T* cmd = new(mem) T(std::forward<Args>(args)...);
             _NumCommands++;
-            if(_Head == nullptr)
+            if (_Head == nullptr)
             {
                 _Head = cmd;
                 _Curr = cmd;
@@ -86,25 +89,28 @@ namespace SkySnow
 
         virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) = 0;
 
-        virtual GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
+        virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 
         virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) = 0;
 
-        virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) = 0;
+        virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) = 0;
+
+        virtual GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel) = 0;
+        
+        virtual GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType) = 0;
+        
+        virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) = 0;
 
         virtual void ResourceCreateExecutor();
     private:
         void CommandBufferReset();
     protected:
-        int                         _NumCommands;
-        GRICommandBase*             _Curr;
-        GRICommandBase*             _Head{_Curr};
-        MemStack                    _StackMem;
-        //MpscQueue<GRICommandBase>   _MpscQueue;
-        ThreadMutex                 _Lock;
+        int                 _NumCommands;
+        GRICommandBase*     _Curr;
+        GRICommandBase*     _Head{ _Curr };
+        MemStack            _StackMem;
+        ThreadMutex         _Lock;
     };
-//GPUResourceSet use this on OpenGL & GLES & DX9 & DX11
-#define Alloc_CommandSet(...) new(AllocCommandSet(sizeof(__VA_ARGS__), alignof(__VA_ARGS__))) __VA_ARGS__
 //GPUResourceCreate use this on OpenGL & GLES & DX9 & DX11
 #define Alloc_CommandCreate(type,...) AllocCommandCreate<type>(__VA_ARGS__)
 }

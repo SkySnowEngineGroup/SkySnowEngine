@@ -27,7 +27,7 @@
 #include "RunnableThread.h"
 namespace SkySnow
 {
-    //vulkan 中关于资源创建，资源命令设置以及同步等操作的渲染接口，一共约130个
+    //Height Api ex:Vulkan\metal,Low Api ex: OpenGL\ES
     class GRICommandBufferQueue;
     class GRICommandBufferPool;
     class RenderRunnable;
@@ -60,11 +60,14 @@ namespace SkySnow
         //this interface will move blitcommandbuffer
         virtual void CmdBeginViewport() = 0;
         virtual void CmdEndViewport() = 0;
-
-        virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) = 0;
+        //Set Buffer Handle
+        virtual void CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) = 0;
         virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;
-        virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) = 0;
-        virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) = 0;
+        virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) = 0;
+        virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) = 0;
+        virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) = 0;
+        virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) = 0;
+        virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) = 0;
     protected:
     };
     //compute shader is a single pipeline
@@ -115,11 +118,11 @@ namespace SkySnow
         
         void PresentQueue();
 
-        GRILowerCommandBuffer* GetLowerCommandBuffer();
+        GRICreateCommandBuffer* GetLowerCommandBuffer();
 
         bool IsLowerVerion();
     private:
-        GRILowerCommandBuffer*              _LowerComBuf;
+        GRICreateCommandBuffer*             _LowerComBuf;
         std::vector<GRICommandBufferBase*>  _ComBufList;
         RenderRunnable*                     _RenderRunnable;
         RunnableThread*                     _RenderThread;

@@ -25,7 +25,7 @@
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 #include "GLPipelineResource.h"
-
+#include "Hash.h"
 namespace SkySnow
 {
 	using namespace OGLShader;
@@ -40,28 +40,24 @@ namespace SkySnow
 		OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode, handle);
 	}
 
-	void GRIGLDrive::GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle)
+	void GRIGLDrive::GRICreatePipelineShader(GRIPipelineShaderRef& handle)
 	{
-		GLPipelineShaderState* shaderPipe = dynamic_cast<GLPipelineShaderState*>(handle.GetReference());
+		GLPipelineShader* shaderPipe = dynamic_cast<GLPipelineShader*>(handle.GetReference());
 		GLVertexShader* glvs = dynamic_cast<GLVertexShader*>(shaderPipe->GetVertexShader());
 		GLFragmentShader* glfs = dynamic_cast<GLFragmentShader*>(shaderPipe->GetFragmentShader());
-		OGLShader::CreateProgram(glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
+		OGLShader::CreateProgram(shaderPipe,glvs->_GpuHandle,glfs->_GpuHandle, shaderPipe->_ProgramId);
 	}
 
-	//Shader ´´½¨µÄÄ£°åÀà·½·¨(¹«¹²·½·¨)
+	//Shader Intern Function
 	//===============================================================================================
-	//ÔÚGLShaderÖÐÉùÃ÷È«¾Öº¯Êý£¬Ö÷ÒªÔ­ÒòÊÇÎªÁË´úÂëÇåÎú¶È
-	//ÆäÊµ¿ÉÒÔÔÚcppÎÄ¼þÖÐÉùÃ÷º¯Êý£¬Ê¹ÓÃstatic±ê¼Ç£¬½øÐÐÒþ²Ø£¬Ê¹´Ëcpp¿É·ÃÎÊ£¬¶ÔÆäËücppÎÄ¼þ½øÐÐÒþ²Ø
-	//È»ºóÕë¶ÔÓÚÒþ²Ø£¬¼ÓÁËÒ»¸öÃ÷Ã÷¿Õ¼äOGLShader£¬ÒÀ´ÎÀ´ÌáÐÑºóÐøÍØÕ¹£¬²»Òª½«´ËÃüÃû¿Õ¼äµÄÈ«¾Öº¯ÊýÔÚÆä
-	//ËüÃüÃû¿Õ¼äÏÂµ÷ÓÃ
-
+    //Create Shader
 	template<typename GRIShaderType,typename OGLShaderType>
 	void OGLShader::CreateShader(const char* shadercode, GRIShaderType* handle)
 	{
 		OGLShaderType* shaderObject = dynamic_cast<OGLShaderType*>(handle);
 		CompileShader<OGLShaderType>(shadercode, shaderObject);
 	}
-
+    //Compile Shader
 	template<typename OGLShaderType>
 	void OGLShader::CompileShader(const char* shadercode,OGLShaderType* handle)
 	{
@@ -72,7 +68,7 @@ namespace SkySnow
 			SN_ERR("Compile Shader fail.");
 		}
 	}
-
+    //Compile Shader
 	bool OGLShader::CompileCurrentShader(const GLuint shaderHandle, const char* shadercode)
 	{
 		if (shadercode == nullptr)
@@ -80,20 +76,132 @@ namespace SkySnow
 			SN_ERR("ShaderCode is nullptr.");
 			return false;
 		}
-		//SN_LOG("OGL Shader Code:%s", shadercode);
-		int codeLength = strlen(shadercode);
+//		SN_LOG("OGL Shader Code:%s", shadercode);
+		int codeLength = (int)strlen(shadercode);
 		glShaderSource(shaderHandle,1 ,(const GLchar**)&shadercode, &codeLength);
 		glCompileShader(shaderHandle);
+        GLint success;
+        glGetShaderiv(shaderHandle, GL_COMPILE_STATUS, &success);
+        if (!success)
+        {
+            GLchar infoLog[512];
+            glGetShaderInfoLog(shaderHandle, 512, NULL, infoLog);
+            SN_ERR("Shader::Compilation_Failed:%s",infoLog);
+        }
 		return true;
 	}
-
-	bool OGLShader::CreateProgram(const GLuint vshandle, const GLuint fshandle, GLuint& program)
+    // Create Program and Link Program
+	bool OGLShader::CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle, const GLuint fshandle, GLuint& program)
 	{
 		program = glCreateProgram();
 		glAttachShader(program, vshandle);
 		glAttachShader(program, fshandle);
 		glLinkProgram(program);
+        //Collect Uniform And UniformBuffer
+        CollectUniformBuffer(pipelineShader,program);
+
 		return true;
 	}
+    //Collect uniform var location and uniformBuffer location,binding at first runtime frame setup
+    bool OGLShader::CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program)
+    {
+        //Collect Uniform Var
+        {
+            glUseProgram(program);
+            //Uniform Buffer Block;
+            GLUniformBufferSlot block;
+            
+            GLint numUniforms = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORMS, &numUniforms);
+            
+            GLint maxLength = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORM_MAX_LENGTH, &maxLength);
+            char* uniformName = new char[maxLength];
+            for (GLint i = 0; i < numUniforms; i++)
+            {
+                GLenum type;
+                GLuint location;
+                GLint  size;
+                
+                glGetActiveUniform(program, i, maxLength, nullptr, &size, &type, uniformName);
+                std::string uStr = uniformName;
+                location = glGetUniformLocation(program, uniformName);
+                bool isUVar = uStr.find("_Sampler") == std::string::npos;
+                //æ”¶é›†Uniformå˜é‡åˆ†ç±»æ”¶é›†ï¼ŒåŒ…å«: UniformVarã€UniformSamplerã€UniformSSBO ext
+                if(location != -1 && isUVar)//å•çº¯æ”¶é›†Uniform Var
+                {
+                    GLUniformSlot uSlot;
+                    uSlot._Type     = type;
+                    uSlot._Location = location;
+                    uSlot._Size     = size;
+                    block._UniformSlots[String2Hash(uniformName)] = uSlot;
+//                    SN_LOG("Var UniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
+                }
+                else if(location != -1 && !isUVar)//æ”¶é›†Samplerå¹¶è®¾ç½®ç»‘å®šç‚¹
+                {
+                    CollectSamplerAndBinding(uniformName,type,location,size,pipelineShader);
+//                    SN_LOG("Sampler UniformName:%s type:%d location:%d size:%d",uniformName,type,location,size);
+                }
+            }
+            //0 is SingleDraw
+            pipelineShader->_InternalUBs[0] = block;
+            delete[] uniformName;
+            uniformName = nullptr;
+        }
+        //If Support UniformBuffer Collect UniformBlock
+        if(OpenGLBase::SupportUniformBuffer())
+        {
+            GLint numUniformBlock = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORM_BLOCKS, &numUniformBlock);
+            GLint maxLength = 0;
+            glGetProgramiv(program, GL_ACTIVE_UNIFORM_BLOCK_MAX_NAME_LENGTH, &maxLength);
+            GLchar* uniformBlockName = new GLchar[maxLength];
+            for(int i = 0; i < numUniformBlock; i ++)
+            {
+                
+                GLuint bindingIndex = -1;
+                GLuint blockIndex = -1;
+                GLint  offset;
+                //Get Block Name
+                glGetActiveUniformBlockName(program, i, maxLength, NULL, uniformBlockName);
+                //Get Block Binding Index
+                glGetActiveUniformBlockiv(program, i, GL_UNIFORM_BLOCK_INDEX, (GLint*)&bindingIndex);
+                //Get Block Offset
+                glGetActiveUniformBlockiv(program, i, GL_UNIFORM_BLOCK_DATA_SIZE, &offset);
+                //Get Block Name
+                blockIndex = glGetUniformBlockIndex(program, uniformBlockName);
+                if(blockIndex != -1)
+                {
+                    GLUniformBufferSlot uBlock;
+                    uBlock._BlockIndex = blockIndex;
+                    pipelineShader->_InternalUBs[String2Hash(uniformBlockName)] = uBlock;
+//                    SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
+//                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d BlockIndex:%d",uniformBlockName,uBlock._BindingIndex,offset,uBlock._BlockIndex);
+                }
+            }
+            delete[] uniformBlockName;
+            uniformBlockName = nullptr;
+        }
+        glUseProgram(0);
+        return true;
+    }
+    //Collect the sampler object, bind the location of the sampler object to the corresponding texture unit
+    //(the format of the sampler name is xx_0, this _0 is added when the material is parsed and recorded in
+    //the ShaderParameter of the material), bind the location of the sampler object to texture unit 0.
+    bool OGLShader::CollectSamplerAndBinding(char* uSName,GLenum type,GLuint location,GLint size,GLPipelineShader* pShader)
+    {
+        std::string uSStr = uSName;
+        std::string unitStr = uSStr.substr(uSStr.find("_Sampler") + 8);
+        int unitNum = std::stoi(unitStr);
+        GLUniformSlot uSlot;
+        uSlot._Location = location;
+        uSlot._Type     = type;
+        uSlot._Size     = size;
+        glUniform1i(uSlot._Location, unitNum);
+        pShader->_InternalUSamplers._UniformSlots[unitNum] = uSlot;
+//        SN_LOG("Sampler Texture Unit Is:%d",unitNum);
+        //TODO: Support Bindless Texture
+        return true;
+    }
 	//===============================================================================================
 }

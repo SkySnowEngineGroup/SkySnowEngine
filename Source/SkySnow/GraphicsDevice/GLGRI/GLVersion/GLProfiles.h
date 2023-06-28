@@ -69,7 +69,7 @@
 #   include <GLFW/glfw3native.h>
 #endif // 0
 
-#define Num_GL_Vertex_Attribute 16
+
 //glContext state
 enum class GLContextState
 {

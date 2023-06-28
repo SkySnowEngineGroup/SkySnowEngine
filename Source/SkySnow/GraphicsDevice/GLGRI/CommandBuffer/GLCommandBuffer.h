@@ -25,7 +25,7 @@
 #include "GRICommandBuffer.h"
 namespace SkySnow
 {
-	class GLRenderCommandBuffer : public GRIRenderCommandBuffer, public GRILowerCommandBuffer
+	class GLRenderCommandBuffer : public GRIRenderCommandBuffer, public GRISetCommandBuffer
 	{
 	public:
 		GLRenderCommandBuffer();
@@ -43,18 +43,17 @@ namespace SkySnow
 		virtual void CmdBeginViewport() final override;
 		virtual void CmdEndViewport() final override;
 	
-	public://Set Resource
-		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
-		virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) final override;
-		virtual GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
-		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) final override;
-		virtual GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo) final override;
+
 		virtual void CmdResourceSetExecutor() final override;
 	public://Create Resource
-		virtual void CmdSetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
+		virtual void CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) final override;
 		virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void CmdSetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
-		virtual void CmdSetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
+		virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
+		virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
+        
+        virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) final override;
+        virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) final override;
+        virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
 	private:
 
 	};

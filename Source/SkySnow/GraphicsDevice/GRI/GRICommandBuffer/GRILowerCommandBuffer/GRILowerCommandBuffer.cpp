@@ -24,15 +24,32 @@
 
 namespace SkySnow
 {
-	GRILowerCommandBuffer::GRILowerCommandBuffer()
+	//ResourceSet CommandBuffer=====================================================================================
+	GRISetCommandBuffer::GRISetCommandBuffer()
 		: _NumCommands(0)
 		, _Curr(nullptr)
 		, _Head(nullptr)
 	{
 		_StackMem.Flush();
 	}
+	GRISetCommandBuffer::~GRISetCommandBuffer()
+	{
+		_StackMem.Flush();
+		if (_Head)
+		{
+			delete _Head;
+			_Head = nullptr;
+		}
+	}
+	//ResourceCreate CommandBuffer==================================================================================
+	GRICreateCommandBuffer::GRICreateCommandBuffer()
+		: _NumCommands(0)
+		, _Curr(nullptr)
+		, _Head(nullptr)
+	{
 
-	GRILowerCommandBuffer::~GRILowerCommandBuffer()
+	}
+	GRICreateCommandBuffer::~GRICreateCommandBuffer()
 	{
 		_StackMem.Flush();
 		if (_Head)
@@ -42,24 +59,23 @@ namespace SkySnow
 		}
 	}
 
-	void GRILowerCommandBuffer::ResourceCreateExecutor()
+	void GRICreateCommandBuffer::ResourceCreateExecutor()
 	{
-        GRICommandBase* cmd = _Head;
-        while (cmd)
-        {
-            GRICommandBufferBase* cb = nullptr;
-            cmd->ExecuteCommand(*cb);
-            cmd = cmd->_Next;
-        }
-        CommandBufferReset();
+		GRICommandBase* cmd = _Head;
+		while (cmd)
+		{
+			GRICommandBufferBase* cb = nullptr;
+			cmd->ExecuteCommand(*cb);
+			cmd = cmd->_Next;
+		}
+		CommandBufferReset();
 	}
-    
-    void GRILowerCommandBuffer::CommandBufferReset()
-    {
-        _StackMem.Flush();
-        _NumCommands = 0;
-        _Curr = nullptr;
-        _Head = _Curr;
-    }
 
+	void GRICreateCommandBuffer::CommandBufferReset()
+	{
+		_StackMem.Flush();
+		_NumCommands = 0;
+		_Curr = nullptr;
+		_Head = _Curr;
+	}
 }

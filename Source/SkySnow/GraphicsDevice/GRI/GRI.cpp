@@ -22,12 +22,14 @@
 //
 #include "GRI.h"
 #include "GRICommandBuffer.h"
+#include "GRIPipelineCache.h"
 namespace SkySnow
 {
     //Globle Member Variable
     GRICommandBufferQueue*  _GQueue = nullptr;
     OSPlatform*             _GOSPlatform = nullptr;
     OSPlatformInfo*         _GOSPlatformInfo = nullptr;
+    GRIPipelineCache*       _GPipelineCache = nullptr;
     GRIDrive*               GRI = nullptr;
     //Globle Member Function
     void GRIInit(const OSPlatformInfo& osPlatformInfo)
@@ -40,6 +42,7 @@ namespace SkySnow
             _GOSPlatform = CreateTargetOSPlatform();
             GRI = _GOSPlatform->OSPlatformCreateGRI();
             GRI->Init();
+            _GPipelineCache = new GRIPipelineCache();
             _GQueue = new GRICommandBufferQueue();
             _GQueue->Init();
         }
@@ -47,8 +50,10 @@ namespace SkySnow
 
     void GRIExit()
     {
+        _GPipelineCache->Shutdown();
         GRI->Exit();
         Delete_Object(_GQueue);
+        Delete_Object(_GPipelineCache);
         Delete_Object(_GOSPlatform);
         Delete_Object(_GOSPlatformInfo);
     }

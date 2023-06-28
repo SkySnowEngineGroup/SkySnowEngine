@@ -25,85 +25,69 @@
 #include "GRIResource.h"
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
-#include "GLBuffer.h"
-#include "GLShader.h"
 #include "GRIResourceCreateInfo.h"
+#include <vector>
 namespace SkySnow
 {
-	class GLPipelineShaderState : public GRIPipelineShaderState
+	class GLGraphicPipeline : public GRIGraphicsPipeline
 	{
 	public:
-		GLPipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
-			: GRIPipelineShaderState()
-			, _ProgramId(0)
-			, _OGLVertexShader(dynamic_cast<GLVertexShader*>(vs))
-			, _OGLFragmentShader(dynamic_cast<GLFragmentShader*>(fs))
-		{
-		}
-
-		inline GLVertexShader* GetVertexShader() { return _OGLVertexShader; }
-		inline GLFragmentShader* GetFragmentShader() { return _OGLFragmentShader; }
-
-		const GLShaderBase* GetShader(ShaderFrequency sf)
-		{
-			switch (sf)
-			{
-			case SkySnow::SF_Vertex:
-				return GetVertexShader();
-				break;
-			case SkySnow::SF_Fragement:
-				return GetFragmentShader();
-				break;
-			default:
-				break;
-			}
-			return nullptr;
-		}
-	public:
-		GLuint _ProgramId;
-	private:
-		//Cache Array or LRUCache
-		//temp is ptr
-		GLVertexShader*     _OGLVertexShader;
-		GLFragmentShader*   _OGLFragmentShader;
-		
-	};
-	// 在vulkan中，在Drawcall之前，会将渲染资源进行绑定与设置，那么这里便是仿照Vulkan的思路
-	class GLGraphicPipelineState : public GRIGraphicsPipelineState
-	{
-	public:
-		GLGraphicPipelineState()
-			: GRIGraphicsPipelineState()
+        GLGraphicPipeline()
+			: GRIGraphicsPipeline()
 			, _PrimitiveType(PrimitiveType::PT_Num)
+			, _ShaderPipeline(nullptr)
+            , _VertexDescriptor(nullptr)
+            , _UBODescriptor(nullptr)
 		{
 		}
 
-		GLGraphicPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
-			: GRIGraphicsPipelineState()
+        GLGraphicPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
+			: GRIGraphicsPipeline()
 			, _PrimitiveType(createInfo._PrimitiveType)
+            , _ShaderPipeline(createInfo._ShaderPipelineInfo._PipelineShader)
+			, _VertexDescriptor(createInfo._ShaderPipelineInfo._VertexDescriptor)
+			, _UBODescriptor(createInfo._ShaderPipelineInfo._UniformBufferDescriptor)
 		{
 		}
 
-		virtual ~GLGraphicPipelineState()
+		virtual ~GLGraphicPipeline()
 		{
+            SN_LOG("GLGraphicPipeline DesConstruct.");
 		}
+        
+        PrimitiveType GetPrimitiveType() const
+        {
+            return _PrimitiveType;
+        }
+        GLPipelineShader* GetPipelineShader()
+        {
+            return dynamic_cast<GLPipelineShader*>(_ShaderPipeline.GetReference());
+        }
+        GRIGLVertexDescriptor* GetVertexDescriptor()
+        {
+            return dynamic_cast<GRIGLVertexDescriptor*>(_VertexDescriptor.GetReference());
+        }
+        GRIGLUniformBufferDescriptor* GetUniformBufferDescriptor()
+        {
+            return dynamic_cast<GRIGLUniformBufferDescriptor*>(_UBODescriptor.GetReference());
+        }
+        //this function use for _PendingState,other not use this function
+        void InitialPipelineState()
+        {
+            _Textures.resize(Max_Num_Texture_Unit);
+            _Samplers.resize(Max_Num_Sampler_Unit);
+        }
 	public:
-		GLBufferInfo			_BufferInfo[Num_GL_Vertex_Attribute];
-		GLShaderStateInfo		_ShaderStateInfo;
-		//正常来说，考虑的是将图元属性随GLBuffer设置，但是考虑到在Runtime的时候
-		//可能会修改图元的类型，那么最好的方式是放在PipelineState中。
-		PrimitiveType			_PrimitiveType;
+		PrimitiveType			        _PrimitiveType;
+        GRIPipelineShaderRef            _ShaderPipeline;
+        GRIVertexDescriptorRef          _VertexDescriptor;
+        GRIUniformBufferDescriptorRef   _UBODescriptor;
+        std::vector<GRITextureRef>      _Textures;
+        std::vector<GRISamplerStateRef> _Samplers;
 	};
-	//该能力对齐vulkan&metal的pipelinecache
-	//在UE5中有类似的概念，但是从其代码来看
-	//其ContextState实现与PipelineCache冲突(从我的理解来看，是历史问题)
-	//(vulkan&metal中pipelinestate可存储到硬件磁盘上，类似于二进制着色器码)
-	//但ContextState不具备该能力
-	//SkySnow为了统一OpenGL与Vulkan&Metal的规范，因此决定抛弃
-	//ContextState的概念，转而使用PipelineCache的概念。
-	class GLGraphicPipelineStateCache
-	{
-	public:
-
-	};
+    class GLComputePipeline : public GRIComputePipeline
+    {
+    public:
+        
+    };
 }

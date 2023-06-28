@@ -23,6 +23,7 @@
 #include "GRICommandBuffer.h"
 #include "SkySnowConfigInfo.h"
 #include "GLCommandBuffer.h"
+#include "GLCreateCommandBuffer.h"
 #include "WindowOSPlatform.h"
 #include "AndroidOSPlatform.h"
 #include "IOSOSPlatform.h"
@@ -145,7 +146,7 @@ namespace SkySnow
             break;
         case SkySnow::EGLES:
         case SkySnow::EOpenGL:
-            _LowerComBuf = new GLRenderCommandBuffer();
+            _LowerComBuf = new GLCreateCommandBuffer();
             _RenderRunnable = new RenderRunnable();
             _RenderThread = RunnableThread::Create(_RenderRunnable);
             break;
@@ -205,7 +206,7 @@ namespace SkySnow
         return true;
     }
     
-    GRILowerCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()
+    GRICreateCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()
     {
         return _LowerComBuf;
     }
@@ -234,15 +235,15 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(fsCode);
     }
 
-    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs)
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
     {
         if (!_GQueue->IsLowerVerion())
         {
-            GRIPipelineShaderStateRef handle;
-            GRI->GRICreatePipelineShaderState(handle);
+            GRIPipelineShaderRef handle;
+            GRI->GRICreatePipelineShader(handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShaderState(vs,fs);
+        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs);
     }
 
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
@@ -255,15 +256,47 @@ namespace SkySnow
         }
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, data);
     }
-
-    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo)
+    
+    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel)
     {
         if (!_GQueue->IsLowerVerion())
         {
-            GRIGraphicsPipelineStateRef handle;
-            GRI->GRICreateGraphicsPipelineState(createInfo, handle);
+            GRIVertexDescriptorRef handle;
+            GRI->GRICreateVertexDescriptor(vdel, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipelineState(createInfo);
+        return _GQueue->GetLowerCommandBuffer()->CreateVertexDescriptor(vdel);
+    }
+    GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIGraphicsPipelineRef handle;
+            GRI->GRICreateGraphicsPipeline(createInfo, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
+    }
+
+    GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
+    {
+        if(!_GQueue->IsLowerVerion())
+        {
+            GRIUniformBufferRef handle;
+            GRI->GRICreateUniformBuffer(contents,ubName,ubType, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateUniformBuffer(contents,ubName,ubType);
+    }
+    
+    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl)
+    {
+        if(!_GQueue->IsLowerVerion())
+        {
+            GRIUniformBufferDescriptorRef handle;
+            GRI->GRICreateUniformDescriptor(ubl, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
     }
 }

@@ -22,35 +22,24 @@
 //
 #pragma once
 #include "GLProfiles.h"
+#include "GLShaderResource.h"
 namespace SkySnow
 {
-
-	struct GLShaderStateInfo
-	{
-		GLShaderStateInfo()
-			: _GpuHandle(0)
-		{
-
-		}
-
-		GLuint _GpuHandle;
-	};
-
-	//可以看做是Shader的Util全局工具函数，但是使用OGLShader标记命名空间
-	//以此提醒该全局Util工具函数，是在Shader模块才可以调用的。
+	//Internal Namespace
 	namespace OGLShader
 	{
 		template<typename GRIShaderType, typename OGLShaderType>
 		void CreateShader(const char* shadercode, GRIShaderType* handle);
-		//关于这块，将会考虑二进制着色器文件缓存，单独的着色器对象搭配管道对象进行优化
-		//并且加入缓存hash机制，并不是所有的着色器程序对象中的顶点着色器是不一致的，有必要
-		//减少着色器对象在编译时耗费系统资源的问题。
+		//Internal Function
 		template<typename OGLShaderType>
 		void CompileShader(const char* shadercode,OGLShaderType* handle);
 
 		bool CompileCurrentShader(const GLuint shaderHandle,const char* shadercode);
 
-		bool CreateProgram(const GLuint vshandle,const GLuint fshandle,GLuint& program);
-
+		bool CreateProgram(GLPipelineShader* pipelineShader,const GLuint vshandle,const GLuint fshandle,GLuint& program);
+    
+        bool CollectUniformBuffer(GLPipelineShader* pipelineShader,GLuint program);
+        //Collect Sampler
+        bool CollectSamplerAndBinding(char* uSName,GLenum type,GLuint location,GLint size,GLPipelineShader* pShader);
 	}
 }

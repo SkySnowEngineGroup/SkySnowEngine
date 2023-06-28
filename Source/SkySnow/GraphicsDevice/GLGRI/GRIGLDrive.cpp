@@ -22,6 +22,9 @@
 //
 #include "GRIGLDrive.h"
 #include "GLShader.h"
+#include "GLTexture.h"
+#include "GLTextureResource.h"
+#include "GLRenderStateResource.h"
 namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
@@ -50,7 +53,9 @@ namespace SkySnow
 //            _GLContext = new GLContextLinux();
 #endif
         _GLContext->CreateGLContext();
-		//OpenGL::InitialExtensions();
+        OpenGL::InitialExtensions();
+		OGLTexture::InitTextureFormat();
+        _PendingState.InitialPipelineState();
     }
 
     void GRIGLDrive::Exit()
@@ -61,7 +66,7 @@ namespace SkySnow
 	//GRIRenderPipe===========================================================================================================================
 	void GRIGLDrive::GRIBeginViewport()
 	{
-		//暂时先放这里
+		//Swith glcontext
 		_GLContext->MakeCurrContext();
 	}
 	void GRIGLDrive::GRIEndViewport()
@@ -71,58 +76,192 @@ namespace SkySnow
 	//GRIRenderPipe===========================================================================================================================
 
 	//GRISet==================================================================================================================================
-	void GRIGLDrive::GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset)
+	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
 	{
-		GLBuffer* bufferGL = dynamic_cast<GLBuffer*>(buffer);
-		_PendingState._BufferInfo[BufferInfoId]._GpuHandle = bufferGL->_GpuHandle;
-		_PendingState._BufferInfo[BufferInfoId]._Stride = bufferGL->GetStride();
-		_PendingState._BufferInfo[BufferInfoId]._Offset = offset;
-		_PendingState._BufferInfo[BufferInfoId]._BufferType = bufferGL->_BufferType;
+        GRIGLBuffer* bufferGL = dynamic_cast<GRIGLBuffer*>(buffer);
+		if (_PendingState.GetVertexDescriptor() == nullptr)
+		{
+			SN_ERR("GRISetBuffer set GRIBuffer is nullptr.");
+			return;
+		}
+        GRIGLVertexDescriptor* oglVd = _PendingState.GetVertexDescriptor();
+		GLVertexBuffers& vbos = oglVd->_GLVertexBuffers;
+		if (vbos.find(bufferIndex) != vbos.end())
+		{
+            GLVertexBufferSlot& vboMeta = vbos[bufferIndex];
+			vboMeta._GpuHandle  = bufferGL->_GpuHandle;
+			vboMeta._Stride     = bufferGL->GetStride();
+			vboMeta._BufferType = bufferGL->_BufferType;
+			vboMeta._Offset     = offset;
+			if (vboMeta._GLVertexElements.size() == 1)
+			{
+				vboMeta._GLVertexElements[0]._Offset = offset;
+			}
+		}
+		else
+		{
+            GLVertexBufferSlot vboMeta;
+			vboMeta._GpuHandle  = bufferGL->_GpuHandle;
+			vboMeta._Stride     = bufferGL->GetStride();
+			vboMeta._BufferType = bufferGL->_BufferType;
+			vboMeta._Offset     = offset;
+			vbos[bufferIndex]   = vboMeta;
+			if (vboMeta._GLVertexElements.size() == 1)
+			{
+				vboMeta._GLVertexElements[0]._Offset = offset;
+			}
+		}
 	}
-
-	void  GRIGLDrive::GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState)
+    
+    void GRIGLDrive::GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex)
+    {
+        if(_PendingState._Textures.size() < textureIndex)
+        {
+            SN_WARN("GRISetShaderTexture The maximum number of texture units is exceeded.");
+            return;
+        }
+        GRITextureRef& texRef = _PendingState._Textures[textureIndex];
+        texRef = texture;
+    }
+    
+    void GRIGLDrive::GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex)
+    {
+        if(_PendingState._Samplers.size() < samplerIndex)
+        {
+            SN_WARN("GRISetShaderSampler The maximum number of texture units is exceeded.");
+            return;
+        }
+        GRISamplerStateRef& samplerRef = _PendingState._Samplers[samplerIndex];
+        samplerRef = sampler;
+    }
+	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
 	{
-		_PendingState._ShaderStateInfo._GpuHandle = static_cast<GLPipelineShaderState*>(pipelineShaderState)->_ProgramId;
+        _PendingState._ShaderPipeline = pipelineShaderState;
 	}
-
-	void GRIGLDrive::GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState)
+	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
 	{
-		_PendingState._PrimitiveType = (PrimitiveType)static_cast<GLGraphicPipelineState*>(pipelineState)->_PrimitiveType;
+		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
+		if (_PendingState._ShaderPipeline.GetReference() != graphicsShader)
+		{
+			_PendingState._ShaderPipeline = graphicsShader;
+		}
+        GRIGLUniformBufferDescriptor* oglUBDesc = dynamic_cast<GRIGLUniformBufferDescriptor*>(_PendingState._UBODescriptor.GetReference());
+		GLUniformBufferDesList& ubDesc = oglUBDesc->_GLUniformBuffersDes;
+        
+		if (ubDesc.find(bufferIndex) != ubDesc.end())
+		{
+			ubDesc[bufferIndex]._UBType = uniformBuffer->_UniformBufferUsagType;
+			ubDesc[bufferIndex]._UBHashKey = uniformBuffer->_HashKey;
+			ubDesc[bufferIndex]._UniformBuffer = buffer;
+		}
+		else {
+			GLUniformBufferSlotDesc ubDescriptor;
+			ubDescriptor._UBType = uniformBuffer->_UniformBufferUsagType;
+			ubDescriptor._UBHashKey	= uniformBuffer->_HashKey;
+			ubDescriptor._UniformBuffer = buffer;
+			ubDesc[bufferIndex]	= ubDescriptor;
+		}
+	}
+	//Set UniformBuffer Descriptor
+	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
+	{
+        GRIGLUniformBufferDescriptor* ides = dynamic_cast<GRIGLUniformBufferDescriptor*>(descriptor);
+		if (ides == nullptr)
+		{
+			SN_ERR("GRISetUniformBufferDescriptor set GRIUniformBufferDescriptor is nullptor.");
+			return;
+		}
+        _PendingState._UBODescriptor = descriptor;
+	}
+	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
+	{
+		GLGraphicPipeline* gPipeline = dynamic_cast<GLGraphicPipeline*>(pipelineState);
+		if (gPipeline->_PrimitiveType != PrimitiveType::PT_Num)
+		{
+			_PendingState._PrimitiveType = gPipeline->_PrimitiveType;
+		}
+		if (gPipeline->GetPipelineShader())
+		{
+            _PendingState._ShaderPipeline = gPipeline->_ShaderPipeline;
+		}
+		if (gPipeline->GetVertexDescriptor())
+		{
+			_PendingState._VertexDescriptor = gPipeline->_VertexDescriptor;
+		}
+		if (gPipeline->GetUniformBufferDescriptor())
+		{
+			_PendingState._UBODescriptor = gPipeline->_UBODescriptor;
+		}
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
 	{
+        //Bind Some About PipelineShader State
+        BindPipelineShaderState(_PendingState);
+        BindTextureForDraw(_PendingState);
 		GLenum drawMode = GL_TRIANGLES;
 		int numElements;
 		CheckPrimitiveType(_PendingState._PrimitiveType, numPrimitive, drawMode, numElements);
 
-		SetupVertexFormatBinding(_PendingState, _PendingState._BufferInfo, Num_GL_Vertex_Attribute, numElements);
-		if (numInstance > 1)
-		{
-
-		}
-		else
-		{
-			glUseProgram(_PendingState._ShaderStateInfo._GpuHandle);
-			glDrawArrays(drawMode, 0, numElements);
-		}
+		SetupVertexFormatBinding(_PendingState, _PendingState.GetVertexDescriptor(), Max_Num_Vertex_Attribute, numElements);
+		
+        //TODO Instance numInstance>1
+        glUseProgram(_PendingState.GetPipelineShader()->_ProgramId);
+        glDrawArrays(drawMode, 0, numElements);
 	}
 	//GRISet==================================================================================================================================
 
 	//GRIprivate==============================================================================================================================
-	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount)
-	{
-		if (OpenGL::SupportVertexFormatBinding())
-		{
+    void GRIGLDrive::BindTextureForDraw(GLGraphicPipeline& contextState)
+    {
+        for(int iUnit = 0; iUnit < Max_Num_Texture_Unit; iUnit ++)
+        {
+            GRITextureRef texture       = contextState._Textures[iUnit];
+            GRISamplerStateRef sampler  = contextState._Samplers[iUnit];
+            
+            if(texture.GetReference() == nullptr || sampler.GetReference() != nullptr)
+            {
+                continue;
+            }
+            
+            glActiveTexture(GL_TEXTURE0 + iUnit);
+            GLBaseTexture* glTex = dynamic_cast<GLBaseTexture*>(texture.GetReference());
+            glBindTexture(glTex->_Target, glTex->_GpuHandle);
+            
+            GRIGLSamplerState* glSampler = dynamic_cast<GRIGLSamplerState*>(sampler.GetReference());
+            glBindSampler(iUnit, glSampler->_GpuHandle);
+        }
+    }
+    void GRIGLDrive::BindPipelineShaderState(GLGraphicPipeline& contextState)
+    {
+        GLPipelineShader* shaderPipe = contextState.GetPipelineShader();
+        //PepelineShader State
+        glUseProgram(shaderPipe->_ProgramId);
+        
+        BindUniformBuffer(contextState);
+        
+    }
 
-		}
-		else
-		{
-			GLBufferInfo& bInfo = bufferInfo[0];
-			glBindBuffer(bInfo._BufferType, bInfo._GpuHandle);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, bInfo._Stride,GL_FLOAT, GL_FALSE,bInfo._Stride * sizeof(GLfloat),(GLvoid*)bInfo._Offset);
-		}
+	void GRIGLDrive::SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount)
+	{
+        //TODO: VFB
+//		if (OpenGL::SupportVertexFormatBinding())
+//		{
+//
+//		}
+        GLVertexBuffers vertexBuffers = vertexDec->_GLVertexBuffers;
+        for(auto entry : vertexBuffers)
+        {
+            GLVertexBufferSlot vbo = entry.second;
+            glBindBuffer(vbo._BufferType,vbo._GpuHandle);
+            GLVertexElements ves = vbo._GLVertexElements;
+            for(auto iter = ves.begin(); iter != ves.end(); iter ++)
+            {
+                GLVertexElement vMeta = iter->second;
+                glEnableVertexAttribArray(vMeta._AttributeIndex);
+                glVertexAttribPointer(vMeta._AttributeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
+            }
+        }
 	}
 	void GRIGLDrive::CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements)
 	{

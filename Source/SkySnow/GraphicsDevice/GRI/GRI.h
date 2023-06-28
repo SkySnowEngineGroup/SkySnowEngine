@@ -26,23 +26,31 @@
 // render type interface for engine 
 namespace SkySnow
 {
-    //全局变量
+    class GRIPipelineCache;
+    //Globle var
     extern OSPlatform*              _GOSPlatform;
     extern GRIDrive*                GRI;
+    extern GRIPipelineCache*        _GPipelineCache;
     
-    //全局接口
+    //RHI Init
     void GRIInit(const OSPlatformInfo& osPlatformInfo);
-
+    //RHI Exit
     void GRIExit();
  
-    //对外资源创建接口、全局接口
+    //Create VS
     GRIVertexShaderRef CreateVertexShader(const char* vsCode);
-
+    //Create Fs
     GRIFragmentShaderRef CreateFragmentShader(const char* fsCode);
-
-    GRIPipelineShaderStateRef CreatePipelineShaderState(GRIVertexShader* vs, GRIFragmentShader* fs);
-
+    //Create PipelineShader
+    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs);
+    //Create Buffer BufferType:IndexBuffer\VertexBuffer\SSBO
     GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data);
-
-    GRIGraphicsPipelineStateRef CreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo);
+    //Create Vertex Declaration
+    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel);
+    //Create Pipeline
+    GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo);
+    //Create UniformBuffer
+    GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType);
+    //Create UniformBufferList Desc
+    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl);
 }

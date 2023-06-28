@@ -41,6 +41,7 @@ project(SkySnow)
 
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 include(SkySnowCommon)
+include(SkySnowResourceConfig)
 
 set(DEST_INCLUDE_DIR include/Source)
 

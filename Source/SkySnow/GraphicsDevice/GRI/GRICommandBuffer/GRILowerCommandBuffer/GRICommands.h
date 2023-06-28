@@ -93,25 +93,59 @@ namespace SkySnow
 		int _NumPrimitive;
 		int _NumInstance;
 	};
-	struct CmdSetPipelineShaderStateCommand : public GRICommand<CmdSetPipelineShaderStateCommand>
+	struct CmdSetPipelineShaderCommand : public GRICommand<CmdSetPipelineShaderCommand>
 	{
-		CmdSetPipelineShaderStateCommand(GRIPipelineShaderState* pipelineShaderState)
+		CmdSetPipelineShaderCommand(GRIPipelineShader* pipelineShaderState)
 			: _PipelineShaderState(pipelineShaderState)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIPipelineShaderState* _PipelineShaderState;
+		GRIPipelineShader* _PipelineShaderState;
 	};
 
-	struct CmdSetGraphicsPipelineStateCommand : public GRICommand<CmdSetGraphicsPipelineStateCommand>
+	struct CmdSetGraphicsPipelineCommand : public GRICommand<CmdSetGraphicsPipelineCommand>
 	{
-		CmdSetGraphicsPipelineStateCommand(GRIGraphicsPipelineState* pipelineState)
+		CmdSetGraphicsPipelineCommand(GRIGraphicsPipeline* pipelineState)
 			: _PipelineState(pipelineState)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIGraphicsPipelineState* _PipelineState;
+		GRIGraphicsPipeline* _PipelineState;
 	};
+
+    struct CmdSetShaderParameterCommand : public GRICommand<CmdSetShaderParameterCommand>
+    {
+        CmdSetShaderParameterCommand(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex)
+            : _PipelineShader(graphicsShader)
+            , _UniformBuffer(buffer)
+            , _UBIndex(bufferIndex)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIPipelineShader*      _PipelineShader;
+        GRIUniformBuffer*       _UniformBuffer;
+        int32_t                 _UBIndex;
+    };
+    struct CmdUpdateUniformBufferCommand : public GRICommand<CmdUpdateUniformBufferCommand>
+    {
+        CmdUpdateUniformBufferCommand(GRIUniformBuffer* buffer,const UniformSlotList& contents)
+            : _UniformBuffer(buffer)
+            , _UBData(contents)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIUniformBuffer* _UniformBuffer;
+        UniformSlotList   _UBData;
+    };
+    struct CmdSetUniformBufferDescriptorCommand : GRICommand<CmdSetUniformBufferDescriptorCommand>
+    {
+        CmdSetUniformBufferDescriptorCommand(GRIUniformBufferDescriptor* descriptor)
+            : _UBDescriptor(descriptor)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIUniformBufferDescriptor*     _UBDescriptor;
+    };
 	//======================================================================================================================
 	// RenderResource Create
 	// CreateVertexShader
@@ -141,14 +175,14 @@ namespace SkySnow
 		GRIFragmentShaderRef	_Handle;
 	};
 
-	struct GRICreatePipelineShaderStateCommand : public GRICommand<GRICreatePipelineShaderStateCommand>
+	struct GRICreatePipelineShaderCommand : public GRICommand<GRICreatePipelineShaderCommand>
 	{
-		GRICreatePipelineShaderStateCommand(GRIPipelineShaderStateRef& handle)
+		GRICreatePipelineShaderCommand(GRIPipelineShaderRef& handle)
 			: _Handle(handle)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIPipelineShaderStateRef _Handle;
+		GRIPipelineShaderRef _Handle;
 	};
 
 	struct GRICreateBufferCommand : public GRICommand<GRICreateBufferCommand>
@@ -170,9 +204,9 @@ namespace SkySnow
 		GRIBufferRef	_Handle;
 	};
 
-	struct GRICreateGraphicsPipelineStateCommand : public GRICommand<GRICreateGraphicsPipelineStateCommand>
+	struct GRICreateGraphicsPipelineCommand : public GRICommand<GRICreateGraphicsPipelineCommand>
 	{
-		GRICreateGraphicsPipelineStateCommand(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle)
+        GRICreateGraphicsPipelineCommand(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle)
 			: _PsoInfo(createInfo)
 			, _Handle(handle)
 		{
@@ -180,7 +214,49 @@ namespace SkySnow
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
 
-		GRICreateGraphicsPipelineStateInfo _PsoInfo;
-		GRIGraphicsPipelineStateRef _Handle;
+        GRICreateGraphicsPipelineInfo   _PsoInfo;
+		GRIGraphicsPipelineRef          _Handle;
 	};
+    //Create VertexDesc
+    struct GRICreateVertexDescriptorCommand : public GRICommand<GRICreateVertexDescriptorCommand>
+    {
+        //const VertexDeclarationElementList& vdel
+        GRICreateVertexDescriptorCommand(const VertexElementList& vdel,GRIVertexDescriptorRef& handle)
+            : _VertexElementList(vdel)
+            , _Handle(handle)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIVertexDescriptorRef         _Handle;
+        VertexElementList              _VertexElementList;
+    };
+
+    struct GRICreateUniformBufferCommand : public GRICommand<GRICreateUniformBufferCommand>
+    {
+        GRICreateUniformBufferCommand(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle)
+            : _USlotList(contents)
+            , _UBName(const_cast<char*>(ubName))
+            , _UBType(ubType)
+            , _Handle(handle)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        char*                   _UBName;
+        UniformBufferUsageType  _UBType;
+        UniformSlotList         _USlotList;
+        GRIUniformBufferRef     _Handle;
+    };
+
+    struct GRICreateUniformDescriptorCommand : public GRICommand<GRICreateUniformDescriptorCommand>
+    {
+        GRICreateUniformDescriptorCommand(const UniformBufferList& ubl,GRIUniformBufferDescriptorRef& handle)
+            : _UBSlotList(ubl)
+            , _Handle(handle)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        
+        UniformBufferList               _UBSlotList;
+        GRIUniformBufferDescriptorRef   _Handle;
+    };
 }

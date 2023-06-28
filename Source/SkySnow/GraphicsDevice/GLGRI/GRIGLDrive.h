@@ -41,6 +41,7 @@ namespace SkySnow
 			   Different rendering APIs inherit from this class and implement the functions of 
 			   different APIs with the same capability
 	*/
+    //TODO: Function description and parameter description
 	class GRIGLDrive : public GRIDrive
 	{
 	public:
@@ -61,36 +62,74 @@ namespace SkySnow
 		//Create Fragment Shader
 		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) final override;
 		//Create Shader State
-		virtual void GRICreatePipelineShaderState(GRIPipelineShaderStateRef& handle) final override;
-		//Create Pipeline State 
-		virtual void GRICreateGraphicsPipelineState(const GRICreateGraphicsPipelineStateInfo& createInfo, GRIGraphicsPipelineStateRef& handle) final override;
+		virtual void GRICreatePipelineShader(GRIPipelineShaderRef& handle) final override;
+		//Create Render Pipeline
+		virtual void GRICreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle) final override;
+        //Create Compute Pipeline
+        virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) final override;
 		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
+        //Create Vertex Declaration for VertexBuffer
+		virtual void GRICreateVertexDescriptor(const VertexElementList& vdel,GRIVertexDescriptorRef& handle) final override;
+		//Create Uniform Buffer
+		virtual void GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle) final override;
+		//Create Uniform Buffer Declaration
+		virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle) final override;
+		//Texture2D
+        //create mipmap texture,you will pack all mipmap data to one data,SkySnowEngine not support generate mipmap texture
+		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle) final override;
+		//Texture2DArray
+		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle) final override;
+		//Texture3D
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,uint8* data,GRITexture3DRef& handle) final override;
+		//TextureCube
+		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle) final override;
+		//SamplerState
+		virtual void GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
+		//GRIUpdateData=============================================================================================================================
+		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
+		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
+		//Update Uniform Buffer Data or Update Uniform Data
+		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents) final override;
+		//Update Texture2D Data
+        //if updload mipmap data,you need call this function for numMap count
+		virtual void GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
+		//Update Texture3D Data and Texture2DArray
+        //if updload mipmap data,you need call this function for numMap count
+		virtual void GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
+		//Update TextureCube Data
+        //if updload mipmap data,you need call this function for numMap count
+		virtual void GRIUpdateTextureCube(GRITextureCube* texCube) final override;
 		//GRISet====================================================================================================================================
-		//Set Buffer
-		virtual void GRISetBuffer(int BufferInfoId, GRIBuffer* buffer, int offset) final override;
+		//Set Buffer VertexBuffer(StreamSource)
+		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) final override;
 		//set ShaderPipelineState
-		virtual void GRISetPipelineShaderState(GRIPipelineShaderState* pipelineShaderState) final override;
+		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
+		//Set Graphics Pipeline State
+		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
+		//Set Curr ShaderPipeline Uniform Buffer Index
+		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex) final override;
+		//Set Texture2D Texture2DArray Texture3D  TextureCube
+		virtual void GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex) final override;
+		//Set Texture Sampler State
+		virtual void GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex) final override;
+		//GRISet====================================================================================================================================
+		//GRIDraw Submit============================================================================================================================
 		//Call Draw,that draw primitive
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void GRISetGraphicsPipelineState(GRIGraphicsPipelineState* pipelineState) final override;
-		//GRISet====================================================================================================================================
-
 	private:
-		//针对于glVertexAttribPointer的封装(设置数据的layout&告诉GPU数据如何读取)
-		//在GL4.3及GL3.1将该api拆分为glVertexAttribFormat及glVertexAttribBinding
-		void SetupVertexFormatBinding(GLGraphicPipelineState& psoState, GLBufferInfo* bufferInfo, int bufferIndex, int vertexCount);
+        //vertex Element setup
+		void SetupVertexFormatBinding(GLGraphicPipeline& psoState, GRIGLVertexDescriptor* vertexDec, int bufferIndex, int vertexCount);
 		void CheckPrimitiveType(PrimitiveType primitiveType, int numPrimitives, GLenum& glPrimitiveType, int& numElements);
+        void BindPipelineShaderState(GLGraphicPipeline& contextState);
+        void BindUniformBuffer(GLGraphicPipeline& contextState);
+        void BindTextureForDraw(GLGraphicPipeline& contextState);
 	private:
-		//将要提交到GPU执行的pipelinestate
-		GLGraphicPipelineState		_PendingState;
-		//已经存在于GPU中的pipelinestate
-		GLGraphicPipelineState		_ExistingState;
-		//图元绘制类型
-		PrimitiveType				_PrimitiveType = PrimitiveType::PT_Num;
-		//Cache中有相关状态的缓存
-		GLGraphicPipelineStateCache _PipelineCache;
+		//this drawcall setup GraphicsPipeline state
+		GLGraphicPipeline		    _PendingState;
+		//aleardly setup GraphicsPipeline state
+		GLGraphicPipeline   		_ExistingState;
         GLContext*                  _GLContext;
 	};
 }
