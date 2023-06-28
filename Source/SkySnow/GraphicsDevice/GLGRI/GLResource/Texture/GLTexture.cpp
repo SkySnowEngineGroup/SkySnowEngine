@@ -59,7 +59,7 @@ namespace SkySnow
         glGenTextures(1, &texId);
         glBindTexture(target, texId);
 
-        if(numSamples > 1)//
+        if(numSamples > 1)//多重采样纹理
         {
             glTexImage2DMultisample(target, numSamples, internalFotmat, sizex, sizey, GL_TRUE);
         }
@@ -81,17 +81,12 @@ namespace SkySnow
 			glTexParameteri(target, GL_TEXTURE_MIN_FILTER, numMips > 1 ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST);
 			glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
 			glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, numMips - 1);
-
-            //分配纹理内存
-            if(OpenGL::SupportStorageTexture() && !gpFormat._IsCompressed)
+            //分配纹理内存大小
+            if(!gpFormat._IsCompressed)
             {
-                glTexStorage2D(target, numMips,internalFotmat, sizex, sizey);
-            }
-            else
-            {
-                for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
+                if(!OpenGL::TexStorage2D(target, numMips, internalFotmat, sizex, sizey, glFormat, glType))
                 {
-                    if(!gpFormat._IsCompressed)
+                    for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
                     {
                         glTexImage2D(
                                      target,
@@ -104,21 +99,16 @@ namespace SkySnow
                                      glType,
                                      nullptr);
                     }
-                    else
-                    {
-                        uint32 image_w = std::max<uint32>(1,sizex >> mipIndex);
-                        uint32 image_h = std::max<uint32>(1,sizey >> mipIndex);
-                        const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
-                        glCompressedTexImage2D(
-                                               target,
-                                               mipIndex,
-                                               internalFotmat,
-                                               image_w,
-                                               image_h,
-                                               0,
-                                               imageSize,
-                                               nullptr);
-                    }
+                }
+            }
+            else
+            {
+                for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
+                {
+                    uint32 image_w = std::max<uint32>(1,sizex >> mipIndex);
+                    uint32 image_h = std::max<uint32>(1,sizey >> mipIndex);
+                    const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
+                    OGLTexture::CompressedTexImage(target, mipIndex, internalFotmat, image_w, image_h, 0, 0, imageSize, nullptr);
                 }
             }
             //更新纹理数据到纹理对象
@@ -131,20 +121,19 @@ namespace SkySnow
                     const int image_w = std::max<uint32>(1,sizex >> mipIndex);
                     const int image_h = std::max<uint32>(1,sizey >> mipIndex);
                     const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
-                    if(gpFormat._IsCompressed && OpenGL::SupportASTC())
+                    if(gpFormat._IsCompressed)
                     {
-                        glCompressedTexSubImage2D(target, mipIndex, 0, 0, image_w, image_h, glFormat, imageSize, curData);
+                        OGLTexture::CompressedTexSubImage(target, mipIndex, 0, 0, 0, image_w, image_h, 0, glFormat, imageSize, curData);
                     }
                     else if(!gpFormat._IsCompressed)
                     {
-                        glTexSubImage2D(target, mipIndex,0, 0, image_w, image_h, glFormat, glType, curData);
+                        OGLTexture::TexSubImage(target, 0, mipIndex, 0, 0, 0, image_w, image_h, 0, glFormat, glType, curData);
                     }
                     curData     += imageSize;
                 }
             }
         }
         
-        //TODO: depthstencil and resovle(MRT to normal rt)
         if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_RenderTarget))
         {
             attachment = GL_COLOR_ATTACHMENT0;
@@ -176,7 +165,19 @@ namespace SkySnow
     
     void GRIGLDrive::GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle)
     {
+        GRIGLTexture2DArray* tex2DArray  = dynamic_cast<GRIGLTexture2DArray*>(handle.GetReference());
         
+        const PixelFormat pFormat        = (PixelFormat)format;
+        const GLTextureFormat& gpFormat  = GGLTextureFormat[pFormat];
+        const PixelFormatInfo formatInfo = GPixelFormats[tex2DArray->GetFormat()];
+        
+        bool isSrgb                      = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
+        GLenum glFormat                  = gpFormat._GLFormat;
+        GLenum glType                    = gpFormat._GLType;
+        GLenum internalFotmat            = gpFormat._GLInternalFormat[isSrgb];
+        //if numSimples not 1, so this mrt texture(Msaa)
+        GLenum target                    = numSamples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
+        GLenum attachment                = GL_NONE;
     }
     void GRIGLDrive::GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,uint8* data,GRITexture3DRef& handle)
     {
@@ -232,27 +233,27 @@ namespace SkySnow
     //Texture Internal call function
     namespace OGLTexture
     {
-        void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data)
-        {
-            //GL_PROXY_TEXTURE_3D 代理纹理，用于查询是否支持某种格式(较为鸡肋功能)
-            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_CUBE_MAP_ARRAY || target == GL_TEXTURE_2D_ARRAY)
-            {
-                //GL_TEXTURE_CUBE_MAP_ARRAY GLES3.2\GL4.x
-                glTexImage3D(target,mipLevel,internalFormat,sizex,sizey,sizez,border,format,type,data);
-            }
-            else if (target == GL_TEXTURE_2D_MULTISAMPLE)//TODO: GL_TEXTURE_2D_MULTISAMPLE_ARRAY
-            {
-                glTexImage2DMultisample(target,numSamples,internalFormat,sizex,sizey,GL_TRUE);
-            }
-            else if(target == GL_TEXTURE_2D_MULTISAMPLE_ARRAY)
-            {
-                //TODO:
-            }
-            else//target: GL_TEXTURE_2D、GL_TEXTURE_CUBE_MAP_XX_X.....
-            {
-                glTexImage2D(target,mipLevel,internalFormat,sizex,sizey,border,format,type,data);
-            }
-        }
+//        void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data)
+//        {
+//            //GL_PROXY_TEXTURE_3D 代理纹理，用于查询是否支持某种格式(较为鸡肋功能)
+//            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_CUBE_MAP_ARRAY || target == GL_TEXTURE_2D_ARRAY)
+//            {
+//                //GL_TEXTURE_CUBE_MAP_ARRAY GLES3.2\GL4.x
+//                glTexImage3D(target,mipLevel,internalFormat,sizex,sizey,sizez,border,format,type,data);
+//            }
+//            else if (target == GL_TEXTURE_2D_MULTISAMPLE)//TODO: GL_TEXTURE_2D_MULTISAMPLE_ARRAY
+//            {
+//                glTexImage2DMultisample(target,numSamples,internalFormat,sizex,sizey,GL_TRUE);
+//            }
+//            else if(target == GL_TEXTURE_2D_MULTISAMPLE_ARRAY)
+//            {
+//                //TODO:
+//            }
+//            else//target: GL_TEXTURE_2D、GL_TEXTURE_CUBE_MAP_XX_X.....
+//            {
+//                glTexImage2D(target,mipLevel,internalFormat,sizex,sizey,border,format,type,data);
+//            }
+//        }
         
         void TexSubImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLenum type,const GLvoid* data)
         {
@@ -281,6 +282,11 @@ namespace SkySnow
         
         void CompressedTexImage(GLenum target,GLint mipLevel,GLenum internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLsizei imageSize,const GLvoid* data)
         {
+            if(!OpenGL::SupportASTC())
+            {
+                SN_WARN("Not Support Compressed.");
+                return;
+            }
             if(target == GL_TEXTURE_3D || target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY)
             {
                 //GL_TEXTURE_CUBE_MAP_ARRAY: GLES3.2(width == height,otherwiser go wrong)
@@ -294,6 +300,11 @@ namespace SkySnow
         
         void CompressedTexSubImage(GLenum target,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLsizei imageSize,const GLvoid* data)
         {
+            if(!OpenGL::SupportASTC())
+            {
+                SN_WARN("Not Support Compressed.");
+                return;
+            }
             if(target == GL_TEXTURE_3D || target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY)
             {
                 glCompressedTexSubImage3D(target,mipLevel,offsetx,offsety,offsetz,sizex,sizey,sizez,format,imageSize,data);

@@ -115,12 +115,22 @@ namespace SkySnow
     
     void GRIGLDrive::GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex)
     {
+        if(_PendingState._Textures.size() < textureIndex)
+        {
+            SN_WARN("GRISetShaderTexture The maximum number of texture units is exceeded.");
+            return;
+        }
         GRITextureRef& texRef = _PendingState._Textures[textureIndex];
         texRef = texture;
     }
     
     void GRIGLDrive::GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex)
     {
+        if(_PendingState._Samplers.size() < samplerIndex)
+        {
+            SN_WARN("GRISetShaderSampler The maximum number of texture units is exceeded.");
+            return;
+        }
         GRISamplerStateRef& samplerRef = _PendingState._Samplers[samplerIndex];
         samplerRef = sampler;
     }
@@ -206,21 +216,20 @@ namespace SkySnow
     {
         for(int iUnit = 0; iUnit < Max_Num_Texture_Unit; iUnit ++)
         {
-            GRITextureRef texture = contextState._Textures[iUnit];
-            if(texture.GetReference() == nullptr)
+            GRITextureRef texture       = contextState._Textures[iUnit];
+            GRISamplerStateRef sampler  = contextState._Samplers[iUnit];
+            
+            if(texture.GetReference() == nullptr || sampler.GetReference() != nullptr)
             {
                 continue;
             }
+            
             glActiveTexture(GL_TEXTURE0 + iUnit);
             GLBaseTexture* glTex = dynamic_cast<GLBaseTexture*>(texture.GetReference());
             glBindTexture(glTex->_Target, glTex->_GpuHandle);
             
-            GRISamplerStateRef sampler = contextState._Samplers[iUnit];
-            if(sampler.GetReference() != nullptr)
-            {
-                GRIGLSamplerState* glSampler = dynamic_cast<GRIGLSamplerState*>(sampler.GetReference());
-                glBindSampler(iUnit, glSampler->_GpuHandle);
-            }
+            GRIGLSamplerState* glSampler = dynamic_cast<GRIGLSamplerState*>(sampler.GetReference());
+            glBindSampler(iUnit, glSampler->_GpuHandle);
         }
     }
     void GRIGLDrive::BindPipelineShaderState(GLGraphicPipeline& contextState)
