@@ -33,29 +33,31 @@ namespace SkySnow
 		{
 			glGenBuffers(size,buffer);
 		}
-        static inline void TexStorage3D(GLenum target, GLint levels, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type)
+        static inline bool TexStorage3D(GLenum target, GLint levels, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type)
         {
             if(SupportStorageTexture())
             {
                 glTexStorage3D(target, levels, internalFormat, width, height, depth);
+                return true;
             }
             else
             {
-                bool isArray = target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY;
-                for(int il = 0; il < levels; il ++)
-                {
-                    glTexImage3D(
-                                 target,
-                                 il,
-                                 internalFormat,
-                                 std::max<uint32>(1,(width >> il)),
-                                 std::max<uint32>(1,(width >> il)),
-                                 (isArray) ? depth : std::max<uint32>(1,(depth >> il)),
-                                 0,
-                                 format,
-                                 type,
-                                 NULL);
-                }
+                //bool isArray = target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY;
+                //for(int il = 0; il < levels; il ++)
+                //{
+                //    glTexImage3D(
+                //                 target,
+                //                 il,
+                //                 internalFormat,
+                //                 std::max<uint32>(1,(width >> il)),
+                //                 std::max<uint32>(1,(width >> il)),
+                //                 (isArray) ? depth : std::max<uint32>(1,(depth >> il)),
+                //                 0,
+                //                 format,
+                //                 type,
+                //                 NULL);
+                //}
+                return false;
             }
         }
         static inline bool TexStorage2D(GLenum target, GLint levels, GLint internalFormat, GLsizei width, GLsizei height, GLenum format,GLenum type)
@@ -67,19 +69,19 @@ namespace SkySnow
             }
             else
             {
-                for(int il = 0; il < levels; il ++)
-                {
-                    glTexImage2D(
-                                 target,
-                                 il,
-                                 internalFormat,
-                                 std::max<uint32>(1,(width >> il)),
-                                 std::max<uint32>(1,(width >> il)),
-                                 0,
-                                 format,
-                                 type,
-                                 nullptr);
-                }
+                //for(int il = 0; il < levels; il ++)
+                //{
+                //    glTexImage2D(
+                //                 target,
+                //                 il,
+                //                 internalFormat,
+                //                 std::max<uint32>(1,(width >> il)),
+                //                 std::max<uint32>(1,(width >> il)),
+                //                 0,
+                //                 format,
+                //                 type,
+                //                 nullptr);
+                //}
                 return false;
             }
         }

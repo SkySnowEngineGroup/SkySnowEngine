@@ -56,7 +56,7 @@ namespace SkySnow
         static inline void VertexAttribIFormat(GLuint attribIndex, GLint size, GLenum type, GLuint relativeOffset) VOID_BODYFUN
         static inline void VertexAttribBinding(GLuint attribIndex, GLuint bindingIndex) VOID_BODYFUN
         static inline void VertexBindingDivisor(GLuint bindingIndex, GLuint divisor) VOID_BODYFUN
-        static inline void TexStorage3D(GLenum target, GLint levels, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type)VOID_BODYFUN
+        static inline bool TexStorage3D(GLenum target, GLint levels, GLint internalFormat, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type)VOID_BODYFUN
         static inline bool TexStorage2D(GLenum target, GLint levels, GLint internalFormat, GLsizei width, GLsizei height, GLenum format,GLenum type)VOID_BODYFUN
 		
 
