@@ -30,282 +30,21 @@ namespace SkySnow
     GLTextureFormat GGLTextureFormat[PixelFormat::PF_End];
     void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle)
     {
-        GRIGLTexture2D* tex2D = dynamic_cast<GRIGLTexture2D*>(handle.GetReference());
-        
-        const PixelFormat pFormat        = (PixelFormat)format;
-        const GLTextureFormat& gpFormat  = GGLTextureFormat[pFormat];
-        const PixelFormatInfo formatInfo = GPixelFormats[tex2D->GetFormat()];
-        
-        bool isSrgb                      = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
-        GLenum glFormat                  = gpFormat._GLFormat;
-        GLenum glType                    = gpFormat._GLType;
-        GLenum internalFotmat            = gpFormat._GLInternalFormat[isSrgb];
-        //if numSimples not 1, so this mrt texture(Msaa)
-        GLenum target                    = numSamples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
-        GLenum attachment                = GL_NONE;
-		//numMip = 0 Indicates a complete mip structure
-		//numMip = 1 mipmap is disabled
-		//numMip > 1 Externally defined Mipmap chain.Externally, divide the widthand height by 2 for jumping data
-        if (numMips == 0 && numSamples <= 1)
-        {
-            numMips = OGLTexture::CalMaxMipmapLevel(sizex, sizey);
-        }
-        else if (numMips == 0 && numSamples > 1)
-        {
-            numMips = 1;
-        }
-        //创建纹理对象
-        GLuint texId;
-        glGenTextures(1, &texId);
-        glBindTexture(target, texId);
-
-        if(numSamples > 1)//多重采样纹理
-        {
-            glTexImage2DMultisample(target, numSamples, internalFotmat, sizex, sizey, GL_TRUE);
-        }
-        else//
-        {
-			//Texture Paramerer State
-			glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			if (OGLTexture::IsPowerOftwo(sizex) || OGLTexture::IsPowerOftwo(sizey))
-			{
-				glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-				glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-			}
-			else
-			{
-				glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-				glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			}
-			//TODO: GL_TEXTURE_MAX_ANISOTROPY_EXT
-			glTexParameteri(target, GL_TEXTURE_MIN_FILTER, numMips > 1 ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST);
-			glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
-			glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, numMips - 1);
-			if (gpFormat._GLInternalFormat[isSrgb] == GL_NONE)
-			{
-				SN_WARN("Texture format '%s' not supported.", formatInfo._Name);
-			}
-			if (gpFormat._IsBGRA && !OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_RenderTarget))
-			{
-				glTexParameteri(target, GL_TEXTURE_SWIZZLE_R, GL_BLUE);
-				glTexParameteri(target, GL_TEXTURE_SWIZZLE_B, GL_RED);
-			}
-            //分配纹理内存大小
-            if(!gpFormat._IsCompressed)
-            {
-                if(!OpenGL::TexStorage2D(target, numMips, internalFotmat, sizex, sizey, glFormat, glType))
-                {
-                    for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
-                    {
-                        glTexImage2D(
-                                     target,
-                                     mipIndex,
-                                     internalFotmat,
-                                     std::max<uint32>(1,sizex >> mipIndex),
-                                     std::max<uint32>(1,sizey >> mipIndex),
-                                     0,
-                                     glFormat,
-                                     glType,
-                                     nullptr);
-                    }
-                }
-            }
-            else
-            {
-                for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
-                {
-                    uint32 image_w = std::max<uint32>(1,sizex >> mipIndex);
-                    uint32 image_h = std::max<uint32>(1,sizey >> mipIndex);
-                    const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
-                    OGLTexture::CompressedTexImage(target, mipIndex, internalFotmat, image_w, image_h, 0, 0, imageSize, nullptr);
-                }
-            }
-            //更新纹理数据到纹理对象
-            if(data != nullptr)
-            {
-                const uint8* curData  = data;
-                GLenum internalFotmat = gpFormat._GLInternalFormat[isSrgb];
-                for(int mipIndex = 0; mipIndex < numMips; mipIndex ++)
-                {
-                    const int image_w = std::max<uint32>(1,sizex >> mipIndex);
-                    const int image_h = std::max<uint32>(1,sizey >> mipIndex);
-                    const int imageSize = (image_w/formatInfo._BlockSizeX) * (image_h/formatInfo._BlockSizeY) * formatInfo._ByteSize;
-                    if(gpFormat._IsCompressed)
-                    {
-                        OGLTexture::CompressedTexSubImage(target, mipIndex, 0, 0, 0, image_w, image_h, 0, glFormat, imageSize, curData);
-                    }
-                    else if(!gpFormat._IsCompressed)
-                    {
-                        OGLTexture::TexSubImage(target, 0, mipIndex, 0, 0, 0, image_w, image_h, 0, glFormat, glType, curData);
-                    }
-                    curData     += imageSize;
-                }
-            }
-        }
-        
-        if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_RenderTarget))
-        {
-            attachment = GL_COLOR_ATTACHMENT0;
-        }
-        else if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_DepthStencilRenderTarget))
-        {
-            attachment = (format == PF_DepthStencil) ? GL_DEPTH_STENCIL_ATTACHMENT : GL_DEPTH_ATTACHMENT;
-        }
-        else if(OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_ResolveRenderTarget))
-        {
-            if(format == PF_DepthStencil)
-            {
-                attachment = GL_DEPTH_STENCIL_ATTACHMENT;
-            }
-            else if(format == PF_ShadowDepth || format == PF_D24)
-            {
-                attachment = GL_DEPTH_ATTACHMENT;
-            }
-            else
-            {
-                attachment = GL_COLOR_ATTACHMENT0;
-            }
-        }
-        glBindTexture(target, 0);
-        tex2D->_GpuHandle   = texId;
-        tex2D->_Target      = target;
-        tex2D->_Attachment  = attachment;
+        OGLTexture::CreateTextureInternal<GRITexture2D>(handle, sizex, sizey, 1, format, numMips, numSamples, usageType, data);
     }
     
     void GRIGLDrive::GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle)
     {
-        GRIGLTexture2DArray* tex2DArray  = dynamic_cast<GRIGLTexture2DArray*>(handle.GetReference());
-        
-        const PixelFormat pFormat        = (PixelFormat)format;
-        const GLTextureFormat& gpFormat  = GGLTextureFormat[pFormat];
-        const PixelFormatInfo formatInfo = GPixelFormats[tex2DArray->GetFormat()];
-        
-        bool isSrgb                      = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
-        GLenum glFormat                  = gpFormat._GLFormat;
-        GLenum glType                    = gpFormat._GLType;
-        GLenum internalFotmat            = gpFormat._GLInternalFormat[isSrgb];
-        //if numSimples not 1, so this mrt texture(Msaa)
-        GLenum target                    = GL_TEXTURE_2D_ARRAY;
-        GLenum attachment                = GL_NONE;
-		//numMip = 0 Indicates a complete mip structure
-        //numMip = 1 mipmap is disabled
-        //numMip > 1 Externally defined Mipmap chain.Externally, divide the widthand height by 2 for jumping data
-		if (numMips == 0)
-		{
-			numMips = OGLTexture::CalMaxMipmapLevel(sizex, sizey);
-		}
-		//创建纹理对象
-		GLuint texId;
-		glGenTextures(1, &texId);
-		glBindTexture(target, texId);
-
-		glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(target, GL_TEXTURE_MIN_FILTER, numMips > 1 ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST);
-		glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
-		glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, numMips - 1);
-        if (gpFormat._GLInternalFormat[isSrgb] == GL_NONE)
-        {
-            SN_WARN("Texture format '%s' not supported.", formatInfo._Name);
-        }
-		if (gpFormat._IsBGRA && !OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_RenderTarget))
-		{
-			glTexParameteri(target, GL_TEXTURE_SWIZZLE_R, GL_BLUE);
-			glTexParameteri(target, GL_TEXTURE_SWIZZLE_B, GL_RED);
-		}
-        //mipmap Source Data is
-        //MipmapData[Mipmap级别数] = {每个级别的压缩图像数据};
-        // 4 * 4 * 3  was {4*4|4*4|4*4} {2*2|2*2|2*2} {1*1|1*1|1*1}
-        if (!gpFormat._IsCompressed)
-        {
-			if (!OpenGL::TexStorage3D(target, numMips, internalFotmat, sizex, sizey, sizez, glFormat, glType))
-			{
-				//bool isArray = target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_CUBE_MAP_ARRAY;
-                for(int il = 0; il < numMips; il ++)
-                {
-                    glTexImage3D(
-                                 target,
-                                 il,
-                                 internalFotmat,
-                                 std::max<uint32>(1,(sizex >> il)),
-                                 std::max<uint32>(1,(sizex >> il)),
-                                 sizez,
-                                 0,
-                                 glFormat,
-                                 glType,
-                                 NULL);
-                }
-			}
-        }
-        else
-        {
-            for (int mipIndex = 0; mipIndex < numMips; mipIndex ++)
-            {
-                uint32 image_w = std::max<uint32>(1, (sizex >> mipIndex));
-                uint32 image_h = std::max<uint32>(1, (sizex >> mipIndex));
-                uint32 image_size = (image_w / formatInfo._BlockSizeX)* (image_h / formatInfo._BlockSizeY)* formatInfo._ByteSize;
-                image_size = image_size * sizez;
-                OGLTexture::CompressedTexImage(target,mipIndex,internalFotmat,image_w,image_h,sizez,0,image_size,nullptr);
-            }
-        }
-
-        if (data)
-        {
-            uint32 dataOffset = 0;
-            for (int mipIndex = 0; mipIndex < numMips; mipIndex++)
-            {
-				uint32 image_w = std::max<uint32>(1, (sizex >> mipIndex));
-				uint32 image_h = std::max<uint32>(1, (sizex >> mipIndex));
-				uint32 image_size = (image_w / formatInfo._BlockSizeX) * (image_h / formatInfo._BlockSizeY) * formatInfo._ByteSize;
-				image_size = image_size * sizez;
-                if (!gpFormat._IsCompressed)
-                {
-                    OGLTexture::TexSubImage(target,0,mipIndex,0,0,0,image_w,image_h,sizez,glFormat,glType,data + dataOffset);
-                }
-                else
-                {
-                    OGLTexture::CompressedTexSubImage(target, mipIndex, 0, 0, 0, image_w, image_h, sizez, glFormat, image_size, data + dataOffset);
-                }
-                dataOffset += image_size;
-            }
-        }
-
-		if (OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_RenderTarget))
-		{
-			attachment = GL_COLOR_ATTACHMENT0;
-		}
-		else if (OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_DepthStencilRenderTarget))
-		{
-			attachment = (format == PF_DepthStencil) ? GL_DEPTH_STENCIL_ATTACHMENT : GL_DEPTH_ATTACHMENT;
-		}
-		else if (OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_ResolveRenderTarget))
-		{
-			if (format == PF_DepthStencil)
-			{
-				attachment = GL_DEPTH_STENCIL_ATTACHMENT;
-			}
-			else if (format == PF_ShadowDepth || format == PF_D24)
-			{
-				attachment = GL_DEPTH_ATTACHMENT;
-			}
-			else
-			{
-				attachment = GL_COLOR_ATTACHMENT0;
-			}
-		}
-		glBindTexture(target, 0);
-        tex2DArray->_GpuHandle  = texId;
-        tex2DArray->_Target     = target;
-        tex2DArray->_Attachment = attachment;
+        OGLTexture::CreateTextureInternal<GRITexture2DArray>(handle, sizex, sizey, sizez, format, numMips, 1, usageType, data);
     }
-    void GRIGLDrive::GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,uint8* data,GRITexture3DRef& handle)
+
+    void GRIGLDrive::GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,uint8* data,GRITexture3DRef& handle)
     {
-        
+        OGLTexture::CreateTextureInternal<GRITexture3D>(handle, sizex, sizey, sizez, format, numMips, 1, usageType, data);
     }
     void GRIGLDrive::GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle)
     {
-        
+        OGLTexture::CreateTextureInternal<GRITextureCube>(handle, size, size, 1, format, numMips, 1, usageType, data);
     }
 
     void GRIGLDrive::GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
@@ -353,28 +92,233 @@ namespace SkySnow
     //Texture Internal call function
     namespace OGLTexture
     {
-//        void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data)
-//        {
-//            //GL_PROXY_TEXTURE_3D 代理纹理，用于查询是否支持某种格式(较为鸡肋功能)
-//            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_CUBE_MAP_ARRAY || target == GL_TEXTURE_2D_ARRAY)
-//            {
-//                //GL_TEXTURE_CUBE_MAP_ARRAY GLES3.2\GL4.x
-//                glTexImage3D(target,mipLevel,internalFormat,sizex,sizey,sizez,border,format,type,data);
-//            }
-//            else if (target == GL_TEXTURE_2D_MULTISAMPLE)//TODO: GL_TEXTURE_2D_MULTISAMPLE_ARRAY
-//            {
-//                glTexImage2DMultisample(target,numSamples,internalFormat,sizex,sizey,GL_TRUE);
-//            }
-//            else if(target == GL_TEXTURE_2D_MULTISAMPLE_ARRAY)
-//            {
-//                //TODO:
-//            }
-//            else//target: GL_TEXTURE_2D、GL_TEXTURE_CUBE_MAP_XX_X.....
-//            {
-//                glTexImage2D(target,mipLevel,internalFormat,sizex,sizey,border,format,type,data);
-//            }
-//        }
-        
+        template<typename TextureType>
+        void CreateTextureInternal(TextureType* texture,uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data)
+        {
+            GRITexture* griTex = dynamic_cast<GRITexture*>(texture);
+            GLBaseTexture* glTex = dynamic_cast<GLBaseTexture*>(texture);
+            
+            const PixelFormat pFormat        = (PixelFormat)format;
+            const GLTextureFormat& gpFormat  = GGLTextureFormat[pFormat];
+            const PixelFormatInfo formatInfo = GPixelFormats[griTex->GetFormat()];
+            bool isSrgb                      = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
+            GLenum glFormat                  = gpFormat._GLFormat;
+            GLenum glType                    = gpFormat._GLType;
+            GLenum internalFotmat            = gpFormat._GLInternalFormat[isSrgb];
+            //if numSimples not 1, so this mrt texture(Msaa)
+            GLenum target                    = GL_NONE;
+            GLenum attachment                = GL_NONE;
+            EGRIResourceType resourceType = griTex->GetType();
+            switch (resourceType)
+            {
+                case GRT_Texture2D:
+                    target = numSamples > 1 ? GL_TEXTURE_2D_MULTISAMPLE : GL_TEXTURE_2D;
+                    break;
+                case GRT_Texture2DArray:
+                    target = GL_TEXTURE_2D_ARRAY;
+                    numSamples = 1;
+                    break;
+                case GRT_Texture3D:
+                    target = GL_TEXTURE_3D;
+                    numSamples = 1;
+                    break;
+                case GRT_TextureCube:
+                    target = GL_TEXTURE_CUBE_MAP;
+                    numSamples = 1;
+                    break;
+                default:
+                    SN_WARN("EGRIResourceType:%d not support.",resourceType);
+                    break;
+            }
+            //numMip = 0 Indicates a complete mip structure
+            //numMip = 1 mipmap is disabled
+            //numMip > 1 Externally defined Mipmap chain.Externally, divide the widthand height by 2 for jumping data
+            //mipmap Source Data is
+            //MipmapData[Mipmap级别数] = {每个级别的压缩图像数据};
+            //  4*4 cubemap  {4*4|4*4|4*4|4*4|4*4|4*4} {2*2|2*2|2*2|2*2|2*2|2*2} {1*1|1*1|1*1|1*1|1*1|1*1}
+            //      target次序: px nx py ny pz nz
+            //  4 * 4 * 3 Texture2D_Array {4*4|4*4|4*4} {2*2|2*2|2*2} {1*1|1*1|1*1}
+            if (numMips == 0 && numSamples <= 1)
+            {
+                numMips = OGLTexture::CalMaxMipmapLevel(sizex, sizey);
+            }
+            else if (numMips == 0 && numSamples > 1)
+            {
+                numMips = 1;
+            }
+            //创建纹理对象
+            GLuint texId;
+            glGenTextures(1, &texId);
+            glBindTexture(target, texId);
+            
+            if(numSamples > 1)
+            {
+                glTexImage2DMultisample(target, numSamples, internalFotmat, sizex, sizey, GL_TRUE);
+            }
+            else
+            {
+                //Texture Paramerer State
+                glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+                if (OGLTexture::IsPowerOftwo(sizex) || OGLTexture::IsPowerOftwo(sizey))
+                {
+                    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_REPEAT);
+                    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_REPEAT);
+                }
+                else
+                {
+                    glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+                    glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+                }
+                //TODO: GL_TEXTURE_MAX_ANISOTROPY_EXT
+                glTexParameteri(target, GL_TEXTURE_MIN_FILTER, numMips > 1 ? GL_NEAREST_MIPMAP_NEAREST : GL_NEAREST);
+                glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
+                glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, numMips - 1);
+                if (gpFormat._GLInternalFormat[isSrgb] == GL_NONE)
+                {
+                    SN_WARN("Texture format '%s' not supported.", formatInfo._Name);
+                }
+                if (gpFormat._IsBGRA && !OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_RenderTarget))
+                {
+                    glTexParameteri(target, GL_TEXTURE_SWIZZLE_R, GL_BLUE);
+                    glTexParameteri(target, GL_TEXTURE_SWIZZLE_B, GL_RED);
+                }
+                //申请纹理内存
+                if(!gpFormat._IsCompressed)
+                {
+                    if(!OGLTexture::TexStorageImage(target, numMips, internalFotmat, sizex, sizey, sizez, glFormat, glType))
+                    {
+                        const GLenum firstTarget = glTex->_IsCubemap ? GL_TEXTURE_CUBE_MAP_POSITIVE_X : target;
+                        const uint32 numTargets = glTex->_IsCubemap ? 6 : 1;
+                        bool isArray = target == GL_TEXTURE_2D_ARRAY;
+                        for(uint32 mipIndex = 0; mipIndex < numMips; mipIndex++)
+                        {
+                            uint32 image_w = std::max<uint32>(1,(sizex >> mipIndex));
+                            uint32 image_h = std::max<uint32>(1,(sizey >> mipIndex));
+                            uint32 image_d = isArray ? sizez : std::max<uint32>(1,(sizez >> mipIndex));
+                            for(uint32 targetIndex = 0; targetIndex < numTargets; targetIndex++)
+                            {
+                                OGLTexture::TexImage(target + firstTarget, 0, mipIndex, internalFotmat,image_w, image_h, image_d, 0, glFormat, glType, nullptr);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    uint32 dataOffset = 0;
+                    const GLenum firstTarget = glTex->_IsCubemap ? GL_TEXTURE_CUBE_MAP_POSITIVE_X : target;
+                    const uint32 numTargets = glTex->_IsCubemap ? 6 : 1;
+                    bool isArray = target == GL_TEXTURE_2D_ARRAY;
+                    for(int mipIndex = 0; mipIndex < numMips; mipIndex++)
+                    {
+                        uint32 image_w = std::max<uint32>(1, (sizex >> mipIndex));
+                        uint32 image_h = std::max<uint32>(1, (sizey >> mipIndex));
+                        uint32 image_d = isArray ? sizez : std::max<uint32>(1, (sizez >> mipIndex));
+                        uint32 image_size = (image_w / formatInfo._BlockSizeX)* (image_h / formatInfo._BlockSizeY)* formatInfo._ByteSize;
+                        image_size = image_size * image_d;
+                        for(int targetIndex = 0; targetIndex < numTargets; targetIndex ++)
+                        {
+                            OGLTexture::CompressedTexImage(target,mipIndex,internalFotmat,image_w,image_h,image_d,image_d,image_size,nullptr);
+                        }
+                    }
+                }
+            }
+            //加载纹理数据
+            if(data)
+            {
+                uint32 dataOffset = 0;
+                const GLenum firstTarget = glTex->_IsCubemap ? GL_TEXTURE_CUBE_MAP_POSITIVE_X : target;
+                const uint32 numTargets = glTex->_IsCubemap ? 6 : 1;
+                bool isArray = target == GL_TEXTURE_2D_ARRAY;
+                for (int mipIndex = 0; mipIndex < numMips; mipIndex++)
+                {
+                    uint32 image_w = std::max<uint32>(1, (sizex >> mipIndex));
+                    uint32 image_h = std::max<uint32>(1, (sizey >> mipIndex));
+                    uint32 image_d = isArray ? sizez : std::max<uint32>(1, (sizez >> mipIndex));
+                    uint32 image_size = (image_w / formatInfo._BlockSizeX) * (image_h / formatInfo._BlockSizeY) * formatInfo._ByteSize;
+                    image_size = image_size * image_d;
+                    
+                    for(int targetIndex = 0; targetIndex < numTargets; targetIndex ++)
+                    {
+                        if(!gpFormat._IsCompressed)
+                        {
+                            OGLTexture::TexSubImage(firstTarget + targetIndex, 0, mipIndex, 0, 0, 0, image_w, image_h, image_d, glFormat, glType, data + dataOffset);
+                        }
+                        else
+                        {
+                            OGLTexture::CompressedTexSubImage(firstTarget + targetIndex, mipIndex, 0, 0, 0, image_w, image_h, image_d, glFormat, image_size, data + dataOffset);
+                        }
+                        dataOffset += image_size;
+                    }
+                }
+            }
+            //Depth/Sampler/DepthStencil/ShadowDepth
+            if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_RenderTarget))
+            {
+                attachment = GL_COLOR_ATTACHMENT0;
+            }
+            else if(OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_DepthStencilRenderTarget))
+            {
+                attachment = (format == PF_DepthStencil) ? GL_DEPTH_STENCIL_ATTACHMENT : GL_DEPTH_ATTACHMENT;
+            }
+            else if(OGLTexture::HasTextureUsageType(usageType, TextureUsageType::TUT_ResolveRenderTarget))
+            {
+                if(format == PF_DepthStencil)
+                {
+                    attachment = GL_DEPTH_STENCIL_ATTACHMENT;
+                }
+                else if(format == PF_ShadowDepth || format == PF_D24)
+                {
+                    attachment = GL_DEPTH_ATTACHMENT;
+                }
+                else
+                {
+                    attachment = GL_COLOR_ATTACHMENT0;
+                }
+            }
+            glBindTexture(target, 0);
+            glTex->_GpuHandle  = texId;
+            glTex->_Target     = target;
+            glTex->_Attachment = attachment;
+        }
+        bool TexStorageImage(GLenum target,uint32 mipLevel,GLenum internalFormat,uint32 sizex,uint32 sizey,uint32 sizez,GLenum format,GLenum type)
+        {
+            if(target == GL_TEXTURE_2D_ARRAY || target == GL_TEXTURE_3D)
+            {
+                if(!OpenGL::TexStorage3D(target, mipLevel, internalFormat, sizex, sizey, sizez, format, type))
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if(!OpenGL::TexStorage2D(target, mipLevel, internalFormat, sizex, sizey, format, type))
+                {
+                    return false;
+                }
+            }
+        }
+        void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data)
+        {
+            //GL_PROXY_TEXTURE_3D 代理纹理，用于查询是否支持某种格式(较为鸡肋功能)
+            if(target == GL_TEXTURE_3D || target == GL_TEXTURE_CUBE_MAP_ARRAY || target == GL_TEXTURE_2D_ARRAY)
+            {
+                //GL_TEXTURE_CUBE_MAP_ARRAY GLES3.2\GL4.x
+                glTexImage3D(target,mipLevel,internalFormat,sizex,sizey,sizez,border,format,type,data);
+            }
+            else if (target == GL_TEXTURE_2D_MULTISAMPLE)//TODO: GL_TEXTURE_2D_MULTISAMPLE_ARRAY
+            {
+                glTexImage2DMultisample(target,numSamples,internalFormat,sizex,sizey,GL_TRUE);
+            }
+            else if(target == GL_TEXTURE_2D_MULTISAMPLE_ARRAY)
+            {
+                //TODO:
+            }
+            else//target: GL_TEXTURE_2D、GL_TEXTURE_CUBE_MAP_XX_X.....
+            {
+                glTexImage2D(target,mipLevel,internalFormat,sizex,sizey,border,format,type,data);
+            }
+        }
+
         void TexSubImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLenum type,const GLvoid* data)
         {
             if(data == nullptr)

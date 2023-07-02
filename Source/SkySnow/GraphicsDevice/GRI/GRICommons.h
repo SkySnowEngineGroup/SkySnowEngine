@@ -53,7 +53,6 @@ namespace SkySnow
         GRT_Texture2D,
         GRT_Texture2DArray,
         GRT_Texture3D,
-        GRT_Texture3DArray,
         GRT_TextureCube,
 		GRT_Buffer,
         GRT_UniformBuffer,
