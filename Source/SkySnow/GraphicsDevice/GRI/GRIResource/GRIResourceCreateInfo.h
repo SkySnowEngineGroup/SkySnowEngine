@@ -207,7 +207,43 @@ namespace SkySnow
     //Sampler Create Info
     struct SamplerState
     {
+        SamplerState() {}
+        SamplerState(
+            SamplerFilter inFilter,
+            SamplerAddressMode inAddressU   = SamplerAddressMode::SAM_Wrap,
+            SamplerAddressMode inAddressV   = SamplerAddressMode::SAM_Wrap,
+            SamplerAddressMode inAddressW   = SamplerAddressMode::SAM_Wrap,
+            SamplerCompareFun  inCompareFun = SamplerCompareFun::SCF_Never,
+            float inMipBias         = 0,
+            float inMipmapLevel     = 0,
+            float inMaxMipmapLevel  = FLT_MAX,
+            int32 inMaxAnisotropy   = 0,
+            int32 inBorderColor     = 0
+            )
+            : _Filter(inFilter)
+            , _AddressU(inAddressU)
+            , _AddressV(inAddressV)
+            , _AddressW(inAddressW)
+            , _CompareFun(inCompareFun)
+            , _MipBias(inMipBias)
+            , _MipmapLevel(inMipmapLevel)
+            , _MaxMipmapLevel(inMaxMipmapLevel)
+            , _MaxAnisotropy(inMaxAnisotropy)
+            , _BorderColor(inBorderColor)
+        {
+        }
 
+        friend bool operator== (const SamplerState& left, const SamplerState& right);
+        SamplerFilter _Filter           = SamplerFilter::SF_Point;
+        SamplerAddressMode _AddressU    = SamplerAddressMode::SAM_Wrap;
+        SamplerAddressMode _AddressV    = SamplerAddressMode::SAM_Wrap;
+        SamplerAddressMode _AddressW    = SamplerAddressMode::SAM_Wrap;
+        SamplerCompareFun  _CompareFun  = SamplerCompareFun::SCF_Never;
+        float _MipBias          = 0.0f;
+        float _MipmapLevel      = 0.0f;
+        float _MaxMipmapLevel   = FLT_MAX;
+        int32 _MaxAnisotropy    = 0;
+        int32 _BorderColor      = 0;
     };
     //Texture2D Update Sub Data
     struct Texture2DRegion
@@ -215,6 +251,8 @@ namespace SkySnow
         Texture2DRegion()
             : _OffsetX(0)
             , _OffsetY(0)
+            , _DestX(0)
+            , _DestY(0)
             , _Width(0)
             , _Height(0)
         {
@@ -245,6 +283,9 @@ namespace SkySnow
             : _OffsetX(0)
             , _OffsetY(0)
             , _OffsetZ(0)
+            , _DestX(0)
+            , _DestY(0)
+            , _DestZ(0)
             , _Width(0)
             , _Height(0)
             , _Depth(0)

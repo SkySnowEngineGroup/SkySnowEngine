@@ -110,19 +110,24 @@ namespace SkySnow
 		PT_Trangle_Strip,
 		PT_Num,
 	};
-	enum class SamplerFilter
+	enum SamplerFilter
 	{
 		SF_Point,
 		SF_Bilinear,
 		SF_Trilinear,
 		SF_AnisotropicPoint
 	};
-	enum class SamplerAddressMode
+	enum SamplerAddressMode
 	{
 		SAM_Wrap,
 		SAM_Clamp,
 		SAM_Mirror,
 		SAM_Border
+	};
+	enum SamplerCompareFun
+	{
+		SCF_Never,
+		SCF_Less
 	};
 	enum class TextureUsageType : uint64
 	{
@@ -137,7 +142,22 @@ namespace SkySnow
         //MRT to normal rt
         TUT_ResolveRenderTarget         = 1 << 4
 	};
-
+	enum SamplerFilter
+	{
+		SF_Pointer,
+		SF_Bilinear,
+		SF_Trilinear,
+		SF_AnisotropicPoint,
+		SF_AnisotropicLinear,
+		SF_End
+	};
+	enum SamplerAddressMode
+	{
+		AM_Wrap,
+		AM_Clamp,
+		AM_Mirror,
+		AM_End
+	};
 	enum PixelFormat
 	{
 		PF_None,

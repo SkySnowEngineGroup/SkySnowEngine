@@ -23,6 +23,21 @@
 #include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
+	bool operator== (const SamplerState& left, const SamplerState& right)
+	{
+		bool bSame =
+			left._Filter == right._Filter &&
+			left._AddressU == right._AddressU &&
+			left._AddressV == right._AddressV &&
+			left._AddressW == right._AddressW &&
+			left._CompareFun == right._CompareFun &&
+			left._MipBias == right._MipBias &&
+			left._MipmapLevel == right._MipmapLevel &&
+			left._MaxMipmapLevel == right._MaxMipmapLevel &&
+			left._MaxAnisotropy == right._MaxAnisotropy &&
+			left._BorderColor == right._BorderColor;
+		return bSame;
+	}
 	PixelFormatInfo::PixelFormatInfo(
 		PixelFormat inPFormat,
 		const char* inName,
