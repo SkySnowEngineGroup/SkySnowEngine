@@ -115,7 +115,7 @@ namespace SkySnow
 		SF_Point,
 		SF_Bilinear,
 		SF_Trilinear,
-		SF_AnisotropicPoint
+        SF_AnisotropicLinear
 	};
 	enum SamplerAddressMode
 	{
@@ -141,22 +141,6 @@ namespace SkySnow
         TUT_DepthStencilRenderTarget    = 1 << 3,
         //MRT to normal rt
         TUT_ResolveRenderTarget         = 1 << 4
-	};
-	enum SamplerFilter
-	{
-		SF_Pointer,
-		SF_Bilinear,
-		SF_Trilinear,
-		SF_AnisotropicPoint,
-		SF_AnisotropicLinear,
-		SF_End
-	};
-	enum SamplerAddressMode
-	{
-		AM_Wrap,
-		AM_Clamp,
-		AM_Mirror,
-		AM_End
 	};
 	enum PixelFormat
 	{

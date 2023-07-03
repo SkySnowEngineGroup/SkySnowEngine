@@ -21,8 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GLProfiles.h"
+#include "GRIResource.h"
+#include "GRICommons.h"
+#include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
     
+
+    namespace OGLState
+    {
+        void CreateSamplerState(GRISamplerStateRef& handle,const SamplerState& sState);
+    
+        GLenum SamplerGLAddressSTR(SamplerAddressMode address);
+    }
 }

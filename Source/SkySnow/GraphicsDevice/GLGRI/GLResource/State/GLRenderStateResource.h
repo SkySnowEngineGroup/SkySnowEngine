@@ -33,9 +33,27 @@ namespace SkySnow
         GRIGLSamplerState()
             : GRISamplerState()
             , _GpuHandle(-1)
+            , _WrapS(GL_REPEAT)
+            , _WrapT(GL_REPEAT)
+            , _WrapR(GL_REPEAT)
+            , _LodBias(0)
+            , _MinFilter(GL_NEAREST)
+            , _MagFilter(GL_NEAREST)
+            , _MaxAnisotropy(1)
+            , _CompareMode(GL_NONE)
+            , _CompareFunc(GL_ALWAYS)
         {
         }
     public:
         GLuint  _GpuHandle;
+        GLenum  _WrapS;
+        GLenum  _WrapT;
+        GLenum  _WrapR;
+        GLint   _LodBias;
+        GLint   _MinFilter;
+        GLint   _MagFilter;
+        GLint   _MaxAnisotropy;
+        GLint   _CompareMode;
+        GLint   _CompareFunc;
     };
 }

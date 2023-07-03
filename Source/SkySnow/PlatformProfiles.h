@@ -38,6 +38,7 @@
 #define MAX_BUFFER_SIZE 1024*4
 #define PLATFORM PLATFORM_UNKNOW
 #include <iostream>
+#include <cfloat>
 #include "VarType.h"
 //config various platforms
 #if defined(__ANDROID__) || defined(ANDROID)

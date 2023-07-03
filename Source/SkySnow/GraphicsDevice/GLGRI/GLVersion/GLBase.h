@@ -44,6 +44,10 @@ namespace SkySnow
         static inline bool SupportVertexFormatBinding() { return _SupportVertexFormatBinding; };
         static inline bool SupportUniformBuffer(){return true;}
         static inline bool SupportASTC(){return  false;}
+        static inline bool SupportTex3D() { return false; }
+        static inline bool SupportTexLODBias() { return false; }
+        static inline bool SupportsTexFilterAnisotropic() { return false; }
+        static inline bool SupportsTexCompare() { return false; }
         //GL4.2,GLES3.0
         static inline bool SupportStorageTexture() {return true;}
         
