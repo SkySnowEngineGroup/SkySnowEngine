@@ -46,5 +46,15 @@ namespace SkySnow
         virtual GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType) final override;
         
         virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) final override;
+
+		virtual GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) final override;
+
+		virtual GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) final override;
+
+		virtual GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) final override;
+
+		virtual GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) final override;
+
+		virtual GRISamplerStateRef CreateSampler(const SamplerState& sState) final override;
 	};
 }

@@ -299,4 +299,59 @@ namespace SkySnow
         }
         return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
     }
+    //Create Texture2D
+    GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRITexture2DRef handle;
+            GRI->GRICreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, data, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, data);
+    }
+    //Texture2DArray
+    GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRITexture2DArrayRef handle;
+            GRI->GRICreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, data, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, data);
+    }
+    //Texture3D
+    GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRITexture3DRef handle;
+            GRI->GRICreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, data, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, data);
+    }
+    //TextureCube
+    GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRITextureCubeRef handle;
+            GRI->GRICreateTextureCube(size, format, numMips, usageType, data, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateTextureCube(size, format, numMips, usageType, data);
+    }
+    //SamplerState
+    GRISamplerStateRef CreateSampler(const SamplerState& sState)
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRISamplerStateRef handle;
+            GRI->GRICreateSampler(sState, handle);
+            return handle;
+        }
+        return _GQueue->GetLowerCommandBuffer()->CreateSampler(sState);
+    }
 }

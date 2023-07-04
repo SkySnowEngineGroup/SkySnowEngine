@@ -22,8 +22,11 @@
 //
 #include "GLCreateCommandBuffer.h"
 #include "GLShaderResource.h"
+#include "GLRenderStateResource.h"
+#include "GLTextureResource.h"
 #include "GLPipelineResource.h"
 #include "GRIPipelineCache.h"
+#include "VarType.h"
 #include "GRI.h"
 namespace SkySnow
 {
@@ -94,4 +97,39 @@ namespace SkySnow
         Alloc_CommandCreate(GRICreateUniformDescriptorCommand,ubl,handle);
         return handle;
     }
+
+	GRITexture2DRef GLCreateCommandBuffer::CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+	{
+		GRITexture2DRef handle = new GRIGLTexture2D(sizex, sizey,numMips,numSamples,(PixelFormat)format,usageType);
+		Alloc_CommandCreate(GRICreateTexture2DCommand,sizex,sizey,format,numMips,numSamples,usageType,data,handle);
+		return handle;
+	}
+
+	GRITexture2DArrayRef GLCreateCommandBuffer::CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+	{
+		GRITexture2DArrayRef handle = new GRIGLTexture2DArray(sizex,sizey,sizez,numMips,numSamples, (PixelFormat)format,usageType);
+		Alloc_CommandCreate(GRICreateTexture2DArrayCommand,sizex,sizey,sizez,format,numMips,numSamples,usageType,data,handle);
+		return handle;
+	}
+
+	GRITexture3DRef GLCreateCommandBuffer::CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+	{
+		GRITexture3DRef handle = new GRIGLTexture3D(sizex,sizey,sizez,numMips,1, (PixelFormat)format,usageType);
+		Alloc_CommandCreate(GRICreateTexture3DCommand,sizex,sizey,sizez,format,numMips,usageType,data, handle);
+		return handle;
+	}
+
+	GRITextureCubeRef GLCreateCommandBuffer::CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+	{
+		GRITextureCubeRef handle = new GRIGLTextureCube(size,numMips,1, (PixelFormat)format,usageType);
+		Alloc_CommandCreate(GRICreateTextureCubeCommand,size,format,numMips,usageType,data, handle);
+		return handle;
+	}
+
+	GRISamplerStateRef GLCreateCommandBuffer::CreateSampler(const SamplerState& sState)
+	{
+		GRISamplerStateRef handle = new GRIGLSamplerState();
+		Alloc_CommandCreate(GRICreateSamplerCommand, sState,handle);
+		return handle;
+	}
 }

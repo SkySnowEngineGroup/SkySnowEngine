@@ -53,4 +53,14 @@ namespace SkySnow
     GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType);
     //Create UniformBufferList Desc
     GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl);
+    //Create Texture2D
+    GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data);
+    //Texture2DArray
+    GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data);
+    //Texture3D
+    GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data);
+    //TextureCube
+    GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data);
+    //SamplerState
+    GRISamplerStateRef CreateSampler(const SamplerState& sState);
 }

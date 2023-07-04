@@ -102,4 +102,29 @@ namespace SkySnow
     {
         GRI->GRICreateUniformDescriptor(_UBSlotList, _Handle);
     }
+
+	void GRICreateTexture2DCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	{
+		GRI->GRICreateTexture2D(_Sizex, _Sizey, _Format, _NumMips, _NumSamples, _UsageType, _Data, _Handle);
+	}
+
+	void GRICreateTexture2DArrayCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	{
+		GRI->GRICreateTexture2DArray(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_NumSamples,_UsageType,_Data,_Handle);
+	}
+
+	void GRICreateTexture3DCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	{
+		GRI->GRICreateTexture3D(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_UsageType,_Data,_Handle);
+	}
+
+	void GRICreateTextureCubeCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	{
+		GRI->GRICreateTextureCube(_Size,_Format,_NumMips,_UsageType,_Data,_Handle);
+	}
+
+	void GRICreateSamplerCommand::Execute(GRICommandBufferBase& cmdBuffer)
+	{
+		GRI->GRICreateSampler(_State,_Handle);
+	}
 }

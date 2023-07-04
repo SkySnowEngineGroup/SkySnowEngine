@@ -101,6 +101,16 @@ namespace SkySnow
         
         virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) = 0;
 
+        virtual GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) = 0;
+
+        virtual GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) = 0;
+        
+        virtual GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) = 0;
+        
+        virtual GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) = 0;
+        
+        virtual GRISamplerStateRef CreateSampler(const SamplerState& sState) = 0;
+
         virtual void ResourceCreateExecutor();
     private:
         void CommandBufferReset();

@@ -259,4 +259,119 @@ namespace SkySnow
         UniformBufferList               _UBSlotList;
         GRIUniformBufferDescriptorRef   _Handle;
     };
+
+	struct GRICreateTexture2DCommand : public GRICommand<GRICreateTexture2DCommand>
+	{
+		GRICreateTexture2DCommand(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data, GRITexture2DRef& handle)
+			: _Sizex(sizex)
+			, _Sizey(sizey)
+			, _Format(format)
+			, _NumMips(numMips)
+			, _NumSamples(numSamples)
+			, _UsageType(usageType)
+			, _Data(data)
+			, _Handle(handle)
+		{
+		}
+
+		void Execute(GRICommandBufferBase& cmdBuffer);
+
+		uint32				_Sizex;
+		uint32				_Sizey; 
+		uint8				_Format; 
+		uint32				_NumMips;
+		uint32				_NumSamples; 
+		TextureUsageType	_UsageType; 
+		uint8*				_Data;
+		GRITexture2DRef		_Handle;
+	};
+
+	struct GRICreateTexture2DArrayCommand : public GRICommand<GRICreateTexture2DArrayCommand>
+	{
+		GRICreateTexture2DArrayCommand(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data, GRITexture2DArrayRef& handle)
+			: _Sizex(sizex)
+			, _Sizey(sizey)
+			, _Sizez(sizez)
+			, _Format(format)
+			, _NumMips(numMips)
+			, _NumSamples(numSamples)
+			, _UsageType(usageType)
+			, _Data(data)
+			, _Handle(handle)
+		{
+		}
+
+		void Execute(GRICommandBufferBase& cmdBuffer);
+
+		uint32					_Sizex; 
+		uint32					_Sizey; 
+		uint32					_Sizez; 
+		uint8					_Format; 
+		uint32					_NumMips; 
+		uint32					_NumSamples; 
+		TextureUsageType		_UsageType; 
+		uint8*					_Data; 
+		GRITexture2DArrayRef	_Handle;
+	};
+	struct GRICreateTexture3DCommand : GRICommand<GRICreateTexture3DCommand>
+	{
+		GRICreateTexture3DCommand(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data, GRITexture3DRef& handle)
+			: _Sizex(sizex)
+			, _Sizey(sizey)
+			, _Sizez(sizez)
+			, _Format(format)
+			, _NumMips(numMips)
+			, _UsageType(usageType)
+			, _Data(data)
+			, _Handle(handle)
+		{
+		}
+
+		void Execute(GRICommandBufferBase& cmdBuffer);
+
+		uint32				_Sizex; 
+		uint32				_Sizey; 
+		uint32				_Sizez; 
+		uint8				_Format; 
+		uint32				_NumMips; 
+		TextureUsageType	_UsageType; 
+		uint8*				_Data; 
+		GRITexture3DRef		_Handle;
+	};
+
+	struct GRICreateTextureCubeCommand : GRICommand<GRICreateTextureCubeCommand>
+	{
+		GRICreateTextureCubeCommand(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data, GRITextureCubeRef& handle)
+			: _Size(size)
+			, _Format(format)
+			, _NumMips(numMips)
+			, _UsageType(usageType)
+			, _Data(data)
+			, _Handle(handle)
+		{
+		}
+
+		void Execute(GRICommandBufferBase& cmdBuffer);
+
+		uint32				_Size; 
+		uint8				_Format; 
+		uint32				_NumMips; 
+		TextureUsageType	_UsageType; 
+		uint8*				_Data; 
+		GRITextureCubeRef	_Handle;
+	};
+
+	struct GRICreateSamplerCommand : public GRICommand<GRICreateSamplerCommand>
+	{
+		GRICreateSamplerCommand(const SamplerState& sState, GRISamplerStateRef& handle)
+			: _State(sState)
+			, _Handle(handle)
+		{
+		}
+
+		void Execute(GRICommandBufferBase& cmdBuffer);
+
+		SamplerState		_State; 
+		GRISamplerStateRef	_Handle;
+	};
 }

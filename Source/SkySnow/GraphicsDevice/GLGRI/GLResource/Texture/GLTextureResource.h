@@ -33,6 +33,7 @@ namespace SkySnow
             : _GpuHandle(0)
             , _Target(-1)
             , _IsCubemap(inIsCubemap)
+            , _Attachment(GL_NONE)
         {
         }
         virtual ~GLBaseTexture()

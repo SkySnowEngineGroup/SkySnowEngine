@@ -25,14 +25,13 @@
 #include "GRIResource.h"
 #include "GRIGLDrive.h"
 #include "GLRenderStateResource.h"
+#include "GLRenderState.h"
 namespace SkySnow
 {
     void GRIGLDrive::GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle)
     {
-        
+        OGLState::CreateSamplerState(handle, sState);
     }
-
-
 
     namespace OGLState
     {
