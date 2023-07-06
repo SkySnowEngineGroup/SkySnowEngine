@@ -26,29 +26,36 @@
 #include "LogAssert.h"
 namespace SkySnow
 {
-    void* StbImageLoad::StbLoadImage(const std::string& filePath)
+    TextureStream* StbImageLoad::StbLoadPNG(const std::string& filePath)
     {
         int width, height, channels;
-        void* cloneData;
         unsigned char* image_data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
         if(image_data == nullptr)
         {
             SN_WARN("Load Image(ImagePath:%s) fail.\n",filePath.c_str());
             return nullptr;
         }
-        
+        PixelFormat pixelFormat = PF_None;
         switch (channels)
         {
             case STBI_rgb_alpha:
+                pixelFormat = PF_R8G8B8A8;
                 break;
             case STBI_rgb:
+                pixelFormat = PF_R8G8B8;
                 break;
             case STBI_grey_alpha:
+                pixelFormat = PF_R8G8;
                 break;
             case STBI_grey:
+                pixelFormat = PF_R8;
                 break;
             default:
                 break;
         }
+        
+        TextureStream* stream = new TextureStream(pixelFormat,channels,width,height);
+        stream->CopyTargetData(image_data);
+        stbi_image_free(image_data);
     }
 }

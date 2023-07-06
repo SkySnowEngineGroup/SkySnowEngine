@@ -169,6 +169,7 @@ namespace SkySnow
 		PF_G16R16_SNORM,
 		PF_G32R32F,
 		PF_R5G6B5_UNORM,
+		PF_R8G8B8,
 		PF_R8G8B8A8,
 		PF_RGB_Float,
 		PF_R11G11B10_Float,

@@ -22,6 +22,7 @@
 //
 #pragma once
 #include <string>
+#include "TextureStream.h"
 namespace SkySnow
 {
     class StbImageLoad
@@ -30,6 +31,6 @@ namespace SkySnow
         StbImageLoad(){}
         ~StbImageLoad(){}
         
-        static void* StbLoadImage(const std::string& filePath);
+        static TextureStream* StbLoadPNG(const std::string& filePath);
     };
 }

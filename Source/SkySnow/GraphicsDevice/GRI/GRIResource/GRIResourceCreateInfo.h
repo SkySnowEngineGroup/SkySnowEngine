@@ -328,7 +328,8 @@ namespace SkySnow
             int32	inBlockSizeZ,
             int32	inByteSize,
             int32	inNumComponents,
-            bool	inIsSupport);
+            bool	inIsSupport,
+            bool	inIsCompressed);
 
 		const char* _Name;
 		PixelFormat		_PFormat;
@@ -338,6 +339,7 @@ namespace SkySnow
 		int32			_ByteSize;
 		int32			_NumComponents;
 		bool			_IsSupport;
+        bool            _IsCompressed;
 	};
     extern PixelFormatInfo GPixelFormats[PF_End];
 }

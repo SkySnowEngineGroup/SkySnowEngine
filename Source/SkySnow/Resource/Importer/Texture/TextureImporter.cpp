@@ -28,10 +28,10 @@ namespace SkySnow
     }
     void* TextureImporter::DoImport(const std::string filePath)
     {
-        
+        return nullptr;
     }
     bool TextureImporter::Release(void* data)
     {
-        
+        return nullptr;
     }
 }

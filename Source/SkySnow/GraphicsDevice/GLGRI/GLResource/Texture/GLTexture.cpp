@@ -423,6 +423,7 @@ namespace SkySnow
             SetupTextureFormat(PF_G16R16_SNORM,      GLTextureFormat(GL_RG16_SNORM,     GL_RG16_SNORM,      GL_RG,              GL_SHORT,           false, false));
             SetupTextureFormat(PF_G32R32F,           GLTextureFormat(GL_RG32F,          GL_RG32F,           GL_RG,              GL_FLOAT,           false, false));
             SetupTextureFormat(PF_R5G6B5_UNORM,      GLTextureFormat(GL_RGB565,         GL_RGB565,          GL_RGB,             GL_UNSIGNED_SHORT_5_6_5, false, false));
+            SetupTextureFormat(PF_R8G8B8,            GLTextureFormat(GL_RGB8,           GL_SRGB8,           GL_RGB,             GL_UNSIGNED_BYTE,   false, false));
             SetupTextureFormat(PF_R8G8B8A8,          GLTextureFormat(GL_RGBA8,          GL_SRGB8_ALPHA8,    GL_RGBA,            GL_UNSIGNED_BYTE,   false, false));
             SetupTextureFormat(PF_RGB_Float,         GLTextureFormat(GL_R11F_G11F_B10F, GL_R11F_G11F_B10F,  GL_RGB,             GL_UNSIGNED_INT_10F_11F_11F_REV, false, false));
             SetupTextureFormat(PF_R11G11B10_Float,   GLTextureFormat(GL_R11F_G11F_B10F, GL_R11F_G11F_B10F,  GL_RGB,             GL_UNSIGNED_INT_10F_11F_11F_REV, false, false));
