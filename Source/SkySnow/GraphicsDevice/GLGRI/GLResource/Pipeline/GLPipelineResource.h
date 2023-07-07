@@ -39,6 +39,7 @@ namespace SkySnow
             , _VertexDescriptor(nullptr)
             , _UBODescriptor(nullptr)
 		{
+            InitialPipelineState();
 		}
 
         GLGraphicPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
@@ -48,6 +49,18 @@ namespace SkySnow
 			, _VertexDescriptor(createInfo._ShaderPipelineInfo._VertexDescriptor)
 			, _UBODescriptor(createInfo._ShaderPipelineInfo._UniformBufferDescriptor)
 		{
+            InitialPipelineState();
+            for (int i = 0; i < Max_Num_Texture_Unit; i ++)
+            {
+                if (createInfo._ShaderPipelineInfo._Textures[i].GetReference())
+                {
+                    _Textures[i] = createInfo._ShaderPipelineInfo._Textures[i];
+                }
+                if (createInfo._ShaderPipelineInfo._Samplers[i])
+                {
+                    _Samplers[i] = createInfo._ShaderPipelineInfo._Samplers[i];
+                }
+            }
 		}
 
 		virtual ~GLGraphicPipeline()
@@ -71,11 +84,18 @@ namespace SkySnow
         {
             return dynamic_cast<GRIGLUniformBufferDescriptor*>(_UBODescriptor.GetReference());
         }
+    private:
         //this function use for _PendingState,other not use this function
         void InitialPipelineState()
         {
-            _Textures.resize(Max_Num_Texture_Unit);
-            _Samplers.resize(Max_Num_Sampler_Unit);
+            if (_Textures.size() == 0)
+            {
+                _Textures.resize(Max_Num_Texture_Unit);
+            }
+            if (_Samplers.size() == 0)
+            {
+                _Samplers.resize(Max_Num_Sampler_Unit);
+            }
         }
 	public:
 		PrimitiveType			        _PrimitiveType;

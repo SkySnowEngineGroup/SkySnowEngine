@@ -10,9 +10,10 @@ out vec4 FragColor;
  uniform vec4 test3;
  uniform sampler2D TestMap_Sampler0;
 in vec4 vColor;
+in vec2 vUv;
 void main()
 {
 	vec4 utest = test1 + test2 + test3 + uColor + uColor2;
-	vec4 testColor = texture(TestMap_Sampler0, test1.xy);
-	FragColor = vec4(test1.xyz + uColor.xyz,1.0f);
+	vec4 testColor = texture(TestMap_Sampler0, vec2(vUv.x,1.0 - vUv.y));
+	FragColor = vec4(testColor.xyz,1.0f);
 }

@@ -68,6 +68,8 @@ namespace SkySnow
         virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) = 0;
         virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) = 0;
         virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) = 0;
+        virtual void CmdSetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex) = 0;
+        virtual void CmdSetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex) = 0;
     protected:
     };
     //compute shader is a single pipeline

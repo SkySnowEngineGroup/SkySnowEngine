@@ -300,7 +300,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
     }
     //Create Texture2D
-    GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+    GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -311,7 +311,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, data);
     }
     //Texture2DArray
-    GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+    GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -322,7 +322,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, data);
     }
     //Texture3D
-    GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+    GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, TextureUsageType usageType, uint8* data)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -333,7 +333,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, data);
     }
     //TextureCube
-    GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+    GRITextureCubeRef CreateTextureCube(uint32 size, PixelFormat format, uint32 numMips, TextureUsageType usageType, uint8* data)
     {
         if (!_GQueue->IsLowerVerion())
         {

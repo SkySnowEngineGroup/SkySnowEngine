@@ -137,7 +137,7 @@ namespace SkySnow
         GRIUniformBuffer* _UniformBuffer;
         UniformSlotList   _UBData;
     };
-    struct CmdSetUniformBufferDescriptorCommand : GRICommand<CmdSetUniformBufferDescriptorCommand>
+    struct CmdSetUniformBufferDescriptorCommand : public GRICommand<CmdSetUniformBufferDescriptorCommand>
     {
         CmdSetUniformBufferDescriptorCommand(GRIUniformBufferDescriptor* descriptor)
             : _UBDescriptor(descriptor)
@@ -145,6 +145,33 @@ namespace SkySnow
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
         GRIUniformBufferDescriptor*     _UBDescriptor;
+    };
+    struct CmdSetShaderTextureCommand : public GRICommand<CmdSetShaderTextureCommand>
+    {
+        CmdSetShaderTextureCommand(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex)
+            : _ShaderPipeline(graphicsShader)
+            , _Texture(texture)
+            , _TextureIndex(textureIndex)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIPipelineShader* _ShaderPipeline;
+        GRITexture*        _Texture;
+        uint32             _TextureIndex;
+    };
+
+    struct CmdSetShaderSamplerCommand : public GRICommand<CmdSetShaderSamplerCommand>
+    {
+        CmdSetShaderSamplerCommand(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex)
+            : _ShaderPipeline(graphicsShader)
+            , _Sampler(sampler)
+            , _SamplerIndex(samplerIndex)
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+        GRIPipelineShader*  _ShaderPipeline;
+        GRISamplerState*    _Sampler;
+        uint32              _SamplerIndex;
     };
 	//======================================================================================================================
 	// RenderResource Create

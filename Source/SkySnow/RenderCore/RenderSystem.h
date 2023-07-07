@@ -57,5 +57,7 @@ namespace SkySnow
         GRIUniformBufferRef         _UBO_Md;
         GRIUniformBufferRef         _UBO_Sd;
         GRIUniformBufferDescriptorRef _UBODesc;
+        GRISamplerStateRef          _Sampler;
+        GRITexture2DRef             _Tex2D;
     };
 }

@@ -55,7 +55,6 @@ namespace SkySnow
         _GLContext->CreateGLContext();
         OpenGL::InitialExtensions();
 		OGLTexture::InitTextureFormat();
-        _PendingState.InitialPipelineState();
     }
 
     void GRIGLDrive::Exit()
@@ -192,6 +191,18 @@ namespace SkySnow
 		{
 			_PendingState._UBODescriptor = gPipeline->_UBODescriptor;
 		}
+
+		for (int i = 0; i < Max_Num_Texture_Unit; i++)
+		{
+			if (gPipeline->_Textures[i].GetReference())
+			{
+				_PendingState._Textures[i] = gPipeline->_Textures[i];
+			}
+			if (gPipeline->_Samplers[i])
+			{
+				_PendingState._Samplers[i] = gPipeline->_Samplers[i];
+			}
+		}
 	}
 
 	void GRIGLDrive::GRIDrawPrimitive(int numPrimitive, int numInstance)
@@ -219,7 +230,7 @@ namespace SkySnow
             GRITextureRef texture       = contextState._Textures[iUnit];
             GRISamplerStateRef sampler  = contextState._Samplers[iUnit];
             
-            if(texture.GetReference() == nullptr || sampler.GetReference() != nullptr)
+            if(texture.GetReference() == nullptr || sampler.GetReference() == nullptr)
             {
                 continue;
             }
@@ -259,7 +270,7 @@ namespace SkySnow
             {
                 GLVertexElement vMeta = iter->second;
                 glEnableVertexAttribArray(vMeta._AttributeIndex);
-                glVertexAttribPointer(vMeta._AttributeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vMeta._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
+                glVertexAttribPointer(vMeta._AttributeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vbo._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
             }
         }
 	}

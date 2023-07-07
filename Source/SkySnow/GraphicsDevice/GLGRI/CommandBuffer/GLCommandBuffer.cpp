@@ -104,6 +104,14 @@ namespace SkySnow
     {
         Alloc_CommandSet(CmdSetUniformBufferDescriptorCommand)(descriptor);
     }
+    void GLRenderCommandBuffer::CmdSetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex)
+    {
+        Alloc_CommandSet(CmdSetShaderTextureCommand)(graphicsShader,texture,textureIndex);
+    }
+    void GLRenderCommandBuffer::CmdSetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex)
+    {
+        Alloc_CommandSet(CmdSetShaderSamplerCommand)(graphicsShader, sampler,samplerIndex);
+    }
 	void GLRenderCommandBuffer::CmdResourceSetExecutor()
 	{
         GRICommandBase* cmd = _Head;

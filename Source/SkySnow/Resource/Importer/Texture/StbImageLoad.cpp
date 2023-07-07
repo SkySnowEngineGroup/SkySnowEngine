@@ -55,7 +55,8 @@ namespace SkySnow
         }
         
         TextureStream* stream = new TextureStream(pixelFormat,channels,width,height);
-        stream->CopyTargetData(image_data);
+        stream->WriteTargetData(image_data);
         stbi_image_free(image_data);
+        return stream;
     }
 }

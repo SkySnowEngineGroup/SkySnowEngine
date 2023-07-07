@@ -54,6 +54,8 @@ namespace SkySnow
         virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) final override;
         virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) final override;
         virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
+        virtual void CmdSetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex) final override;
+        virtual void CmdSetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex) final override;
 	private:
 
 	};

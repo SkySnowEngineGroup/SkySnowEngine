@@ -25,6 +25,7 @@
 #include "SceneRenderer.h"
 #include "GRIResourceCreateInfo.h"
 #include "Hash.h"
+#include "StbImageLoad.h"
 namespace SkySnow
 {
     RenderSystem::RenderSystem()
@@ -62,6 +63,19 @@ namespace SkySnow
             _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
             //Create ShaderPipeline
             _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
+            
+            //Create Texture
+            string imagePath = GetImageAllPath("panda.png");
+            TextureStream* texStream = StbImageLoad::StbLoadPNG(imagePath);
+            _Tex2D = CreateTexture2D(texStream->GetImageWidth(),
+                                     texStream->GetImageHeight(),
+                                     texStream->GetPixelFormat(),
+                                     1, 1,
+                                     TextureUsageType::TUT_ShaderResource,
+                                     (uint8*)texStream->GetImageData());
+            //Create Sampler
+            SamplerState samplerState;
+            _Sampler = CreateSampler(samplerState);
             //Create UniformBuffer
             //TODO UniformBuffer SourceData Manage
             float* uColor  = new float[]{0,1,0,0};
@@ -88,25 +102,32 @@ namespace SkySnow
             _UBODesc = CreateUniformDescriptor(ubSlot);
             
             //TODO UniformBuffer SourceData Manage
-            float* vertices = new float[]{ -0.5f, -0.5f, 0.0f,
-                                           0.5f,  -0.5f, 0.0f,
-                                           0.0f,  0.5f,  0.0f};
+            float* vertices = new float[]{ -0.5f, -0.5f,0.0f,
+                                           0.5f,  0.5f, 0.0f,
+                                           -0.5f, 0.5f, 0.0f,
+                                           -0.5f, -0.5f, 0.0f,
+                                           0.5f, -0.5f, 0.0f,
+                                           0.5f, 0.5f, 0.0f};
             _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-                                            9 * sizeof(float),
+                                            18 * sizeof(float),
                                             3,
                                             vertices);
             //TODO UniformBuffer SourceData Manage
-            float* colors = new float[]{ 1.0f, 0.0f, 0.0f, 1.0,
-                                         0.0f, 1.0f, 0.0f, 1.0f,
-                                         0.0f, 0.0f, 1.0f, 1.0f};
+            float* colors = new float[]{ 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,0.0f,
+                                         0.0f, 1.0f, 0.0f, 1.0f, 1.0f,1.0f,
+                                         0.0f, 0.0f, 1.0f, 1.0f, 0.0f,1.0f,
+                                         1.0f, 0.0f, 0.0f, 1.0f, 0.0f,0.0f,
+                                         0.0f, 1.0f, 1.0f, 1.0f, 1.0f,0.0f,
+                                         0.0f, 1.0f, 0.0f, 1.0f, 1.0f,1.0f};
             _ColorBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
-                                           12 * sizeof(float),
-                                           4,
+                                           36 * sizeof(float),
+                                           6,
                                            colors);
             VertexElementList veList;
             //bufferindex attritubeindex stride offset
             veList.push_back(VertexElementSlot(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
-            veList.push_back(VertexElementSlot(1,1,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
+            veList.push_back(VertexElementSlot(1,1,6,0,VertexElementType::VET_Float4,_ColorBufferRef));
+            veList.push_back(VertexElementSlot(1,2,6,16,VertexElementType::VET_Float2,_ColorBufferRef));
             _VertexDescriptor = CreateVertexDescriptor(veList);
             //Consider: Need?
 //            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef,_VertexDeclaration);
@@ -116,6 +137,8 @@ namespace SkySnow
             psoCreateInfo._ShaderPipelineInfo._PipelineShader = _PipelineShaderRef;
             psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
             psoCreateInfo._ShaderPipelineInfo._UniformBufferDescriptor = _UBODesc;
+            psoCreateInfo._ShaderPipelineInfo._Textures[0] = _Tex2D;
+            psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
             _PSORef = CreateGraphicsPipeline(psoCreateInfo);
             SN_LOG("_PipelineShaderRef Count:%d",_PipelineShaderRef.GetRefCount());
             _TestInit = true;
@@ -123,12 +146,14 @@ namespace SkySnow
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
 //        SN_LOG("_PipelineShaderRef Start Count:%d",_PipelineShaderRef.GetRefCount());
         commandBuffer->CmdBeginViewport();
+        //commandBuffer->CmdSetShaderTexture(_PipelineShaderRef, _Tex2D, 0);
+        //commandBuffer->CmdSetShaderSampler(_PipelineShaderRef, _Sampler, 0);
         commandBuffer->CmdSetGraphicsPipeline(_PSORef);
         
 //        commandBuffer->CmdSetBuffer(0,_VertexBufferRef,0);
 //        commandBuffer->CmdSetPipelineShader(_PipelineShaderRef);
         
-        commandBuffer->CmdDrawPrimitive(1, 1);
+        commandBuffer->CmdDrawPrimitive(2, 1);
         
         
         commandBuffer->CmdEndViewport();

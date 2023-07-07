@@ -62,6 +62,16 @@ namespace SkySnow
     {
         GRI->GRISetUniformBufferDescriptor(_UBDescriptor);
     }
+    
+    void CmdSetShaderTextureCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRISetShaderTexture(_ShaderPipeline, _Texture, _TextureIndex);
+    }
+    
+    void CmdSetShaderSamplerCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRI->GRISetShaderSampler(_ShaderPipeline, _Sampler, _SamplerIndex);
+    }
 	//===============================================================================
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{

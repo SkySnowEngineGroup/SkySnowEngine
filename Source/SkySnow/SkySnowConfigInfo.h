@@ -26,7 +26,7 @@
 namespace SkySnow
 {
     //Globle config for engine
-	static const std::string g_RelativeMaterialPath = std::string(Resource_Path) + "/Media/Material/";
+	static const std::string g_RelativeMaterialPath = std::string(Resource_Path) + "/Media/";
 	static const int g_String_Buffer_MaxLength = 128;
 	static char g_Null_Char = 0;
 	static const int g_Min_Capacity = 8;//min cap is 8byte
@@ -36,9 +36,12 @@ namespace SkySnow
 	//globle Function
 	static std::string GetMaterialAllPath(const std::string mpath)
 	{
-		return g_RelativeMaterialPath + mpath;
+		return g_RelativeMaterialPath + "Material/" + mpath;
 	}
-
+    static std::string GetImageAllPath(const std::string ipath)
+    {
+        return g_RelativeMaterialPath + "Texture/" + ipath;
+    }
 #define Delete_Object(object) \
 		if(object) \
 		{ \

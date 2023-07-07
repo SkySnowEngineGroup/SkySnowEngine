@@ -32,6 +32,6 @@ namespace SkySnow
     }
     bool TextureImporter::Release(void* data)
     {
-        return nullptr;
+        return false;
     }
 }

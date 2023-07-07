@@ -89,6 +89,8 @@ namespace SkySnow
             , _VertexDescriptor(nullptr)
             , _UniformBufferDescriptor(nullptr)
         {
+            _Textures.resize(Max_Num_Texture_Unit);
+            _Samplers.resize(Max_Num_Sampler_Unit);
         }
         GRICreateShaderPipelineInfo(
             GRIPipelineShader*       inPipelineShader,
@@ -99,10 +101,14 @@ namespace SkySnow
             , _VertexDescriptor(inVertexDescriptor)
             , _UniformBufferDescriptor(inUniformBufferDescriptor)
         {
+            _Textures.resize(Max_Num_Texture_Unit);
+            _Samplers.resize(Max_Num_Sampler_Unit);
         }
-        GRIPipelineShaderRef          _PipelineShader;
-        GRIVertexDescriptorRef        _VertexDescriptor;
-        GRIUniformBufferDescriptorRef _UniformBufferDescriptor;
+        GRIPipelineShaderRef            _PipelineShader;
+        GRIVertexDescriptorRef          _VertexDescriptor;
+        GRIUniformBufferDescriptorRef   _UniformBufferDescriptor;
+        std::vector<GRITextureRef>      _Textures;
+        std::vector<GRISamplerStateRef> _Samplers;
     };
     //Graphics Pipeline Create Info
 	class GRICreateGraphicsPipelineInfo

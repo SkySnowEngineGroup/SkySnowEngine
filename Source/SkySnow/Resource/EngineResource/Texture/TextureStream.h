@@ -33,7 +33,7 @@ namespace SkySnow
         TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight);
         ~TextureStream();
         
-        void CopyTargetData(void* targetData);
+        void WriteTargetData(void* targetData);
         
         void* GetImageData();
         

@@ -38,10 +38,13 @@ namespace SkySnow
         _NumChannel = 0;
         _Width = 1;
         _Height = 1;
-        free(_ImageRawData);
+        if(_ImageRawData)
+        {
+            free(_ImageRawData);
+        }
     }
 
-    void TextureStream::CopyTargetData(void* targetData)
+    void TextureStream::WriteTargetData(void* targetData)
     {
         uint32 iSize = GetImageSize();
         _ImageRawData = (char*)malloc(iSize);
