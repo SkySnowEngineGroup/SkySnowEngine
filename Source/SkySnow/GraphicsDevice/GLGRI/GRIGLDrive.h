@@ -89,31 +89,31 @@ namespace SkySnow
 
 		//GRIUpdateData=============================================================================================================================
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
-		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
+		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptorRef& descriptor) final override;
 		//Update Uniform Buffer Data or Update Uniform Data
-		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents) final override;
+		virtual void GRIUpdateUniformBuffer(GRIUniformBufferRef& buffer, const UniformSlotList& contents) final override;
 		//Update Texture2D Data
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
+		virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
 		//Update Texture3D Data and Texture2DArray
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
+		virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
 		//Update TextureCube Data
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTextureCube(GRITextureCube* texCube) final override;
+		virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube) final override;
 		//GRISet====================================================================================================================================
 		//Set Buffer VertexBuffer(StreamSource)
-		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) final override;
+		virtual void GRISetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset) final override;
 		//set ShaderPipelineState
-		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
+		virtual void GRISetPipelineShader(GRIPipelineShaderRef& pipelineShaderState) final override;
 		//Set Graphics Pipeline State
-		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
+		virtual void GRISetGraphicsPipeline(GRIGraphicsPipelineRef& pipelineState) final override;
 		//Set Curr ShaderPipeline Uniform Buffer Index
-		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex) final override;
+		virtual void GRISetShaderParameter(GRIPipelineShaderRef& graphicsShader, GRIUniformBufferRef& buffer, int32_t bufferIndex) final override;
 		//Set Texture2D Texture2DArray Texture3D  TextureCube
-		virtual void GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex) final override;
+		virtual void GRISetShaderTexture(GRIPipelineShaderRef& graphicsShader, GRITextureRef& texture, uint32 textureIndex) final override;
 		//Set Texture Sampler State
-		virtual void GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex) final override;
+		virtual void GRISetShaderSampler(GRIPipelineShaderRef& graphicsShader, GRISamplerStateRef& sampler, uint32 samplerIndex) final override;
 		//GRISet====================================================================================================================================
 		//GRIDraw Submit============================================================================================================================
 		//Call Draw,that draw primitive

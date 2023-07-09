@@ -87,26 +87,26 @@ namespace SkySnow
 		//GRISet==========================================================================================================================
         //Grahpichs Pipeline Interface
         //Texture Update Data
-        virtual void GRIUpdateTexture2D(GRITexture2D* tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,const uint8* data) {};
-        virtual void GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel,Texture2DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};
-        virtual void GRIUpdateTextureCube(GRITextureCube* texCube) {};
-        virtual void GRISetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex) {};
-        virtual void GRISetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex) {}
+        virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,const uint8* data) {};
+        virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel,Texture2DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};
+        virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube) {};
+        virtual void GRISetShaderTexture(GRIPipelineShaderRef& graphicsShader,GRITextureRef& texture,uint32 textureIndex) {};
+        virtual void GRISetShaderSampler(GRIPipelineShaderRef& graphicsShader,GRISamplerStateRef& sampler,uint32 samplerIndex) {}
         
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
-		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) {}
+		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptorRef& descriptor) {}
 		//Update Uniform Buffer Data or Update Uniform Data
-		virtual void GRIUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) {}
+		virtual void GRIUpdateUniformBuffer(GRIUniformBufferRef& buffer,const UniformSlotList& contents) {}
 		//Set Curr ShaderPipeline Uniform Buffer Index
-		virtual void GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) {}
+		virtual void GRISetShaderParameter(GRIPipelineShaderRef& graphicsShader, GRIUniformBufferRef& buffer,int32_t bufferIndex) {}
         
-		virtual void GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) {}
+		virtual void GRISetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset) {}
         
 		virtual void GRIDrawPrimitive(int numPrimitive, int numInstance) {}
         
-		virtual void GRISetPipelineShader(GRIPipelineShader* pipelineShaderState) {}
+		virtual void GRISetPipelineShader(GRIPipelineShaderRef& pipelineShaderState) {}
         
-		virtual void GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) {}
+		virtual void GRISetGraphicsPipeline(GRIGraphicsPipelineRef& pipelineState) {}
         //Compute Pipeline Interface
         //
 		//GRISet==========================================================================================================================

@@ -69,7 +69,7 @@ namespace SkySnow
 	// RenderResource Set 
 	struct CmdSetBufferCommand : public GRICommand<CmdSetBufferCommand>
 	{
-		CmdSetBufferCommand(int BufferInfoId, GRIBuffer* buffer, int offset)
+		CmdSetBufferCommand(int BufferInfoId, GRIBufferRef& buffer, int offset)
 			: _BufferInfoId(BufferInfoId)
 			, _Offset(offset)
 			, _Buffer(buffer)
@@ -80,7 +80,7 @@ namespace SkySnow
 
 		int _BufferInfoId;
 		int _Offset;
-		GRIBuffer* _Buffer;	
+		GRIBufferRef _Buffer;	
 	};
 	struct CmdDrawPrimitiveCommand : public GRICommand<CmdDrawPrimitiveCommand>
 	{
@@ -95,83 +95,83 @@ namespace SkySnow
 	};
 	struct CmdSetPipelineShaderCommand : public GRICommand<CmdSetPipelineShaderCommand>
 	{
-		CmdSetPipelineShaderCommand(GRIPipelineShader* pipelineShaderState)
+		CmdSetPipelineShaderCommand(GRIPipelineShaderRef& pipelineShaderState)
 			: _PipelineShaderState(pipelineShaderState)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIPipelineShader* _PipelineShaderState;
+		GRIPipelineShaderRef _PipelineShaderState;
 	};
 
 	struct CmdSetGraphicsPipelineCommand : public GRICommand<CmdSetGraphicsPipelineCommand>
 	{
-		CmdSetGraphicsPipelineCommand(GRIGraphicsPipeline* pipelineState)
+		CmdSetGraphicsPipelineCommand(GRIGraphicsPipelineRef& pipelineState)
 			: _PipelineState(pipelineState)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIGraphicsPipeline* _PipelineState;
+		GRIGraphicsPipelineRef _PipelineState;
 	};
 
     struct CmdSetShaderParameterCommand : public GRICommand<CmdSetShaderParameterCommand>
     {
-        CmdSetShaderParameterCommand(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex)
+        CmdSetShaderParameterCommand(GRIPipelineShaderRef& graphicsShader, GRIUniformBufferRef& buffer,int32_t bufferIndex)
             : _PipelineShader(graphicsShader)
             , _UniformBuffer(buffer)
             , _UBIndex(bufferIndex)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        GRIPipelineShader*      _PipelineShader;
-        GRIUniformBuffer*       _UniformBuffer;
+        GRIPipelineShaderRef _PipelineShader;
+        GRIUniformBufferRef _UniformBuffer;
         int32_t                 _UBIndex;
     };
     struct CmdUpdateUniformBufferCommand : public GRICommand<CmdUpdateUniformBufferCommand>
     {
-        CmdUpdateUniformBufferCommand(GRIUniformBuffer* buffer,const UniformSlotList& contents)
+        CmdUpdateUniformBufferCommand(GRIUniformBufferRef& buffer,const UniformSlotList& contents)
             : _UniformBuffer(buffer)
             , _UBData(contents)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        GRIUniformBuffer* _UniformBuffer;
+        GRIUniformBufferRef _UniformBuffer;
         UniformSlotList   _UBData;
     };
     struct CmdSetUniformBufferDescriptorCommand : public GRICommand<CmdSetUniformBufferDescriptorCommand>
     {
-        CmdSetUniformBufferDescriptorCommand(GRIUniformBufferDescriptor* descriptor)
+        CmdSetUniformBufferDescriptorCommand(GRIUniformBufferDescriptorRef& descriptor)
             : _UBDescriptor(descriptor)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        GRIUniformBufferDescriptor*     _UBDescriptor;
+        GRIUniformBufferDescriptorRef _UBDescriptor;
     };
     struct CmdSetShaderTextureCommand : public GRICommand<CmdSetShaderTextureCommand>
     {
-        CmdSetShaderTextureCommand(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex)
+        CmdSetShaderTextureCommand(GRIPipelineShaderRef& graphicsShader,GRITextureRef& texture,uint32 textureIndex)
             : _ShaderPipeline(graphicsShader)
             , _Texture(texture)
             , _TextureIndex(textureIndex)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        GRIPipelineShader* _ShaderPipeline;
-        GRITexture*        _Texture;
-        uint32             _TextureIndex;
+        GRIPipelineShaderRef _ShaderPipeline;
+        GRITextureRef		 _Texture;
+        uint32				 _TextureIndex;
     };
 
     struct CmdSetShaderSamplerCommand : public GRICommand<CmdSetShaderSamplerCommand>
     {
-        CmdSetShaderSamplerCommand(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex)
+        CmdSetShaderSamplerCommand(GRIPipelineShaderRef& graphicsShader,GRISamplerStateRef& sampler,uint32 samplerIndex)
             : _ShaderPipeline(graphicsShader)
             , _Sampler(sampler)
             , _SamplerIndex(samplerIndex)
         {
         }
         void Execute(GRICommandBufferBase& cmdBuffer);
-        GRIPipelineShader*  _ShaderPipeline;
-        GRISamplerState*    _Sampler;
-        uint32              _SamplerIndex;
+        GRIPipelineShaderRef _ShaderPipeline;
+        GRISamplerStateRef	 _Sampler;
+        uint32				 _SamplerIndex;
     };
 	//======================================================================================================================
 	// RenderResource Create

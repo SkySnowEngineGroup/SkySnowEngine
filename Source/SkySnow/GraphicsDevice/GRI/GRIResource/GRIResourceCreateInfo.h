@@ -348,4 +348,20 @@ namespace SkySnow
         bool            _IsCompressed;
 	};
     extern PixelFormatInfo GPixelFormats[PF_End];
+
+    struct RasterizerStateInfo
+    {
+        friend bool operator== (const RasterizerStateInfo& left,const RasterizerStateInfo& right);
+        RasterizerFillMode _FillMode;
+        RasterizerCullMode _CullMode;
+        float              _DepthBias;
+        float              _SlopeScaleDepthBias;
+        bool               _EnableMsaa;
+        bool               _EnableLineAA;
+    };
+
+    struct DepthStencilStateInfo
+    {
+
+    };
 }

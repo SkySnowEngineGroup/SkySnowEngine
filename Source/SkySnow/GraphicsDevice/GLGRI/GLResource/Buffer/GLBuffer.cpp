@@ -52,9 +52,9 @@ namespace SkySnow
 		uniformBuffer->SetUp(contents,ubName,ubType);
 	}
 	//Update Uniform Buffer
-	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBuffer* buffer, const UniformSlotList& contents)
+	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBufferRef& buffer, const UniformSlotList& contents)
 	{
-		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
+		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer.GetReference());
 		uniformBuffer->UpdateUniformBuffer(contents);
 	}
 	//Create Uniform Buffer Declaration

@@ -47,9 +47,9 @@ namespace SkySnow
         OGLTexture::CreateTextureInternal<GRITextureCube>(handle, size, size, 1, format, numMips, 1, usageType, data);
     }
 
-    void GRIGLDrive::GRIUpdateTexture2D(GRITexture2D* tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
     {
-        GRIGLTexture2D* glTexture = dynamic_cast<GRIGLTexture2D*>(tex2D);
+        GRIGLTexture2D* glTexture = dynamic_cast<GRIGLTexture2D*>(tex2D.GetReference());
         
         const Texture2DRegion uRegion    = region;
         const PixelFormatInfo formatInfo = GPixelFormats[tex2D->GetFormat()];
@@ -79,12 +79,12 @@ namespace SkySnow
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
 
-    void GRIGLDrive::GRIUpdateTexture3D(GRITexture3D* tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)
     {
         
     }
 
-    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCube* texCube)
+    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube)
     {
         
     }

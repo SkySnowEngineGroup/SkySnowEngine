@@ -36,6 +36,7 @@
 #include "LockFree.h"
 #include "FunCb.h"
 #include "Framework.h"
+#include "SharePtr.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
@@ -161,6 +162,7 @@ int main()
 //		delete t1;
 //	}
 	//system("pause");
+    TestSharePtr();
 	getchar();
 	return 0;
 }

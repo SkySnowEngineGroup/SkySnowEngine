@@ -201,4 +201,31 @@ namespace SkySnow
 		PF_ShadowDepth,
 		PF_End
 	};
+	enum RasterizerFillMode
+	{
+		RFM_Point,
+		RFM_WirteFrame,
+		RFM_Solid
+	};
+	enum RasterizerCullMode
+	{
+		RCM_None,
+		RCM_CW,
+		RCM_CCW
+	};
+	enum CompareFun
+	{
+		CF_Less,
+		CF_LessEqual,
+		CF_Greater,
+		CF_GreaterEqual,
+		CF_Equal,
+		CF_NotEqual,
+		CF_Never,
+		CF_Always
+	};
+	enum StencilOp
+	{
+
+	};
 }

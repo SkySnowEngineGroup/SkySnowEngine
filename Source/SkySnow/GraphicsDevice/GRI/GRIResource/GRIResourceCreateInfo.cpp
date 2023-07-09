@@ -59,6 +59,14 @@ namespace SkySnow
 		, _IsCompressed(inIsCompressed)
 	{
 	}
+	bool operator== (const RasterizerStateInfo& left, const RasterizerStateInfo& right)
+	{
+		return left._FillMode == right._FillMode &&
+			   left._CullMode == right._CullMode &&
+			   left._SlopeScaleDepthBias == right._SlopeScaleDepthBias &&
+			   left._EnableMsaa == right._EnableMsaa &&
+			   left._EnableLineAA == right._EnableLineAA;
+	}
     PixelFormatInfo GPixelFormats[PF_End] =
 	{
 		//				PixelFormat             Name			BlockSizeX  BlockSizeY  BlockSizeZ  ByteSize  NumComponents    Supported IsCompressed

@@ -46,16 +46,16 @@ namespace SkySnow
 
 		virtual void CmdResourceSetExecutor() final override;
 	public://Create Resource
-		virtual void CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset) final override;
+		virtual void CmdSetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset) final override;
 		virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) final override;
-		virtual void CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState) final override;
-		virtual void CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState) final override;
+		virtual void CmdSetPipelineShader(GRIPipelineShaderRef& pipelineShaderState) final override;
+		virtual void CmdSetGraphicsPipeline(GRIGraphicsPipelineRef& pipelineState) final override;
         
-        virtual void CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex) final override;
-        virtual void CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents) final override;
-        virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor) final override;
-        virtual void CmdSetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex) final override;
-        virtual void CmdSetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex) final override;
+        virtual void CmdSetShaderParameter(GRIPipelineShaderRef& graphicsShader, GRIUniformBufferRef& buffer,int32_t bufferIndex) final override;
+        virtual void CmdUpdateUniformBuffer(GRIUniformBufferRef& buffer,const UniformSlotList& contents) final override;
+        virtual void CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptorRef& descriptor) final override;
+        virtual void CmdSetShaderTexture(GRIPipelineShaderRef& graphicsShader,GRITextureRef& texture,uint32 textureIndex) final override;
+        virtual void CmdSetShaderSampler(GRIPipelineShaderRef& graphicsShader,GRISamplerStateRef& sampler,uint32 samplerIndex) final override;
 	private:
 
 	};

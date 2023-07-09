@@ -76,7 +76,7 @@ namespace SkySnow
 	}
 
 	//ResourceSet====================================================================
-	void GLRenderCommandBuffer::CmdSetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
+	void GLRenderCommandBuffer::CmdSetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset)
 	{
 		Alloc_CommandSet(CmdSetBufferCommand)(bufferIndex, buffer, offset);
 	}
@@ -84,31 +84,31 @@ namespace SkySnow
 	{
 		Alloc_CommandSet(CmdDrawPrimitiveCommand)(numPrimitive, numInstance);
 	}
-	void GLRenderCommandBuffer::CmdSetPipelineShader(GRIPipelineShader* pipelineShaderState)
+	void GLRenderCommandBuffer::CmdSetPipelineShader(GRIPipelineShaderRef& pipelineShaderState)
 	{
 		Alloc_CommandSet(CmdSetPipelineShaderCommand)(pipelineShaderState);
 	}
-	void GLRenderCommandBuffer::CmdSetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
+	void GLRenderCommandBuffer::CmdSetGraphicsPipeline(GRIGraphicsPipelineRef& pipelineState)
 	{
 		Alloc_CommandSet(CmdSetGraphicsPipelineCommand)(pipelineState);
 	}
-    void GLRenderCommandBuffer::CmdSetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer,int32_t bufferIndex)
+    void GLRenderCommandBuffer::CmdSetShaderParameter(GRIPipelineShaderRef& graphicsShader, GRIUniformBufferRef& buffer,int32_t bufferIndex)
     {
         Alloc_CommandSet(CmdSetShaderParameterCommand)(graphicsShader,buffer,bufferIndex);
     }
-    void GLRenderCommandBuffer::CmdUpdateUniformBuffer(GRIUniformBuffer* buffer,const UniformSlotList& contents)
+    void GLRenderCommandBuffer::CmdUpdateUniformBuffer(GRIUniformBufferRef& buffer,const UniformSlotList& contents)
     {
         Alloc_CommandSet(CmdUpdateUniformBufferCommand)(buffer,contents);
     }
-    void GLRenderCommandBuffer::CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
+    void GLRenderCommandBuffer::CmdSetUniformBufferDescriptor(GRIUniformBufferDescriptorRef& descriptor)
     {
         Alloc_CommandSet(CmdSetUniformBufferDescriptorCommand)(descriptor);
     }
-    void GLRenderCommandBuffer::CmdSetShaderTexture(GRIPipelineShader* graphicsShader,GRITexture* texture,uint32 textureIndex)
+    void GLRenderCommandBuffer::CmdSetShaderTexture(GRIPipelineShaderRef& graphicsShader,GRITextureRef& texture,uint32 textureIndex)
     {
         Alloc_CommandSet(CmdSetShaderTextureCommand)(graphicsShader,texture,textureIndex);
     }
-    void GLRenderCommandBuffer::CmdSetShaderSampler(GRIPipelineShader* graphicsShader,GRISamplerState* sampler,uint32 samplerIndex)
+    void GLRenderCommandBuffer::CmdSetShaderSampler(GRIPipelineShaderRef& graphicsShader,GRISamplerStateRef& sampler,uint32 samplerIndex)
     {
         Alloc_CommandSet(CmdSetShaderSamplerCommand)(graphicsShader, sampler,samplerIndex);
     }

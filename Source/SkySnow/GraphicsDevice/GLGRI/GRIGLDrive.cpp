@@ -75,9 +75,9 @@ namespace SkySnow
 	//GRIRenderPipe===========================================================================================================================
 
 	//GRISet==================================================================================================================================
-	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBuffer* buffer, int offset)
+	void GRIGLDrive::GRISetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset)
 	{
-        GRIGLBuffer* bufferGL = dynamic_cast<GRIGLBuffer*>(buffer);
+        GRIGLBuffer* bufferGL = dynamic_cast<GRIGLBuffer*>(buffer.GetReference());
 		if (_PendingState.GetVertexDescriptor() == nullptr)
 		{
 			SN_ERR("GRISetBuffer set GRIBuffer is nullptr.");
@@ -112,7 +112,7 @@ namespace SkySnow
 		}
 	}
     
-    void GRIGLDrive::GRISetShaderTexture(GRIPipelineShader* graphicsShader, GRITexture* texture, uint32 textureIndex)
+    void GRIGLDrive::GRISetShaderTexture(GRIPipelineShaderRef& graphicsShader, GRITextureRef& texture, uint32 textureIndex)
     {
         if(_PendingState._Textures.size() < textureIndex)
         {
@@ -123,7 +123,7 @@ namespace SkySnow
         texRef = texture;
     }
     
-    void GRIGLDrive::GRISetShaderSampler(GRIPipelineShader* graphicsShader, GRISamplerState* sampler, uint32 samplerIndex)
+    void GRIGLDrive::GRISetShaderSampler(GRIPipelineShaderRef& graphicsShader, GRISamplerStateRef& sampler, uint32 samplerIndex)
     {
         if(_PendingState._Samplers.size() < samplerIndex)
         {
@@ -133,13 +133,13 @@ namespace SkySnow
         GRISamplerStateRef& samplerRef = _PendingState._Samplers[samplerIndex];
         samplerRef = sampler;
     }
-	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShader* pipelineShaderState)
+	void  GRIGLDrive::GRISetPipelineShader(GRIPipelineShaderRef& pipelineShaderState)
 	{
         _PendingState._ShaderPipeline = pipelineShaderState;
 	}
-	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShader* graphicsShader, GRIUniformBuffer* buffer, int32_t bufferIndex)
+	void GRIGLDrive::GRISetShaderParameter(GRIPipelineShaderRef& graphicsShader, GRIUniformBufferRef& buffer, int32_t bufferIndex)
 	{
-		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer);
+		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer.GetReference());
 		if (_PendingState._ShaderPipeline.GetReference() != graphicsShader)
 		{
 			_PendingState._ShaderPipeline = graphicsShader;
@@ -162,9 +162,9 @@ namespace SkySnow
 		}
 	}
 	//Set UniformBuffer Descriptor
-	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIUniformBufferDescriptor* descriptor)
+	void GRIGLDrive::GRISetUniformBufferDescriptor(GRIUniformBufferDescriptorRef& descriptor)
 	{
-        GRIGLUniformBufferDescriptor* ides = dynamic_cast<GRIGLUniformBufferDescriptor*>(descriptor);
+        GRIGLUniformBufferDescriptor* ides = dynamic_cast<GRIGLUniformBufferDescriptor*>(descriptor.GetReference());
 		if (ides == nullptr)
 		{
 			SN_ERR("GRISetUniformBufferDescriptor set GRIUniformBufferDescriptor is nullptor.");
@@ -172,9 +172,9 @@ namespace SkySnow
 		}
         _PendingState._UBODescriptor = descriptor;
 	}
-	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipeline* pipelineState)
+	void GRIGLDrive::GRISetGraphicsPipeline(GRIGraphicsPipelineRef& pipelineState)
 	{
-		GLGraphicPipeline* gPipeline = dynamic_cast<GLGraphicPipeline*>(pipelineState);
+		GLGraphicPipeline* gPipeline = dynamic_cast<GLGraphicPipeline*>(pipelineState.GetReference());
 		if (gPipeline->_PrimitiveType != PrimitiveType::PT_Num)
 		{
 			_PendingState._PrimitiveType = gPipeline->_PrimitiveType;
