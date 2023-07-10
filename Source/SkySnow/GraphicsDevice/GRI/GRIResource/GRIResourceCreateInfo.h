@@ -362,6 +362,47 @@ namespace SkySnow
 
     struct DepthStencilStateInfo
     {
+        DepthStencilStateInfo(
+            bool inEnableDepthWrite = true,
+            CompareFun inDepthTest = CF_LessEqual,
+            bool inEnableFrontStencil = false,
+            CompareFun inFrontStencilTest = CF_Always,
+            StencilOp inFrontStencilFailSO = SO_Keep,
+            StencilOp inFrontDepthFailSO = SO_Keep,
+            StencilOp inFrontPassFailSO = SO_Keep,
+            bool inEnableBackStencil = false,
+            CompareFun inBackStencilTest = CF_Always,
+            StencilOp inBackStencilFailSO = SO_Keep,
+            StencilOp inBackDepthFailSO = SO_Keep,
+            StencilOp inBackPassFailSO = SO_Keep,
+            uint8 inStencilReadMask = 0xFF,
+            uint8 inStencilWriteMask = 0xFF
+            )
+        {
+        }
+        friend bool operator== (const DepthStencilStateInfo& left, const DepthStencilStateInfo& right);
+       
+        bool        _EnableDepthWrite = true;
+        CompareFun  _DepthTest = CF_LessEqual;
+
+        bool        _EnableFrontStencil = false;
+        CompareFun  _FrontStencilTest = CF_Always;
+        StencilOp   _FrontStencilFailSO = SO_Keep;
+        StencilOp   _FrontDepthFailSO = SO_Keep;
+        StencilOp   _FrontPassFailSO = SO_Keep;
+
+        bool        _EnableBackStencil = false;
+        CompareFun  _BackStencilTest = CF_Always;
+        StencilOp   _BackStencilFailSO = SO_Keep;
+        StencilOp   _BackDepthFailSO = SO_Keep;
+        StencilOp   _BackPassFailSO = SO_Keep;
+
+        uint8       _StencilReadMask = 0xFF;
+        uint8       _StencilWriteMask = 0xFF;
+    };
+
+    class BlendStateInfo
+    {
 
     };
 }

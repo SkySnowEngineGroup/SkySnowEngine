@@ -226,6 +226,53 @@ namespace SkySnow
 	};
 	enum StencilOp
 	{
+		SO_Zero,
+		SO_Keep,
+		SO_Replace,
+		SO_SaturatedIncrement,	//Increment and wrap
+		SO_Saturated,			//Increment and clamp
+		SO_SaturatedDecrement,	//Decrement and wrap
+		SO_Decrement,			//Decrement and clamp
+		SO_Invert
+	};
+	enum BlendOperation
+	{
+		BO_Add,
+		BO_Subtract,
+		BO_Min,
+		BO_Max,
+		BO_ReverseSubtract
+	};
+	enum BlendFactor
+	{
+		BF_Zero,
+		BF_One,
+		BF_SourceColor,
+		BF_InverseSourceColor,
+		BF_SourceAlpha,
+		BF_InverseSourceAlpha,
+		BF_DestAlpha,
+		BF_InverseDestAlpha,
+		BF_DestColor,
+		BF_InverseDestColor,
+		BF_ConstantBlendFactor,
+		BF_InverseConstantBlendFactor,
+		BF_Source1Color,
+		BF_InverseSource1Color,
+		BF_Source1Alpha,
+		BF_InverseSource1Alpha
+	};
+	enum ColorWriteMask
+	{
+		CW_None  = 0,
+		CW_Red   = 1 << 0,
+		CW_Green = 1 << 1,
+		CW_Blue  = 1 << 2,
+		CW_Alpha = 1 << 3,
 
+		CW_Rgb   = CW_Red | CW_Green | CW_Blue,
+		CW_Rgba  = CW_Red | CW_Green | CW_Blue | CW_Alpha,
+		CW_Rg    = CW_Red | CW_Green,
+		CW_Ba    = CW_Blue| CW_Alpha
 	};
 }

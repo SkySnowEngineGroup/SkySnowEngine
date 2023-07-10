@@ -25,18 +25,33 @@ namespace SkySnow
 {
 	bool operator== (const SamplerState& left, const SamplerState& right)
 	{
-		bool bSame =
-			left._Filter == right._Filter &&
-			left._AddressU == right._AddressU &&
-			left._AddressV == right._AddressV &&
-			left._AddressW == right._AddressW &&
-			left._CompareFun == right._CompareFun &&
-			left._MipBias == right._MipBias &&
-			left._MipmapLevel == right._MipmapLevel &&
-			left._MaxMipmapLevel == right._MaxMipmapLevel &&
-			left._MaxAnisotropy == right._MaxAnisotropy &&
-			left._BorderColor == right._BorderColor;
-		return bSame;
+		return	left._Filter == right._Filter &&
+				left._AddressU == right._AddressU &&
+				left._AddressV == right._AddressV &&
+				left._AddressW == right._AddressW &&
+				left._CompareFun == right._CompareFun &&
+				left._MipBias == right._MipBias &&
+				left._MipmapLevel == right._MipmapLevel &&
+				left._MaxMipmapLevel == right._MaxMipmapLevel &&
+				left._MaxAnisotropy == right._MaxAnisotropy &&
+				left._BorderColor == right._BorderColor;
+	}
+	bool operator== (const DepthStencilStateInfo& left, const DepthStencilStateInfo& right)
+	{
+		return	left._EnableDepthWrite == right._EnableDepthWrite &&
+				left._DepthTest == right._DepthTest &&
+				left._EnableFrontStencil == right._EnableFrontStencil &&
+				left._FrontStencilTest == right._FrontStencilTest &&
+				left._FrontStencilFailSO == right._FrontStencilFailSO &&
+				left._FrontDepthFailSO == right._FrontDepthFailSO &&
+				left._FrontPassFailSO == right._FrontPassFailSO &&
+				left._EnableBackStencil == right._EnableBackStencil &&
+				left._BackStencilTest == right._BackStencilTest &&
+				left._BackStencilFailSO == right._BackStencilFailSO &&
+				left._BackDepthFailSO == right._BackDepthFailSO &&
+				left._BackPassFailSO == right._BackPassFailSO &&
+				left._StencilReadMask == right._StencilReadMask &&
+				left._StencilWriteMask == right._StencilWriteMask;
 	}
 	PixelFormatInfo::PixelFormatInfo(
 		PixelFormat inPFormat,
