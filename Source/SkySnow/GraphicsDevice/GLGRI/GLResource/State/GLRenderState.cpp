@@ -33,6 +33,22 @@ namespace SkySnow
         OGLState::CreateSamplerState(handle, sState);
     }
 
+    //RenderState Rasterizer
+    void GRIGLDrive::GRICreateRasterizer(const RasterizerStateInfo& state, GRIRasterizerStateRef& handle)
+    {
+
+    }
+    //RenderState DepthStencil
+    void GRIGLDrive::GRICreateDepthStencil(const DepthStencilStateInfo& state, GRIDepthStencilStateRef& handle)
+    {
+
+    }
+    //RenderState BlendState
+    void GRIGLDrive::GRICreateBlendState(const BlendStateInfo& state, GRIBlendStateRef& handle)
+    {
+
+    }
+
     namespace OGLState
     {
         void CreateSamplerState(GRISamplerStateRef& handle,const SamplerState& sState)

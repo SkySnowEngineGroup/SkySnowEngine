@@ -85,6 +85,12 @@ namespace SkySnow
 		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle) final override;
 		//SamplerState
 		virtual void GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle) final override;
+		//RenderState Rasterizer
+		virtual void GRICreateRasterizer(const RasterizerStateInfo& state, GRIRasterizerStateRef& handle) final override;
+		//RenderState DepthStencil
+		virtual void GRICreateDepthStencil(const DepthStencilStateInfo& state, GRIDepthStencilStateRef& handle) final override;
+		//RenderState BlendState
+		virtual void GRICreateBlendState(const BlendStateInfo& state, GRIBlendStateRef& handle) final override;
 		//GRICreate=================================================================================================================================
 
 		//GRIUpdateData=============================================================================================================================
@@ -100,7 +106,7 @@ namespace SkySnow
 		virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
 		//Update TextureCube Data
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube) final override;
+		virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, const uint8* data) final override;
 		//GRISet====================================================================================================================================
 		//Set Buffer VertexBuffer(StreamSource)
 		virtual void GRISetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset) final override;

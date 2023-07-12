@@ -439,19 +439,19 @@ namespace SkySnow
     //BufferEnd===================================================================================
     //State about
     //StateStart==================================================================================
-    //图元装配状态
-    class GRIAssemblyState : public GRIResource
-    {
-    public:
-        GRIAssemblyState()
-            : GRIResource(EGRIResourceType::GRT_AssemblyState)
-        {
-        }
-        virtual ~GRIAssemblyState()
-        {
-            SN_LOG("GRIAssembly DesConstruct.");
-        }
-    };
+    ////图元装配状态
+    //class GRIAssemblyState : public GRIResource
+    //{
+    //public:
+    //    GRIAssemblyState()
+    //        : GRIResource(EGRIResourceType::GRT_AssemblyState)
+    //    {
+    //    }
+    //    virtual ~GRIAssemblyState()
+    //    {
+    //        SN_LOG("GRIAssembly DesConstruct.");
+    //    }
+    //};
     //光栅化状态
     class GRIRasterizerState : public GRIResource
     {
@@ -545,7 +545,7 @@ namespace SkySnow
     typedef RefCountPtr<GRIUniformBuffer>           GRIUniformBufferRef;
     typedef RefCountPtr<GRIUniformBufferDescriptor> GRIUniformBufferDescriptorRef;
     //rasterization assembly blend sampler DepthStencil
-    typedef RefCountPtr<GRIAssemblyState>           GRIAssemblyStateRef;
+    //typedef RefCountPtr<GRIAssemblyState>           GRIAssemblyStateRef;
     typedef RefCountPtr<GRIRasterizerState>         GRIRasterizerStateRef;
     typedef RefCountPtr<GRIDepthStencilState>       GRIDepthStencilStateRef;
     typedef RefCountPtr<GRIBlendState>              GRIBlendStateRef;

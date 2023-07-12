@@ -84,7 +84,7 @@ namespace SkySnow
         
     }
 
-    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube)
+    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, const uint8* data)
     {
         
     }
