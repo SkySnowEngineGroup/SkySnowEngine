@@ -79,9 +79,47 @@ namespace SkySnow
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
 
-    void GRIGLDrive::GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)
     {
+        GRIGLTexture3D* glTex = dynamic_cast<GRIGLTexture3D*>(tex3D.GetReference());
+        const Texture3DRegion uRegion = region;
+        const PixelFormatInfo formatInfo = GPixelFormats[glTex->GetFormat()];
+        const GLTextureFormat texFormat = GGLTextureFormat[glTex->GetFormat()];
         
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+        const bool sRgb = OGLTexture::HasTextureUsageType(glTex->GetTextureUsageType(), TextureUsageType::TUT_sRGB);
+        if (texFormat._IsCompressed)
+        {
+            OGLTexture::CompressedTexSubImage(
+                glTex->_Target,
+                mipLevel,
+                uRegion._DestX, uRegion._DestY, uRegion._DestZ,
+                uRegion._Width, uRegion._Height, uRegion._Depth,
+                texFormat._GLInternalFormat[sRgb],
+                depthPitch * uRegion._Depth,
+                data
+            );
+        }
+        else
+        {
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, uRegion._Width / formatInfo._ByteSize);
+            glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, uRegion._Height / formatInfo._BlockSizeX);
+
+            OGLTexture::TexSubImage(
+                glTex->_Target, 
+                0,
+                mipLevel, 
+                uRegion._DestX, uRegion._DestY, uRegion._DestZ, 
+                uRegion._Width, uRegion._Height, uRegion._Depth, 
+                texFormat._GLFormat, 
+                texFormat._GLType,
+                data);
+        }
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+        glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, 0);
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
 
     void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, const uint8* data)

@@ -103,7 +103,7 @@ namespace SkySnow
 		virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
 		//Update Texture3D Data and Texture2DArray
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture2DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
+		virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
 		//Update TextureCube Data
         //if updload mipmap data,you need call this function for numMap count
 		virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, const uint8* data) final override;

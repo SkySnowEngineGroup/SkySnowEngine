@@ -94,7 +94,7 @@ namespace SkySnow
         //Grahpichs Pipeline Interface
         //Texture Update Data
         virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,const uint8* data) {};
-        virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel,Texture2DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};
+        virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel,Texture3DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};
         virtual void GRIUpdateTexture2DArray(GRITexture2DRef& tex2D,uint32 textureIndex, uint32 mipLevel, Texture2DRegion region,const uint8* data) {};
         virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube,uint32 faceIndex,uint32 mipLevel,const uint8* data) {};
         virtual void GRISetShaderTexture(GRIPipelineShaderRef& graphicsShader,GRITextureRef& texture,uint32 textureIndex) {};
