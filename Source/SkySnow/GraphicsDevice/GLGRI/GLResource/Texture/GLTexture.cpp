@@ -30,23 +30,33 @@ namespace SkySnow
     GLTextureFormat GGLTextureFormat[PixelFormat::PF_End];
     void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRITexture2D>(handle, sizex, sizey, 1, format, numMips, numSamples, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTexture2D>(dynamic_cast<GRIGLTexture2D*>(handle.GetReference()), sizex, sizey, 1, format, numMips, numSamples, usageType, data);
     }
     
     void GRIGLDrive::GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRITexture2DArray>(handle, sizex, sizey, sizez, format, numMips, 1, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTexture2DArray>(dynamic_cast<GRIGLTexture2DArray*>(handle.GetReference()), sizex, sizey, sizez, format, numMips, 1, usageType, data);
     }
 
     void GRIGLDrive::GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,uint8* data,GRITexture3DRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRITexture3D>(handle, sizex, sizey, sizez, format, numMips, 1, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTexture3D>(dynamic_cast<GRIGLTexture3D*>(handle.GetReference()), sizex, sizey, sizez, format, numMips, 1, usageType, data);
     }
     void GRIGLDrive::GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRITextureCube>(handle, size, size, 1, format, numMips, 1, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTextureCube>(dynamic_cast<GRIGLTextureCube*>(handle.GetReference()), size, size, 1, format, numMips, 1, usageType, data);
     }
-
+    //纹理更新规则
+    /*
+        1. Texture2D: MipCount = 0~10  Width * Height = 4 * 4
+            Example更新数据参数: MipLevel = 0, Data = {4*4}
+        2. Texture2DArray: MipCount = 0~10  Width * Height * Depth = 4 * 4 * 4
+            Example更新数据参数: MipLevel = 0, arrayIndex = 0 Data = {4*4}
+        3. Texture3D: MipCount = 0~10  Width * Height * Depth = 4 * 4 * 4
+            Example更新数据参数: MipLevel = 0, Data = {4*4|4*4|4*4|4*4}
+        4. TextureCube: MipCount = 0~10  Width * Height = 4 * 4  6个面
+            Example更新数据参数: MipLevel = 0, faceindex = 1 Data = {4*4}
+     */
     void GRIGLDrive::GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
     {
         GRIGLTexture2D* glTexture = dynamic_cast<GRIGLTexture2D*>(tex2D.GetReference());
@@ -78,7 +88,7 @@ namespace SkySnow
 
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
-
+    //depthPitch 是当前miplevel级别图像的大小
     void GRIGLDrive::GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)
     {
         GRIGLTexture3D* glTex = dynamic_cast<GRIGLTexture3D*>(tex3D.GetReference());
@@ -103,8 +113,8 @@ namespace SkySnow
         }
         else
         {
-            glPixelStorei(GL_UNPACK_ROW_LENGTH, uRegion._Width / formatInfo._ByteSize);
-            glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, uRegion._Height / formatInfo._BlockSizeX);
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, uRegion._Width / formatInfo._BlockSizeX);
+            glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, uRegion._Height / formatInfo._BlockSizeY);
 
             OGLTexture::TexSubImage(
                 glTex->_Target, 
@@ -122,23 +132,91 @@ namespace SkySnow
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
 
-    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray, uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
     {
-        
+        GRIGLTexture2DArray* glTex = dynamic_cast<GRIGLTexture2DArray*>(tex2DArray.GetReference());
+        const Texture2DRegion uRegion = region;
+        const PixelFormatInfo formatInfo = GPixelFormats[glTex->GetFormat()];
+        const GLTextureFormat texFormat = GGLTextureFormat[glTex->GetFormat()];
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        const bool sRgb = OGLTexture::HasTextureUsageType(glTex->GetTextureUsageType(), TextureUsageType::TUT_sRGB);
+
+        if (texFormat._IsCompressed)
+        {
+            const int imageSize = (uRegion._Width / formatInfo._BlockSizeX) * (uRegion._Height / formatInfo._BlockSizeY) * formatInfo._ByteSize;
+            OGLTexture::CompressedTexSubImage(glTex->_Target,
+                mipLevel,
+                uRegion._DestX, uRegion._DestY, textureIndex,
+                uRegion._Width, uRegion._Height, 1, 
+                texFormat._GLInternalFormat[sRgb], 
+                imageSize,
+                data);
+        }
+        else
+        {
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, pitch / formatInfo._ByteSize);
+            // 更新 Miplevel = n 与特定层的纹理数据
+            OGLTexture::TexSubImage(glTex->_Target,
+                0,
+                mipLevel,
+                uRegion._DestX, uRegion._DestY, textureIndex,
+                uRegion._Width,uRegion._Height,1,
+                texFormat._GLFormat,
+                texFormat._GLType,
+                data);
+        }
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+    }
+    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
+    {
+        GRIGLTextureCube* glTex = dynamic_cast<GRIGLTextureCube*>(texCube.GetReference());
+        const Texture2DRegion uRegion = region;
+        const PixelFormatInfo formatInfo = GPixelFormats[glTex->GetFormat()];
+        const GLTextureFormat texFormat = GGLTextureFormat[glTex->GetFormat()];
+
+        GLenum intentTarget = GL_TEXTURE_CUBE_MAP_POSITIVE_X + faceIndex;
+
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        const bool sRgb = OGLTexture::HasTextureUsageType(glTex->GetTextureUsageType(), TextureUsageType::TUT_sRGB);
+        if (texFormat._IsCompressed)
+        {
+            const int imageSize = (uRegion._Width / formatInfo._BlockSizeX) * (uRegion._Height / formatInfo._BlockSizeY) * formatInfo._ByteSize;
+            OGLTexture::CompressedTexSubImage(intentTarget,
+                mipLevel,
+                uRegion._DestX, uRegion._DestY, 0,
+                uRegion._Width, uRegion._Height, 1,
+                texFormat._GLInternalFormat[sRgb],
+                imageSize,
+                data);
+        }
+        else
+        {
+            glPixelStorei(GL_UNPACK_ROW_LENGTH, pitch / formatInfo._ByteSize);
+            // 更新 MipLevel = n 与特定层的纹理数据
+            OGLTexture::TexSubImage(glTex->_Target,
+                0,
+                mipLevel,
+                uRegion._DestX, uRegion._DestY, 0,
+                uRegion._Width, uRegion._Height, 0,
+                texFormat._GLFormat,
+                texFormat._GLType,
+                data);
+        }
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+        glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
 
     //Texture Internal call function
     namespace OGLTexture
     {
         template<typename TextureType>
-        void CreateTextureInternal(TextureType* texture,uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data)
-        {
-            GRITexture* griTex = dynamic_cast<GRITexture*>(texture);
-            GLBaseTexture* glTex = dynamic_cast<GLBaseTexture*>(texture);
-            
+        void CreateTextureInternal(TextureType* glTex,uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data)
+        {          
             const PixelFormat pFormat        = (PixelFormat)format;
             const GLTextureFormat& gpFormat  = GGLTextureFormat[pFormat];
-            const PixelFormatInfo formatInfo = GPixelFormats[griTex->GetFormat()];
+            const PixelFormatInfo formatInfo = GPixelFormats[glTex->GetFormat()];
             bool isSrgb                      = OGLTexture::HasTextureUsageType(usageType,TextureUsageType::TUT_sRGB);
             GLenum glFormat                  = gpFormat._GLFormat;
             GLenum glType                    = gpFormat._GLType;
@@ -146,7 +224,7 @@ namespace SkySnow
             //if numSimples not 1, so this mrt texture(Msaa)
             GLenum target                    = GL_NONE;
             GLenum attachment                = GL_NONE;
-            EGRIResourceType resourceType = griTex->GetType();
+            EGRIResourceType resourceType = glTex->GetType();
             switch (resourceType)
             {
                 case GRT_Texture2D:

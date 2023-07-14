@@ -97,7 +97,7 @@ namespace SkySnow
         }
     
         template<typename TextureType>
-        void CreateTextureInternal(TextureType* texture,uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data);
+        void CreateTextureInternal(TextureType* glTex,uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data);
         bool TexStorageImage(GLenum target,uint32 mipLevel,GLenum internalFormat,uint32 sizex,uint32 sizey,uint32 sizez,GLenum format,GLenum type);
         void TexImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint internalFormat,uint32 sizex, uint32 sizey,uint32 sizez,GLint border,GLenum format,GLenum type,const GLvoid* data);
         void TexSubImage(GLenum target,uint32 numSamples,GLint mipLevel,GLint offsetx,GLint offsety,GLint offsetz,uint32 sizex, uint32 sizey,uint32 sizez,GLenum format,GLenum type,const GLvoid* data);

@@ -118,8 +118,7 @@ namespace SkySnow
 			: _BlendState(nullptr)
 			, _RasterizerState(nullptr)
 			, _DepthStencilState(nullptr)
-			, _SamplerState(nullptr)
-			, _AssemblyState(nullptr)
+			, _SamplerState(nullptr)//, _AssemblyState(nullptr)
 			, _PrimitiveType(PrimitiveType::PT_Trangles)
 		{
 		}
@@ -127,8 +126,7 @@ namespace SkySnow
 			GRIBlendState*			    inBlendState,
 			GRIRasterizerState*		    inRasterizerState,
 			GRIDepthStencilState*	    inDepthStencilState,
-			GRISamplerState*		    inSamplerState,
-			GRIAssemblyState*		    inAssemblyState,
+			GRISamplerState*		    inSamplerState,//GRIAssemblyState*            inAssemblyState,
 			PrimitiveType			    inPrimitiveType,
             GRICreateShaderPipelineInfo inShaderPipeline
 		)
@@ -136,8 +134,7 @@ namespace SkySnow
             , _BlendState(inBlendState)
 			, _RasterizerState(inRasterizerState)
 			, _DepthStencilState(inDepthStencilState)
-			, _SamplerState(inSamplerState)
-			, _AssemblyState(inAssemblyState)
+			, _SamplerState(inSamplerState)//, _AssemblyState(inAssemblyState)
 			, _PrimitiveType(inPrimitiveType)
 		{
 		}
@@ -147,8 +144,7 @@ namespace SkySnow
 			if (_BlendState != other._BlendState ||
 				_RasterizerState != other._RasterizerState ||
 				_DepthStencilState != other._DepthStencilState ||
-				_SamplerState != other._SamplerState ||
-				_AssemblyState != other._AssemblyState ||
+				_SamplerState != other._SamplerState ||//_AssemblyState != other._AssemblyState ||
                 _ShaderPipelineInfo._PipelineShader != other._ShaderPipelineInfo._PipelineShader ||
                 _ShaderPipelineInfo._VertexDescriptor != other._ShaderPipelineInfo._VertexDescriptor)
 			{
@@ -162,7 +158,7 @@ namespace SkySnow
 		GRIRasterizerStateRef		_RasterizerState;
 		GRIDepthStencilStateRef	    _DepthStencilState;
 		GRISamplerStateRef		    _SamplerState;
-		GRIAssemblyStateRef		    _AssemblyState;
+//		GRIAssemblyStateRef		    _AssemblyState;
         
         
         GRICreateShaderPipelineInfo _ShaderPipelineInfo;
