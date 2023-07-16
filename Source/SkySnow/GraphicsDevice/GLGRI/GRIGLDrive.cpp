@@ -266,11 +266,16 @@ namespace SkySnow
             GLVertexBufferSlot vbo = entry.second;
             glBindBuffer(vbo._BufferType,vbo._GpuHandle);
             GLVertexElements ves = vbo._GLVertexElements;
+			uint64 stridSize = 0;
+			for (auto iter = ves.begin(); iter != ves.end(); iter++)
+			{
+				stridSize += iter->second._Stride * sizeof(iter->second._Type);
+			}
             for(auto iter = ves.begin(); iter != ves.end(); iter ++)
             {
                 GLVertexElement vMeta = iter->second;
                 glEnableVertexAttribArray(vMeta._AttributeIndex);
-                glVertexAttribPointer(vMeta._AttributeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized,vbo._Stride * sizeof(vMeta._Type),(GLvoid*)vMeta._Offset);
+                glVertexAttribPointer(vMeta._AttributeIndex, vMeta._Stride,vMeta._Type, vMeta._bNormalized, stridSize,(GLvoid*)vMeta._Offset);
             }
         }
 	}

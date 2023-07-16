@@ -132,7 +132,7 @@ namespace SkySnow
 	enum class TextureUsageType : uint64
 	{
 		//No Use
-		TUT_None = 0,
+		TUT_None						= 0,
 		//As RT Resolve
 		TUT_RenderTarget	            = 1 << 0,
 		//Use a Shader Resource

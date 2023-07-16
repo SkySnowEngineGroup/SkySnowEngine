@@ -67,11 +67,12 @@ namespace SkySnow
             //Create Texture
             string imagePath = GetImageAllPath("panda.png");
             TextureStream* texStream = StbImageLoad::StbLoadPNG(imagePath);
+            uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
             _Tex2D = CreateTexture2D(texStream->GetImageWidth(),
                                      texStream->GetImageHeight(),
                                      texStream->GetPixelFormat(),
                                      1, 1,
-                                     TextureUsageType::TUT_ShaderResource,
+                                     (TextureUsageType)tut,
                                      (uint8*)texStream->GetImageData());
             //Create Sampler
             SamplerState samplerState;
