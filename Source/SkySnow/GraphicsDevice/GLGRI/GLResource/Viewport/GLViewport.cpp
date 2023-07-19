@@ -20,33 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GRIDrive.h"
-#include "NonCopyable.h"
+#include "GLViewport.h"
 namespace SkySnow
 {
-	class OSPlatform
-	{
-	public:
-		OSPlatform() {}
-		virtual ~OSPlatform() {}
 
-		virtual GRIDrive* OSPlatformCreateGRI() = 0;
-	};
-
-    OSPlatform* CreateTargetOSPlatform();
-    //TODO: Delete this Struct,then use viewport
-    struct OSPlatformInfo
-    {
-        OSPlatformInfo()
-            : _NativeWindow(nullptr)
-            , _DriveContext(nullptr)
-        {
-            
-        }
-        
-        void* _NativeWindow;
-        void* _DriveContext;
-    };
-    extern OSPlatformInfo*          _GOSPlatformInfo;
 }

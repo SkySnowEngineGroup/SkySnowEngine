@@ -505,18 +505,45 @@ namespace SkySnow
         }
     };
     //StateEnd===================================================================================
-    //OnScreen and OffScreen
+    //OnScreen and OffScreen and MultiWindow
     class GRIViewportState : GRIResource
     {
     public:
-        GRIViewportState()
+        GRIViewportState(void* inWindowHandle,void* inDeviceContext,uint32 inWidth,uint32 inHeight,PixelFormat inFormat,bool inIsFullScreen = true)
             : GRIResource(EGRIResourceType::GRT_ViewportState)
+			, _WindowHandle(inWindowHandle)
+			, _DeviceContext(inDeviceContext)
+			, _WindowWidth(inWidth)
+			, _WindowHeight(inHeight)
+			, _PixelFormat(inFormat)
+			, _IsFullScreen(inIsFullScreen)
         {
         }
         virtual ~GRIViewportState()
         {
             SN_LOG("GRIViewport DesConstruct.");
         }
+
+		virtual void* GetDeviceContext() = 0;
+
+		virtual void* GetWindowHandle() = 0;
+
+		virtual GRITexture2DRef GetBackBuffer() = 0;
+
+		PixelFormat GetWindowPixelFormat() const { return _PixelFormat;}
+
+		uint32 GetWindowWidth() const { return _WindowWidth;}
+
+		uint32 GetWindowHeight() const { return _WindowHeight;}
+
+		bool IsFullScreen() const { return _IsFullScreen; }
+	private:
+		void*		_WindowHandle;
+		void*		_DeviceContext;
+		uint32		_WindowWidth;
+		uint32		_WindowHeight;
+		PixelFormat _PixelFormat;
+		bool		_IsFullScreen;
     };
     //Texture: Texture2D/Array Texture3D/Array TextureCube
     typedef RefCountPtr<GRITexture>                 GRITextureRef;//Base class use for PipelineState

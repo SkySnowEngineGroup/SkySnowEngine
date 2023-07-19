@@ -21,32 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIDrive.h"
-#include "NonCopyable.h"
+#include "GLProfiles.h"
+#include "GRIResource.h"
+#include "GLViewport.h"
 namespace SkySnow
 {
-	class OSPlatform
+	class GRIGLViewport : public GRIViewportState
 	{
 	public:
-		OSPlatform() {}
-		virtual ~OSPlatform() {}
+		GRIGLViewport(void* inWindowHandle, void* inDeviceContext, uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true)
+			: GRIViewportState(inWindowHandle, inDeviceContext, inWidth, inHeight, inFormat, inIsFullScreen)
+		{
 
-		virtual GRIDrive* OSPlatformCreateGRI() = 0;
+		}
 	};
-
-    OSPlatform* CreateTargetOSPlatform();
-    //TODO: Delete this Struct,then use viewport
-    struct OSPlatformInfo
-    {
-        OSPlatformInfo()
-            : _NativeWindow(nullptr)
-            , _DriveContext(nullptr)
-        {
-            
-        }
-        
-        void* _NativeWindow;
-        void* _DriveContext;
-    };
-    extern OSPlatformInfo*          _GOSPlatformInfo;
 }
