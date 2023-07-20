@@ -50,7 +50,7 @@ namespace SkySnow
 
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		//about one viewport
-		virtual GRIViewportStateRef GRICreateViewport() = 0;
+		virtual GRIViewportStateRef GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen) = 0;
 		virtual void GRIBeginViewport() = 0;
 		virtual void GRIEndViewport() = 0;
 		//GRICreate=======================================================================================================================
