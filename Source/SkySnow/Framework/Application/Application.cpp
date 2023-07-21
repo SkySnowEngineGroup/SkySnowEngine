@@ -27,13 +27,12 @@
 #include "GRI.h"
 namespace SkySnow
 {
-	Application::Application(const char* name, const char* description)
+	Application::Application(const char* name, const char* description,uint32_t width, uint32_t height)
 		: _Name(name)
 		, _Description(description)
         , _Window(nullptr)
-        , _ChildApp(nullptr)
-        , _Argv(nullptr)
-        , _Argc(0)
+        , _Width(width)
+        , _Height(height)
         , _IsInit(false)
         , _Framework(nullptr)
 	{
@@ -53,11 +52,8 @@ namespace SkySnow
         }
 	}
 
-	int Application::RunApplication(Application* app, int argc, const char* const* argv)
+	int Application::RunApplication()
 	{
-        _ChildApp = app;
-        _Argc = argc;
-        _Argv = argv;
         MainThreadLoop();
         return 0;
 	}
@@ -73,7 +69,7 @@ namespace SkySnow
         frameInfo._OSPlatformInfo = osPlatformInfo;
         _Framework->Init(frameInfo);
         
-        _ChildApp->Init(_Argc, _Argv, DEFAUT_WADTH, DEFAUT_HEIGHT);
+        Init();
         glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
         while (!_Window->IsCloseWindow())
         {

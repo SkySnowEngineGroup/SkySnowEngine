@@ -20,49 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include <stdlib.h>
-#include <iostream>
-#include "Application.h"
-#include "LogAssert.h"
-#include "SceneManager.h"
-#include "GameObject.h"
-#include "RenderComponent.h"
-#include "CameraComponent.h"
-using namespace SkySnow;
-class Triangle : public SkySnow::Application
+#include "EditorApplication.h"
+using namespace Editor;
+int main(int argc, char** argv)
 {
-public:
-	Triangle(const char* name, const char* description)
-		: Application(name, description)
-        , _Scene(nullptr)
-	{
-	}
-	~Triangle()
-	{
-        Delete_Object(_Scene);
-	}
-
-	bool Init(int32_t argc, const char* const* _argv, uint32_t width, uint32_t height)
-	{
-        _Scene = GetSceneManager().CreateScene("Test");
-        TransformComponent* rootTrans = _Scene->SetupRootTransform();
-
-		GameObject* go = _Scene->AddRootToScene();
-
-//        CameraComponent* cameraCom = go->AddComponent<CameraComponent>();
-        TransformComponent* transCom = go->AddComponent<TransformComponent>();
-        RenderComponent* renderCom = go->AddComponent<RenderComponent>();
-
-        _Scene->SetEnable(true);
-		return true;
-	}
-
-private:
-    Scene* _Scene;
-};
-
-SkySnow_DEFINE_APPLICATION_MAIN(
-	Triangle
-	, "03-Triangles"
-	, "Draw Trangle At Window&MacOS."
-);
+	EditorApplication editorApp("Editor","SkySnowEngine", DEFAUT_WADTH, DEFAUT_HEIGHT);
+	editorApp.RunApplication();
+	return 0;
+}

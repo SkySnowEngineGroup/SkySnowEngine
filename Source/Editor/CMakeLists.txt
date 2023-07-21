@@ -20,34 +20,32 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 #
-#======
-# cmake文件，编译各个平台对应的IDE工程
-# 其中vs和xcode的工程文件是可以动态调试源码
-# android工程的是打包为aar或者so包，然后android中自己配置cmake链接源码进行动态调试
-#======
-#指定cmake版本
-#该链接是讲解如何使用camke的文件，可以参考使用
-#https://www.cnblogs.com/hgwang/p/9100343.html
 
-cmake_minimum_required(VERSION 3.10)
+set(project_name Editor)
+set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
-#camke 准则
-if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
-	cmake_policy(SET CMP0074 NEW)
-endif()
+file(GLOB_RECURSE EditorSource "${SOURCES_DIR}/../Editor/*.*")
 
-#工程名字
-project(SkySnow)
+foreach(source IN LISTS EditorSource)
+	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${source}")
+	get_filename_component(source_path "${source_rel}" PATH)
+	string(REPLACE "/" "\\" source_path_dir "${source_path}")
+	source_group("${source_path_dir}" FILES "${source}")
+endforeach()
 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
-include(SkySnowCommon)
-include(SkySnowResourceConfig)
+add_executable(${project_name} ${EditorSource})
 
-set(DEST_INCLUDE_DIR include/Source)
+file(GLOB_RECURSE EditorHeader "${SOURCES_DIR}/../Editor/*.h")
+#�����༭��������ͷ�ļ�
+foreach (SourceHeader IN LISTS EditorHeader)
+	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${SourceHeader}")
+	get_filename_component(source_path "${source_rel}" PATH)
+	string(REPLACE "/" "\\" source_path_dir "${source_path}")
+	target_include_directories(${project_name} PUBLIC $<BUILD_INTERFACE:${SOURCES_DIR}>/${source_path_dir})
+endforeach()
 
-set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/Binaries)
-#设置exe文件运行存储路径
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries)
-
-add_subdirectory(Source)
-add_subdirectory(Samples)
+if(WIN32)
+    target_link_libraries(${project_name} SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
+else()
+    target_link_libraries(${project_name} SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+endif(WIN32)

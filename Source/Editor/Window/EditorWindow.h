@@ -20,17 +20,45 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
 #pragma once
-#include "GRIProfiles.h"
+#include "IWindow.h"
 #include "LogAssert.h"
-#include "IEngine.h"
-namespace SkySnow
+namespace Editor
 {
-	class GameEngine : public IEngine
-	{
-	public:
+    class GLFWWindow final : public SkySnow::IWindow
+    {
+    public:
+        GLFWWindow();
 
+        ~GLFWWindow();
 
-	};
+        virtual void CreateEngineWindow(unsigned int width, unsigned int height) override;
+
+        virtual bool IsCloseWindow() override;
+
+        virtual void ShutDown() override;
+
+        void* GetNativeWindow()
+        {
+#if PLATFORM == PLATFORM_WINDOW
+            return glfwGetWin32Window(_Window);
+#elif PLATFORM == PLATFORM_MAC
+            return glfwGetCocoaWindow(_Window);
+#endif
+        }
+
+        int GetWindowWidth() const
+        {
+            return _Width;
+        }
+
+        int GetWindowHeight() const
+        {
+            return _Height;
+        }
+    private:
+        unsigned int        _Width;
+        unsigned int        _Height;
+        GLFWwindow* _Window;
+    };
 }

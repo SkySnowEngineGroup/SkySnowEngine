@@ -28,25 +28,25 @@
 #include "Framework.h"
 namespace SkySnow
 {
-#if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
-#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)	\
-	int main(int argc, char** argv)			                \
-	{											            \
-			application app(__VA_ARGS__);				    \
-            app.RunApplication(&app,argc,argv);             \
-			return 0;	                                    \
-	}
-#endif
+//#if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
+//#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)	\
+//	int main(int argc, char** argv)			                \
+//	{											            \
+//			application app(__VA_ARGS__);				    \
+//            app.RunApplication();							\
+//			return 0;	                                    \
+//	}
+//#endif
 	class Application
 	{
 	public:
-		Application(const char* name,const char* description);
+		Application(const char* name,const char* description, uint32_t width, uint32_t height);
 		virtual ~Application();
-		virtual bool Init(int32_t argc, const char* const* _argv, uint32_t width,uint32_t height) = 0;
+		virtual bool Init() = 0;
 		//virtual void Update() = 0;
     public:
         //don't overload child
-        int RunApplication(Application* app, int argc, const char* const* argv);
+        int RunApplication();
     protected:
         void* GetNativeWindow()
         {
@@ -56,12 +56,11 @@ namespace SkySnow
         void MainThreadLoop();
 	private:
 		bool				_IsInit;
+		uint32				_Width;
+		uint32				_Height;
 		const char*			_Name;
 		const char*			_Description;
-		const char* const*	_Argv;
-		int					_Argc;
         GLFWWindow*		    _Window;
-		Application*		_ChildApp;
 		Framework*			_Framework;
 	};
 	

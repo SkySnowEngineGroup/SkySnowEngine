@@ -44,5 +44,9 @@ include_directories("${SOURCES_DIR}/ThirdParty")
 
 add_subdirectory(SkySnow)
 add_subdirectory(Plugins)
-add_subdirectory(Samples)
 add_subdirectory(ThirdParty)
+
+#window and macos was Editor
+if(APPLE OR WIN32)
+add_subdirectory(Editor)
+endif(APPLE OR WIN32)

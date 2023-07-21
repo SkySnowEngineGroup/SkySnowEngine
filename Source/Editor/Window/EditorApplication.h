@@ -20,17 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
 #pragma once
-#include "GRIProfiles.h"
-#include "LogAssert.h"
-#include "IEngine.h"
-namespace SkySnow
+#include "Application.h"
+namespace Editor
 {
-	class GameEngine : public IEngine
+	class EditorApplication : public SkySnow::Application
 	{
 	public:
+		EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height);
 
+		~EditorApplication();
 
+		virtual bool Init() final override;
 	};
 }

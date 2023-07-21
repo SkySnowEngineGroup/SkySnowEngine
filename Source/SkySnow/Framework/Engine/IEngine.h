@@ -27,7 +27,9 @@ namespace SkySnow
 {
 	class IEngine
 	{
-
+	public:
+		IEngine() {}
+		virtual ~IEngine() {}
 	};
 }
 
