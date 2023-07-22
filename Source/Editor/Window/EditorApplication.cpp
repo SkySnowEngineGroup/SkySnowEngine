@@ -23,20 +23,19 @@
 #include "EditorApplication.h"
 namespace Editor
 {
-	EditorApplication::EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height)
-		: Application(name, description, width, height)
-	{
+    EditorApplication::EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height)
+        : SkySnow::Application(name, description, width, height)
+    {
+        
+    }
 
-	}
+    EditorApplication::~EditorApplication()
+    {
+        
+    }
 
-	EditorApplication::~EditorApplication()
-	{
-
-	}
-
-	bool EditorApplication::Init()
-	{
-
-		return true;
-	}
+    bool EditorApplication::Init()
+    {
+        
+    }
 }

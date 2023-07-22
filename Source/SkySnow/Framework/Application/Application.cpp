@@ -22,7 +22,7 @@
 //
 #include "Application.h"
 #include "LogAssert.h"
-#include "GRIProfiles.h"
+#include "SkySnowProfiles.h"
 #include "OSPlatform.h"
 #include "GRI.h"
 namespace SkySnow
@@ -30,9 +30,10 @@ namespace SkySnow
 	Application::Application(const char* name, const char* description,uint32_t width, uint32_t height)
 		: _Name(name)
 		, _Description(description)
-        , _Window(nullptr)
         , _Width(width)
         , _Height(height)
+        , _EngineUsagType(None)
+        , _Window(nullptr)
         , _IsInit(false)
         , _Framework(nullptr)
 	{
@@ -54,9 +55,14 @@ namespace SkySnow
 
 	int Application::RunApplication()
 	{
-        MainThreadLoop();
+        //MainThreadLoop();
+        InitAppication();
         return 0;
 	}
+    void Application::InitAppication()
+    {
+
+    }
     void Application::MainThreadLoop()
     {
         _Window = new GLFWWindow();

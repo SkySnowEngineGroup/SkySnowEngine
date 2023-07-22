@@ -21,20 +21,43 @@
 // THE SOFTWARE.
 //
 #pragma once
-#define GRI_UNKNOW 0
-#define GRI_GL 1
-#define GRI_VULKAN 2
-#define GRI_METAL 3
+#include "SkySnowProfiles.h"
+#include "LogAssert.h"
 
-//setup render device type: opengl or metal or vulkan
-#define GRI_PLATFORM GRI_GL
+namespace SkySnow
+{
+	enum OSWindowType
+	{
+		GLFW = 0,
+		Android_Native = 1,
+		Ios_View = 2
+	};
+	class OSWindow
+	{
+	public:
+        OSWindow(OSWindowType osWindowType)
+			: _OSWindowType(osWindowType)
+        {}
 
-#if GRI_PLATFORM == GRI_GL
-#	include "GLProfiles.h"
-#endif // GRI_PLATFORM == GRI_GL
+		virtual ~OSWindow(){}
+	public:
 
-//Shader是否debug的标记
-#if DEBUG
-#    undef Debug_Shader
-#    define Debug_Shader 1
-#endif // DEBUG
+        virtual void CreateOSWindow(uint32 width,uint32 height,OSWindow* shareWindow = nullptr) = 0;
+
+		virtual void* GetClientWindow() = 0;
+		
+        virtual void* GetNativeWindow() = 0;
+
+		virtual bool IsCloseWindow() = 0;
+
+		virtual void ShutDown() = 0;
+        
+        virtual uint32 GetWindowWidth() const = 0;
+        
+        virtual uint32 GetWindowHeight() const = 0;
+
+		OSWindowType GetOSWindowType() const { return _OSWindowType;}
+	private:
+		OSWindowType	_OSWindowType;
+	};
+}

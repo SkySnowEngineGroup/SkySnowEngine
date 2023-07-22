@@ -21,22 +21,19 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIProfiles.h"
+#include "SkySnowProfiles.h"
 #include <stdlib.h>
 #include <iostream>
-#include "GLFWWindow.h"
+#include "IWindow.h"
 #include "Framework.h"
 namespace SkySnow
 {
-//#if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)
-//#define SkySnow_DEFINE_APPLICATION_MAIN(application, ...)	\
-//	int main(int argc, char** argv)			                \
-//	{											            \
-//			application app(__VA_ARGS__);				    \
-//            app.RunApplication();							\
-//			return 0;	                                    \
-//	}
-//#endif
+	enum EngineUsagType
+	{
+		None	= 0,
+		Sample	= 1,
+		Editor	= 2
+	};
 	class Application
 	{
 	public:
@@ -47,20 +44,24 @@ namespace SkySnow
     public:
         //don't overload child
         int RunApplication();
-    protected:
-        void* GetNativeWindow()
-        {
-            return _Window->GetNativeWindow();
-        }
+		void SetUseEngineType(EngineUsagType eut) { _EngineUsagType = eut; }
 	private:
+        //void* GetNativeWindow()
+        //{
+        //    return _Window->GetNativeWindow();
+        //}
+	
         void MainThreadLoop();
+
+		void InitAppication();
 	private:
+		EngineUsagType		_EngineUsagType;
 		bool				_IsInit;
 		uint32				_Width;
 		uint32				_Height;
 		const char*			_Name;
 		const char*			_Description;
-        GLFWWindow*		    _Window;
+        IWindow*		    _Window;
 		Framework*			_Framework;
 	};
 	

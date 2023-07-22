@@ -26,12 +26,12 @@ set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
 file(GLOB Headers_lists "${SAMPLE_DIR}/*.h")
 
-add_executable(LearnTest ${Headers_lists} ${Sources_lists})
+add_executable(00_LearnTest ${Headers_lists} ${Sources_lists})
 
-target_include_directories(LearnTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+target_include_directories(00_LearnTest PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
 if(WIN32)
-    target_link_libraries(LearnTest SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(00_LearnTest SkySnow Plugins glfw pthread_win SampleCommon ${OpenGL_LIBRARY})
 else()
-    target_link_libraries(LearnTest SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(00_LearnTest SkySnow Plugins glfw SampleCommon ${OpenGL_LIBRARY})
 endif(WIN32)

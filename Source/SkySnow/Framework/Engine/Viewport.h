@@ -21,25 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "SkySnowProfiles.h"
-#if PLATFORM == PLATFORM_IOS
-#include <unistd.h>
-#endif // PLATFORM == PLATFORM_IOS
+
 namespace SkySnow
 {
-	enum ThreadPriority
+	class Viewport
 	{
-		ETP_Low = 0,
-		ETP_Normal = 1,
-		ETP_Hight = 2
+	public:
+		Viewport() {}
+		virtual ~Viewport() {}
 	};
-    //该函数可用宏定义，但是本人讨厌宏编程，因此使用c类型函数
-    static void SNSleep(unsigned int millisecond)//单位ms
-    {
-#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-            sleep(millisecond/1000);//该接口ios为秒
-#else
-            Sleep(millisecond);
-#endif
-    }
 }

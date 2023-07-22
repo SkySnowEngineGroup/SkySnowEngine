@@ -21,8 +21,10 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIProfiles.h"
+#include "SkySnowProfiles.h"
 #include "LogAssert.h"
+#include "GameWindow.h"
+#include "EditorWindow.h"
 namespace SkySnow
 {
 	class IEngine
@@ -30,6 +32,13 @@ namespace SkySnow
 	public:
 		IEngine() {}
 		virtual ~IEngine() {}
+        
+        virtual GameWindow* CreateGameWindow() = 0;
+        
+        virtual EditorWindow* CreateEditorWindow() = 0;
+
+	private:
+
 	};
 }
 

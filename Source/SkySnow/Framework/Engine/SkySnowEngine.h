@@ -21,31 +21,24 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include <string>
-#include "ResourcePathConfig.h"
+#include "IEngine.h"
+#include "SkySnowProfiles.h"
+#include "LogAssert.h"
+
 namespace SkySnow
 {
-    //Globle config for engine
-	static const std::string g_RelativeMaterialPath = std::string(Resource_Path) + "/Media/";
-	static const int g_String_Buffer_MaxLength = 128;
-	static char g_Null_Char = 0;
-	static const int g_Min_Capacity = 8;//min cap is 8byte
-	static const unsigned NPOS = 0xffffffff;
-    static const uint64_t g_DefaultCullingMask = 1ULL << 63;
-    typedef int SkySnowSceneHandle;
-	//globle Function
-	static std::string GetMaterialAllPath(const std::string mpath)
+	class SkySnowEngine : public IEngine
 	{
-		return g_RelativeMaterialPath + "Material/" + mpath;
-	}
-    static std::string GetImageAllPath(const std::string ipath)
-    {
-        return g_RelativeMaterialPath + "Texture/" + ipath;
-    }
-#define Delete_Object(object) \
-		if(object) \
-		{ \
-			delete object; \
-			object = nullptr; \
-		}
+	public:
+        SkySnowEngine();
+        
+        ~SkySnowEngine();
+        
+        virtual GameWindow* CreateGameWindow() final override;
+        
+        virtual EditorWindow* CreateEditorWindow() final override;
+    private:
+        GameWindow*     _GameWindow;
+        EditorWindow*   _EditorWindow;
+	};
 }

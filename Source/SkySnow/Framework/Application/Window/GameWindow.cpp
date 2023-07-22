@@ -1,8 +1,3 @@
-//
-// Copyright(c) 2020 - 2022 the SkySnowEngine project.
-// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
@@ -20,26 +15,41 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "SkySnowProfiles.h"
-#if PLATFORM == PLATFORM_IOS
-#include <unistd.h>
-#endif // PLATFORM == PLATFORM_IOS
+#include "GameWindow.h"
+
 namespace SkySnow
 {
-	enum ThreadPriority
+	GameWindow::GameWindow()
+		: IWindow(EGameWindow)
+		, _EWWeight(0)
+		, _EWHeight(0)
+		, _OSWindow(nullptr)
+		, _Viewport(nullptr)
 	{
-		ETP_Low = 0,
-		ETP_Normal = 1,
-		ETP_Hight = 2
-	};
-    //该函数可用宏定义，但是本人讨厌宏编程，因此使用c类型函数
-    static void SNSleep(unsigned int millisecond)//单位ms
-    {
-#if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-            sleep(millisecond/1000);//该接口ios为秒
-#else
-            Sleep(millisecond);
-#endif
-    }
+
+	}
+
+	GameWindow::~GameWindow()
+	{
+		if (_OSWindow)
+		{
+			delete _OSWindow;
+			_OSWindow = nullptr;
+		}
+		if (_Viewport)
+		{
+			delete _Viewport;
+			_Viewport = nullptr;
+		}
+	}
+
+	OSWindow* GameWindow::GetOSWindow()
+	{
+		return _OSWindow;
+	}
+
+	Viewport* GameWindow::GetViewport()
+	{
+		return _Viewport;
+	}
 }

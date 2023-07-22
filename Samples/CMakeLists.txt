@@ -25,4 +25,5 @@ set(Target_Name Samples)
 add_subdirectory(00_LearningTest)
 add_subdirectory(01_HelloWorld)
 add_subdirectory(02_Triangles)
+add_subdirectory(SampleCommon)
 

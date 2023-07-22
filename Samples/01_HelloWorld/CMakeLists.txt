@@ -26,8 +26,13 @@ set(SAMPLE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 file(GLOB Sources_lists "${SAMPLE_DIR}/*.cpp")
 file(GLOB Headers_lists "${SAMPLE_DIR}/*.h")
 
-add_executable(HelloWorld ${Headers_lists} ${Sources_lists})
+add_executable(01_HelloWorld ${Headers_lists} ${Sources_lists})
 
-target_include_directories(HelloWorld PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
+target_include_directories(01_HelloWorld PUBLIC $<BUILD_INTERFACE:${SAMPLE_DIR}/>
 					      )
-target_link_libraries(HelloWorld SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty
+if(WIN32)
+    target_link_libraries(01_HelloWorld SkySnow Plugins glfw pthread_win SampleCommon ${OpenGL_LIBRARY})
+else()
+    target_link_libraries(01_HelloWorld SkySnow Plugins glfw SampleCommon ${OpenGL_LIBRARY})
+endif(WIN32)
+

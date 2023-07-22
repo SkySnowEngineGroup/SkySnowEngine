@@ -20,48 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "IWindow.h"
-#include "PlatformProfiles.h"
-#include "GRIProfiles.h"
-#include "LogAssert.h"
+#include "EditorWindow.h"
+
 namespace SkySnow
 {
-	//can be use mac and window os
-    class GLFWWindow final: public IWindow
+    EditorWindow::EditorWindow()
+        : IWindow(EEditorMainWindow)
+        , _EWWeight(0)
+        , _EWHeight(0)
+        , _OSWindow(nullptr)
+        , _Viewport(nullptr)
     {
-    public:
-        GLFWWindow();
-        
-        ~GLFWWindow();
-        
-        virtual void CreateEngineWindow(unsigned int width,unsigned int height) override;
+    }
 
-        virtual bool IsCloseWindow() override;
+    EditorWindow::~EditorWindow()
+    {
+        if (_OSWindow)
+        {
+            delete _OSWindow;
+            _OSWindow = nullptr;
+        }
+        if (_Viewport)
+        {
+            delete _Viewport;
+            _Viewport = nullptr;
+        }
+    }
 
-        virtual void ShutDown() override;
-        
-        void* GetNativeWindow()
-        {
-        #if PLATFORM == PLATFORM_WINDOW
-            return glfwGetWin32Window(_Window);
-        #elif PLATFORM == PLATFORM_MAC
-            return glfwGetCocoaWindow(_Window);
-        #endif
-        }
+    OSWindow* EditorWindow::GetOSWindow()
+    {
+        return _OSWindow;
+    }
 
-        int GetWindowWidth() const
-        {
-            return _Width;
-        }
-        
-        int GetWindowHeight() const
-        {
-            return _Height;
-        }
-    private:
-        unsigned int        _Width;
-        unsigned int        _Height;
-        GLFWwindow*         _Window;
-    };
+    Viewport* EditorWindow::GetViewport()
+    {
+        return _Viewport;
+    }
 }

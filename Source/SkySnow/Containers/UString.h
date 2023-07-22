@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 #pragma once
-#include "SkySnowConfigInfo.h"
+#include "SkySnowProfiles.h"
 #include <stdlib.h>
 #include <string>
 #include <vector>

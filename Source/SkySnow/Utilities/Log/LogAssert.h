@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "NonCopyable.h"
-#include "PlatformProfiles.h"
+#include "SkySnowProfiles.h"
 namespace SkySnow
 {
 	enum LogLevel

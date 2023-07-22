@@ -55,6 +55,7 @@ namespace SkySnow
 
 		virtual void GRIBeginViewport() final override;
 		virtual void GRIEndViewport() final override;
+        virtual GRIViewportStateRef GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen) final override;
 		//GRICreate=================================================================================================================================
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
 		//Create Vertex Shader

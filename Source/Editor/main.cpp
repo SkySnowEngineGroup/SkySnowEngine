@@ -25,6 +25,7 @@ using namespace Editor;
 int main(int argc, char** argv)
 {
 	EditorApplication editorApp("Editor","SkySnowEngine", DEFAUT_WADTH, DEFAUT_HEIGHT);
+	editorApp.SetUseEngineType(SkySnow::Editor);
 	editorApp.RunApplication();
 	return 0;
 }

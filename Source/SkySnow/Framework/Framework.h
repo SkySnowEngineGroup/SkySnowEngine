@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIProfiles.h"
+#include "SkySnowProfiles.h"
 #include "LogAssert.h"
 #include "RenderSystem.h"
 namespace SkySnow

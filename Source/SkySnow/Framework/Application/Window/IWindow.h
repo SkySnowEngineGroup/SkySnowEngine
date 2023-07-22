@@ -21,25 +21,31 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "PlatformProfiles.h"
-#include "GRIProfiles.h"
+#include "SkySnowProfiles.h"
+#include "OSWindow.h"
+#include "Viewport.h"
 namespace SkySnow
 {
+    enum EngineWindowType
+    {
+        EGameWindow = 0,
+        EEditorMainWindow = 1
+    };
 	class IWindow
 	{
 	public:
-		IWindow()
+		IWindow(EngineWindowType windowType)
+            : _EngineWindowType(windowType)
         {}
 
-		virtual ~IWindow()
-        {}
+		virtual ~IWindow(){}
+	public:  
+        virtual OSWindow* GetOSWindow() = 0;
 
-	public:
-		virtual void CreateEngineWindow(unsigned int width, unsigned int height) = 0;
+        virtual Viewport* GetViewport() = 0;
 
-		virtual bool IsCloseWindow() = 0;
-
-		virtual void ShutDown() = 0;
-
+        EngineWindowType GetEngineWindowType() const {return _EngineWindowType;}
+    private:
+        EngineWindowType    _EngineWindowType;
 	};
 }

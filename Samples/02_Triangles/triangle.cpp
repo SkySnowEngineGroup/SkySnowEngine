@@ -28,7 +28,9 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "CameraComponent.h"
+#include "SampleApplication.h"
 using namespace SkySnow;
+using namespace Sample;
 class Triangle : public SkySnow::Application
 {
 public:
@@ -61,16 +63,4 @@ private:
     Scene* _Scene;
 };
 
-int main(int argc, char** argv)
-{
-	Triangle app("03-Triangles", "Draw Trangle At Window&MacOS.", DEFAUT_WADTH,DEFAUT_HEIGHT);
-	app.RunApplication();
-	return 0;
-}
-//SkySnow_DEFINE_APPLICATION_MAIN(
-//	Triangle
-//	, "03-Triangles"
-//	, "Draw Trangle At Window&MacOS."
-//	, DEFAUT_WADTH
-//	, DEFAUT_HEIGHT
-//);
+SkySnow_SampleApplication(Triangle,"03-Triangles","Draw Trangle At Window&MacOS.", DEFAUT_WADTH, DEFAUT_HEIGHT);
