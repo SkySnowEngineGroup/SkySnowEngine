@@ -538,7 +538,7 @@ namespace SkySnow
     typedef RefCountPtr<GRIBlendState>              GRIBlendStateRef;
 
     //OnScreen and OffScreen and MultiWindow
-    class GRIViewportState : GRIResource
+    class GRIViewportState : public GRIResource
     {
     public:
         GRIViewportState()

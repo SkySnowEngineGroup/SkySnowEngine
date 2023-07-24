@@ -25,6 +25,8 @@
 #include "SkySnowProfiles.h"
 #include "OSPlatform.h"
 #include "GRI.h"
+#include "SkySnowEngine.h"
+
 namespace SkySnow
 {
 	Application::Application(const char* name, const char* description,uint32_t width, uint32_t height)
@@ -33,58 +35,56 @@ namespace SkySnow
         , _Width(width)
         , _Height(height)
         , _EngineUsagType(None)
-        , _Window(nullptr)
-        , _IsInit(false)
+        , _SkySnowEngine(nullptr)
+        , _EditorWindow(nullptr)
+        , _GameWindow(nullptr)
         , _Framework(nullptr)
 	{
 
 	}
 	Application::~Application()
 	{
-        if(_Window)
-        {
-            delete _Window;
-            _Window = nullptr;
-        }
-        if (_Framework)
-        {
-            delete _Framework;
-            _Framework = nullptr;
-        }
+        Delete_Object(_Framework);
+        Delete_Object(_SkySnowEngine);
 	}
 
-	int Application::RunApplication()
+	void Application::RunApplication()
 	{
-        //MainThreadLoop();
-        InitAppication();
-        return 0;
+        RunAppInternal();
 	}
-    void Application::InitAppication()
+    void Application::RunAppInternal()
     {
-
-    }
-    void Application::MainThreadLoop()
-    {
-        _Window = new GLFWWindow();
-        _Window->CreateEngineWindow(DEFAUT_WADTH, DEFAUT_HEIGHT);
-        
+        _SkySnowEngine = new SkySnowEngine();
+        //Create Engine Framework
         _Framework = new Framework();
-        FrameworkInfo frameInfo;
-        OSPlatformInfo osPlatformInfo;
-        osPlatformInfo._NativeWindow = GetNativeWindow();
-        frameInfo._OSPlatformInfo = osPlatformInfo;
-        _Framework->Init(frameInfo);
-        
-        Init();
-        glViewport(0,0,DEFAUT_WADTH,DEFAUT_HEIGHT);
-        while (!_Window->IsCloseWindow())
+        //开启初始化操作
+        _SkySnowEngine->Init();
+        //Create Window
+        _GameWindow = _SkySnowEngine->CreateGameWindow(_Width, _Height);
+        if (_EngineUsagType == Editor)
         {
-            //_ChildApp->Update();
+            _EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
+        }
+        OSPlatformInfo osPlatformInfo;
+        osPlatformInfo._NativeWindow = _GameWindow->GetOSWindow()->GetNativeWindow();
+        _Framework->Init(osPlatformInfo);
+        //Child App Init
+        Init();
+        //Start Engine MainUpdate
+        MainUpdateInternal();
+        
+        ShutDown();
+        _Framework->ShutDown();
+        _SkySnowEngine->ShutDown();
+    }
+
+    void Application::MainUpdateInternal()
+    {
+        while (!_SkySnowEngine->IsEngineWindowClose())
+        {
+            Update();
             _Framework->MainUpdate();
             glfwPollEvents();
         }
-        _Framework->Stop();
-        _Framework->Exit();
-        _Window->ShutDown();
     }
 }

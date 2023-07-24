@@ -31,21 +31,33 @@ namespace SkySnow
         EGameWindow = 0,
         EEditorMainWindow = 1
     };
-	class IWindow
+	class EngineWindow
 	{
 	public:
-		IWindow(EngineWindowType windowType)
+        EngineWindow(EngineWindowType windowType)
             : _EngineWindowType(windowType)
+            , _EWWeight(0)
+            , _EWHeight(0)
+            , _OSWindow(nullptr)
+            , _Viewport(nullptr)
         {}
 
-		virtual ~IWindow(){}
-	public:  
-        virtual OSWindow* GetOSWindow() = 0;
+        virtual ~EngineWindow();
+	public:
+        void CreateEngineWindow(uint32 width,uint32 height, EngineWindow* shareWindow = nullptr);
 
-        virtual Viewport* GetViewport() = 0;
+        OSWindow* GetOSWindow() const { return _OSWindow; }
+
+        Viewport* GetViewport() const { return _Viewport; }
 
         EngineWindowType GetEngineWindowType() const {return _EngineWindowType;}
+
+        void ShutDown();
     private:
         EngineWindowType    _EngineWindowType;
+        uint32              _EWWeight;
+        uint32              _EWHeight;
+        OSWindow*           _OSWindow;
+        Viewport*           _Viewport;
 	};
 }

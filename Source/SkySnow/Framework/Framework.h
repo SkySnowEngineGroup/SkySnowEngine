@@ -27,23 +27,17 @@
 namespace SkySnow
 {
     class RenderSystem;
-    struct FrameworkInfo
-    {
-        OSPlatformInfo _OSPlatformInfo;
-    };
     class Framework
     {
     public:
         Framework();
         ~Framework();
 
-        void Init(FrameworkInfo& frameInfo);
+        void Init(OSPlatformInfo& osInfo);
 
         void MainUpdate();
-
-        void Stop();
-
-        void Exit();
+        
+        void ShutDown();
     private:
         RenderSystem*       _RenderSystem;
     };

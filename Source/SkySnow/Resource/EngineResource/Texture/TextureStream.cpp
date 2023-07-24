@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "TextureStream.h"
-#include "SkySnowConfigInfo.h"
+#include "SkySnowProfiles.h"
 namespace SkySnow
 {
     TextureStream::TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight)

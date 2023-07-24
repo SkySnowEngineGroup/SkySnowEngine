@@ -22,10 +22,11 @@
 //
 #include "GLViewport.h"
 #include "GRIGLDrive.h"
+#include "GLViewportResource.h"
 namespace SkySnow
 {
-GRIViewportStateRef GRIGLDrive::GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
-{
-    
-}
+    GRIViewportStateRef GRIGLDrive::GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
+    {
+        return new GRIGLViewport(windowHandle,nullptr,width,height,format,isFullScreen);
+    }
 }

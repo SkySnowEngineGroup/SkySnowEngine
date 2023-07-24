@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "GRICommandBuffer.h"
-#include "SkySnowConfigInfo.h"
+#include "SkySnowProfiles.h"
 #include "GLCommandBuffer.h"
 #include "GLCreateCommandBuffer.h"
 #include "WindowOSPlatform.h"

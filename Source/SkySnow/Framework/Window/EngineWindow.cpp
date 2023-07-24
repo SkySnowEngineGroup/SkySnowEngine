@@ -1,3 +1,8 @@
+//
+// Copyright(c) 2020 - 2022 the SkySnowEngine project.
+// Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this softwareand associated documentation files(the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and /or sell
@@ -15,41 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GameWindow.h"
-
+#include "EngineWindow.h"
+#include "GLFWWindow.h"
+#include "SkySnowProfiles.h"
 namespace SkySnow
 {
-	GameWindow::GameWindow()
-		: IWindow(EGameWindow)
-		, _EWWeight(0)
-		, _EWHeight(0)
-		, _OSWindow(nullptr)
-		, _Viewport(nullptr)
+	EngineWindow::~EngineWindow()
 	{
-
+        Delete_Object(_OSWindow);
+        Delete_Object(_Viewport);
 	}
 
-	GameWindow::~GameWindow()
-	{
-		if (_OSWindow)
-		{
-			delete _OSWindow;
-			_OSWindow = nullptr;
-		}
-		if (_Viewport)
-		{
-			delete _Viewport;
-			_Viewport = nullptr;
-		}
-	}
+    void EngineWindow::CreateEngineWindow(uint32 width, uint32 height, EngineWindow* shareWindow)
+    {
+        _OSWindow = new GLFWWindow();
+        _OSWindow->CreateOSWindow(width, height, shareWindow ? shareWindow->GetOSWindow() : nullptr);
+        _Viewport = new Viewport();
+    }
 
-	OSWindow* GameWindow::GetOSWindow()
-	{
-		return _OSWindow;
-	}
-
-	Viewport* GameWindow::GetViewport()
-	{
-		return _Viewport;
-	}
+    void EngineWindow::ShutDown()
+    {
+        _OSWindow->ShutDown();
+    }
 }

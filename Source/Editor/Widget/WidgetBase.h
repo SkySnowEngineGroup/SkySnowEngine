@@ -20,40 +20,21 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "EditorWindow.h"
-
-namespace SkySnow
+#pragma once
+#include "Application.h"
+namespace Editor
 {
-    EditorWindow::EditorWindow()
-        : IWindow(EEditorMainWindow)
-        , _EWWeight(0)
-        , _EWHeight(0)
-        , _OSWindow(nullptr)
-        , _Viewport(nullptr)
-    {
-    }
+	class EditorApplication : public SkySnow::Application
+	{
+	public:
+		EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height);
 
-    EditorWindow::~EditorWindow()
-    {
-        if (_OSWindow)
-        {
-            delete _OSWindow;
-            _OSWindow = nullptr;
-        }
-        if (_Viewport)
-        {
-            delete _Viewport;
-            _Viewport = nullptr;
-        }
-    }
+		~EditorApplication();
 
-    OSWindow* EditorWindow::GetOSWindow()
-    {
-        return _OSWindow;
-    }
-
-    Viewport* EditorWindow::GetViewport()
-    {
-        return _Viewport;
-    }
+		virtual bool Init() final override;
+        
+        virtual void Update() final override;
+        
+        virtual void ShutDown() final override;
+	};
 }

@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "Object.h"
-#include "SkySnowConfigInfo.h"
+#include "SkySnowProfiles.h"
 #include "TransformComponent.h"
 #include <vector>
 namespace SkySnow

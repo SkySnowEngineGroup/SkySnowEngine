@@ -24,7 +24,8 @@
 #include "SkySnowProfiles.h"
 #include <stdlib.h>
 #include <iostream>
-#include "IWindow.h"
+#include "EngineWindow.h"
+#include "IEngine.h"
 #include "Framework.h"
 namespace SkySnow
 {
@@ -40,29 +41,26 @@ namespace SkySnow
 		Application(const char* name,const char* description, uint32_t width, uint32_t height);
 		virtual ~Application();
 		virtual bool Init() = 0;
-		//virtual void Update() = 0;
+        virtual void Update() = 0;
+        virtual void ShutDown() = 0;
     public:
         //don't overload child
-        int RunApplication();
+        void RunApplication();
 		void SetUseEngineType(EngineUsagType eut) { _EngineUsagType = eut; }
 	private:
-        //void* GetNativeWindow()
-        //{
-        //    return _Window->GetNativeWindow();
-        //}
-	
-        void MainThreadLoop();
-
-		void InitAppication();
+		void RunAppInternal();
+        
+        void MainUpdateInternal();
 	private:
-		EngineUsagType		_EngineUsagType;
-		bool				_IsInit;
-		uint32				_Width;
-		uint32				_Height;
-		const char*			_Name;
-		const char*			_Description;
-        IWindow*		    _Window;
-		Framework*			_Framework;
+        const char*         _Name;
+        const char*         _Description;
+        uint32              _Width;
+        uint32              _Height;
+        EngineUsagType      _EngineUsagType;
+        IEngine*            _SkySnowEngine;
+		EngineWindow*       _EditorWindow;
+		EngineWindow*       _GameWindow;
+        Framework*          _Framework;
 	};
 	
 }

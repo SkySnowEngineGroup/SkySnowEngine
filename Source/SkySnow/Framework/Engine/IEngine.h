@@ -23,8 +23,7 @@
 #pragma once
 #include "SkySnowProfiles.h"
 #include "LogAssert.h"
-#include "GameWindow.h"
-#include "EditorWindow.h"
+#include "EngineWindow.h"
 namespace SkySnow
 {
 	class IEngine
@@ -33,10 +32,15 @@ namespace SkySnow
 		IEngine() {}
 		virtual ~IEngine() {}
         
-        virtual GameWindow* CreateGameWindow() = 0;
+        virtual void Init() = 0;
         
-        virtual EditorWindow* CreateEditorWindow() = 0;
+        virtual EngineWindow* CreateGameWindow(uint32 width,uint32 height) = 0;
+        
+        virtual EngineWindow* CreateEditorWindow(uint32 width, uint32 height) = 0;
+        
+        virtual void ShutDown() = 0;
 
+        virtual bool IsEngineWindowClose() = 0;
 	private:
 
 	};

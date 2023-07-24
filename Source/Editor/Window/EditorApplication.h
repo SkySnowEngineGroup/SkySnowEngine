@@ -32,5 +32,9 @@ namespace Editor
 		~EditorApplication();
 
 		virtual bool Init() final override;
+        
+        virtual void Update() final override;
+        
+        virtual void ShutDown() final override;
 	};
 }

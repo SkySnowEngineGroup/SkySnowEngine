@@ -40,11 +40,20 @@ namespace SkySnow
 		{
 		}
         
-        virtual void* GetDeviceContext() final override;
+        virtual void* GetDeviceContext() final override
+        {
+            return _DeviceContext;
+        }
 
-        virtual void* GetWindowHandle() final override;
+        virtual void* GetWindowHandle() final override
+        {
+            return _WindowHandle;
+        }
 
-        virtual GRITexture2DRef GetBackBuffer() final override;
+        virtual GRITexture2DRef GetBackBuffer() final override
+        {
+            return _BackTexture;
+        }
         
         virtual PixelFormat GetWindowPixelFormat() const { return _PixelFormat;}
 
@@ -56,6 +65,7 @@ namespace SkySnow
     private:
         void*           _WindowHandle;
         void*           _DeviceContext;
+        GRITexture2DRef _BackTexture;
         uint32          _WindowWidth;
         uint32          _WindowHeight;
         PixelFormat     _PixelFormat;

@@ -36,6 +36,15 @@ namespace Editor
 
     bool EditorApplication::Init()
     {
+        return true;
+    }
+
+    void EditorApplication::Update()
+    {
+        
+    }
+    void EditorApplication::ShutDown()
+    {
         
     }
 }

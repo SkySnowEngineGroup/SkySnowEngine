@@ -22,7 +22,7 @@
 //
 #include "Scene.h"
 #include "GameObject.h"
-#include "SkySnowConfigInfo.h"
+#include "SkySnowProfiles.h"
 namespace SkySnow
 {
     Scene::Scene(std::string sceneName)

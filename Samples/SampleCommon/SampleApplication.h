@@ -25,7 +25,7 @@
 #include "SkySnowProfiles.h"
 #include "Application.h"
 using namespace SkySnow;
-namespace Sample
+namespace SampleEntry
 {
 //TODO: Android and IOS
 #if defined(PLATFORM_WINDOW) || defined(PLATFORM_MAC)

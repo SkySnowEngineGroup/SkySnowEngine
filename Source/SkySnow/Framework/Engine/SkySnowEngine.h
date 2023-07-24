@@ -34,11 +34,17 @@ namespace SkySnow
         
         ~SkySnowEngine();
         
-        virtual GameWindow* CreateGameWindow() final override;
+        virtual void Init() final override;
         
-        virtual EditorWindow* CreateEditorWindow() final override;
+        virtual EngineWindow* CreateGameWindow(uint32 width, uint32 height) final override;
+        
+        virtual EngineWindow* CreateEditorWindow(uint32 width, uint32 height) final override;
+        
+        void ShutDown() final override;
+
+        virtual bool IsEngineWindowClose() final override;
     private:
-        GameWindow*     _GameWindow;
-        EditorWindow*   _EditorWindow;
+        EngineWindow*   _GameWindow;
+        EngineWindow*   _EditorWindow;
 	};
 }

@@ -24,7 +24,7 @@
 #include "GLFWWindow.h"
 namespace SkySnow
 {
-	void GLFWWindow::CreateOSWindow(uint32 width, uint32 height, OSWindow* shareWindow = nullptr)
+	void GLFWWindow::CreateOSWindow(uint32 width, uint32 height, OSWindow* shareWindow)
 	{
 		_Width = width;
 		_Height = height;

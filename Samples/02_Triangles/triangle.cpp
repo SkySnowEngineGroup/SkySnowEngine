@@ -30,7 +30,7 @@
 #include "CameraComponent.h"
 #include "SampleApplication.h"
 using namespace SkySnow;
-using namespace Sample;
+using namespace SampleEntry;
 class Triangle : public SkySnow::Application
 {
 public:
@@ -58,6 +58,16 @@ public:
         _Scene->SetEnable(true);
 		return true;
 	}
+    
+    void Update()
+    {
+        
+    }
+    
+    void ShutDown()
+    {
+        
+    }
 
 private:
     Scene* _Scene;

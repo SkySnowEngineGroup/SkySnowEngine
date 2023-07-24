@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "SkySnowEngine.h"
-
+#include "SkySnowProfiles.h"
 namespace SkySnow
 {
     SkySnowEngine::SkySnowEngine()
@@ -33,16 +33,42 @@ namespace SkySnow
 
     SkySnowEngine::~SkySnowEngine()
     {
-        
+        Delete_Object(_GameWindow);
+        Delete_Object(_EditorWindow);
     }
-
-    GameWindow* SkySnowEngine::CreateGameWindow()
+    
+    void SkySnowEngine::Init()
     {
         
     }
 
-    EditorWindow* SkySnowEngine::CreateEditorWindow()
+    void SkySnowEngine::ShutDown()
     {
-        
+        if (_GameWindow)
+        {
+            _GameWindow->ShutDown();
+        }
+        if (_EditorWindow)
+        {
+            _EditorWindow->ShutDown();
+        }
+    }
+    EngineWindow* SkySnowEngine::CreateGameWindow(uint32 width, uint32 height)
+    {
+        _GameWindow = new EngineWindow(EGameWindow);
+        _GameWindow->CreateEngineWindow(width, height);
+        return _GameWindow;
+    }
+
+    EngineWindow* SkySnowEngine::CreateEditorWindow(uint32 width, uint32 height)
+    {
+        _EditorWindow = new EngineWindow(EEditorMainWindow);
+        _EditorWindow->CreateEngineWindow(width, height, _GameWindow ? _GameWindow : nullptr);
+        return _EditorWindow;
+    }
+
+    bool SkySnowEngine::IsEngineWindowClose()
+    {
+        return _EditorWindow ? _EditorWindow->GetOSWindow()->IsCloseWindow() : _GameWindow->GetOSWindow()->IsCloseWindow();
     }
 }
