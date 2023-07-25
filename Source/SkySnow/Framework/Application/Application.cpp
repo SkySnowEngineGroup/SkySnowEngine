@@ -23,7 +23,6 @@
 #include "Application.h"
 #include "LogAssert.h"
 #include "SkySnowProfiles.h"
-#include "OSPlatform.h"
 #include "GRI.h"
 #include "SkySnowEngine.h"
 
@@ -58,16 +57,14 @@ namespace SkySnow
         //Create Engine Framework
         _Framework = new Framework();
         //开启初始化操作
-        _SkySnowEngine->Init();
         //Create Window
         _GameWindow = _SkySnowEngine->CreateGameWindow(_Width, _Height);
         if (_EngineUsagType == Editor)
         {
             _EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
         }
-        OSPlatformInfo osPlatformInfo;
-        osPlatformInfo._NativeWindow = _GameWindow->GetOSWindow()->GetNativeWindow();
-        _Framework->Init(osPlatformInfo);
+        _SkySnowEngine->Init();
+        _Framework->Init();
         //Child App Init
         Init();
         //Start Engine MainUpdate

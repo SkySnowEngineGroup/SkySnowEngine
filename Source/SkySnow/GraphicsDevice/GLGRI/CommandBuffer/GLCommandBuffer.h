@@ -40,8 +40,8 @@ namespace SkySnow
 		virtual void CmdEndRenderPass() final override;
 	public:
 		//globle set
-		virtual void CmdBeginViewport() final override;
-		virtual void CmdEndViewport() final override;
+		virtual void CmdBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture) final override;
+		virtual void CmdEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync) final override;
 	
 
 		virtual void CmdResourceSetExecutor() final override;

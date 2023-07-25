@@ -21,14 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "OSPlatform.h"
 namespace SkySnow
 {
-	class AndroidOSPlatform : public OSPlatform
+	class GRIDrive;
+	class GRICreate
 	{
 	public:
-		AndroidOSPlatform() {}
-		~AndroidOSPlatform() {}
-		virtual GRIDrive* OSPlatformCreateGRI() override;
+		static GRIDrive* CreateTargetGRI();
+	private:
+		static GRIDrive* WindowOSCreateGRI();
+		static GRIDrive* MacOSCreateGRI();
 	};
 }

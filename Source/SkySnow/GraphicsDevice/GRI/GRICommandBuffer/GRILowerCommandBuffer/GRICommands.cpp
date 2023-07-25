@@ -27,11 +27,11 @@ namespace SkySnow
 {
 	void CmdBeginViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRIBeginViewport();
+		GRI->GRIBeginViewport(_ViewPort,_RenderTexture);
 	}
 	void CmdEndViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRIEndViewport();
+		GRI->GRIEndViewport(_ViewPort,_Present,_LockToVsync);
 	}
 	void CmdSetBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{

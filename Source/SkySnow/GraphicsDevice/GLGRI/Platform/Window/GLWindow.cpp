@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #include "GLWindow.h"
-#include "OSPlatform.h"
 
 #if PLATFORM == PLATFORM_WINDOW
 

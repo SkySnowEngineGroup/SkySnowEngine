@@ -21,13 +21,24 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "GRI.h"
+#include "GRIResource.h"
+#include "GRIDrive.h"
 namespace SkySnow
 {
 	class Viewport
 	{
 	public:
-		Viewport() {}
-		virtual ~Viewport() {}
+        Viewport();
+        virtual ~Viewport();
+        
+        void CreateEngineViewport(void* nativeWindow,uint32 width,uint32 height);
+        
+    private:
+        uint32              _Width;
+        uint32              _Height;
+        void*               _NativeWindow;
+        PixelFormat         _PixelFormat;
+        GRIViewportStateRef _GRIViewport;
 	};
 }

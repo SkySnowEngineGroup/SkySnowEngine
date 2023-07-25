@@ -21,22 +21,22 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "OSPlatform.h"
 #include "GRIResourceCreateInfo.h"
+#include "GRIDrive.h"
 // render type interface for engine 
 namespace SkySnow
 {
     class GRIPipelineCache;
     //Globle var
-    extern OSPlatform*              _GOSPlatform;
     extern GRIDrive*                GRI;
     extern GRIPipelineCache*        _GPipelineCache;
     
     //RHI Init
-    void GRIInit(const OSPlatformInfo& osPlatformInfo);
+    void GRIInit();
     //RHI Exit
     void GRIExit();
- 
+    //Viewport Create
+    GRIViewportStateRef CreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen);
     //Create VS
     GRIVertexShaderRef CreateVertexShader(const char* vsCode);
     //Create Fs

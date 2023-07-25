@@ -59,11 +59,28 @@ namespace SkySnow
 	// render pipeline control
 	struct CmdBeginViewportCommand : public GRICommand<CmdBeginViewportCommand>
 	{
+		CmdBeginViewportCommand(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture)
+			: _ViewPort(viewPort)
+			, _RenderTexture(renderTexture)
+		{
+		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
+		GRIViewportStateRef	_ViewPort;
+		GRITexture2DRef		_RenderTexture;
 	};
 	struct CmdEndViewportCommand : public GRICommand<CmdEndViewportCommand>
 	{
+		CmdEndViewportCommand(GRIViewportStateRef& viewPort, bool present, bool lockToVsync)
+			: _ViewPort(viewPort)
+			, _Present(present)
+			, _LockToVsync(lockToVsync)
+		{
+
+		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
+		GRIViewportStateRef& _ViewPort;
+		bool _Present;
+		bool _LockToVsync;
 	};
 	//======================================================================================================================
 	// RenderResource Set 

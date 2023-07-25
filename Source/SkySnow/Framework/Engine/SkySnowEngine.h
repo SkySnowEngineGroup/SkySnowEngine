@@ -24,6 +24,8 @@
 #include "IEngine.h"
 #include "SkySnowProfiles.h"
 #include "LogAssert.h"
+#include "GRICommandBuffer.h"
+#include "GRI.h"
 
 namespace SkySnow
 {

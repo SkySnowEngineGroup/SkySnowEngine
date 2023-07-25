@@ -37,10 +37,8 @@ namespace SkySnow
         Context::Instance().RemoveSystem<RenderSystem>();
     }
 
-    void Framework::Init(OSPlatformInfo& osInfo)
+    void Framework::Init()
     {
-        //init gri
-        GRIInit(osInfo);
         //register rendersystem
         _RenderSystem = Context::Instance().RegisterSystem<RenderSystem>();
     }
@@ -61,6 +59,5 @@ namespace SkySnow
     void Framework::ShutDown()
     {
         _RenderSystem->ShutDown();
-        GRIExit();
     }
 }

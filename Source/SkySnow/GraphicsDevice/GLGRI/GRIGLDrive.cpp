@@ -28,49 +28,31 @@
 namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
-		: _GLContext(nullptr)
 	{
 	}
     GRIGLDrive::~GRIGLDrive()
     {
-        if(_GLContext)
-        {
-            delete  _GLContext;
-            _GLContext = nullptr;
-        }
+        
     }
     void GRIGLDrive::Init()
     {
-#if PLATFORM == PLATFORM_WINDOW
-        _GLContext = new GLContextWin();
-#elif PLATFORM == PLATFORM_IOS
-        _GLContext = new GLContextIos();
-#elif PLATFORM == PLATFORM_MAC
-        _GLContext = new GLContextMac();
-#elif PLATFORM == PLATFORM_ANDROID
-        _GLContext = new GLContextAndroid();
-#elif  PLATFORM == PLATFORM_LINUX
-//            _GLContext = new GLContextLinux();
-#endif
-        _GLContext->CreateGLContext();
-        OpenGL::InitialExtensions();
-		OGLTexture::InitTextureFormat();
     }
 
     void GRIGLDrive::Exit()
     {
-        _GLContext->DestroyGLContext();
     }
 
 	//GRIRenderPipe===========================================================================================================================
-	void GRIGLDrive::GRIBeginViewport()
+	void GRIGLDrive::GRIBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture)
 	{
 		//Swith glcontext
-		_GLContext->MakeCurrContext();
+		GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
+		((GLContext*)glVP->GetDeviceContext())->MakeCurrContext();
 	}
-	void GRIGLDrive::GRIEndViewport()
+	void GRIGLDrive::GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync)
 	{
-		_GLContext->SwapBuffer();
+		GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
+		((GLContext*)glVP->GetDeviceContext())->SwapBuffer();
 	}
 	//GRIRenderPipe===========================================================================================================================
 

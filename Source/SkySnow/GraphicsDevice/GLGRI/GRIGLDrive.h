@@ -34,6 +34,7 @@
 #endif
 
 #include "GLPipelineResource.h"
+#include "GLViewportResource.h"
 namespace SkySnow
 {
 	/*
@@ -53,8 +54,8 @@ namespace SkySnow
         
         virtual void Exit() final override;
 
-		virtual void GRIBeginViewport() final override;
-		virtual void GRIEndViewport() final override;
+		virtual void GRIBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture) final override;
+		virtual void GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync) final override;
         virtual GRIViewportStateRef GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen) final override;
 		//GRICreate=================================================================================================================================
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
@@ -138,6 +139,6 @@ namespace SkySnow
 		GLGraphicPipeline		    _PendingState;
 		//aleardly setup GraphicsPipeline state
 		GLGraphicPipeline   		_ExistingState;
-        GLContext*                  _GLContext;
+		std::vector<GRIViewportStateRef>	_Viewports;
 	};
 }

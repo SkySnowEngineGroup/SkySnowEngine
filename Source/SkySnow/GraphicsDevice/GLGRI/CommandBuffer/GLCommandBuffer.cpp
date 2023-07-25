@@ -65,14 +65,14 @@ namespace SkySnow
 
 	}
 
-	void GLRenderCommandBuffer::CmdBeginViewport()
+	void GLRenderCommandBuffer::CmdBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture)
 	{
-		Alloc_CommandSet(CmdBeginViewportCommand)();
+		Alloc_CommandSet(CmdBeginViewportCommand)(viewPort, renderTexture);
 	}
 
-	void GLRenderCommandBuffer::CmdEndViewport()
+	void GLRenderCommandBuffer::CmdEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync)
 	{
-		Alloc_CommandSet(CmdEndViewportCommand)();
+		Alloc_CommandSet(CmdEndViewportCommand)(viewPort, present, lockToVsync);
 	}
 
 	//ResourceSet====================================================================

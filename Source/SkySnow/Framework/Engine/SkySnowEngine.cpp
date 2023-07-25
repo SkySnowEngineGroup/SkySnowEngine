@@ -39,7 +39,7 @@ namespace SkySnow
     
     void SkySnowEngine::Init()
     {
-        
+        GRIInit();
     }
 
     void SkySnowEngine::ShutDown()
@@ -52,6 +52,7 @@ namespace SkySnow
         {
             _EditorWindow->ShutDown();
         }
+        GRIExit();
     }
     EngineWindow* SkySnowEngine::CreateGameWindow(uint32 width, uint32 height)
     {

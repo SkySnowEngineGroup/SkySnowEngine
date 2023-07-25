@@ -58,8 +58,8 @@ namespace SkySnow
     public:
         virtual ~GRIRenderCommandBuffer() {}
         //this interface will move blitcommandbuffer
-        virtual void CmdBeginViewport() = 0;
-        virtual void CmdEndViewport() = 0;
+        virtual void CmdBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture) = 0;
+        virtual void CmdEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync) = 0;
         //Set Buffer Handle
         virtual void CmdSetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset) = 0;
         virtual void CmdDrawPrimitive(int numPrimitive, int numInstance) = 0;

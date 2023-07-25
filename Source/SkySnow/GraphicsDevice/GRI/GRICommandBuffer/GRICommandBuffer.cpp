@@ -24,11 +24,6 @@
 #include "SkySnowProfiles.h"
 #include "GLCommandBuffer.h"
 #include "GLCreateCommandBuffer.h"
-#include "WindowOSPlatform.h"
-#include "AndroidOSPlatform.h"
-#include "IOSOSPlatform.h"
-#include "MacOSPlatform.h"
-#include "LinuxOSPlatform.h"
 #include "GRI.h"
 #include "RenderRunnable.h"
 
@@ -213,6 +208,11 @@ namespace SkySnow
 
     //GRI Globle Create Resource Interface
     //================================================================================================
+    //Create Viewport and Attach a Context or device
+    GRIViewportStateRef CreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
+    {
+        return GRI->GRICreateViewport(windowHandle, width, height, format, isFullScreen);
+    }
     GRIVertexShaderRef CreateVertexShader(const char* vsCode)
     {
         if (!_GQueue->IsLowerVerion())

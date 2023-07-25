@@ -20,38 +20,43 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "MacOSPlatform.h"
+#include "GRICreate.h"
 #include "GRIGLDrive.h"
 namespace SkySnow
 {
-    MacOSPlatform::MacOSPlatform()
-        : _GRI(nullptr)
-    {
-
-    }
-
-    MacOSPlatform::~MacOSPlatform()
-    {
-        if (_GRI)
-        {
-            delete _GRI;
-            _GRI = nullptr;
-        }
-    }
-
-    GRIDrive* MacOSPlatform::OSPlatformCreateGRI()
-    {
-        if (_GRI)
-        {
-            return _GRI;
-        }
-
-        //m_PlatformGRI = new VulkanPlatformGRI();//if config with json
-        //m_PlatformGRI = new MetalPlatformGRI();
-        //Windows platform can support OpenGL, Vulakn GRI
-#if GRI_PLATFORM == GRI_GL
-        _GRI = new GRIGLDrive();
+	GRIDrive* GRICreate::CreateTargetGRI()
+	{
+#if PLATFORM == PLATFORM_WINDOW
+        return WindowOSCreateGRI();
+#elif PLATFORM == PLATFORM_IOS
+        
+#elif PLATFORM == PLATFORM_MAC
+		return MacOSCreateGRI();
+#elif PLATFORM == PLATFORM_ANDROID
+        
+#elif  PLATFORM == PLATFORM_LINUX
+        
 #endif
-        return _GRI;
-    }
+	}
+
+	GRIDrive* GRICreate::WindowOSCreateGRI()
+	{
+		//can create OpenGL Vulkan,SkySnow plan not support DX 
+		//Windows platform can support OpenGL, Vulakn GRI
+#if GRI_PLATFORM == GRI_GL
+		return new GRIGLDrive();
+#elif GRI_PLATFORM == GRI_VULKAN
+
+#endif
+		return nullptr;
+	}
+	GRIDrive* GRICreate::MacOSCreateGRI()
+	{
+#if GRI_PLATFORM == GRI_GL
+		return new GRIGLDrive();
+#elif GRI_PLATFORM == GRI_METAL
+
+#endif
+		return nullptr;
+	}
 }

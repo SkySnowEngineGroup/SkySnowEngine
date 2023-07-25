@@ -29,20 +29,11 @@ namespace SkySnow
 	class GRIGLViewport : public GRIViewportState
 	{
 	public:
-		GRIGLViewport(void* inWindowHandle, void* inDeviceContext, uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true)
-			: GRIViewportState()
-            , _WindowHandle(inWindowHandle)
-            , _DeviceContext(inDeviceContext)
-            , _WindowWidth(inWidth)
-            , _WindowHeight(inHeight)
-            , _PixelFormat(inFormat)
-            , _IsFullScreen(inIsFullScreen)
-		{
-		}
+        GRIGLViewport(void* inWindowHandle, uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true);
         
         virtual void* GetDeviceContext() final override
         {
-            return _DeviceContext;
+            return _GLContext;
         }
 
         virtual void* GetWindowHandle() final override
@@ -64,7 +55,7 @@ namespace SkySnow
         virtual bool IsFullScreen() const { return _IsFullScreen; }
     private:
         void*           _WindowHandle;
-        void*           _DeviceContext;
+        GLContext*      _GLContext;
         GRITexture2DRef _BackTexture;
         uint32          _WindowWidth;
         uint32          _WindowHeight;

@@ -23,10 +23,36 @@
 #include "GLViewport.h"
 #include "GRIGLDrive.h"
 #include "GLViewportResource.h"
+#include "GLTexture.h"
 namespace SkySnow
 {
     GRIViewportStateRef GRIGLDrive::GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
     {
-        return new GRIGLViewport(windowHandle,nullptr,width,height,format,isFullScreen);
+        return new GRIGLViewport(windowHandle,width,height,format,isFullScreen);
+    }
+
+
+    GRIGLViewport::GRIGLViewport(void* inWindowHandle,uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true)
+        : GRIViewportState()
+        , _WindowHandle(inWindowHandle)
+        , _WindowWidth(inWidth)
+        , _WindowHeight(inHeight)
+        , _PixelFormat(inFormat)
+        , _IsFullScreen(inIsFullScreen)
+    {
+#if PLATFORM == PLATFORM_WINDOW
+        _GLContext = new GLContextWin();
+#elif PLATFORM == PLATFORM_IOS
+        _GLContext = new GLContextIos();
+#elif PLATFORM == PLATFORM_MAC
+        _GLContext = new GLContextMac();
+#elif PLATFORM == PLATFORM_ANDROID
+        _GLContext = new GLContextAndroid();
+#elif  PLATFORM == PLATFORM_LINUX
+        //            _GLContext = new GLContextLinux();
+#endif
+        _GLContext->CreateGLContext();
+        OpenGL::InitialExtensions();
+        OGLTexture::InitTextureFormat();
     }
 }

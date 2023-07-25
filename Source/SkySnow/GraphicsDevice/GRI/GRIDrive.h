@@ -51,8 +51,8 @@ namespace SkySnow
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		//about one viewport
 		virtual GRIViewportStateRef GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen) = 0;
-		virtual void GRIBeginViewport() = 0;
-		virtual void GRIEndViewport() = 0;
+		virtual void GRIBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture) = 0;
+		virtual void GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync) = 0;
 		//GRICreate=======================================================================================================================
 		//Create Vertex Shader
 		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) = 0;

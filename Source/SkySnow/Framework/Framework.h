@@ -33,7 +33,7 @@ namespace SkySnow
         Framework();
         ~Framework();
 
-        void Init(OSPlatformInfo& osInfo);
+        void Init();
 
         void MainUpdate();
         

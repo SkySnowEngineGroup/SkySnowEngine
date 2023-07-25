@@ -20,18 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "OSPlatform.h"
-#include "GRIDrive.h"
+#include "Viewport.h"
 namespace SkySnow
 {
-	class WindowOSPlatform : public OSPlatform
-	{
-	public:
-		WindowOSPlatform();
-		~WindowOSPlatform();
-		virtual GRIDrive* OSPlatformCreateGRI() override;
-	private:
-		GRIDrive*			_GRI;
-	};
+    Viewport::Viewport()
+        : _Width(0)
+        , _Height(0)
+        , _NativeWindow(nullptr)
+        , _PixelFormat(PF_R8G8B8A8)
+    {
+        
+    }
+    
+    Viewport::~Viewport()
+    {
+        
+    }
+
+    void Viewport::CreateEngineViewport(void* nativeWindow,uint32 width,uint32 height)
+    {
+        _Width = width;
+        _Height = height;
+        _NativeWindow = nativeWindow;
+        _GRIViewport = CreateViewport(nativeWindow,width,height,PF_R8G8B8A8,true);
+    }
 }
