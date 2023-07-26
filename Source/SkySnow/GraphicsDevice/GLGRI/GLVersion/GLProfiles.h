@@ -89,7 +89,7 @@ public:
     
     virtual ~GLContext(){};
     
-    virtual void CreateGLContext() = 0;
+    virtual void CreateGLContext(void* inNativeWindow) = 0;
     
     virtual void DestroyGLContext() = 0;
     

@@ -41,7 +41,7 @@ namespace SkySnow
         GLContextAndroid();
         ~GLContextAndroid();
         
-        virtual void CreateGLContext() override;
+        virtual void CreateGLContext(void* inNativeWindow) override;
         
         virtual void DestroyGLContext() override;
         

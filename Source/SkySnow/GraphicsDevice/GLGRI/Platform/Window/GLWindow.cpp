@@ -59,9 +59,9 @@ namespace SkySnow
 
 	}
 
-	void GLContextWin::CreateGLContext()
+	void GLContextWin::CreateGLContext(void* inNativeWindow)
 	{
-		_Hdc = GetDC((HWND)_GOSPlatformInfo->_NativeWindow);
+		_Hdc = GetDC((HWND)inNativeWindow);
 		HWND hwnd = CreateWindowA("STATIC", "", WS_POPUP | WS_DISABLED, -32000, -32000, 0, 0, NULL, NULL, GetModuleHandle(NULL), 0);
 		HDC hdc = GetDC(hwnd);
 

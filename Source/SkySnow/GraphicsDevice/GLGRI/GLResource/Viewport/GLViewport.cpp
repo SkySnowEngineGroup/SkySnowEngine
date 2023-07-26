@@ -32,7 +32,7 @@ namespace SkySnow
     }
 
 
-    GRIGLViewport::GRIGLViewport(void* inWindowHandle,uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true)
+    GRIGLViewport::GRIGLViewport(void* inWindowHandle,uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen)
         : GRIViewportState()
         , _WindowHandle(inWindowHandle)
         , _WindowWidth(inWidth)
@@ -51,7 +51,7 @@ namespace SkySnow
 #elif  PLATFORM == PLATFORM_LINUX
         //            _GLContext = new GLContextLinux();
 #endif
-        _GLContext->CreateGLContext();
+        _GLContext->CreateGLContext(inWindowHandle);
         OpenGL::InitialExtensions();
         OGLTexture::InitTextureFormat();
     }

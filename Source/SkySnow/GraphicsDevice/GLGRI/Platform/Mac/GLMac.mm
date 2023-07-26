@@ -25,7 +25,6 @@
 #include <dlfcn.h>
 #include <AvailabilityMacros.h>
 #include <Cocoa/Cocoa.h>
-#include "OSPlatform.h"
 namespace SkySnow
 {
     void GLMac::ImportAPIEntryPointer()
@@ -42,9 +41,9 @@ namespace SkySnow
     {
     }
 
-    void GLContextMac::CreateGLContext()
+    void GLContextMac::CreateGLContext(void* inNativeWindow)
     {
-        NSObject* nativeWindow = (NSObject*)_GOSPlatformInfo->_NativeWindow;
+        NSObject* nativeWindow = (NSObject*)inNativeWindow;
         NSWindow* nsWindow = nil;
         NSView* contentView = nil;
         if ([nativeWindow isKindOfClass:[NSView class]])

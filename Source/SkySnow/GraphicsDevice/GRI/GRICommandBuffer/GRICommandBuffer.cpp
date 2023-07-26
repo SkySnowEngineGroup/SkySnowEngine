@@ -179,7 +179,7 @@ namespace SkySnow
     {
         //TestCode Single MainThread Render Capacity
         //TestCode == Resource Create At Lower Api Version
-        GRI->GRIBeginViewport();
+//        GRI->GRIBeginViewport();
         _LowerComBuf->ResourceCreateExecutor();
         //TestCode == Resource Set At Lower Api Version,At Height Api Version Use Self CommandBuffer
         for (int i = 0; i < _ComBufList.size(); i ++)

@@ -20,36 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-//IOS支持的Api是GLES3.0,GLES3.0以下不支持
-#pragma once
-#include "GLES.h"
-#if PLATFORM == PLATFORM_IOS
+#include "GameInstance.h"
 
 namespace SkySnow
 {
-	class GLESIos : public GLES
-	{
-	public:
-		static inline GRIFeature GetFeatureType()
-		{
-			return EGLES;
-		}
-	};
-    class GLContextIos : public GLContext
+    GameInstance::GameInstance()
     {
-    public:
-        GLContextIos();
-        ~GLContextIos();
         
-        virtual void CreateGLContext(void* inNativeWindow) override;
+    }
+    GameInstance::~GameInstance()
+    {
         
-        virtual void DestroyGLContext() override;
-        
-        virtual void MakeCurrContext() override;
-    private:
-        
-    };
+    }
 }
-typedef SkySnow::GLESIos OpenGL;
-
-#endif

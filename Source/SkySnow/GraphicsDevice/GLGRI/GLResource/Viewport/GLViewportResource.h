@@ -46,13 +46,25 @@ namespace SkySnow
             return _BackTexture;
         }
         
-        virtual PixelFormat GetWindowPixelFormat() const { return _PixelFormat;}
+        virtual PixelFormat GetWindowPixelFormat() const override
+        {
+            return _PixelFormat;
+        }
 
-        virtual uint32 GetWindowWidth() const { return _WindowWidth;}
+        virtual uint32 GetWindowWidth() const override
+        {
+            return _WindowWidth;
+        }
 
-        virtual uint32 GetWindowHeight() const { return _WindowHeight;}
+        virtual uint32 GetWindowHeight() const override
+        {
+            return _WindowHeight;
+        }
 
-        virtual bool IsFullScreen() const { return _IsFullScreen; }
+        virtual bool IsFullScreen() const override
+        {
+            return _IsFullScreen;
+        }
     private:
         void*           _WindowHandle;
         GLContext*      _GLContext;
