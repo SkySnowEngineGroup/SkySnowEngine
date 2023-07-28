@@ -70,33 +70,65 @@
 #endif // 0
 
 
-//glContext state
-enum class GLContextState
+//About GL Platform Info
+namespace SkySnow
 {
-    NoUse,
-    MainContext,
-    ShareContext,
-    RenderingContext
-};
+    //glContext state
+    enum class DriveContextState
+    {
+        NoUse,
+        MainContext,
+        ShareContext,
+        RenderingContext
+    };
+    class DrivePlatform;
+    //About OS Platform Device:Example Window for Window(OSWindow) 
+    //                         for window(WindowHandle) for Android(NativeWindow)
+    //About OS Platform Context:Example GLContext
+    class DriveContext
+    {
+    public:
+        DriveContext() {};
 
-//About OS Platform Device:Example Window for Window(OSWindow) 
-//                         for window(WindowHandle) for Android(NativeWindow)
-//About OS Platform Context:Example GLContext
-class GLContext
-{
-public:
-    GLContext(){};
-    
-    virtual ~GLContext(){};
-    
-    virtual void CreateGLContext(void* inNativeWindow) = 0;
-    
-    virtual void DestroyGLContext() = 0;
-    
-    virtual void MakeCurrContext() = 0;
+        virtual ~DriveContext() {};
 
-    virtual void SwapBuffer() = 0;
-    
-};
+        virtual void CreateDummyWindow() {};
 
+        virtual void CreateGLContext(void* inNativeWindow) {};
+
+        virtual void DestroyGLContext() {};
+
+        virtual void MakeCurrContext() {};
+
+        virtual void SwapBuffer() {};
+    };
+
+    class DrivePlatform
+    {
+    public:
+        DrivePlatform();
+
+        ~DrivePlatform();
+
+        DriveContextState GetDriveContextState();
+
+        DriveContext* GetRenderContext()
+        {
+            return _RenderContext;
+        }
+
+        DriveContext* GetMainContext()
+        {
+            return _MainContext;
+        }
+    private:
+        void DriveInit();
+
+        void CreateDriveContext();
+    private:
+        DriveContext* _MainContext = nullptr;
+        DriveContext* _RenderContext = nullptr;
+        bool          _SupportOpenGL = false;
+    };
+}
 

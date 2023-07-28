@@ -29,10 +29,18 @@ namespace SkySnow
 {
 	GRIGLDrive::GRIGLDrive()
 	{
+		if (!_DrivePlatform)
+		{
+			_DrivePlatform = new DrivePlatform();
+		}
 	}
     GRIGLDrive::~GRIGLDrive()
     {
-        
+		if (_DrivePlatform)
+		{
+			delete _DrivePlatform;
+			_DrivePlatform = nullptr;
+		}
     }
     void GRIGLDrive::Init()
     {
@@ -47,12 +55,12 @@ namespace SkySnow
 	{
 		//Swith glcontext
 		GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
-		((GLContext*)glVP->GetDeviceContext())->MakeCurrContext();
+		((DriveContext*)glVP->GetDriveContext())->MakeCurrContext();
 	}
 	void GRIGLDrive::GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync)
 	{
 		GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
-		((GLContext*)glVP->GetDeviceContext())->SwapBuffer();
+		((DriveContext*)glVP->GetDriveContext())->SwapBuffer();
 	}
 	//GRIRenderPipe===========================================================================================================================
 

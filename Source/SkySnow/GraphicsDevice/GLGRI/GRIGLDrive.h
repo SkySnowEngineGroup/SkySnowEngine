@@ -136,9 +136,10 @@ namespace SkySnow
         void BindTextureForDraw(GLGraphicPipeline& contextState);
 	private:
 		//this drawcall setup GraphicsPipeline state
-		GLGraphicPipeline		    _PendingState;
+		GLGraphicPipeline					_PendingState;
 		//aleardly setup GraphicsPipeline state
-		GLGraphicPipeline   		_ExistingState;
+		GLGraphicPipeline   				_ExistingState;
 		std::vector<GRIViewportStateRef>	_Viewports;
+		DrivePlatform*						_DrivePlatform = nullptr;
 	};
 }

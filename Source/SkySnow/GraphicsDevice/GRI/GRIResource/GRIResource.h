@@ -550,7 +550,7 @@ namespace SkySnow
             SN_LOG("GRIViewport DesConstruct.");
         }
 
-        virtual void* GetDeviceContext() = 0;
+        virtual void* GetDriveContext() = 0;
 
         virtual void* GetWindowHandle() = 0;
 

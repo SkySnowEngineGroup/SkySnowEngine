@@ -31,9 +31,9 @@ namespace SkySnow
 	public:
         GRIGLViewport(void* inWindowHandle, uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true);
         
-        virtual void* GetDeviceContext() final override
+        virtual void* GetDriveContext() final override
         {
-            return _GLContext;
+            return _DriveContext;
         }
 
         virtual void* GetWindowHandle() final override
@@ -67,7 +67,7 @@ namespace SkySnow
         }
     private:
         void*           _WindowHandle;
-        GLContext*      _GLContext;
+        DriveContext*   _DriveContext;
         GRITexture2DRef _BackTexture;
         uint32          _WindowWidth;
         uint32          _WindowHeight;

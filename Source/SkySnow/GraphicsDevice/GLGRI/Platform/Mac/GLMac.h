@@ -23,7 +23,7 @@
 #pragma once
 #include "GL3.h"
 #include "LogAssert.h"
-#if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
+#if PLATFORM == PLATFORM_MAC
 //MacOS use System GLFunction and use low GL4.x
 namespace SkySnow
 {
@@ -45,11 +45,11 @@ namespace SkySnow
 
 	};
     //maxosx not export opengl function
-    class GLContextMac : public GLContext
+    class DriveContextMac : public DriveContext
     {
     public:
-        GLContextMac();
-        ~GLContextMac();
+        DriveContextMac();
+        ~DriveContextMac();
         
         virtual void CreateGLContext(void* inNativeWindow) override;
         

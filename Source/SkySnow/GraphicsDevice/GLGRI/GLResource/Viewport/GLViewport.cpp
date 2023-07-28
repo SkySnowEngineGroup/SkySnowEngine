@@ -41,17 +41,17 @@ namespace SkySnow
         , _IsFullScreen(inIsFullScreen)
     {
 #if PLATFORM == PLATFORM_WINDOW
-        _GLContext = new GLContextWin();
+        _DriveContext = new DriveContextWin();
 #elif PLATFORM == PLATFORM_IOS
-        _GLContext = new GLContextIos();
+        _DriveContext = new DriveContextIos();
 #elif PLATFORM == PLATFORM_MAC
-        _GLContext = new GLContextMac();
+        _DriveContext = new DriveContextMac();
 #elif PLATFORM == PLATFORM_ANDROID
-        _GLContext = new GLContextAndroid();
+        _DriveContext = new DriveContextAndroid();
 #elif  PLATFORM == PLATFORM_LINUX
-        //            _GLContext = new GLContextLinux();
+//      _DriveContext = new DriveContextLinux();
 #endif
-        _GLContext->CreateGLContext(inWindowHandle);
+        _DriveContext->CreateGLContext(inWindowHandle);
         OpenGL::InitialExtensions();
         OGLTexture::InitTextureFormat();
     }

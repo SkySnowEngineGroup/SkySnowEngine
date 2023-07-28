@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "GLMac.h"
-#if PLATFORM == PLATFORM_MAC || PLATFORM == PLATFORM_LINUX
+#if PLATFORM == PLATFORM_MAC
 #include <dlfcn.h>
 #include <AvailabilityMacros.h>
 #include <Cocoa/Cocoa.h>
@@ -31,17 +31,17 @@ namespace SkySnow
     {
     }
     //=GLContext-Start======================================================================================================================
-    GLContextMac::GLContextMac()
+    DriveContextMac::DriveContextMac()
         : _VertexArrayObject(-1)
         , _GLContextState(GLContextState::NoUse)
     {
         
     }
-    GLContextMac::~GLContextMac()
+    DriveContextMac::~DriveContextMac()
     {
     }
 
-    void GLContextMac::CreateGLContext(void* inNativeWindow)
+    void DriveContextMac::CreateGLContext(void* inNativeWindow)
     {
         NSObject* nativeWindow = (NSObject*)inNativeWindow;
         NSWindow* nsWindow = nil;
@@ -100,7 +100,7 @@ namespace SkySnow
         glBindVertexArray(_VertexArrayObject);
     }
 
-    void GLContextMac::DestroyGLContext()
+    void DriveContextMac::DestroyGLContext()
     {
         if(_VertexArrayObject != -1)
         {
@@ -117,7 +117,7 @@ namespace SkySnow
         }
     }
     //todo:The context can only be rebound to the rendering thread when you switch screens
-    void GLContextMac::MakeCurrContext()
+    void DriveContextMac::MakeCurrContext()
     {
         if(_GLContextState == GLContextState::NoUse)
         {
@@ -128,7 +128,7 @@ namespace SkySnow
     }
     //Each frame is called to exchange the rendered off-screen data to the up-screen data
     //to display the rendering of the corresponding window
-    void GLContextMac::SwapBuffer()
+    void DriveContextMac::SwapBuffer()
     {
         NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
         [glContext flushBuffer];

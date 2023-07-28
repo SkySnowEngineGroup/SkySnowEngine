@@ -54,11 +54,13 @@ namespace SkySnow
 		}
 	};
 
-    class GLContextWin : public GLContext
+    class DriveContextWin : public DriveContext
     {
     public:
-        GLContextWin();
-        ~GLContextWin();
+		DriveContextWin();
+        ~DriveContextWin();
+
+		virtual void CreateDummyWindow() override;
         
         virtual void CreateGLContext(void* inNativeWindow) override;
         
@@ -71,7 +73,7 @@ namespace SkySnow
 		void ProcAddressInit();
 		HGLRC CreateGLContextInternal(HDC hdc);
 	private:
-        GLContextState          _ContextState;
+		DriveContextState       _ContextState;
         GLuint					_VertexArrayObject;
 		void*					_OpenGL32Dll;
 		HDC						_Hdc;

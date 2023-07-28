@@ -35,11 +35,11 @@ namespace SkySnow
 			return EGLES;
 		}
 	};
-    class GLContextIos : public GLContext
+    class DriveContextIos : public DriveContext
     {
     public:
-        GLContextIos();
-        ~GLContextIos();
+        DriveContextIos();
+        ~DriveContextIos();
         
         virtual void CreateGLContext(void* inNativeWindow) override;
         

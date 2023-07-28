@@ -30,8 +30,6 @@
         GL_APIENTRYPOINTS_OPTIONAL(DEFINE_APIENTRY_POINTER);
 #undef DEFINE_APIENTRY_POINTER
 
-
-
 namespace SkySnow
 {
 	PFNWGLGETPROCADDRESSPROC wglGetProcAddress = NULL;
@@ -43,23 +41,23 @@ namespace SkySnow
 	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB = NULL;
 	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = NULL;
 
-	GLContextWin::GLContextWin()
+	DriveContextWin::DriveContextWin()
 		: _VertexArrayObject(-1)
         , _OpenGL32Dll(NULL)
 		, _Hdc(NULL)
 		, _HWND(NULL)
 		, _PixelFormat(0)
 		, _Context(NULL)
-        , _ContextState(GLContextState::NoUse)
+        , _ContextState(DriveContextState::NoUse)
 	{
 
 	}
-	GLContextWin::~GLContextWin()
+	DriveContextWin::~DriveContextWin()
 	{
 
 	}
 
-	void GLContextWin::CreateGLContext(void* inNativeWindow)
+	void DriveContextWin::CreateGLContext(void* inNativeWindow)
 	{
 		_Hdc = GetDC((HWND)inNativeWindow);
 		HWND hwnd = CreateWindowA("STATIC", "", WS_POPUP | WS_DISABLED, -32000, -32000, 0, 0, NULL, NULL, GetModuleHandle(NULL), 0);
@@ -147,7 +145,7 @@ namespace SkySnow
 		wglMakeCurrent(NULL, NULL);
 	}
 
-	void GLContextWin::DestroyGLContext()
+	void DriveContextWin::DestroyGLContext()
 	{
         if(_OpenGL32Dll)
         {
@@ -162,23 +160,23 @@ namespace SkySnow
         ReleaseDC((HWND)_GOSPlatformInfo->_NativeWindow, _Hdc);
 	}
 
-	void GLContextWin::MakeCurrContext()
+	void DriveContextWin::MakeCurrContext()
 	{
-        if(_ContextState == GLContextState::NoUse)
+        if(_ContextState == DriveContextState::NoUse)
         {
             wglMakeCurrent(_Hdc, _Context);
             glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-			_ContextState = GLContextState::RenderingContext;
+			_ContextState = DriveContextState::RenderingContext;
         }
 	}
 
-	void GLContextWin::SwapBuffer()
+	void DriveContextWin::SwapBuffer()
 	{
 		SwapBuffers(_Hdc);
 	}
 
-	HGLRC GLContextWin::CreateGLContextInternal(HDC hdc)
+	HGLRC DriveContextWin::CreateGLContextInternal(HDC hdc)
 	{
 		PIXELFORMATDESCRIPTOR pfd;
 		pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -199,7 +197,7 @@ namespace SkySnow
 		result = wglMakeCurrent(hdc, context);
 		return context;
 	}
-	void GLContextWin::ProcAddressInit()
+	void DriveContextWin::ProcAddressInit()
 	{
 		if (_OpenGL32Dll)
 		{
@@ -222,6 +220,129 @@ namespace SkySnow
 		{
 			SN_ERR("Failed To Open opengl32.dll.\n");
 		}
+	}
+
+	DrivePlatform::DrivePlatform()
+		: _MainContext(nullptr)
+		, _RenderContext(nullptr)
+	{
+		DriveInit();
+		CreateDriveContext();
+	}
+
+	DrivePlatform::~DrivePlatform()
+	{
+
+	}
+	//Import Opengl32.dll and import function address
+	void DrivePlatform::DriveInit()
+	{
+		#pragma warning(push)
+		#pragma warning(disable:4191)
+		HWND hwnd = CreateWindowA("STATIC", "", WS_POPUP | WS_DISABLED, -32000, -32000, 0, 0, NULL, NULL, GetModuleHandle(NULL), 0);
+		HDC hdc = GetDC(hwnd);
+
+		void*  gl32Dll = (void*)::LoadLibraryA("opengl32.dll");
+		wglGetProcAddress = (PFNWGLGETPROCADDRESSPROC)::GetProcAddress((HMODULE)gl32Dll, "wglGetProcAddress");
+		wglMakeCurrent = (PFNWGLMAKECURRENTPROC)::GetProcAddress((HMODULE)gl32Dll, "wglMakeCurrent");
+		wglCreateContext = (PFNWGLCREATECONTEXTPROC)::GetProcAddress((HMODULE)gl32Dll, "wglCreateContext");
+		wglDeleteContext = (PFNWGLDELETECONTEXTPROC)::GetProcAddress((HMODULE)gl32Dll, "wglDeleteContext");
+
+		PIXELFORMATDESCRIPTOR pfd;
+		pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
+		pfd.nVersion = 1;
+		pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
+		pfd.iPixelType = PFD_TYPE_RGBA;
+		pfd.cColorBits = 32;
+		pfd.cAlphaBits = 8;
+		pfd.cDepthBits = 24;
+		pfd.cStencilBits = 8;
+		pfd.iLayerType = PFD_MAIN_PLANE;
+		int pixelFormat = ChoosePixelFormat(hdc, &pfd);
+		DescribePixelFormat(hdc, pixelFormat, sizeof(PIXELFORMATDESCRIPTOR), &pfd);
+		int result;
+		result = SetPixelFormat(hdc, pixelFormat, &pfd);
+		HGLRC context = wglCreateContext(hdc);
+		//Note In the windowOS, unbind the bound thread before binding glcontext to a new thread
+		result = wglMakeCurrent(hdc, context);
+
+		wglGetExtensionsStringARB = (PFNWGLGETEXTENSIONSSTRINGARBPROC)wglGetProcAddress("wglGetExtensionsStringARB");
+		wglChoosePixelFormatARB = (PFNWGLCHOOSEPIXELFORMATARBPROC)wglGetProcAddress("wglChoosePixelFormatARB");
+		wglCreateContextAttribsARB = (PFNWGLCREATECONTEXTATTRIBSARBPROC)wglGetProcAddress("wglCreateContextAttribsARB");
+		wglSwapIntervalEXT = (PFNWGLSWAPINTERVALEXTPROC)wglGetProcAddress("wglSwapIntervalEXT");
+
+		if (wglCreateContextAttribsARB)
+		{
+			wglMakeCurrent(nullptr, nullptr);
+			wglDeleteContext(context);
+
+			int majorVersion = 4;
+			int minorVersion = 3;
+			int attribList[] =
+			{
+				WGL_CONTEXT_MAJOR_VERSION_ARB, majorVersion,
+				WGL_CONTEXT_MINOR_VERSION_ARB, minorVersion,
+				WGL_CONTEXT_FLAGS_ARB, WGL_CONTEXT_FORWARD_COMPATIBLE_BIT_ARB | WGL_CONTEXT_DEBUG_BIT_ARB,
+				WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+				0
+			};
+			context = wglCreateContextAttribsARB(hdc, nullptr, attribList);
+			if (context)
+			{
+				_SupportOpenGL = true;
+				wglMakeCurrent(hdc, context);
+			}
+			else
+			{
+				SN_ERR("OpenGL %d.%d not supported by driver", majorVersion, minorVersion);
+			}
+		}
+		if (_SupportOpenGL)
+		{
+			if (!gl32Dll)
+			{
+				SN_ERR("Failed To Open opengl32.dll.\n");
+			}
+			if (gl32Dll)
+			{
+				//必须通过opengl32的dll地址获取函数指针
+				#define GET_WGLAPIENTRY_POINTER_DLL(WglFunType,WglFun) WglFun = (WglFunType)::GetProcAddress((HMODULE)gl32Dll, #WglFun);
+						GL_APIENTRYPOINTER_DLL(GET_WGLAPIENTRY_POINTER_DLL);
+
+				//可以通过wgl获取函数指针
+				#define GET_APIENTRY_POINTER(FunType,Fun) Fun = (FunType)wglGetProcAddress(#Fun);
+						GL_APIENTRYPOINTER(GET_APIENTRY_POINTER);
+						GL_APIENTRYPOINTS_OPTIONAL(GET_APIENTRY_POINTER);
+
+				//检索gl函数指针是否都已经初始化完毕
+				#define CHECK_GLAPIENTRYPOINTS(FunType,Fun) if(Fun == NULL){SN_WARN("Failed to find entry point for %s",#Fun);}
+						GL_APIENTRYPOINTER_DLL(CHECK_GLAPIENTRYPOINTS);
+						GL_APIENTRYPOINTER(CHECK_GLAPIENTRYPOINTS);
+						GL_APIENTRYPOINTS_OPTIONAL(CHECK_GLAPIENTRYPOINTS);
+
+				::FreeLibrary((HMODULE)gl32Dll);
+			}
+		}
+		#pragma warning(pop)
+		if (context)
+		{
+			wglMakeCurrent(hdc, context);
+			wglDeleteContext(context);
+		}
+
+		ReleaseDC(hwnd, hdc);
+		DestroyWindow(hwnd);
+	}
+
+	void DrivePlatform::CreateDriveContext()
+	{
+
+	}
+
+	DriveContextState DrivePlatform::GetDriveContextState()
+	{
+		HGLRC glContext = wglGetCurrentContext();
+
 	}
 }
 #endif
