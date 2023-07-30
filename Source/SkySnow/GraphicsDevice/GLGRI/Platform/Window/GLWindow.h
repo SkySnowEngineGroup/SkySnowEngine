@@ -27,6 +27,15 @@
 #if PLATFORM == PLATFORM_WINDOW
 namespace SkySnow
 {
+	//Initial PixelFormat
+	static void InitPixelFormatForDrive(HDC hdc);
+
+	static void ProcAddressInit(void* gl32Dll);
+
+	static bool CreateGLContextCore(HGLRC& driveContext, HDC hdc, int majorVersion, int minorVersion, HGLRC shareContext);
+
+	static void CreateDummyWindow(HWND& hwnd, HDC& hdc);
+
 	class GLWindow : public OpenGL4
 	{
 	public:
@@ -57,30 +66,23 @@ namespace SkySnow
     class DriveContextWin : public DriveContext
     {
     public:
-		DriveContextWin();
+		friend class DrivePlatform;
+		DriveContextWin(bool isExtern = true);
         ~DriveContextWin();
-
-		virtual void CreateDummyWindow() override;
         
-        virtual void CreateGLContext(void* inNativeWindow) override;
-        
-        virtual void DestroyGLContext() override;
+        virtual void ReleaseContext() override;
         
         virtual void MakeCurrContext() override;
 
 		virtual void SwapBuffer() override;
-    private:
-		void ProcAddressInit();
-		HGLRC CreateGLContextInternal(HDC hdc);
 	private:
-		DriveContextState       _ContextState;
+		bool					_IsExtern = true;
+		int						_PixelFormat;
         GLuint					_VertexArrayObject;
-		void*					_OpenGL32Dll;
+		GLuint					_FrameBufferObject;
 		HDC						_Hdc;
         HWND					_HWND;
-		int						_PixelFormat;
-		PIXELFORMATDESCRIPTOR	_Pfd;
-		HGLRC					_Context;
+		HGLRC					_GLContext;
     };
 }
 typedef SkySnow::GLWindow OpenGL;

@@ -25,7 +25,7 @@
 #include "SkySnowProfiles.h"
 #include "GRI.h"
 #include "SkySnowEngine.h"
-
+#include "Context.h"
 namespace SkySnow
 {
 	Application::Application(const char* name, const char* description,uint32_t width, uint32_t height)
@@ -54,16 +54,18 @@ namespace SkySnow
     void Application::RunAppInternal()
     {
         _SkySnowEngine = new SkySnowEngine();
+        Context::Instance().RegisterSkySnowEngine((SkySnowEngine*)_SkySnowEngine);
         //Create Engine Framework
         _Framework = new Framework();
         //开启初始化操作
+        _SkySnowEngine->Init();
         //Create Window
         _GameWindow = _SkySnowEngine->CreateGameWindow(_Width, _Height);
         if (_EngineUsagType == Editor)
         {
             _EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
         }
-        _SkySnowEngine->Init();
+        
         _Framework->Init();
         //Child App Init
         Init();

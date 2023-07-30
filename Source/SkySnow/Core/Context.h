@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once
 #include "NonCopyable.h"
+#include "SkySnowEngine.h"
 #include "ISystem.h"
 #include <vector>
 namespace SkySnow
@@ -37,6 +38,14 @@ namespace SkySnow
         
         void RemoveSceneRenderer();
 
+        void RegisterSkySnowEngine(SkySnowEngine* engine)
+        {
+            _SkySnowEngine = engine;
+        }
+        SkySnowEngine* GetSkySnowEngine() const
+        {
+            return _SkySnowEngine;
+        }
         template<typename T> T* RegisterSystem();
 
         template<typename T> T* GetSystem();
@@ -48,6 +57,7 @@ namespace SkySnow
     private:
         SceneRenderer*          _SceneRenderer;
         std::vector<ISystem*>   _Systems;
+        SkySnowEngine*          _SkySnowEngine;
     };
 
     template<typename T> inline T* Context::RegisterSystem()

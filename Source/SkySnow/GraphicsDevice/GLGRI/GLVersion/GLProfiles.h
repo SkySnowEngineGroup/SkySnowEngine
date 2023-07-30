@@ -74,14 +74,14 @@
 namespace SkySnow
 {
     //glContext state
-    enum class DriveContextState
+    enum DriveContextState
     {
         NoUse,
         MainContext,
         ShareContext,
-        RenderingContext
+        RenderingContext,
+        OtherContext
     };
-    class DrivePlatform;
     //About OS Platform Device:Example Window for Window(OSWindow) 
     //                         for window(WindowHandle) for Android(NativeWindow)
     //About OS Platform Context:Example GLContext
@@ -92,11 +92,7 @@ namespace SkySnow
 
         virtual ~DriveContext() {};
 
-        virtual void CreateDummyWindow() {};
-
-        virtual void CreateGLContext(void* inNativeWindow) {};
-
-        virtual void DestroyGLContext() {};
+        virtual void ReleaseContext() {};
 
         virtual void MakeCurrContext() {};
 
@@ -121,6 +117,8 @@ namespace SkySnow
         {
             return _MainContext;
         }
+
+        DriveContext* CreateGLContextCoreFromViewport(void* windowHandle);
     private:
         void DriveInit();
 
@@ -129,6 +127,8 @@ namespace SkySnow
         DriveContext* _MainContext = nullptr;
         DriveContext* _RenderContext = nullptr;
         bool          _SupportOpenGL = false;
+        int           _MajorVersion = 4;
+        int           _MinorVersion = 3;
     };
 }
 

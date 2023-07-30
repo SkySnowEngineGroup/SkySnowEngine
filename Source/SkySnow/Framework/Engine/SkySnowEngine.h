@@ -41,6 +41,19 @@ namespace SkySnow
         virtual EngineWindow* CreateGameWindow(uint32 width, uint32 height) final override;
         
         virtual EngineWindow* CreateEditorWindow(uint32 width, uint32 height) final override;
+
+        EngineWindow* GetEngineWindow(EngineWindowType windowType) const
+        {
+            if (windowType == EGameWindow)
+            {
+                return _GameWindow;
+            }
+            else if(windowType == EEditorMainWindow)
+            {
+                return _EditorWindow;
+            }
+            return nullptr;
+        }
         
         void ShutDown() final override;
 

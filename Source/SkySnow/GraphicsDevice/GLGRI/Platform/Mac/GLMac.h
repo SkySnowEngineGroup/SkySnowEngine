@@ -48,12 +48,13 @@ namespace SkySnow
     class DriveContextMac : public DriveContext
     {
     public:
+        friend class DrivePlatform;
         DriveContextMac();
         ~DriveContextMac();
         
         virtual void CreateGLContext(void* inNativeWindow) override;
         
-        virtual void DestroyGLContext() override;
+        virtual void ReleaseContext() override;
         
         virtual void MakeCurrContext() override;
         

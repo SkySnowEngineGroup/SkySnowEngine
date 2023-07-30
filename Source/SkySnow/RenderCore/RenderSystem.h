@@ -53,7 +53,7 @@ namespace SkySnow
         GRIVertexDescriptorRef      _VertexDescriptor;
         GRIPipelineShaderRef        _PipelineShaderRef;
         GRIGraphicsPipelineRef      _PSORef;
-        GRICommandBufferPool*       _CMBPool;
+        GRICommandBufferPool*       _CMBPool = nullptr;
         GRIUniformBufferRef         _UBO_Md;
         GRIUniformBufferRef         _UBO_Sd;
         GRIUniformBufferDescriptorRef _UBODesc;

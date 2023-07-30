@@ -28,31 +28,49 @@ namespace SkySnow
 {
     GRIViewportStateRef GRIGLDrive::GRICreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
     {
-        return new GRIGLViewport(windowHandle,width,height,format,isFullScreen);
+        GRIGLViewport* viewport = new GRIGLViewport(_DrivePlatform,windowHandle, width, height, format, isFullScreen);
+        _Viewports.push_back(viewport);
+        return viewport;
     }
 
+    void GRIGLDrive::GRIBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture)
+    {
+        //Swith glcontext
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
+        GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
+        ((DriveContext*)glVP->GetDriveContext())->MakeCurrContext();
+    }
 
-    GRIGLViewport::GRIGLViewport(void* inWindowHandle,uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen)
+    void GRIGLDrive::GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync)
+    {
+        GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
+        
+        ((DriveContext*)glVP->GetDriveContext())->SwapBuffer();
+    }
+
+    GRIGLViewport::GRIGLViewport(DrivePlatform* drivePlatform,void* inWindowHandle,uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen)
         : GRIViewportState()
+        , _DrivePlatform(drivePlatform)
         , _WindowHandle(inWindowHandle)
         , _WindowWidth(inWidth)
         , _WindowHeight(inHeight)
         , _PixelFormat(inFormat)
         , _IsFullScreen(inIsFullScreen)
     {
-#if PLATFORM == PLATFORM_WINDOW
-        _DriveContext = new DriveContextWin();
-#elif PLATFORM == PLATFORM_IOS
-        _DriveContext = new DriveContextIos();
-#elif PLATFORM == PLATFORM_MAC
-        _DriveContext = new DriveContextMac();
-#elif PLATFORM == PLATFORM_ANDROID
-        _DriveContext = new DriveContextAndroid();
-#elif  PLATFORM == PLATFORM_LINUX
-//      _DriveContext = new DriveContextLinux();
-#endif
-        _DriveContext->CreateGLContext(inWindowHandle);
-        OpenGL::InitialExtensions();
-        OGLTexture::InitTextureFormat();
+        _DriveContext = _DrivePlatform->CreateGLContextCoreFromViewport(_WindowHandle);
+    }
+
+    GRIGLViewport::~GRIGLViewport()
+    {
+        if (_DriveContext)
+        {
+            _DriveContext->ReleaseContext();
+            delete _DriveContext;
+            _DriveContext = nullptr;
+        }
+    }
+    namespace OGLViewport
+    {
     }
 }

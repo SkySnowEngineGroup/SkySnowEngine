@@ -100,7 +100,7 @@ namespace SkySnow
         glBindVertexArray(_VertexArrayObject);
     }
 
-    void DriveContextMac::DestroyGLContext()
+    void DriveContextMac::ReleaseContext()
     {
         if(_VertexArrayObject != -1)
         {

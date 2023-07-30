@@ -29,7 +29,9 @@ namespace SkySnow
 	class GRIGLViewport : public GRIViewportState
 	{
 	public:
-        GRIGLViewport(void* inWindowHandle, uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true);
+        GRIGLViewport(DrivePlatform* drivePlatform,void* inWindowHandle, uint32 inWidth, uint32 inHeight, PixelFormat inFormat, bool inIsFullScreen = true);
+
+        ~GRIGLViewport();
         
         virtual void* GetDriveContext() final override
         {
@@ -73,5 +75,6 @@ namespace SkySnow
         uint32          _WindowHeight;
         PixelFormat     _PixelFormat;
         bool            _IsFullScreen;
+        DrivePlatform*  _DrivePlatform;
 	};
 }

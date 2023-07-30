@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "Viewport.h"
+#include "Context.h"
 namespace SkySnow
 {
     Viewport::Viewport()

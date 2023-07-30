@@ -24,5 +24,7 @@
 
 namespace SkySnow
 {
-
+	namespace OGLViewport
+	{
+	}
 }

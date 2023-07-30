@@ -36,7 +36,7 @@ namespace SkySnow
         _OSWindow = new GLFWWindow();
         _OSWindow->CreateOSWindow(width, height, shareWindow ? shareWindow->GetOSWindow() : nullptr);
         _Viewport = new Viewport();
-        _Viewport->CreateEngineViewport(shareWindow ? shareWindow->GetOSWindow()->GetNativeWindow(): nullptr, width, height);
+        _Viewport->CreateEngineViewport(_OSWindow->GetNativeWindow(), width, height);
     }
 
     void EngineWindow::ShutDown()

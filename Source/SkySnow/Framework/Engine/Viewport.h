@@ -34,6 +34,7 @@ namespace SkySnow
         
         void CreateEngineViewport(void* nativeWindow,uint32 width,uint32 height);
         
+        GRIViewportStateRef GetGRIViewport() { return _GRIViewport;}
     private:
         uint32              _Width;
         uint32              _Height;

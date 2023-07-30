@@ -124,6 +124,7 @@ namespace SkySnow
 
         bool IsLowerVerion();
     private:
+        bool _TempFlag = false;
         GRICreateCommandBuffer*             _LowerComBuf;
         std::vector<GRICommandBufferBase*>  _ComBufList;
         RenderRunnable*                     _RenderRunnable;
