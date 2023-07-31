@@ -52,9 +52,10 @@ namespace SkySnow
 
 	void GRIGLDrive::Test()
 	{
-		glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-		glViewport(0,0, DEFAUT_WADTH, DEFAUT_HEIGHT);
 		_DrivePlatform->GetRenderContext()->MakeCurrContext();
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glViewport(0,0, DEFAUT_WADTH, DEFAUT_HEIGHT);
+        glClearColor(0, 0, 0, 0);
 	}
 
 	//GRIRenderPipe===========================================================================================================================

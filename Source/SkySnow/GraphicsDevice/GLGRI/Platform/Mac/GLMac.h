@@ -27,6 +27,7 @@
 //MacOS use System GLFunction and use low GL4.x
 namespace SkySnow
 {
+    static void* CreateGLContextCore(void* inSareContext);
 	class GLMac : public OpenGL3
 	{
 	public:
@@ -49,10 +50,10 @@ namespace SkySnow
     {
     public:
         friend class DrivePlatform;
-        DriveContextMac();
+        DriveContextMac(bool isExtern = true);
         ~DriveContextMac();
         
-        virtual void CreateGLContext(void* inNativeWindow) override;
+//        virtual void CreateGLContext(void* inNativeWindow) override;
         
         virtual void ReleaseContext() override;
         
@@ -61,10 +62,11 @@ namespace SkySnow
         virtual void SwapBuffer() override;
         
     private:
-        GLContextState  _GLContextState;
-        GLuint          _VertexArrayObject;
-        void*           _GLContext;
-        void*           _View;
+        GLuint              _VertexArrayObject;
+        void*               _GLContext;
+        void*               _View;
+        void*               _WindowHandle;
+        bool                _IsExtern;
     };
 }
 typedef SkySnow::GLMac OpenGL;
