@@ -48,7 +48,9 @@ namespace SkySnow
         
         virtual void Exit() = 0;
 
-		virtual void Test() = 0;
+		virtual void GRIDriveStart() = 0;
+
+		virtual void GRIDriveEnd() = 0;
 
 		virtual GRIFeature GetGRIFeatureType() = 0;
 		//about one viewport

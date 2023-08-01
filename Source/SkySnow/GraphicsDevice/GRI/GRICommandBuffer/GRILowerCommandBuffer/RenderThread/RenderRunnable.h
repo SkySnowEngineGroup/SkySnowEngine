@@ -47,6 +47,7 @@ namespace SkySnow
     private:
         void OnRenderFrame();
     private:
+        bool                _ExitFlag = false;
         ThreadSemaphore     _RenderSem;
         ThreadSemaphore     _MainSem;
 	};

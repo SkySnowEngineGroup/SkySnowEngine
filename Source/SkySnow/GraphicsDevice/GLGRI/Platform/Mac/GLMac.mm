@@ -129,6 +129,16 @@ namespace SkySnow
         }
     }
 
+    void DrivePlatform::MakeNullContext()
+	{
+        NSOpenGLContext* context = [NSOpenGLContext currentContext];
+        if (context)
+        {
+		    glFlush();
+            [context clearCurrentContext];
+	    } 
+	}
+
     DriveContextState DrivePlatform::GetDriveContextState()
     {
         NSOpenGLContext* context = [NSOpenGLContext currentContext];

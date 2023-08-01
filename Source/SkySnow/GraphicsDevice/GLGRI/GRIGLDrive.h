@@ -54,7 +54,9 @@ namespace SkySnow
         
         virtual void Exit() final override;
 
-		virtual void Test() final override;
+		virtual void GRIDriveStart() final override;
+
+		virtual void GRIDriveEnd() final override;
 
 		virtual void GRIBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture) final override;
 		virtual void GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync) final override;

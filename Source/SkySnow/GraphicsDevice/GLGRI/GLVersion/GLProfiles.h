@@ -112,7 +112,7 @@ namespace SkySnow
         {
             return _RenderContext;
         }
-
+        void MakeNullContext();
         DriveContext* GetMainContext()
         {
             return _MainContext;

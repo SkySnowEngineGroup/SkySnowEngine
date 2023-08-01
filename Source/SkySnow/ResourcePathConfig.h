@@ -22,4 +22,4 @@
 //
 #pragma once 
 
-#define Resource_Path "/Users/SS3D/SkySnowEngine/Resource"
+#define Resource_Path "E:/SkySnowEngine/Resource"

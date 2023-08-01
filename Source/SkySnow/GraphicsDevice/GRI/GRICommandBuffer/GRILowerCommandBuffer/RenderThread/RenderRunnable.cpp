@@ -36,21 +36,6 @@ namespace SkySnow
         
     }
 
-    /*
-     void MainUpdate()
-     {
-        RenderSemaphore.Signal();
-        ...MianUpdate some thing
-        MainSemphore.WaitForSignal();
-     }
-     
-     void RenderUpdate()
-     {
-        RenderSemaphore.WaitForSignal();
-        ...Exe some thing
-        MainSemaphore.Signal();
-     }
-     */
     void RenderRunnable::BeginFrame()
     {
         _RenderSem.Signal();
@@ -70,19 +55,21 @@ namespace SkySnow
 
     void RenderRunnable::Run()
     {
-        while(true)
+        GRI->GRIDriveStart();
+        while(!_ExitFlag)
         {
             OnRenderFrame();
         }
+        GRI->GRIDriveEnd();
     }
 
     void RenderRunnable::Stop()
     {
-        
+        _ExitFlag = true;
     }
 
     void RenderRunnable::Exit()
     {
-        
+        _ExitFlag = true;
     }
 }

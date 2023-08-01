@@ -163,7 +163,6 @@ namespace SkySnow
 
 	void DriveContextWin::MakeCurrContext()
 	{
-		
 		BOOL result = wglMakeCurrent(_Hdc, _GLContext);
 		wglSwapIntervalEXT(1);
 		if (!result)
@@ -321,6 +320,14 @@ namespace SkySnow
 		}
 		
 		_RenderContext = winRenderContext;
+	}
+
+	void DrivePlatform::MakeNullContext()
+	{
+		if (wglGetCurrentContext())
+		{
+			wglMakeCurrent(NULL, NULL);
+		}
 	}
 
 	DriveContextState DrivePlatform::GetDriveContextState()

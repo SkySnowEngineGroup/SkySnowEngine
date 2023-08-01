@@ -49,13 +49,22 @@ namespace SkySnow
     void GRIGLDrive::Exit()
     {
     }
-
-	void GRIGLDrive::Test()
+	//GRI Start
+	void GRIGLDrive::GRIDriveStart()
 	{
-		_DrivePlatform->GetRenderContext()->MakeCurrContext();
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        glViewport(0,0, DEFAUT_WADTH, DEFAUT_HEIGHT);
-        glClearColor(0, 0, 0, 0);
+		if (_Viewports.size() == 1)
+		{
+			((DriveContext*)_Viewports.back()->GetDriveContext())->MakeCurrContext();
+		}
+		else
+		{
+			_DrivePlatform->GetRenderContext()->MakeCurrContext();
+		}
+	}
+	//GRI End
+	void GRIGLDrive::GRIDriveEnd()
+	{
+		_DrivePlatform->MakeNullContext();
 	}
 
 	//GRIRenderPipe===========================================================================================================================
