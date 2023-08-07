@@ -397,8 +397,36 @@ namespace SkySnow
         uint8       _StencilWriteMask = 0xFF;
     };
 
-    class BlendStateInfo
+    struct BlendStateInfo
     {
 
+    };
+
+    struct RenderTargetView
+    {
+
+    };
+
+    struct DiscardRenderTarget
+    {
+        bool        _Depth;
+        bool        _Stencil;
+        uint32      _ColorBitMask;
+    };
+    struct DepthRenderTargetView
+    {
+
+    };
+
+    struct RenderPassInfo
+    {
+        DiscardRenderTarget     _DiscardRT;
+
+        RenderTargetView        _ColorRTV;
+        DepthRenderTargetView   _DepthStencilRTV;
+
+
+        RenderTargetView        _ColorResolveRTV;
+        DepthRenderTargetView   _DepthStencilResolveRTV;
     };
 }
