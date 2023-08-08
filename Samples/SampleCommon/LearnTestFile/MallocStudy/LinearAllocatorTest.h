@@ -25,7 +25,7 @@
 //微软中的mimalloc中的代码挺好的:https://github.com/microsoft/mimalloc
 #pragma once
 #include <stdint.h>
-#include "PlatformProfiles.h"
+#include "SkySnowProfiles.h"
 #if PLATFORM == PLATFORM_MAC
 #include <sys/malloc.h>
 #else

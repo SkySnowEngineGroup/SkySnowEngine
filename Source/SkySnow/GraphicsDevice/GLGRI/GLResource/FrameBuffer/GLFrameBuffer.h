@@ -25,11 +25,13 @@
 #include "GRIGLDrive.h"
 #include "GRIResource.h"
 #include "NonCopyable.h"
+#include <unordered_map>
 namespace SkySnow
 {
     class GLRenderTarget;
     class RenderTargetKey;
-    typedef std::unordered_map<RenderTargetKey,uint32> RenderTargetMap;
+    using RT_HashFun = HMapHashFn<RenderTargetKey>;
+    typedef std::unordered_map<RenderTargetKey,uint32,RT_HashFun> RenderTargetMap;
     class RenderTargetCache : public NonCopyable
     {
     public:
@@ -72,8 +74,8 @@ namespace SkySnow
         {
             _GPUHandle = gphHandle;
         }
-        
-        bool operator==(const GLRenderTarget& other)
+
+        bool operator==(const GLRenderTarget& other) const
         {
             return other._GPUHandle == _GPUHandle &&
                    other._DriveContext == _DriveContext;
@@ -98,7 +100,7 @@ namespace SkySnow
         {
         }
         
-        bool operator==(const RenderTargetKey& other)
+        bool operator==(const RenderTargetKey& other) const
         {
             return other._RenderTarget == _RenderTarget &&
                    other._Texture == _Texture;
