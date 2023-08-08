@@ -404,7 +404,9 @@ namespace SkySnow
 
     struct RenderTargetView
     {
-
+        RenderTargetLoadOp  _LoadOp;
+        RenderTargetStoreOp _StoreOp;
+        GRITextureRef       _Texture;
     };
 
     struct DiscardRenderTarget
@@ -415,18 +417,20 @@ namespace SkySnow
     };
     struct DepthRenderTargetView
     {
-
+        RenderTargetLoadOp  _LoadOp;
+        RenderTargetStoreOp _StoreOp;
+        GRITextureRef       _Texture;
     };
 
     struct RenderPassInfo
     {
         DiscardRenderTarget     _DiscardRT;
 
-        RenderTargetView        _ColorRTV;
+        RenderTargetView        _ColorRTV[Max_RenderTarget_Textures];
         DepthRenderTargetView   _DepthStencilRTV;
 
 
-        RenderTargetView        _ColorResolveRTV;
+        RenderTargetView        _ColorResolveRTV[Max_RenderTarget_Textures];
         DepthRenderTargetView   _DepthStencilResolveRTV;
     };
 }

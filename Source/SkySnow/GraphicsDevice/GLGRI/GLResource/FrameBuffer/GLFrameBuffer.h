@@ -57,8 +57,17 @@ namespace SkySnow
     public:
         GLRenderTarget()
             : _GPUHandle(0)
+            , _DriveContext(nullptr)
         {
         }
+
+        GLRenderTarget(uint32 inHandle, DriveContext* inContext)
+            : _GPUHandle(inHandle)
+            , _DriveContext(inContext)
+        {
+
+        }
+
         ~GLRenderTarget()
         {
             glDeleteFramebuffers( 1, &_GPUHandle);

@@ -97,8 +97,9 @@ namespace SkySnow
 		//Lower Render Deive Interface,so vulkan&metal not override this interface
 		//GRISet==========================================================================================================================
         //Grahpichs Pipeline Interface
-		virtual void BeginRenderPass(const RenderPassInfo& rpInfo,const char* passName) = 0;
-		virtual void EndRenderPass() = 0;
+		virtual void GRIBeginRenderPass(const RenderPassInfo& rpInfo,const char* passName) = 0;
+		virtual void GRINextRenderSubPass() = 0;
+		virtual void GRIEndRenderPass() = 0;
         //Texture Update Data
         virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,const uint8* data) {};
         virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel,Texture3DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};

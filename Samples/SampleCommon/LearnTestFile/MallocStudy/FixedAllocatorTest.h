@@ -22,7 +22,7 @@
 //
 #pragma once
 #include <stdint.h>
-#include "PlatformProfiles.h"
+#include "SkySnowProfiles.h"
 #if PLATFORM == PLATFORM_MAC
 #include <sys/malloc.h>
 #else

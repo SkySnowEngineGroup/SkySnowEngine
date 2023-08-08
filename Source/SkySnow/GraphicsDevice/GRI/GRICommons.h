@@ -28,15 +28,16 @@ namespace SkySnow
 #define Max_Num_Texture_Unit 16
 #define Max_Num_Sampler_Unit 16
 #define Max_ShaderPipeline_UniformBuffer 6
+#define	Max_RenderTarget_Textures 8
 	enum GRIFeature
 	{
 		ENone,
-		EVulkan,
-		EMetal,
-		EDx9, //not support
-		EDx10,//not support
-		EDx11,//not support
-		EDX12,//not support
+		EVulkan,//not support
+		EMetal,	//not support
+		EDx9,	//not support
+		EDx10,	//not support
+		EDx11,	//not support
+		EDX12,	//not support
 		EGLES,
 		EOpenGL,
 		ENum
@@ -274,5 +275,19 @@ namespace SkySnow
 		CW_Rgba  = CW_Red | CW_Green | CW_Blue | CW_Alpha,
 		CW_Rg    = CW_Red | CW_Green,
 		CW_Ba    = CW_Blue| CW_Alpha
+	};
+
+	enum RenderTargetLoadOp
+	{
+		RTLO_DotCare,
+		RTLO_Load,
+		RTLO_Clear
+	};
+
+	enum RenderTargetStoreOp
+	{
+		RTSO_DotCare,
+		RTSO_Store,
+		RTSO_MultisampleStore
 	};
 }

@@ -46,7 +46,10 @@ namespace SkySnow
     {
         //main thread start
         _GQueue->BeginFrame();
-//        SN_LOG("MainUpdate----------------");
+        //SN_LOG("MainUpdate----------------");
+        //-----ResourceSystem   ---load asyn
+        //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
+        //-----EventSystem      ---BoardCast Result Event(Input Output)
         
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();

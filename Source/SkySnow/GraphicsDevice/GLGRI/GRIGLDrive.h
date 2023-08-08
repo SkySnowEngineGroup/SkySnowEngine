@@ -100,8 +100,9 @@ namespace SkySnow
 		//GRICreate=================================================================================================================================
 
 		//GRIUpdateData=============================================================================================================================
-		virtual void BeginRenderPass(const RenderPassInfo& rpInfo, const char* passName) final override;
-		virtual void EndRenderPass() final override;
+		virtual void GRIBeginRenderPass(const RenderPassInfo& rpInfo, const char* passName) final override;
+		virtual void GRINextRenderSubPass() final override;
+		virtual void GRIEndRenderPass() final override;
 		//Set Uniform Buffer Descriptor(Uniform Buffer Layout)
 		virtual void GRISetUniformBufferDescriptor(GRIUniformBufferDescriptorRef& descriptor) final override;
 		//Update Uniform Buffer Data or Update Uniform Data

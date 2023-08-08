@@ -59,12 +59,17 @@ namespace SkySnow
         }
     }
 
-    void GRIGLDrive::BeginRenderPass(const RenderPassInfo& rpInfo, const char* passName)
+    void GRIGLDrive::GRIBeginRenderPass(const RenderPassInfo& rpInfo, const char* passName)
     {
 
     }
 
-    void GRIGLDrive::EndRenderPass()
+    void GRIGLDrive::GRINextRenderSubPass()
+    {
+
+    }
+
+    void GRIGLDrive::GRIEndRenderPass()
     {
 
     }
