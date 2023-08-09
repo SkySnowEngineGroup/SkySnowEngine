@@ -172,7 +172,36 @@ namespace SkySnow
 //        SN_LOG("_PipelineShaderRef End Count:%d",_PipelineShaderRef.GetRefCount());
 //        SN_LOG("_PSORef Count:%d",_PSORef.GetRefCount());
     }
-
+    /*
+    * If(Support SubPass)
+    *   RenderLoop/Path
+    *       BeginRenderPass()
+    *           RenderBasePass
+    *               GetRnderSystem---DrawTilePass
+    *               GetRnderSystem---DrawMeshPass
+    *       RenderSubPass()
+    *           ShadowRenderPass
+    *               -----------------------------------
+    *       RenderSubPass()
+    *           LightRenderPass
+    *               -----------------------------------
+    *       EndRenderPass()
+    * else(Not Support SubPass)========This mode is currently supported,So Curr Not Support DeferredRenderPipeline
+    *   RenderLoop/Path
+    *       BeginRenderPass()
+    *           RenderBasePass
+    *               GetRnderSystem---DrawTilePass
+    *               GetRnderSystem---DrawMeshPass
+    *       EndRenderPass()
+    *       BeginRenderPass()
+    *           ShadowRenderPass
+    *               -----------------------------------
+    *       EndRenderPass()
+    *       BeginRenderPass()
+    *           LightRenderPass
+    *               -----------------------------------
+    *       EndRenderPass()
+    */
     void RenderSystem::PostUpdate()
     {
         
