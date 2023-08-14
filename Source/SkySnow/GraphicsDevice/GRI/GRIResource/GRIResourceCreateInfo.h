@@ -404,6 +404,12 @@ namespace SkySnow
 
     struct RenderTargetView
     {
+        bool operator==(const RenderTargetView& other) const
+        {
+            return _LoadOp == other._LoadOp &&
+                    _StoreOp == other._StoreOp &&
+                    _Texture == other._Texture;
+        }
         RenderTargetLoadOp  _LoadOp;
         RenderTargetStoreOp _StoreOp;
         GRITextureRef       _Texture;
@@ -411,14 +417,31 @@ namespace SkySnow
 
     struct DiscardRenderTarget
     {
+        bool operator==(const DiscardRenderTarget& other) const
+        {
+            return _Depth == other._Depth &&
+                    _Stencil == other._Stencil &&
+                    _ColorBitMask == other._ColorBitMask;
+        }
         bool        _Depth;
         bool        _Stencil;
         uint32      _ColorBitMask;
     };
     struct DepthRenderTargetView
     {
-        RenderTargetLoadOp  _LoadOp;
-        RenderTargetStoreOp _StoreOp;
+        
+        bool operator==(const DepthRenderTargetView& other) const
+        {
+            return _DepthLoadOp == other._DepthLoadOp &&
+                    _DepthStoreOp == other._DepthStoreOp &&
+                    _StencilLoadOp == other._StencilLoadOp &&
+                    _StencilStoreOp == other._StencilStoreOp &&
+                    _Texture == other._Texture;
+        }
+        RenderTargetLoadOp  _DepthLoadOp;
+        RenderTargetStoreOp _DepthStoreOp;
+        RenderTargetLoadOp  _StencilLoadOp;
+        RenderTargetStoreOp _StencilStoreOp;
         GRITextureRef       _Texture;
     };
 

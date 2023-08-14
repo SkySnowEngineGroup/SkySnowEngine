@@ -78,7 +78,7 @@ namespace SkySnow
 
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
-		GRIViewportStateRef& _ViewPort;
+		GRIViewportStateRef _ViewPort;
 		bool _Present;
 		bool _LockToVsync;
 	};

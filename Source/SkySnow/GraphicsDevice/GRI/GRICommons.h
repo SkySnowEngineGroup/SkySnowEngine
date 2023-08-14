@@ -271,10 +271,10 @@ namespace SkySnow
 		CW_Blue  = 1 << 2,
 		CW_Alpha = 1 << 3,
 
+        CW_Rg    = CW_Red | CW_Green,
+        CW_Ba    = CW_Blue| CW_Alpha,
 		CW_Rgb   = CW_Red | CW_Green | CW_Blue,
-		CW_Rgba  = CW_Red | CW_Green | CW_Blue | CW_Alpha,
-		CW_Rg    = CW_Red | CW_Green,
-		CW_Ba    = CW_Blue| CW_Alpha
+		CW_Rgba  = CW_Red | CW_Green | CW_Blue | CW_Alpha
 	};
 
 	enum RenderTargetLoadOp
