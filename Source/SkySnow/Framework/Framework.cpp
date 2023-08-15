@@ -44,8 +44,6 @@ namespace SkySnow
     }
     void Framework::MainUpdate()
     {
-        //main thread start
-        _GQueue->BeginFrame();
         //SN_LOG("MainUpdate----------------");
         //-----ResourceSystem   ---load asyn
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
@@ -54,9 +52,6 @@ namespace SkySnow
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();
         _RenderSystem->PostUpdate();
-        
-        //main thread end
-        _GQueue->EndFrame();
     }
 
     void Framework::ShutDown()

@@ -44,7 +44,7 @@ namespace SkySnow
 	Application::~Application()
 	{
         Delete_Object(_Framework);
-        Delete_Object(_SkySnowEngine);
+        Context::Instance().RemoveSkySnowEngine();
 	}
 
 	void Application::RunApplication()
@@ -53,11 +53,8 @@ namespace SkySnow
 	}
     void Application::RunAppInternal()
     {
-        _SkySnowEngine = new SkySnowEngine();
-        Context::Instance().RegisterSkySnowEngine((SkySnowEngine*)_SkySnowEngine);
-        //Create Engine Framework
-        _Framework = new Framework();
-        //开启初始化操作
+        //注册SkySnowEngine到Context中
+        _SkySnowEngine = Context::Instance().RegisterSkySnowEngine();
         _SkySnowEngine->Init();
         //Create Window
         _GameWindow = _SkySnowEngine->CreateGameWindow(_Width, _Height);
@@ -66,6 +63,8 @@ namespace SkySnow
             _EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
         }
         
+        //Create Engine Framework
+        _Framework = new Framework();
         _Framework->Init();
         //Child App Init
         Init();
@@ -81,9 +80,13 @@ namespace SkySnow
     {
         while (!_SkySnowEngine->IsEngineWindowClose())
         {
+            //main thread start
+            _GQueue->BeginFrame();
             Update();
             _Framework->MainUpdate();
             glfwPollEvents();
+            //main thread end
+            _GQueue->EndFrame();
         }
     }
 }

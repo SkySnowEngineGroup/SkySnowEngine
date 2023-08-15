@@ -48,17 +48,11 @@ namespace SkySnow
     void RenderSystem::Update()
     {
         Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
-        if(!_CMBPool)
-        {
-            _CMBPool = new GRICommandBufferPool();
-        }
-        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        SkySnowEngine* engine = Context::Instance().GetSkySnowEngine();
-        GRIViewportStateRef viewport = engine->GetEngineWindow(EGameWindow)->GetViewport()->GetGRIViewport();
+
         if(!_TestInit)
         {
-            commandBuffer->CmdBeginViewport(viewport, _Tex2D);
-
+            _CMBPool = new GRICommandBufferPool();
+            
             string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
             string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
             _File = new File();
@@ -153,7 +147,12 @@ namespace SkySnow
             SN_LOG("_PipelineShaderRef Count:%d",_PipelineShaderRef.GetRefCount());
             _TestInit = true;
         }
+
+        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
+        SkySnowEngine* engine = Context::Instance().GetSkySnowEngine();
+        GRIViewportStateRef viewport = engine->GetEngineWindow(EGameWindow)->GetViewport()->GetGRIViewport();
         
+        commandBuffer->CmdBeginViewport(viewport, _Tex2D);
 //        SN_LOG("_PipelineShaderRef Start Count:%d",_PipelineShaderRef.GetRefCount());
 
         //commandBuffer->CmdSetShaderTexture(_PipelineShaderRef, _Tex2D, 0);

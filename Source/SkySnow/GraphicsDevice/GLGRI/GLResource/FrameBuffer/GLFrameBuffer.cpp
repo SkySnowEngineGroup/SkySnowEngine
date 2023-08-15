@@ -73,4 +73,12 @@ namespace SkySnow
     {
 
     }
+
+    namespace OGLRenderTarget
+    {
+        void SetRenderTargetAndClear(uint32 numRenderTarget, const RenderTargetView* newColorRTV, const DepthRenderTargetView* newDSRTV)
+        {
+
+        }
+    }
 }

@@ -290,4 +290,17 @@ namespace SkySnow
 		RTSO_Store,
 		RTSO_MultisampleStore
 	};
+	enum ERenderTargetLSOp : uint8
+	{
+		DontLoad_DontStore	= RTLO_DotCare << 2 | RTSO_DotCare,
+		DontLoad_Store		= RTLO_DotCare << 2 | RTSO_Store,
+		Load_Store			= RTLO_Load << 2 | RTSO_Store,
+		Clear_Store			= RTLO_Clear << 2 | RTSO_Store,
+		
+
+		Clear_DontStore		= RTLO_Clear << 2 | RTSO_DotCare,
+		Load_DontStore		= RTLO_Load << 2 | RTSO_DotCare,
+		Load_Resolve		= RTLO_Load << 2 | RTSO_MultisampleStore,
+		Clear_Resolve		= RTLO_Clear << 2 | RTSO_MultisampleStore
+	};
 }

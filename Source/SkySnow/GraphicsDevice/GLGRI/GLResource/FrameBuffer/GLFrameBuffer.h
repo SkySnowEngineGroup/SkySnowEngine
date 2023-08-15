@@ -118,4 +118,8 @@ namespace SkySnow
         GRITexture*     _Texture;
     };
     
+    namespace OGLRenderTarget
+    {
+        void SetRenderTargetAndClear(uint32 numRenderTarget,const RenderTargetView* newColorRTV,const DepthRenderTargetView* newDSRTV);
+    }
 }

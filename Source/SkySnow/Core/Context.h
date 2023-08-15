@@ -38,9 +38,17 @@ namespace SkySnow
         
         void RemoveSceneRenderer();
 
-        void RegisterSkySnowEngine(SkySnowEngine* engine)
+        SkySnowEngine* RegisterSkySnowEngine()
         {
-            _SkySnowEngine = engine;
+            if(!_SkySnowEngine)
+            {
+                _SkySnowEngine = new SkySnowEngine();
+            }
+            return _SkySnowEngine;
+        }
+        void RemoveSkySnowEngine()
+        {
+            Delete_Object(_SkySnowEngine);
         }
         SkySnowEngine* GetSkySnowEngine() const
         {

@@ -303,5 +303,25 @@ namespace SkySnow
 			break;
 		}
 	}
+	void GRIGLDrive::BindPendingRenderTarget(GLGraphicPipeline& contextState)
+	{
+
+	}
+	GLGraphicPipeline& GRIGLDrive::GetPipelineStateForCurrContext()
+	{
+		DriveContextState driveCS = _DrivePlatform->GetDriveContextState();
+		if (driveCS == NoUse)
+		{
+			return _InvalidState;
+		}
+		if (driveCS == RenderingContext)
+		{
+			return _RenderState;
+		}
+		else
+		{
+			return _ShareState;
+		}
+	}
 	//GRIprivate==============================================================================================================================
 }

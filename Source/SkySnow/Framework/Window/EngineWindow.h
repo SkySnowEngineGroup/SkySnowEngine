@@ -60,4 +60,30 @@ namespace SkySnow
         OSWindow*           _OSWindow;
         Viewport*           _Viewport;
 	};
+    /*
+     * WindowA
+     *      Scene
+     *          RenderSystem
+     *              BeginRenderPassA_A
+     *                  DrawCall(0-5)
+     *              EndRenderPassA_A
+     *              BeginRenderPassA_B
+     *                  DrawCall(6-10)
+     *              EndRenderPassA_B
+     *          BeginViewport
+     *              DrawCall(RTA_B)
+     *          EndViewport
+     * WindowB
+     *      Scene
+     *          RenderSystem
+     *              BeginRenderPassB_A
+     *                  DrawCall(0-5)
+     *              EndRenderPassB_A
+     *              BeginRenderPassB_B
+     *                  DrawCall(6-10)
+     *              EndRenderPassB_B
+     *          BeginViewport
+     *              DrawCall(RTB_B)
+     *          EndViewport
+     */
 }
