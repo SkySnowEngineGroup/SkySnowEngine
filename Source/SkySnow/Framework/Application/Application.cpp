@@ -84,9 +84,9 @@ namespace SkySnow
             _GQueue->BeginFrame();
             Update();
             _Framework->MainUpdate();
-            glfwPollEvents();
             //main thread end
             _GQueue->EndFrame();
+            glfwPollEvents();
         }
     }
 }

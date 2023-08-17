@@ -97,6 +97,12 @@ namespace SkySnow
     void DriveContextMac::MakeCurrContext()
     {
         NSOpenGLContext* glContext = (NSOpenGLContext*)_GLContext;
+        NSOpenGLContext* currContext = [NSOpenGLContext currentContext];
+        if(glContext != currContext && currContext)
+        {
+            glFlush();
+            [NSOpenGLContext clearCurrentContext];
+        }
         [glContext makeCurrentContext];
     }
     //Each frame is called to exchange the rendered off-screen data to the up-screen data
@@ -135,7 +141,7 @@ namespace SkySnow
         if (context)
         {
 		    glFlush();
-            [context clearCurrentContext];
+            [NSOpenGLContext clearCurrentContext];
 	    } 
 	}
 
@@ -193,7 +199,7 @@ namespace SkySnow
         shareContext->_View = glView;
         shareContext->_GLContext = glContext;
         shareContext->_VertexArrayObject = vao;
-        
+        glFlush();
         [NSOpenGLContext clearCurrentContext];
         return shareContext;
     }
@@ -208,24 +214,25 @@ namespace SkySnow
         DriveContextMac* renderContextMac = new DriveContextMac();
         
         mainContextMac->_GLContext = CreateGLContextCore(nullptr);
-        renderContextMac->_GLContext = CreateGLContextCore((NSOpenGLContext*)mainContextMac->_GLContext);
-        
-        [(NSOpenGLContext*)renderContextMac->_GLContext makeCurrentContext];
-        glGenVertexArrays(1,&renderContextMac->_VertexArrayObject);
-        glBindVertexArray(renderContextMac->_VertexArrayObject);
-        
-        glFlush();
-        [NSOpenGLContext clearCurrentContext];
-        
         [(NSOpenGLContext*)mainContextMac->_GLContext makeCurrentContext];
         glGenVertexArrays(1,&mainContextMac->_VertexArrayObject);
         glBindVertexArray(mainContextMac->_VertexArrayObject);
         
+        glFlush();
+        [NSOpenGLContext clearCurrentContext];
+        _MainContext = mainContextMac;
+        
+        renderContextMac->_GLContext = CreateGLContextCore((NSOpenGLContext*)mainContextMac->_GLContext);
+        [(NSOpenGLContext*)renderContextMac->_GLContext makeCurrentContext];
+        glGenVertexArrays(1,&renderContextMac->_VertexArrayObject);
+        glBindVertexArray(renderContextMac->_VertexArrayObject);
+        
         OpenGL::InitialExtensions();
         OGLTexture::InitTextureFormat();
-        _MainContext = mainContextMac;
-        _RenderContext = renderContextMac;
+        
+        glFlush();
         [NSOpenGLContext clearCurrentContext];
+        _RenderContext = renderContextMac;
     }
 }
 #endif

@@ -36,10 +36,10 @@ namespace SkySnow
     void GRIGLDrive::GRIBeginViewport(GRIViewportStateRef& viewPort, GRITexture2DRef& renderTexture)
     {
         //Swith glcontext
-        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-        glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
         GRIGLViewport* glVP = dynamic_cast<GRIGLViewport*>(viewPort.GetReference());
         ((DriveContext*)glVP->GetDriveContext())->MakeCurrContext();
+        glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glViewport(0, 0, DEFAUT_WADTH, DEFAUT_HEIGHT);
     }
 
     void GRIGLDrive::GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync)

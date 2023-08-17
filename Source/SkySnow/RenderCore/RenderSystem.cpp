@@ -57,7 +57,6 @@ namespace SkySnow
         GRIViewportStateRef viewport = engine->GetEngineWindow(EGameWindow)->GetViewport()->GetGRIViewport();
         if(!_TestInit)
         {
-            commandBuffer->CmdBeginViewport(viewport, _Tex2D);
             string vsShaderPath = GetMaterialAllPath("Test/BaseVertex.sns");
             string fsShaderPath = GetMaterialAllPath("Test/BaseFragment.sns");
             _File = new File();
@@ -152,7 +151,7 @@ namespace SkySnow
             SN_LOG("_PipelineShaderRef Count:%d",_PipelineShaderRef.GetRefCount());
             _TestInit = true;
         }
-      
+        commandBuffer->CmdBeginViewport(viewport, _Tex2D);
 //        SN_LOG("_PipelineShaderRef Start Count:%d",_PipelineShaderRef.GetRefCount());
 
         //commandBuffer->CmdSetShaderTexture(_PipelineShaderRef, _Tex2D, 0);
