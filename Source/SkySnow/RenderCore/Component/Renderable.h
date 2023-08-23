@@ -22,6 +22,8 @@
 //
 #pragma once
 #include "IComponent.h"
+#include "Context.h"
+#include "SceneRenderer.h"
 namespace SkySnow
 {
 	class Renderable : public IComponent
@@ -31,6 +33,19 @@ namespace SkySnow
 		Renderable() {}
 		virtual ~Renderable() {}
 
+		virtual void SetEnabled(bool enable) override
+		{
+			_Enable = enable;
+			SceneRenderer* sceneRenderer = Context::Instance().GetSceneRenderer();
+			if (_Enable)
+			{
+				sceneRenderer->AddRenderer(this);
+			}
+			else
+			{
+				sceneRenderer->RemoveRenderer(this);
+			}
+		}
 		virtual void UpdateRenderer() = 0;
 	};
 }

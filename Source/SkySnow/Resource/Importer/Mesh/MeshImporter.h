@@ -20,20 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Renderable.h"
+#pragma once
+#include "IImporter.h"
 namespace SkySnow
 {
-	class RenderComponent : public Renderable
-	{
-		SkySnow_Object(RenderComponent, Renderable);
-	public:
-		RenderComponent();
-		~RenderComponent();
-        
-        virtual void Update() final override;
-
-		virtual void UpdateRenderer() final override;
-        
-	};
+    enum MLoaderType
+    {
+        FBXLoader,
+        AssimpLoader
+    };
+    class MeshImporter : public IImporter
+    {
+        SkySnow_Object(MeshImporter, IImporter);
+    public:
+        MeshImporter(MLoaderType tlt = FBXLoader)
+            : _MLoadType(tlt)
+        {
+        }
+        virtual ~MeshImporter()
+        {
+        }
+    private:
+        virtual void* DoImport(const std::string filePath) final override;
+        virtual bool Release(void* data) final override;
+    private:
+        MLoaderType     _MLoadType = FBXLoader;
+    };
 }

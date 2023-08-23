@@ -20,20 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Renderable.h"
+#include "MeshImporter.h"
 namespace SkySnow
 {
-	class RenderComponent : public Renderable
+	void* MeshImporter::DoImport(const std::string filePath)
 	{
-		SkySnow_Object(RenderComponent, Renderable);
-	public:
-		RenderComponent();
-		~RenderComponent();
-        
-        virtual void Update() final override;
+		switch (_MLoadType)
+		{
+		case SkySnow::FBXLoader:
+			break;
+		case SkySnow::AssimpLoader:
+			break;
+		default:
+			SN_WARN("_MLoadType(%d) Not Support[Support(FBXLoader 0) (AssimpLoader 1)].", _MLoadType);
+			break;
+		}
+	}
+	bool MeshImporter::Release(void* data)
+	{
 
-		virtual void UpdateRenderer() final override;
-        
-	};
+	}
 }

@@ -40,7 +40,11 @@ namespace SkySnow
             T* res = static_cast<T*>(DoImport(filePath));
             return res;
         }
-        
+        template<typename T>
+        void Release()
+        {
+
+        }
     private:
         virtual void* DoImport(const std::string filePath) = 0;
         virtual bool Release(void* data) = 0;

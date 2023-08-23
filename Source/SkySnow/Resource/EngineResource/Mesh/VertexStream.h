@@ -20,20 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Renderable.h"
+#pragma once
+#include "NonCopyable.h"
+
 namespace SkySnow
 {
-	class RenderComponent : public Renderable
-	{
-		SkySnow_Object(RenderComponent, Renderable);
-	public:
-		RenderComponent();
-		~RenderComponent();
-        
-        virtual void Update() final override;
-
-		virtual void UpdateRenderer() final override;
-        
-	};
+    class VertexStream : public NonCopyable
+    {
+    public:
+        VertexStream() = delete;
+        ~VertexStream();
+    };
 }

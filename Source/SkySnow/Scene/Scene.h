@@ -54,13 +54,10 @@ namespace SkySnow
         uint64_t GetSceneCullingMask() const;
         //Set curr scene root gameobject
         GameObject* AddRootToScene(GameObject* goRoot = nullptr);
-        //set curr scene child gameobject
-        GameObject* AddChildGOToScene();
     private:
         bool                        _Enable;
         bool                        _IsSubScene;
         SkySnowSceneHandle          _SceneHandle;
-        GameObject*                 _SceneRootGO;
         uint64_t                    _CullingMask;
         std::string                 _SceneName;
         TransformComponent*         _CurrSceneTransform;

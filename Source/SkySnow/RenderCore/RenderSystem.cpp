@@ -27,7 +27,7 @@
 #include "Hash.h"
 #include "StbImageLoad.h"
 #include "SkySnowEngine.h"
-
+#include "TextureImporter.h"
 namespace SkySnow
 {
     RenderSystem::RenderSystem()
@@ -73,7 +73,9 @@ namespace SkySnow
             
             //Create Texture
             string imagePath = GetImageAllPath("panda.png");
-            TextureStream* texStream = StbImageLoad::StbLoadPNG(imagePath);
+            TextureImporter* tImp = new TextureImporter();
+            TextureStream* texStream = tImp->Import<TextureStream>(imagePath);
+            //TextureStream* texStream = StbImageLoad::StbLoadPNG(imagePath);
             uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
             _Tex2D = CreateTexture2D(texStream->GetImageWidth(),
                                      texStream->GetImageHeight(),

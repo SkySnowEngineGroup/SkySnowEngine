@@ -21,17 +21,35 @@
 // THE SOFTWARE.
 //
 #include "TextureImporter.h"
+#include "TextureStream.h"
+#include "StbImageLoad.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
-    TextureImporter::TextureImporter()
+    TextureImporter::TextureImporter(TLoaderType tLT)
+        : _LoadType(tLT)
     {
     }
     void* TextureImporter::DoImport(const std::string filePath)
     {
-        return nullptr;
+        switch (_LoadType)
+        {
+        case SkySnow::StbImage:
+            _TextureStream = StbImageLoad::StbLoadPNG(filePath);
+            break;
+        case SkySnow::PngLib:
+            break;
+        case SkySnow::Jpg:
+            break;
+        default:
+            SN_WARN("TLoaderType(%d) Not Support[Support(StbImage 0) (PngLib 1) (Jpg 2)].", _LoadType);
+            break;
+        }
+        return _TextureStream;
     }
     bool TextureImporter::Release(void* data)
     {
-        return false;
+        Delete_Object(_TextureStream);
+        return true;
     }
 }

@@ -24,7 +24,7 @@
 #include "IImporter.h"
 namespace SkySnow
 {
-    enum LoaderType
+    enum TLoaderType
     {
         StbImage,
         PngLib,
@@ -32,15 +32,16 @@ namespace SkySnow
     };
     class TextureImporter : public IImporter
     {
-        SkySnow_Object(TextureImporter, Object);
+        SkySnow_Object(TextureImporter, IImporter);
     public:
-        TextureImporter();
+        TextureImporter(TLoaderType tLT = StbImage);
         
     private:
         virtual void* DoImport(const std::string filePath) final override;
         virtual bool Release(void* data) final override;
 
     private:
-        LoaderType _LoadType = StbImage;
+        TLoaderType _LoadType = StbImage;
+        TextureStream* _TextureStream = nullptr;
     };
 }

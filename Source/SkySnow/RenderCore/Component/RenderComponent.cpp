@@ -21,8 +21,7 @@
 // THE SOFTWARE.
 //
 #include "RenderComponent.h"
-#include "Context.h"
-#include "SceneRenderer.h"
+
 namespace SkySnow
 {
     RenderComponent::RenderComponent()
@@ -42,19 +41,5 @@ namespace SkySnow
     void RenderComponent::UpdateRenderer()
     {
         
-    }
-
-    void RenderComponent::SetEnabled(bool enable)
-    {
-        _Enable = enable;
-        SceneRenderer* sceneRenderer = Context::Instance().GetSceneRenderer();
-        if(_Enable)
-        {
-            sceneRenderer->AddRenderer(this);
-        }
-        else
-        {
-            sceneRenderer->RemoveRenderer(this);
-        }
     }
 }

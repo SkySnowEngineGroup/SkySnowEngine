@@ -20,20 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "Renderable.h"
+#pragma once
+
 namespace SkySnow
 {
-	class RenderComponent : public Renderable
+	enum DefaultMeshType
 	{
-		SkySnow_Object(RenderComponent, Renderable);
-	public:
-		RenderComponent();
-		~RenderComponent();
-        
-        virtual void Update() final override;
+		DMT_None,
+		DMT_Quad,
+		DMT_Cube,
+		DMT_Sphere,
+		DMT_Cone
+	};
+	struct MQuad
+	{
 
-		virtual void UpdateRenderer() final override;
-        
+	};
+
+	struct MCube
+	{
+
+	};
+
+	struct MSphere
+	{
+
+	};
+
+	struct MCone
+	{
+
 	};
 }

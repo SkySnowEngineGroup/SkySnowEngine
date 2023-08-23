@@ -29,7 +29,6 @@ namespace SkySnow
         : _Enable(true)
         , _IsSubScene(false)
         , _SceneHandle(-1)
-        , _SceneRootGO(nullptr)
         , _CullingMask(g_DefaultCullingMask)
         , _SceneName(sceneName)
         , _CurrSceneTransform(nullptr)
@@ -44,7 +43,6 @@ namespace SkySnow
         }
         _RootList.clear();
         Delete_Object(_CurrSceneTransform);
-        Delete_Object(_SceneRootGO);
     }
 
     std::string Scene::GetSceneName() const
@@ -58,10 +56,6 @@ namespace SkySnow
         for(auto iter = _RootList.begin(); iter != _RootList.end(); iter ++)
         {
             (*iter)->SetEnable(enable);
-        }
-        if (_SceneRootGO)
-        {
-            _SceneRootGO->SetEnable(enable);
         }
     }
 
@@ -110,28 +104,29 @@ namespace SkySnow
     {
         if (goRoot)
         {
-            _IsSubScene = true;
-            if(_SceneRootGO)
+            bool findRepeat = false;
+            for (auto iter = _RootList.begin(); iter != _RootList.end(); iter++)
             {
-                Delete_Object(_SceneRootGO);
+                if (*iter == goRoot)
+                {
+                    findRepeat = true;
+                    break;
+                }
             }
-            else
+            if (!findRepeat)
             {
-                _SceneRootGO = goRoot;
+                _RootList.emplace_back(goRoot);
+                goRoot->SetEnable(true);
             }
-               
         }
-        if(!_SceneRootGO)
+        else
         {
-            _SceneRootGO = new GameObject();
+            goRoot = new GameObject();
+            _RootList.emplace_back(goRoot);
+            goRoot->SetEnable(true);
         }
-        return _SceneRootGO;
-    }
-    GameObject* Scene::AddChildGOToScene()
-    {
-        GameObject* childGo = new GameObject();
-        _RootList.push_back(childGo);
-        return childGo;
+
+        return goRoot;
     }
 }
 

@@ -54,8 +54,6 @@ public:
 //        CameraComponent* cameraCom = go->AddComponent<CameraComponent>();
         TransformComponent* transCom = go->AddComponent<TransformComponent>();
         RenderComponent* renderCom = go->AddComponent<RenderComponent>();
-
-        _Scene->SetEnable(true);
 		return true;
 	}
     
