@@ -66,8 +66,6 @@ namespace SkySnow
         //Create Engine Framework
         _Framework = new Framework();
         _Framework->Init();
-        //Child App Init
-        Init();
         //Start Engine MainUpdate
         MainUpdateInternal();
         
@@ -82,6 +80,13 @@ namespace SkySnow
         {
             //main thread start
             _GQueue->BeginFrame();
+            //Child App Init
+            if (!_AppInit)
+            {
+                Init();
+                _AppInit = true;
+            }
+            //Chile App Update
             Update();
             _Framework->MainUpdate();
             //main thread end

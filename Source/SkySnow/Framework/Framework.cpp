@@ -41,6 +41,7 @@ namespace SkySnow
     {
         //register rendersystem
         _RenderSystem = Context::Instance().RegisterSystem<RenderSystem>();
+        _ResourceSystem = Context::Instance().RegisterSystem<ResourceSystem>();
     }
     void Framework::MainUpdate()
     {
@@ -48,7 +49,10 @@ namespace SkySnow
         //-----ResourceSystem   ---load asyn
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
         //-----EventSystem      ---BoardCast Result Event(Input Output)
-        
+        _ResourceSystem->PreUpdate();
+        _ResourceSystem->Update();
+        _ResourceSystem->PostUpdate();
+
         _RenderSystem->PreUpdate();
         _RenderSystem->Update();
         _RenderSystem->PostUpdate();
@@ -57,5 +61,6 @@ namespace SkySnow
     void Framework::ShutDown()
     {
         _RenderSystem->ShutDown();
+        _ResourceSystem->ShutDown();
     }
 }

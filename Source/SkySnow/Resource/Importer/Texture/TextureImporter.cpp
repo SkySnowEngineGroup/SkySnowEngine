@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #include "TextureImporter.h"
-#include "TextureStream.h"
 #include "StbImageLoad.h"
 #include "LogAssert.h"
 namespace SkySnow
@@ -49,7 +48,8 @@ namespace SkySnow
     }
     bool TextureImporter::Release(void* data)
     {
-        Delete_Object(_TextureStream);
+        TextureStream* stream = static_cast<TextureStream*>(data);
+        Delete_Object(stream);
         return true;
     }
 }

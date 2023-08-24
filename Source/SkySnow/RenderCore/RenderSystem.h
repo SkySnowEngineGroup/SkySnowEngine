@@ -29,6 +29,7 @@ namespace SkySnow
 {
     class RenderSystem : public ISystem
     {
+        SkySnow_Object(RenderSystem,ISystem);
     public:
         RenderSystem();
         

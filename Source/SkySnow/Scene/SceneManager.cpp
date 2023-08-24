@@ -24,14 +24,7 @@
 #include "LogAssert.h"
 namespace SkySnow
 {
-    GameObjectManager& GetGameObjectManager()
-    {
-        return GameObjectManager::Instance();
-    }
-    SceneManager& GetSceneManager()
-    {
-        return SceneManager::Instance();
-    }
+
 
     SceneManager::SceneManager()
     {
@@ -72,6 +65,17 @@ namespace SkySnow
         }
     }
     //========================================================================
+
+    GameObjectManager& GetGameObjectManager()
+    {
+        return GameObjectManager::Instance();
+    }
+
+    SceneManager& GetSceneManager()
+    {
+        return SceneManager::Instance();
+    }
+
     GameObjectManager& GameObjectManager::Instance()
     {
         static GameObjectManager instance;

@@ -24,14 +24,16 @@
 #include "IComponent.h"
 #include "Context.h"
 #include "SceneRenderer.h"
+#include "Material.h"
+#include "RenderObject.h"
 namespace SkySnow
 {
 	class Renderable : public IComponent
 	{
 		SkySnow_Object(Renderable, IComponent);
 	public:
-		Renderable() {}
-		virtual ~Renderable() {}
+		Renderable();
+		virtual ~Renderable();
 
 		virtual void SetEnabled(bool enable) override
 		{
@@ -47,5 +49,12 @@ namespace SkySnow
 			}
 		}
 		virtual void UpdateRenderer() = 0;
+
+		void SetMaterialCount(uint32 matCount);
+
+		virtual void SetMaterial(Material* material,uint32 index);
+	protected:
+		std::vector<Material*>    _Materials;
+	private:	
 	};
 }

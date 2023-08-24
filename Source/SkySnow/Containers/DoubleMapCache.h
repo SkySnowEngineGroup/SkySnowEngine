@@ -22,7 +22,7 @@
 #pragma once
 #include <unordered_map>
 #include "ThreadMutex.h"
-#include "Hash.h"
+#include "HashUtil.h"
 namespace SkySnow
 {
     //ThreadSafe

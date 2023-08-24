@@ -21,48 +21,27 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "SkySnowProfiles.h"
-#include <stdlib.h>
-#include <iostream>
-#include "EngineWindow.h"
-#include "IEngine.h"
-#include "Framework.h"
+
 namespace SkySnow
 {
-	enum EngineUsagType
-	{
-		None	= 0,
-		Sample	= 1,
-		Editor	= 2
-	};
-	class Application
-	{
-	public:
-		Application(const char* name,const char* description, uint32_t width, uint32_t height);
-		virtual ~Application();
-		virtual bool Init() = 0;
-        virtual void Update() = 0;
-        virtual void ShutDown() = 0;
-    public:
-        //don't overload child
-        void RunApplication();
-		void SetUseEngineType(EngineUsagType eut) { _EngineUsagType = eut; }
-	private:
-		void RunAppInternal();
-        
-        void MainUpdateInternal();
-	private:
-        const char*         _Name;
-        const char*         _Description;
-        uint32              _Width;
-        uint32              _Height;
-        EngineUsagType      _EngineUsagType;
-        IEngine*            _SkySnowEngine;
-		EngineWindow*       _EditorWindow;
-		EngineWindow*       _GameWindow;
-        Framework*          _Framework;
-		bool				_AppInit = false;
-	};
-	
+    static int G_PropertyIndex = 0;
+    static int G_MaxPropertyIndex = 256;
+    struct PropertyName
+    {
+        void SetName(const char* name)
+        {
+            Init();
+        }
+        int GetIndex()
+        {
+            return _Index;
+        }
+    private:
+        void Init()
+        {
+            _Index = G_PropertyIndex;
+            G_PropertyIndex ++;
+        }
+        int _Index;
+    };
 }
-

@@ -21,48 +21,24 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "SkySnowProfiles.h"
-#include <stdlib.h>
-#include <iostream>
-#include "EngineWindow.h"
-#include "IEngine.h"
-#include "Framework.h"
+#include "Object.h"
 namespace SkySnow
 {
-	enum EngineUsagType
-	{
-		None	= 0,
-		Sample	= 1,
-		Editor	= 2
-	};
-	class Application
-	{
-	public:
-		Application(const char* name,const char* description, uint32_t width, uint32_t height);
-		virtual ~Application();
-		virtual bool Init() = 0;
-        virtual void Update() = 0;
-        virtual void ShutDown() = 0;
+    enum EResourceType
+    {
+        NoneRes,
+        TextureRes,
+        MeshRes,
+        MaterialRes,
+        SceneRes
+    };
+    class IResource : public Object
+    {
+        SkySnow_Object(IResource,Object);
     public:
-        //don't overload child
-        void RunApplication();
-		void SetUseEngineType(EngineUsagType eut) { _EngineUsagType = eut; }
-	private:
-		void RunAppInternal();
-        
-        void MainUpdateInternal();
-	private:
-        const char*         _Name;
-        const char*         _Description;
-        uint32              _Width;
-        uint32              _Height;
-        EngineUsagType      _EngineUsagType;
-        IEngine*            _SkySnowEngine;
-		EngineWindow*       _EditorWindow;
-		EngineWindow*       _GameWindow;
-        Framework*          _Framework;
-		bool				_AppInit = false;
-	};
-	
+        IResource(EResourceType ert);
+        virtual ~IResource();
+    protected:
+        EResourceType _ResourceType = NoneRes;
+    };
 }
-

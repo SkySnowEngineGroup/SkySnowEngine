@@ -28,7 +28,13 @@
 #include "GameObject.h"
 #include "RenderComponent.h"
 #include "CameraComponent.h"
+#include "MeshRenderComponent.h"
 #include "SampleApplication.h"
+#include "Context.h"
+#include "Texture.h"
+#include "StbImageLoad.h"
+#include "SkySnowEngine.h"
+#include "TextureImporter.h"
 using namespace SkySnow;
 using namespace SampleEntry;
 class Triangle : public SkySnow::Application
@@ -53,7 +59,30 @@ public:
 
 //        CameraComponent* cameraCom = go->AddComponent<CameraComponent>();
         TransformComponent* transCom = go->AddComponent<TransformComponent>();
-        RenderComponent* renderCom = go->AddComponent<RenderComponent>();
+        //RenderComponent* renderCom = go->AddComponent<RenderComponent>();
+        MeshRenderComponent* meshCom = go->AddComponent<MeshRenderComponent>();
+        
+        //ResourceSystem* resSystem = Context::Instance().GetSystem<ResourceSystem>();
+        //resSystem->PushLoadJob(GetImageAllPath("panda.png"),TextureRes);
+
+        string imagePath = GetImageAllPath("panda.png");
+        TextureImporter* tImp = new TextureImporter();
+        TextureStream* texStream = tImp->Import<TextureStream>(imagePath);
+        Texture* texture = new Texture();
+        texture->SetTextureStream(texStream);
+
+        PropertyName texName;
+        texName.SetName("panda.png");
+
+        Material* mat = new Material();
+        mat->SetTexture(texName,texture);
+
+        Mesh* mesh = new Mesh();
+        mesh->SetDefaultMeshType(DMT_Cube);
+
+        meshCom->SetMaterialCount(1);
+        meshCom->SetMaterial(mat,0);
+        meshCom->SetMesh(mesh);
 		return true;
 	}
     

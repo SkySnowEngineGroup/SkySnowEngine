@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "IImporter.h"
+#include "TextureStream.h"
 namespace SkySnow
 {
     enum TLoaderType

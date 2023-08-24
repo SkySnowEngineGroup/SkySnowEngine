@@ -21,12 +21,32 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "Material.h"
 namespace SkySnow
 {
-    class TextureResource
+    Material::Material()
+        : IResource(MaterialRes)
     {
-    public:
-        
-    };
+
+    }
+
+    Material::~Material()
+    {
+
+    }
+
+    void Material::SetTexture(PropertyName name, Texture* texture)
+    {
+        _Textures[name.GetIndex()] = texture;
+    }
+
+    Texture* Material::GetTexture(PropertyName name)
+    {
+        auto find = _Textures.find(name.GetIndex());
+        if (find != _Textures.end())
+        {
+            return find->second;
+        }
+        return nullptr;
+    }
 }

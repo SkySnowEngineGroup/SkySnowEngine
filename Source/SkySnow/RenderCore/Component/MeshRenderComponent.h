@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "Renderable.h"
-#include "MeshResource.h"
+#include "Mesh.h"
 namespace SkySnow
 {
 	class MeshRenderComponent : public Renderable
@@ -37,8 +37,8 @@ namespace SkySnow
 		{
 		}
 
-		void SetMesh(MeshResource* mesh);
+		void SetMesh(Mesh* mesh);
 	private:
-		MeshResource* _Mesh;
+		Mesh* _Mesh;
 	};
 }

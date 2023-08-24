@@ -24,6 +24,7 @@
 #include "SkySnowProfiles.h"
 #include "LogAssert.h"
 #include "RenderSystem.h"
+#include "ResourceSystem.h"
 namespace SkySnow
 {
     class RenderSystem;
@@ -40,6 +41,7 @@ namespace SkySnow
         void ShutDown();
     private:
         RenderSystem*       _RenderSystem;
+        ResourceSystem*     _ResourceSystem;
     };
 	
 }

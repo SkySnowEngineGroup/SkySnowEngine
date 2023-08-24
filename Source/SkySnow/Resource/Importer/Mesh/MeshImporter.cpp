@@ -35,9 +35,10 @@ namespace SkySnow
 			SN_WARN("_MLoadType(%d) Not Support[Support(FBXLoader 0) (AssimpLoader 1)].", _MLoadType);
 			break;
 		}
+		return nullptr;
 	}
 	bool MeshImporter::Release(void* data)
 	{
-
+		return true;
 	}
 }

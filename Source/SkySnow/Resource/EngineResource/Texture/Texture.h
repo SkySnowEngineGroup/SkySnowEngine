@@ -21,48 +21,22 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "SkySnowProfiles.h"
-#include <stdlib.h>
-#include <iostream>
-#include "EngineWindow.h"
-#include "IEngine.h"
-#include "Framework.h"
+#include "GRIResource.h"
+#include "TextureStream.h"
+#include "IResource.h"
 namespace SkySnow
 {
-	enum EngineUsagType
-	{
-		None	= 0,
-		Sample	= 1,
-		Editor	= 2
-	};
-	class Application
-	{
-	public:
-		Application(const char* name,const char* description, uint32_t width, uint32_t height);
-		virtual ~Application();
-		virtual bool Init() = 0;
-        virtual void Update() = 0;
-        virtual void ShutDown() = 0;
+    class Texture : public IResource
+    {
+        SkySnow_Object(Texture,IResource);
     public:
-        //don't overload child
-        void RunApplication();
-		void SetUseEngineType(EngineUsagType eut) { _EngineUsagType = eut; }
-	private:
-		void RunAppInternal();
+        Texture();
         
-        void MainUpdateInternal();
-	private:
-        const char*         _Name;
-        const char*         _Description;
-        uint32              _Width;
-        uint32              _Height;
-        EngineUsagType      _EngineUsagType;
-        IEngine*            _SkySnowEngine;
-		EngineWindow*       _EditorWindow;
-		EngineWindow*       _GameWindow;
-        Framework*          _Framework;
-		bool				_AppInit = false;
-	};
-	
-}
+        virtual ~Texture();
 
+        void SetTextureStream(TextureStream* stream);
+    private:
+        GRITextureRef   _TextureHandle;//GpuResource
+        TextureStream*  _TextureStream;//CPUResource
+    };
+}

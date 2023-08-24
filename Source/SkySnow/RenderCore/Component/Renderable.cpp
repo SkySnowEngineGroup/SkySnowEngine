@@ -20,17 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "DefaultMesh.h"
+#include "Renderable.h"
+
 namespace SkySnow
 {
-    class MeshResource
-    {
-    public:
-        MeshResource();
-        ~MeshResource();
-        MeshResource* SetDefaultMeshType(DefaultMeshType dmt);
-    private:
-        DefaultMeshType	_Dmt = DMT_None;
-    };
+	Renderable::Renderable()
+	{
+
+	}
+
+	Renderable::~Renderable()
+	{
+
+	}
+	void Renderable::SetMaterialCount(uint32 matCount)
+	{
+		const size_t oldSize = _Materials.size();
+
+		if (matCount != (int)oldSize)
+		{
+			_Materials.clear();
+			_Materials.resize(matCount);
+		}
+	}
+
+	void Renderable::SetMaterial(Material* material, uint32 index)
+	{
+		if (index > _Materials.size())
+		{
+			SN_ERR("The index is larger than the material array size.");
+		}
+		_Materials[index] = material;
+	}
 }

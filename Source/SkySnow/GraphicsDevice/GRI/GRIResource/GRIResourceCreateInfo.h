@@ -23,7 +23,7 @@
 #pragma once
 #include "GRICommons.h"
 #include "GRIResource.h"
-#include "Hash.h"
+#include "HashUtil.h"
 #include <vector>
 #include <unordered_map>
 namespace SkySnow

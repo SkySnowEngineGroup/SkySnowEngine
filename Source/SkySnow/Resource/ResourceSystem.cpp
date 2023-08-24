@@ -20,20 +20,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "MeshResource.h"
+#include "ResourceSystem.h"
+#include "HashUtil.h"
 namespace SkySnow
 {
-    MeshResource::MeshResource()
+    ResourceSystem::ResourceSystem()
+    {
+
+    }
+    ResourceSystem::~ResourceSystem()
     {
 
     }
 
-    MeshResource::~MeshResource()
+    void ResourceSystem::PushLoadJob(std::string resPath,EResourceType ert)
+    {
+        std::size_t hash = 0;
+        HashCombine(resPath,hash);
+        HashCombine(ert, hash);
+
+        ResKeyWords meta;
+        meta._ResPath   = resPath;
+        meta._Ert       = ert;
+        _ResMapJob[hash] = meta;
+    }
+
+    void ResourceSystem::PreUpdate()
     {
 
     }
 
-    MeshResource* MeshResource::SetDefaultMeshType(DefaultMeshType dmt)
+    void ResourceSystem::Update()
+    {
+
+    }
+
+    void ResourceSystem::PostUpdate()
+    {
+
+    }
+
+    void ResourceSystem::ShutDown()
     {
 
     }
