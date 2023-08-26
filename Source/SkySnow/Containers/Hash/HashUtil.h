@@ -24,6 +24,7 @@
 #include <string>
 #include <stddef.h>
 #include "AllocMacros.h"
+#include <functional>
 namespace SkySnow
 {
     inline uint32_t murmur3(const uint32_t* key, size_t wordCount, uint32_t seed) noexcept 

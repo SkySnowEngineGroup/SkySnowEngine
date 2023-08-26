@@ -36,7 +36,10 @@ namespace SkySnow
 		~MeshRenderComponent()
 		{
 		}
-
+        
+        virtual void UpdateRenderer() final override;
+        
+        virtual void Update() final override;
 		void SetMesh(Mesh* mesh);
 	private:
 		Mesh* _Mesh;

@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "Texture.h"
+#include "GRI.h"
 namespace SkySnow
 {
     Texture::Texture()
@@ -37,5 +38,12 @@ namespace SkySnow
     void Texture::SetTextureStream(TextureStream* stream)
     {
         _TextureStream = stream;
+        uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
+        _TextureHandle = CreateTexture2D(_TextureStream->GetImageWidth(),
+                                         _TextureStream->GetImageHeight(),
+                                         _TextureStream->GetPixelFormat(),
+                                         1, 1,
+                                         (TextureUsageType)tut,
+                                         (uint8*)_TextureStream->GetImageData());
     }
 }

@@ -37,7 +37,7 @@ namespace SkySnow
     {
         std::size_t hash = 0;
         HashCombine(resPath,hash);
-        HashCombine(ert, hash);
+        HashCombine((int)ert, hash);
 
         ResKeyWords meta;
         meta._ResPath   = resPath;

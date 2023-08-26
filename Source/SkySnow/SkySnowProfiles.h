@@ -34,6 +34,7 @@
 #define PLATFORM_LINUX 5
 
 #define DEBUG 1
+#define Use_Smart_Ptr 1 //Use custom smart Pointers
 
 #define DEFAUT_WADTH 800
 #define DEFAUT_HEIGHT 600

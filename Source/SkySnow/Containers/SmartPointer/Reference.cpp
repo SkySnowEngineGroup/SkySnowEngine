@@ -19,9 +19,67 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#pragma once
+#include "Reference.h"
 
 namespace SkySnow
 {
+    RefCount::RefCount()
+    {
+        _Refcount.Init();
+        _RefcountInit.Init();
+        _WeakRefcount.Init(0);
+    }
 
+    RefCount::~RefCount()
+    {
+
+    }
+
+    bool RefCount::Init()
+    {
+        if (Add())
+        {
+            if (_RefcountInit.Get() > 0)
+            {
+                _RefcountInit.Unref();
+                Release(); // first referencing is already 1, so compensate for the ref above
+            }
+
+            return true;
+        }
+        else
+        {
+
+            return false;
+        }
+    }
+
+    //Return false at count is zero
+    bool RefCount::Add()
+    {
+        return _Refcount.SharedPtr();
+    }
+
+    bool RefCount::Release()
+    {
+        return _Refcount.Unref();
+    }
+
+    bool RefCount::WeakAdd()
+    {
+        return _WeakRefcount.SharedPtr();
+    }
+    bool RefCount::WeakRelease()
+    {
+        return _WeakRefcount.Unref() && _WeakRefcount._Count == 0;
+    }
+
+    int RefCount::GetRefCount() const
+    {
+        return _Refcount.Get();
+    }
+    int RefCount::GetWeakRefCount() const
+    {
+        return _WeakRefcount.Get();
+    }
 }

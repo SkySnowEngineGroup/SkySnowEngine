@@ -19,62 +19,77 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-
 #pragma once
-#include <vector>
+#include <stdint.h>
 #include <atomic>
 #include "LogAssert.h"
-#include "StackAllocator.h"
-/*
-	M：Multiple，多个的
-	S：Single，单个的
-	P：Producer，生产者
-	C：Consumer，消费者
-	Netty没有使用JDK的阻塞队列，使用了Lock-freeMpscqueue
-*/
 namespace SkySnow
 {
-	template<typename T>
-	class MpscQueue final
-	{
-	public:
-		MpscQueue()
-		{
-			Node* sentinel = new Node;
-			_Head.store(sentinel,std::memory_order_relaxed);
-			_Tail = _Head;
-		}
-        ~MpscQueue()
+    struct SafeCounter
+    {
+    public:
+        inline bool SharedPtr()
         {
-            
+            _Count++;
+            return _Count != 0;
         }
-        
-        MpscQueue(MpscQueue&& other) = delete;
-		MpscQueue(const MpscQueue& other) = delete;
-        MpscQueue& operator=(MpscQueue&& other) = delete;
-		MpscQueue& operator=(const MpscQueue& other) = delete;
-		
 
-        template <typename... ArgTypes>
-		void Enqueue(ArgTypes&&... args)
-		{
+        inline int RefValue()
+        {
+            _Count++;
+            return _Count;
+        }
 
-			
-		}
-		
-		bool Dequeue(std::vector<T*>& list)
-		{
-			return true;
-		}
-	private:
-		struct Node
-		{
-			std::atomic<Node*> _Next{ nullptr };
-			T				   _Value;
-		};
-	private:
-		std::atomic<Node*>	_Head;
-		Node*           	_Tail;
-	};
+        inline bool Unref()
+        {
+            --_Count;
+            bool del = _Count == 0;
+            return del;
+        }
+
+        inline int Get() const
+        {
+            return _Count;
+        }
+
+        inline void Init(int value = 1)
+        {
+            _Count = value;
+        }
+       
+        SafeCounter()
+            : _Count(0)
+        {
+        }
+    public:
+        std::atomic<int> _Count;
+    };
+
+    class RefCount
+    {
+    public:
+        RefCount();
+        ~RefCount();
+
+        inline bool IsDelete() const
+        {
+            return _RefcountInit.Get() < 1;
+        }
+        bool Init();
+
+        //Return false at count is zero
+        bool Add();
+        bool Release();
+
+        bool WeakAdd();
+        bool WeakRelease();
+
+        int GetRefCount() const;
+        int GetWeakRefCount() const;
+
+    private:
+        SafeCounter _Refcount;
+        SafeCounter _RefcountInit;
+        SafeCounter _WeakRefcount;
+    };
 }

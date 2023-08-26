@@ -205,39 +205,4 @@ namespace SkySnow
 	{
 		return lhs == rhs.GetReference();
 	}
-
-	//If you want your class to be automatically reclaimed, inherit the class Use as RefCountPtr<XXX>
-	//refcount base,thread not safe
-	class RefCounted : public NonCopyable
-	{
-	public:
-		RefCounted();
-
-		virtual ~RefCounted();
-
-		void Add();
-
-		void Release();
-
-		int RefCount()const;
-	private:
-		int32_t m_refs;
-	};
-	//use atomic refcount
-	//thread safe
-	class RefThreadSafeCounted : public NonCopyable
-	{
-	public:
-		RefThreadSafeCounted();
-
-		virtual ~RefThreadSafeCounted();
-
-		void Add();
-
-		void Release();
-
-		int RefCount()const;
-	private:
-		std::atomic<int32_t> m_refs;
-	};
 }

@@ -35,6 +35,7 @@
 #include "StbImageLoad.h"
 #include "SkySnowEngine.h"
 #include "TextureImporter.h"
+#include "SPtr.h"
 using namespace SkySnow;
 using namespace SampleEntry;
 class Triangle : public SkySnow::Application
@@ -83,6 +84,8 @@ public:
         meshCom->SetMaterialCount(1);
         meshCom->SetMaterial(mat,0);
         meshCom->SetMesh(mesh);
+
+        SPtr<Mesh> meshHandle = CreateSPtr<Mesh>();
 		return true;
 	}
     

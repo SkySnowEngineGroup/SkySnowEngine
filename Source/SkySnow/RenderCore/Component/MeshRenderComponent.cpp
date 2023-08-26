@@ -23,8 +23,18 @@
 #include "MeshRenderComponent.h"
 namespace SkySnow
 {
-	void MeshRenderComponent::SetMesh(MeshResource* mesh)
+	void MeshRenderComponent::SetMesh(Mesh* mesh)
 	{
 		_Mesh = mesh;
 	}
+
+    void MeshRenderComponent::UpdateRenderer()
+    {
+        
+    }
+
+    void MeshRenderComponent::Update()
+    {
+        
+    }
 }

@@ -25,7 +25,7 @@
 #include "GRICommons.h"
 #include "LogAssert.h"
 #include "GRIResourceFree.h"
-#include "SNAtomicVar.h"
+#include "AtomicVar.h"
 namespace SkySnow
 {
 	//Resource base class

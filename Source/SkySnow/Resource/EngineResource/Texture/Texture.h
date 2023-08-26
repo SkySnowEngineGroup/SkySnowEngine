@@ -36,7 +36,7 @@ namespace SkySnow
 
         void SetTextureStream(TextureStream* stream);
     private:
-        GRITextureRef   _TextureHandle;//GpuResource
+        GRITexture2DRef _TextureHandle;//GpuResource
         TextureStream*  _TextureStream;//CPUResource
     };
 }
