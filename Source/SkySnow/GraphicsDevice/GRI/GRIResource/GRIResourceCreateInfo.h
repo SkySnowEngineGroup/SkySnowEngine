@@ -459,4 +459,51 @@ namespace SkySnow
         RenderTargetView        _ColorResolveRTV[Max_RenderTarget_Textures];
         DepthRenderTargetView   _DepthStencilResolveRTV;
     };
+
+    struct ResourceData
+    {
+    private:
+        typedef void (*DeleteFunction)(void* ptr, void* userData);
+    public:
+        ResourceData(const char* resourceName)
+            : _ResourceName(resourceName)
+            , _DeleteFunction(nullptr)
+            , _Data(nullptr)
+            , _DataSize(0)
+            , _IsRef(false)
+        {
+        }
+        //Copy Ext Data,and delete copy data ptr
+        void Copy(const void* _data, uint32_t _size);
+        //not copy ext data,and call callBack function to delete data ptr
+        void Reference(const void* data, uint32 size, DeleteFunction deleteFun, void* userData);
+
+        void Release();
+
+        const char* GetResourceName()
+        {
+            return _ResourceName;
+        }
+        const uint8* GetResourceData() const
+        {
+            return _Data;
+        }
+
+        uint32 GetResourceSize() const
+        {
+            return _DataSize;
+        }
+
+        bool IsReference() const
+        {
+            return _IsRef;
+        }
+    private:
+        DeleteFunction  _DeleteFunction;
+        bool            _IsRef;
+        const char*     _ResourceName;
+        uint8*          _Data;
+        uint32          _DataSize;
+        
+    };
 }
