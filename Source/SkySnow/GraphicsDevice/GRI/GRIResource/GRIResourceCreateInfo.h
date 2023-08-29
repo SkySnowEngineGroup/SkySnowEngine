@@ -26,6 +26,7 @@
 #include "HashUtil.h"
 #include <vector>
 #include <unordered_map>
+#include "AllocatorBase.h"
 namespace SkySnow
 {
     struct UniformSlot;
@@ -181,9 +182,21 @@ namespace SkySnow
     {
         UniformSlot(const char* inName,void* inData,uint8_t size)
             : _Hash(String2Hash(inName))
-            , _Data(inData)
             , _Size(size)
         { 
+            _Data = GMalloc::Alloc(size);
+            std::memcpy(_Data, inData, size);
+        }
+        ~UniformSlot()
+        {
+        }
+
+        void Release()
+        {
+            if (_Data)
+            {
+                GMalloc::Free(_Data);
+            }
         }
         uint8_t _Size;
         void*   _Data;
@@ -459,26 +472,68 @@ namespace SkySnow
         RenderTargetView        _ColorResolveRTV[Max_RenderTarget_Textures];
         DepthRenderTargetView   _DepthStencilResolveRTV;
     };
-
+    struct DataMemory
+    {
+        uint8* _Data = nullptr;
+        uint32 _DataSize = 0;
+    };
     struct ResourceData
     {
     private:
         typedef void (*DeleteFunction)(void* ptr, void* userData);
     public:
-        ResourceData(const char* resourceName)
+        ResourceData(const char* resourceName = "")
             : _ResourceName(resourceName)
             , _DeleteFunction(nullptr)
-            , _Data(nullptr)
-            , _DataSize(0)
+            , _UserData(nullptr)
+            , _DataMemory(nullptr)
             , _IsRef(false)
         {
         }
         //Copy Ext Data,and delete copy data ptr
-        void Copy(const void* _data, uint32_t _size);
+        void MakeCopy(const void* data, uint32 size)
+        {
+            _IsRef = false;
+            _DataMemory = new DataMemory();
+            _DataMemory->_Data = (uint8*)GMalloc::Alloc(size);
+            _DataMemory->_DataSize = size;
+            std::memcpy(_DataMemory->_Data, data, size);
+        }
         //not copy ext data,and call callBack function to delete data ptr
-        void Reference(const void* data, uint32 size, DeleteFunction deleteFun, void* userData);
+        void MakeRef(const void* data, uint32 size, DeleteFunction deleteFun = nullptr, void* userData = nullptr)
+        {
+            _DataMemory = new DataMemory();
+            _DataMemory->_Data = (uint8*)data;
+            _DataMemory->_DataSize = size;
+            _DeleteFunction = deleteFun;
+            _UserData = userData;
+            _IsRef = true;
+        }
 
-        void Release();
+        void Release()
+        {
+            if(_IsRef)
+            {
+                if(_DeleteFunction && _DataMemory)
+                {
+                    _DeleteFunction(_DataMemory->_Data,_UserData);
+                }
+                if(_DataMemory)
+                {
+                    delete _DataMemory;
+                    _DataMemory = nullptr;
+                }
+            }
+            else
+            {
+                if(_DataMemory)
+                {
+                    GMalloc::Free(_DataMemory->_Data);
+                    delete _DataMemory;
+                    _DataMemory = nullptr;
+                }
+            }
+        }
 
         const char* GetResourceName()
         {
@@ -486,12 +541,12 @@ namespace SkySnow
         }
         const uint8* GetResourceData() const
         {
-            return _Data;
+            return _DataMemory ? _DataMemory->_Data : nullptr;
         }
 
         uint32 GetResourceSize() const
         {
-            return _DataSize;
+            return _DataMemory ? _DataMemory->_DataSize : 0;
         }
 
         bool IsReference() const
@@ -500,10 +555,9 @@ namespace SkySnow
         }
     private:
         DeleteFunction  _DeleteFunction;
+        void*           _UserData;
         bool            _IsRef;
         const char*     _ResourceName;
-        uint8*          _Data;
-        uint32          _DataSize;
-        
+        DataMemory*     _DataMemory;
     };
 }

@@ -195,27 +195,28 @@ namespace SkySnow
 	// CreateVertexShader
 	struct GRICreateVertexShaderCommand : public GRICommand<GRICreateVertexShaderCommand>
 	{
-        GRICreateVertexShaderCommand(GRIVertexShaderRef& handle,const char* vsCode)
-			: _VsCode(vsCode)
+        GRICreateVertexShaderCommand(GRIVertexShaderRef& handle,ResourceData& rData)
+			: _ResourceData(rData)
 			, _Handle(handle)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
 
-		const char*			_VsCode;
+        ResourceData        _ResourceData;
 		GRIVertexShaderRef	_Handle;
 	};
 
 	struct GRICreateFragmentShaderCommand : public GRICommand<GRICreateFragmentShaderCommand>
 	{
-		GRICreateFragmentShaderCommand(GRIFragmentShaderRef& handle, const char* vsCode)
-			: _FsCode(vsCode)
+		GRICreateFragmentShaderCommand(GRIFragmentShaderRef& handle,ResourceData& rData)
+			: _ResourceData(rData)
 			, _Handle(handle)
 		{
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
 
 		const char*				_FsCode;
+        ResourceData            _ResourceData;
 		GRIFragmentShaderRef	_Handle;
 	};
 
@@ -231,12 +232,12 @@ namespace SkySnow
 
 	struct GRICreateBufferCommand : public GRICommand<GRICreateBufferCommand>
 	{
-		GRICreateBufferCommand(GRIBufferRef& handle,BufferUsageType usageType, int size, int stride, void* data)
+		GRICreateBufferCommand(GRIBufferRef& handle,BufferUsageType usageType, int size, int stride,ResourceData& rData)
 			: _Handle(handle)
 			, _UsageType(usageType)
 			, _Size(size)
 			, _Stride(stride)
-			, _Data(data)
+			, _ResourceData(rData)
 		{
 		}
 
@@ -244,7 +245,7 @@ namespace SkySnow
 		BufferUsageType _UsageType;
 		int				_Size;
 		int				_Stride;
-		void*			_Data;
+        ResourceData    _ResourceData;
 		GRIBufferRef	_Handle;
 	};
 
@@ -306,14 +307,14 @@ namespace SkySnow
 
 	struct GRICreateTexture2DCommand : public GRICommand<GRICreateTexture2DCommand>
 	{
-		GRICreateTexture2DCommand(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data, GRITexture2DRef& handle)
+		GRICreateTexture2DCommand(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, ResourceData& rData, GRITexture2DRef& handle)
 			: _Sizex(sizex)
 			, _Sizey(sizey)
 			, _Format(format)
 			, _NumMips(numMips)
 			, _NumSamples(numSamples)
 			, _UsageType(usageType)
-			, _Data(data)
+			, _ResourceData(rData)
 			, _Handle(handle)
 		{
 		}
@@ -326,13 +327,13 @@ namespace SkySnow
 		uint32				_NumMips;
 		uint32				_NumSamples; 
 		TextureUsageType	_UsageType; 
-		uint8*				_Data;
+        ResourceData        _ResourceData;
 		GRITexture2DRef		_Handle;
 	};
 
 	struct GRICreateTexture2DArrayCommand : public GRICommand<GRICreateTexture2DArrayCommand>
 	{
-		GRICreateTexture2DArrayCommand(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data, GRITexture2DArrayRef& handle)
+		GRICreateTexture2DArrayCommand(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData, GRITexture2DArrayRef& handle)
 			: _Sizex(sizex)
 			, _Sizey(sizey)
 			, _Sizez(sizez)
@@ -340,7 +341,7 @@ namespace SkySnow
 			, _NumMips(numMips)
 			, _NumSamples(numSamples)
 			, _UsageType(usageType)
-			, _Data(data)
+			, _ResourceData(rData)
 			, _Handle(handle)
 		{
 		}
@@ -354,19 +355,19 @@ namespace SkySnow
 		uint32					_NumMips; 
 		uint32					_NumSamples; 
 		TextureUsageType		_UsageType; 
-		uint8*					_Data; 
+        ResourceData            _ResourceData;
 		GRITexture2DArrayRef	_Handle;
 	};
 	struct GRICreateTexture3DCommand : GRICommand<GRICreateTexture3DCommand>
 	{
-		GRICreateTexture3DCommand(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data, GRITexture3DRef& handle)
+		GRICreateTexture3DCommand(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData, GRITexture3DRef& handle)
 			: _Sizex(sizex)
 			, _Sizey(sizey)
 			, _Sizez(sizez)
 			, _Format(format)
 			, _NumMips(numMips)
 			, _UsageType(usageType)
-			, _Data(data)
+			, _ResourceData(rData)
 			, _Handle(handle)
 		{
 		}
@@ -379,18 +380,18 @@ namespace SkySnow
 		uint8				_Format; 
 		uint32				_NumMips; 
 		TextureUsageType	_UsageType; 
-		uint8*				_Data; 
+        ResourceData        _ResourceData;
 		GRITexture3DRef		_Handle;
 	};
 
 	struct GRICreateTextureCubeCommand : GRICommand<GRICreateTextureCubeCommand>
 	{
-		GRICreateTextureCubeCommand(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data, GRITextureCubeRef& handle)
+		GRICreateTextureCubeCommand(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData, GRITextureCubeRef& handle)
 			: _Size(size)
 			, _Format(format)
 			, _NumMips(numMips)
 			, _UsageType(usageType)
-			, _Data(data)
+			, _ResourceData(rData)
 			, _Handle(handle)
 		{
 		}
@@ -401,7 +402,7 @@ namespace SkySnow
 		uint8				_Format; 
 		uint32				_NumMips; 
 		TextureUsageType	_UsageType; 
-		uint8*				_Data; 
+        ResourceData        _ResourceData;
 		GRITextureCubeRef	_Handle;
 	};
 

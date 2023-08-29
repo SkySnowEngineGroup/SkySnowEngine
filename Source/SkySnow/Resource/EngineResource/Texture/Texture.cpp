@@ -38,12 +38,14 @@ namespace SkySnow
     void Texture::SetTextureStream(TextureStream* stream)
     {
         _TextureStream = stream;
+        ResourceData texRD;
+        texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
         uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
         _TextureHandle = CreateTexture2D(_TextureStream->GetImageWidth(),
                                          _TextureStream->GetImageHeight(),
                                          _TextureStream->GetPixelFormat(),
                                          1, 1,
                                          (TextureUsageType)tut,
-                                         (uint8*)_TextureStream->GetImageData());
+                                         texRD);
     }
 }

@@ -30,14 +30,16 @@ namespace SkySnow
 {
 	using namespace OGLShader;
 	////Create Shader about Resource
-	void GRIGLDrive::GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle)
+	void GRIGLDrive::GRICreateVertexShader(ResourceData& rData, GRIVertexShaderRef& handle)
 	{
-		OGLShader::CreateShader<GRIVertexShader, GLVertexShader>(vsCode, handle);
+		OGLShader::CreateShader<GRIVertexShader, GLVertexShader>((char*)rData.GetResourceData(), handle);
+        rData.Release();
 	}
 
-	void GRIGLDrive::GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle)
+	void GRIGLDrive::GRICreateFragmentShader(ResourceData& rData, GRIFragmentShaderRef& handle)
 	{
-		OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>(fsCode, handle);
+		OGLShader::CreateShader<GRIFragmentShader, GLFragmentShader>((char*)rData.GetResourceData(), handle);
+        rData.Release();
 	}
 
 	void GRIGLDrive::GRICreatePipelineShader(GRIPipelineShaderRef& handle)

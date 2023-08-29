@@ -75,12 +75,12 @@ namespace SkySnow
 	//===============================================================================
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateVertexShader(_VsCode, _Handle);
+		GRI->GRICreateVertexShader(_ResourceData, _Handle);
 	}
 
 	void GRICreateFragmentShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateFragmentShader(_FsCode, _Handle);
+		GRI->GRICreateFragmentShader(_ResourceData, _Handle);
 	}
 
 	void GRICreatePipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
@@ -90,7 +90,7 @@ namespace SkySnow
 
 	void GRICreateBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _Data, _Handle);
+		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _ResourceData, _Handle);
 	}
 
 	void GRICreateGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
@@ -115,22 +115,22 @@ namespace SkySnow
 
 	void GRICreateTexture2DCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTexture2D(_Sizex, _Sizey, _Format, _NumMips, _NumSamples, _UsageType, _Data, _Handle);
+		GRI->GRICreateTexture2D(_Sizex, _Sizey, _Format, _NumMips, _NumSamples, _UsageType, _ResourceData, _Handle);
 	}
 
 	void GRICreateTexture2DArrayCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTexture2DArray(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_NumSamples,_UsageType,_Data,_Handle);
+		GRI->GRICreateTexture2DArray(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_NumSamples,_UsageType, _ResourceData,_Handle);
 	}
 
 	void GRICreateTexture3DCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTexture3D(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_UsageType,_Data,_Handle);
+		GRI->GRICreateTexture3D(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_UsageType, _ResourceData,_Handle);
 	}
 
 	void GRICreateTextureCubeCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTextureCube(_Size,_Format,_NumMips,_UsageType,_Data,_Handle);
+		GRI->GRICreateTextureCube(_Size,_Format,_NumMips,_UsageType, _ResourceData,_Handle);
 	}
 
 	void GRICreateSamplerCommand::Execute(GRICommandBufferBase& cmdBuffer)

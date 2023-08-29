@@ -37,13 +37,11 @@ namespace SkySnow
 			, _BufferType(0)
 			, _GpuHandle(0)
 			, _StreamDraw(false)
-			, _Data(nullptr)
 		{
 		}
 		//
-        GRIGLBuffer(BufferUsageType usageType,GLuint size,int stride,const void* data,bool streamDraw = false)
+        GRIGLBuffer(BufferUsageType usageType,GLuint size,int stride,bool streamDraw = false)
 			: GRIBuffer(usageType, size, stride) 
-			, _Data(data)
 			, _StreamDraw(streamDraw)
             , _GpuHandle(-1)
 		{
@@ -53,12 +51,12 @@ namespace SkySnow
 		{
 		}
         //Create Buffer with buffer type
-		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size)
+		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size,ResourceData& rData)
 		{
 			_BufferType = bufferType;
 			glGenBuffers(1,&_GpuHandle);
 			glBindBuffer(_BufferType, _GpuHandle);
-			glBufferData(_BufferType, size, _Data, IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+			glBufferData(_BufferType, size, rData.GetResourceData(), IsDynamic() ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 			glBindBuffer(_BufferType, 0);
 		}
 
@@ -67,7 +65,6 @@ namespace SkySnow
 		GLenum		_BufferType;
 	private:
 		bool		_StreamDraw;
-		const void* _Data;
 	};
     //Vertex Declaration layout
     //vdlStart==============================================================================================
@@ -158,7 +155,7 @@ namespace SkySnow
             OGLBuffer::UBBitSet::BSInstance().ReleaseUBBindingIndex(_BindingIndex);
         }
 
-        void SetUp(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
+        void SetUp(UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
         {
             _UniformBufferUsagType = ubType;
             _HashKey = String2Hash(ubName);
@@ -179,6 +176,7 @@ namespace SkySnow
                 {
                     std::memcpy(static_cast<char*>(combindData + offset), contents[i]._Data, contents[i]._Size);
                     offset = offset + contents[i]._Size;
+                    contents[i].Release();
                 }
                 glBufferData(GL_UNIFORM_BUFFER, _Size, (void*)(combindData), stream ? GL_STREAM_DRAW : GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -189,7 +187,7 @@ namespace SkySnow
             _Dirty = true;
         }
 
-        void UpdateUniformBuffer(const UniformSlotList& contents)
+        void UpdateUniformBuffer(UniformSlotList& contents)
         {
             RecordUniformData(contents);
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
@@ -200,6 +198,7 @@ namespace SkySnow
                 {
                     std::memcpy(static_cast<char*>(combindData + offset), contents[i]._Data, contents[i]._Size);
                     offset = offset + contents[i]._Size;
+                    contents[i].Release();
                 }
                 glBindBuffer(GL_UNIFORM_BUFFER, _GpuHandle);
                 //TODO Map Buffer Object
@@ -210,7 +209,7 @@ namespace SkySnow
             _Dirty = true;
         }
     private:
-        void RecordUniformData(const UniformSlotList& contents)
+        void RecordUniformData(UniformSlotList& contents)
         {
             ClearUniformData();
             if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
@@ -218,12 +217,19 @@ namespace SkySnow
                 _HashKey = 0;
                 for (int i = 0; i < contents.size(); i ++)
                 {
-                    _UniformBufferData.push_back(std::make_pair(contents[i]._Hash, contents[i]._Data));
+                    void* cpyData = GMalloc::Alloc(contents[i]._Size);
+                    std::memcpy(cpyData, contents[i]._Data, contents[i]._Size);
+                    _UniformBufferData.push_back(std::make_pair(contents[i]._Hash, cpyData));
+                    contents[i].Release();
                 }
             }
         }
         void ClearUniformData()
         {
+            for (int i = 0; i < _UniformBufferData.size(); i ++)
+            {
+                GMalloc::Free(_UniformBufferData[i].second);
+            }
             _UniformBufferData.clear();
         }
     public:

@@ -15,5 +15,5 @@ void main()
 {
 	vec4 utest = test1 + test2 + test3 + uColor + uColor2;
 	vec4 testColor = texture(TestMap_Sampler0, vec2(vUv.x,1.0 - vUv.y));
-	FragColor = vec4(testColor.xyz,1.0f);
+	FragColor = vec4(testColor.xyz,1.0f) + test1;
 }

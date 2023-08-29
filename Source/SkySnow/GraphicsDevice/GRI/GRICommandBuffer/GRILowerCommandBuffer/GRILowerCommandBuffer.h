@@ -85,13 +85,13 @@ namespace SkySnow
             _Lock.UnLock();
         }
     public:
-        virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) = 0;
+        virtual GRIVertexShaderRef CreateVertexShader(ResourceData& rData) = 0;
 
-        virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) = 0;
+        virtual GRIFragmentShaderRef CreateFragmentShader(ResourceData& rData) = 0;
 
         virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) = 0;
 
-        virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) = 0;
+        virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData) = 0;
 
         virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) = 0;
 
@@ -101,13 +101,13 @@ namespace SkySnow
         
         virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) = 0;
 
-        virtual GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) = 0;
+        virtual GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData) = 0;
 
-        virtual GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) = 0;
+        virtual GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData) = 0;
         
-        virtual GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) = 0;
+        virtual GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData) = 0;
         
-        virtual GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) = 0;
+        virtual GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData) = 0;
         
         virtual GRISamplerStateRef CreateSampler(const SamplerState& sState) = 0;
 

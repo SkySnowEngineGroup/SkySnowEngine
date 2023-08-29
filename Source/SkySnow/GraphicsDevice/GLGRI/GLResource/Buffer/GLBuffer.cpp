@@ -26,7 +26,7 @@
 namespace SkySnow
 {
     //Create Buffer,Buffer Type: indexbuffer\vertexbuffer\SSBO
-	void GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride, void* data, GRIBufferRef& handle)
+	void GRIGLDrive::GRICreateBuffer(BufferUsageType usageType, int size,int stride,ResourceData& rData, GRIBufferRef& handle)
 	{
 		GLenum bufferType = GL_ARRAY_BUFFER;
 		if (usageType == BUT_IndexBuffer)
@@ -35,7 +35,8 @@ namespace SkySnow
 		}
 
         GRIGLBuffer* glBuffer = dynamic_cast<GRIGLBuffer*>(handle.GetReference());
-		glBuffer->CreateBuffer(bufferType,usageType, size);
+		glBuffer->CreateBuffer(bufferType,usageType, size, rData);
+        rData.Release();
 		glBuffer->_StreamDraw = true;
 		glBuffer->_BufferName = "a";
 	}
@@ -49,13 +50,15 @@ namespace SkySnow
     void GRIGLDrive::GRICreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType,GRIUniformBufferRef& handle)
 	{
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(handle.GetReference());
-		uniformBuffer->SetUp(contents,ubName,ubType);
+        UniformSlotList& nonConstContents = const_cast<UniformSlotList&>(contents);
+		uniformBuffer->SetUp(nonConstContents,ubName,ubType);
 	}
 	//Update Uniform Buffer
 	void GRIGLDrive::GRIUpdateUniformBuffer(GRIUniformBufferRef& buffer, const UniformSlotList& contents)
 	{
 		GRIGLUniformBuffer* uniformBuffer = dynamic_cast<GRIGLUniformBuffer*>(buffer.GetReference());
-		uniformBuffer->UpdateUniformBuffer(contents);
+        UniformSlotList& nonConstContents = const_cast<UniformSlotList&>(contents);
+		uniformBuffer->UpdateUniformBuffer(nonConstContents);
 	}
 	//Create Uniform Buffer Declaration
 	void GRIGLDrive::GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle)

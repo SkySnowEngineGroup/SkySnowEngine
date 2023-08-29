@@ -28,23 +28,27 @@
 namespace SkySnow
 {
     GLTextureFormat GGLTextureFormat[PixelFormat::PF_End];
-    void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle)
+    void GRIGLDrive::GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData,GRITexture2DRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRIGLTexture2D>(dynamic_cast<GRIGLTexture2D*>(handle.GetReference()), sizex, sizey, 1, format, numMips, numSamples, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTexture2D>(dynamic_cast<GRIGLTexture2D*>(handle.GetReference()), sizex, sizey, 1, format, numMips, numSamples, usageType, (uint8*)rData.GetResourceData());
+        rData.Release();
     }
     
-    void GRIGLDrive::GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle)
+    void GRIGLDrive::GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData,GRITexture2DArrayRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRIGLTexture2DArray>(dynamic_cast<GRIGLTexture2DArray*>(handle.GetReference()), sizex, sizey, sizez, format, numMips, 1, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTexture2DArray>(dynamic_cast<GRIGLTexture2DArray*>(handle.GetReference()), sizex, sizey, sizez, format, numMips, 1, usageType, (uint8*)rData.GetResourceData());
+        rData.Release();
     }
 
-    void GRIGLDrive::GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,uint8* data,GRITexture3DRef& handle)
+    void GRIGLDrive::GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,ResourceData& rData,GRITexture3DRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRIGLTexture3D>(dynamic_cast<GRIGLTexture3D*>(handle.GetReference()), sizex, sizey, sizez, format, numMips, 1, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTexture3D>(dynamic_cast<GRIGLTexture3D*>(handle.GetReference()), sizex, sizey, sizez, format, numMips, 1, usageType, (uint8*)rData.GetResourceData());
+        rData.Release();
     }
-    void GRIGLDrive::GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle)
+    void GRIGLDrive::GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData,GRITextureCubeRef& handle)
     {
-        OGLTexture::CreateTextureInternal<GRIGLTextureCube>(dynamic_cast<GRIGLTextureCube*>(handle.GetReference()), size, size, 1, format, numMips, 1, usageType, data);
+        OGLTexture::CreateTextureInternal<GRIGLTextureCube>(dynamic_cast<GRIGLTextureCube*>(handle.GetReference()), size, size, 1, format, numMips, 1, usageType, (uint8*)rData.GetResourceData());
+        rData.Release();
     }
     //纹理更新规则
     /*
@@ -57,7 +61,7 @@ namespace SkySnow
         4. TextureCube: MipCount = 0~10  Width * Height = 4 * 4  6个面
             Example更新数据参数: MipLevel = 0, faceindex = 1 Data = {4*4}
      */
-    void GRIGLDrive::GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData)
     {
         GRIGLTexture2D* glTexture = dynamic_cast<GRIGLTexture2D*>(tex2D.GetReference());
         
@@ -77,19 +81,20 @@ namespace SkySnow
         if (isCompressed)
         {
             const int imageSize = (uRegion._Width / formatInfo._BlockSizeX) * (uRegion._Height / formatInfo._BlockSizeY) * formatInfo._ByteSize;
-            glCompressedTexSubImage2D(glTarget, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, imageSize,glFormat, data);
+            glCompressedTexSubImage2D(glTarget, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, imageSize,glFormat, rData.GetResourceData());
         }
         else
         {
-            glTexSubImage2D(glTarget, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, glFormat, glType, data);
+            glTexSubImage2D(glTarget, mipLevel, uRegion._DestX, uRegion._DestY, uRegion._Width, uRegion._Height, glFormat, glType, rData.GetResourceData());
         }
         
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
 
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+        rData.Release();
     }
     //depthPitch 是当前miplevel级别图像的大小
-    void GRIGLDrive::GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch,ResourceData& rData)
     {
         GRIGLTexture3D* glTex = dynamic_cast<GRIGLTexture3D*>(tex3D.GetReference());
         const Texture3DRegion uRegion = region;
@@ -108,7 +113,7 @@ namespace SkySnow
                 uRegion._Width, uRegion._Height, uRegion._Depth,
                 texFormat._GLInternalFormat[sRgb],
                 depthPitch * uRegion._Depth,
-                data
+                rData.GetResourceData()
             );
         }
         else
@@ -124,15 +129,15 @@ namespace SkySnow
                 uRegion._Width, uRegion._Height, uRegion._Depth, 
                 texFormat._GLFormat, 
                 texFormat._GLType,
-                data);
+                rData.GetResourceData());
         }
-
+        rData.Release();
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, 0);
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
     }
 
-    void GRIGLDrive::GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray, uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray, uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData)
     {
         GRIGLTexture2DArray* glTex = dynamic_cast<GRIGLTexture2DArray*>(tex2DArray.GetReference());
         const Texture2DRegion uRegion = region;
@@ -151,7 +156,7 @@ namespace SkySnow
                 uRegion._Width, uRegion._Height, 1, 
                 texFormat._GLInternalFormat[sRgb], 
                 imageSize,
-                data);
+                rData.GetResourceData());
         }
         else
         {
@@ -164,12 +169,14 @@ namespace SkySnow
                 uRegion._Width,uRegion._Height,1,
                 texFormat._GLFormat,
                 texFormat._GLType,
-                data);
+                rData.GetResourceData());
         }
+
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+        rData.Release();
     }
-    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data)
+    void GRIGLDrive::GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData)
     {
         GRIGLTextureCube* glTex = dynamic_cast<GRIGLTextureCube*>(texCube.GetReference());
         const Texture2DRegion uRegion = region;
@@ -189,7 +196,7 @@ namespace SkySnow
                 uRegion._Width, uRegion._Height, 1,
                 texFormat._GLInternalFormat[sRgb],
                 imageSize,
-                data);
+                rData.GetResourceData());
         }
         else
         {
@@ -202,10 +209,11 @@ namespace SkySnow
                 uRegion._Width, uRegion._Height, 0,
                 texFormat._GLFormat,
                 texFormat._GLType,
-                data);
+                rData.GetResourceData());
         }
         glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+        rData.Release();
     }
 
     //Texture Internal call function

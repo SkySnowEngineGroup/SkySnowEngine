@@ -64,16 +64,16 @@ namespace SkySnow
 		//GRICreate=================================================================================================================================
 		GRIFeature GetGRIFeatureType() override { return OpenGL::GetFeatureType(); }
 		//Create Vertex Shader
-		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) final override;
+		virtual void GRICreateVertexShader(ResourceData& rData, GRIVertexShaderRef& handle) final override;
 		//Create Fragment Shader
-		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) final override;
+		virtual void GRICreateFragmentShader(ResourceData& rData, GRIFragmentShaderRef& handle) final override;
 		//Create Shader State
 		virtual void GRICreatePipelineShader(GRIPipelineShaderRef& handle) final override;
 		//Create Render Pipeline
 		virtual void GRICreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo, GRIGraphicsPipelineRef& handle) final override;
         //Create Compute Pipeline
         virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) final override;
-		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, void* data, GRIBufferRef& handle) final override;
+		virtual void GRICreateBuffer(BufferUsageType usageType, int size, int stride, ResourceData& rData, GRIBufferRef& handle) final override;
         //Create Vertex Declaration for VertexBuffer
 		virtual void GRICreateVertexDescriptor(const VertexElementList& vdel,GRIVertexDescriptorRef& handle) final override;
 		//Create Uniform Buffer
@@ -82,13 +82,13 @@ namespace SkySnow
 		virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl, GRIUniformBufferDescriptorRef& handle) final override;
 		//Texture2D
         //create mipmap texture,you will pack all mipmap data to one data,SkySnowEngine not support generate mipmap texture
-		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data,GRITexture2DRef& handle) final override;
+		virtual void GRICreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, ResourceData& rData,GRITexture2DRef& handle) final override;
 		//Texture2DArray
-		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle) final override;
+		virtual void GRICreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData,GRITexture2DArrayRef& handle) final override;
 		//Texture3D
-		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,uint8* data,GRITexture3DRef& handle) final override;
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,ResourceData& rData,GRITexture3DRef& handle) final override;
 		//TextureCube
-		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle) final override;
+		virtual void GRICreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData,GRITextureCubeRef& handle) final override;
 		//SamplerState
 		virtual void GRICreateSampler(const SamplerState& sState, GRISamplerStateRef& handle) final override;
 		//RenderState Rasterizer
@@ -109,14 +109,14 @@ namespace SkySnow
 		virtual void GRIUpdateUniformBuffer(GRIUniformBufferRef& buffer, const UniformSlotList& contents) final override;
 		//Update Texture2D Data
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
+		virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData) final override;
 		//Update Texture3D Data and Texture2DArray
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch, const uint8* data) final override;
+		virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel, Texture3DRegion region, uint32 rowPitch, uint8 depthPitch,ResourceData& rData) final override;
 		//Update TextureCube Data
         //if updload mipmap data,you need call this function for numMap count
-		virtual void GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray, uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
-		virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) final override;
+		virtual void GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray, uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData) final override;
+		virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube, uint32 faceIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData) final override;
 		//GRISet====================================================================================================================================
 		//Set Buffer VertexBuffer(StreamSource)
 		virtual void GRISetBuffer(int bufferIndex, GRIBufferRef& buffer, int offset) final override;

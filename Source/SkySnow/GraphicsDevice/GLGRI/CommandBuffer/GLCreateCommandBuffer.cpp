@@ -40,17 +40,17 @@ namespace SkySnow
 
 	}
 	//ResourceCreate====================================================================
-	GRIVertexShaderRef GLCreateCommandBuffer::CreateVertexShader(const char* vsCode)
+	GRIVertexShaderRef GLCreateCommandBuffer::CreateVertexShader(ResourceData& rData)
 	{
 		GRIVertexShaderRef handle = new GLVertexShader();
-		Alloc_CommandCreate(GRICreateVertexShaderCommand, handle, vsCode);
+		Alloc_CommandCreate(GRICreateVertexShaderCommand, handle, rData);
 		return handle;
 	}
 
-	GRIFragmentShaderRef GLCreateCommandBuffer::CreateFragmentShader(const char* fsCode)
+	GRIFragmentShaderRef GLCreateCommandBuffer::CreateFragmentShader(ResourceData& rData)
 	{
 		GRIFragmentShaderRef handle = new GLFragmentShader();
-		Alloc_CommandCreate(GRICreateFragmentShaderCommand, handle, fsCode);
+		Alloc_CommandCreate(GRICreateFragmentShaderCommand, handle, rData);
 		return handle;
 	}
 
@@ -61,10 +61,10 @@ namespace SkySnow
 		return handle;
 	}
 
-	GRIBufferRef GLCreateCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride, void* data)
+	GRIBufferRef GLCreateCommandBuffer::CreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData)
 	{
-		GRIBufferRef handle = new GRIGLBuffer(usageType, size, stride, data);
-		Alloc_CommandCreate(GRICreateBufferCommand, handle, usageType, size, stride, data);
+		GRIBufferRef handle = new GRIGLBuffer(usageType, size, stride);
+		Alloc_CommandCreate(GRICreateBufferCommand, handle, usageType, size, stride, rData);
 		return handle;
 	}
 
@@ -98,31 +98,31 @@ namespace SkySnow
         return handle;
     }
 
-	GRITexture2DRef GLCreateCommandBuffer::CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+	GRITexture2DRef GLCreateCommandBuffer::CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
 	{
 		GRITexture2DRef handle = new GRIGLTexture2D(sizex, sizey,numMips,numSamples,(PixelFormat)format,usageType);
-		Alloc_CommandCreate(GRICreateTexture2DCommand,sizex,sizey,format,numMips,numSamples,usageType,data,handle);
+		Alloc_CommandCreate(GRICreateTexture2DCommand,sizex,sizey,format,numMips,numSamples,usageType,rData,handle);
 		return handle;
 	}
 
-	GRITexture2DArrayRef GLCreateCommandBuffer::CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data)
+	GRITexture2DArrayRef GLCreateCommandBuffer::CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
 	{
 		GRITexture2DArrayRef handle = new GRIGLTexture2DArray(sizex,sizey,sizez,numMips,numSamples, (PixelFormat)format,usageType);
-		Alloc_CommandCreate(GRICreateTexture2DArrayCommand,sizex,sizey,sizez,format,numMips,numSamples,usageType,data,handle);
+		Alloc_CommandCreate(GRICreateTexture2DArrayCommand,sizex,sizey,sizez,format,numMips,numSamples,usageType,rData,handle);
 		return handle;
 	}
 
-	GRITexture3DRef GLCreateCommandBuffer::CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+	GRITexture3DRef GLCreateCommandBuffer::CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData)
 	{
 		GRITexture3DRef handle = new GRIGLTexture3D(sizex,sizey,sizez,numMips,1, (PixelFormat)format,usageType);
-		Alloc_CommandCreate(GRICreateTexture3DCommand,sizex,sizey,sizez,format,numMips,usageType,data, handle);
+		Alloc_CommandCreate(GRICreateTexture3DCommand,sizex,sizey,sizez,format,numMips,usageType,rData, handle);
 		return handle;
 	}
 
-	GRITextureCubeRef GLCreateCommandBuffer::CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data)
+	GRITextureCubeRef GLCreateCommandBuffer::CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, ResourceData& rData)
 	{
 		GRITextureCubeRef handle = new GRIGLTextureCube(size,numMips,1, (PixelFormat)format,usageType);
-		Alloc_CommandCreate(GRICreateTextureCubeCommand,size,format,numMips,usageType,data, handle);
+		Alloc_CommandCreate(GRICreateTextureCubeCommand,size,format,numMips,usageType,rData, handle);
 		return handle;
 	}
 

@@ -31,13 +31,13 @@ namespace SkySnow
 
 		~GLCreateCommandBuffer();
 	public://Set Resource
-		virtual GRIVertexShaderRef CreateVertexShader(const char* vsCode) final override;
+		virtual GRIVertexShaderRef CreateVertexShader(ResourceData& rData) final override;
 
-		virtual GRIFragmentShaderRef CreateFragmentShader(const char* fsCode) final override;
+		virtual GRIFragmentShaderRef CreateFragmentShader(ResourceData& rData) final override;
 
 		virtual GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs) final override;
 
-		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride, void* data) final override;
+		virtual GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData) final override;
 
 		virtual GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo) final override;
 
@@ -47,13 +47,13 @@ namespace SkySnow
         
         virtual GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl) final override;
 
-		virtual GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) final override;
+		virtual GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData) final override;
 
-		virtual GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType, uint8* data) final override;
+		virtual GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData) final override;
 
-		virtual GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) final override;
+		virtual GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData) final override;
 
-		virtual GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType, uint8* data) final override;
+		virtual GRITextureCubeRef CreateTextureCube(uint32 size, uint8 format, uint32 numMips, TextureUsageType usageType,ResourceData& rData) final override;
 
 		virtual GRISamplerStateRef CreateSampler(const SamplerState& sState) final override;
 	};

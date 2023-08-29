@@ -66,8 +66,12 @@ namespace SkySnow
             _File->ReadData(vsShaderPath, _VsData);
             _File->ReadData(fsShaderPath, _FsData);
             //Create VS And PS
-            _vsRef = CreateVertexShader((char*)_VsData->GetBytes());
-            _fsRef = CreateFragmentShader((char*)_FsData->GetBytes());
+            ResourceData vsRD;
+            vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
+            _vsRef = CreateVertexShader(vsRD);
+            ResourceData fsRD;
+            fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
+            _fsRef = CreateFragmentShader(fsRD);
             //Create ShaderPipeline
             _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
             
@@ -75,21 +79,25 @@ namespace SkySnow
             string imagePath = GetImageAllPath("panda.png");
             TextureImporter* tImp = new TextureImporter();
             TextureStream* texStream = tImp->Import<TextureStream>(imagePath);
-            //TextureStream* texStream = StbImageLoad::StbLoadPNG(imagePath);
+            ResourceData texRD;
+            texRD.MakeCopy(texStream->GetImageData(), texStream->GetImageSize());
+
             uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
             _Tex2D = CreateTexture2D(texStream->GetImageWidth(),
                                      texStream->GetImageHeight(),
                                      texStream->GetPixelFormat(),
                                      1, 1,
                                      (TextureUsageType)tut,
-                                     (uint8*)texStream->GetImageData());
+                                     texRD);
+            Delete_Object(texStream);
+            Delete_Object(tImp);
             //Create Sampler
             SamplerState samplerState;
             _Sampler = CreateSampler(samplerState);
             //Create UniformBuffer
             //TODO UniformBuffer SourceData Manage
-            float* uColor  = new float[]{0,1,0,0};
-            float* uColor2 = new float[]{1,0,0,0};
+            float uColor[]{0,1,0,0};
+            float uColor2[]{1,0,0,0};
             UniformSlotList uSlot1;
             uSlot1.push_back(UniformSlot("uColor", uColor, 4 * sizeof(float)));
             uSlot1.push_back(UniformSlot("uColor2", uColor2, 4 * sizeof(float)));
@@ -97,9 +105,9 @@ namespace SkySnow
             
             //Create Uniform Array
             //TODO UniformBuffer SourceData Manage
-            float* test1 = new float[]{1,0,0,0};
-            float* test2 = new float[]{0,1,0,0};
-            float* test3 = new float[]{0,0,1,0};
+            float test1[]{1,0,0,0};
+            float test2[]{0,1,0,0};
+            float test3[]{0,0,1,0};
             UniformSlotList uSlot2;
             uSlot2.push_back(UniformSlot("test1", test1, 4 * sizeof(float)));
             uSlot2.push_back(UniformSlot("test2", test2, 4 * sizeof(float)));
@@ -112,27 +120,31 @@ namespace SkySnow
             _UBODesc = CreateUniformDescriptor(ubSlot);
             
             //TODO UniformBuffer SourceData Manage
-            float* vertices = new float[]{ -0.5f, -0.5f,0.0f,
-                                           0.5f,  0.5f, 0.0f,
-                                           -0.5f, 0.5f, 0.0f,
-                                           -0.5f, -0.5f, 0.0f,
-                                           0.5f, -0.5f, 0.0f,
-                                           0.5f, 0.5f, 0.0f};
+            float vertices[]{ -0.5f, -0.5f,0.0f,
+                              0.5f,  0.5f, 0.0f,
+                              -0.5f, 0.5f, 0.0f,
+                              -0.5f, -0.5f, 0.0f,
+                              0.5f, -0.5f, 0.0f,
+                              0.5f, 0.5f, 0.0f};
+            ResourceData vexRD;
+            vexRD.MakeCopy(vertices, 18 * sizeof(float));
             _VertexBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
                                             18 * sizeof(float),
                                             3,
-                                            vertices);
+                                            vexRD);
             //TODO UniformBuffer SourceData Manage
-            float* colors = new float[]{ 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,0.0f,
-                                         0.0f, 1.0f, 0.0f, 1.0f, 1.0f,1.0f,
-                                         0.0f, 0.0f, 1.0f, 1.0f, 0.0f,1.0f,
-                                         1.0f, 0.0f, 0.0f, 1.0f, 0.0f,0.0f,
-                                         0.0f, 1.0f, 1.0f, 1.0f, 1.0f,0.0f,
-                                         0.0f, 1.0f, 0.0f, 1.0f, 1.0f,1.0f};
+            float colors[]{ 1.0f, 0.0f, 0.0f, 1.0f, 0.0f,0.0f,
+                            0.0f, 1.0f, 0.0f, 1.0f, 1.0f,1.0f,
+                            0.0f, 0.0f, 1.0f, 1.0f, 0.0f,1.0f,
+                            1.0f, 0.0f, 0.0f, 1.0f, 0.0f,0.0f,
+                            0.0f, 1.0f, 1.0f, 1.0f, 1.0f,0.0f,
+                            0.0f, 1.0f, 0.0f, 1.0f, 1.0f,1.0f};
+            ResourceData colRD;
+            colRD.MakeCopy(colors, 36 * sizeof(float));
             _ColorBufferRef = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
                                            36 * sizeof(float),
                                            6,
-                                           colors);
+                                           colRD);
             VertexElementList veList;
             //bufferindex attritubeindex stride offset
             veList.push_back(VertexElementSlot(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));

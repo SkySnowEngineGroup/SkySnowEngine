@@ -343,7 +343,7 @@ namespace SkySnow
 		GRIBuffer()
 			: GRIResource(EGRIResourceType::GRT_Buffer)
 			, _UsageType(BufferUsageType::BUT_None)
-			,_Size(0)
+			, _Size(0)
 			, _Stride(0)
 			, _BufferName("")
 		{

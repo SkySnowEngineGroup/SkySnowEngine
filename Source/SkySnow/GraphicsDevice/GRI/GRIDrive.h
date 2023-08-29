@@ -59,9 +59,9 @@ namespace SkySnow
 		virtual void GRIEndViewport(GRIViewportStateRef& viewPort, bool present, bool lockToVsync) = 0;
 		//GRICreate=======================================================================================================================
 		//Create Vertex Shader
-		virtual void GRICreateVertexShader(const char* vsCode, GRIVertexShaderRef& handle) = 0;
+		virtual void GRICreateVertexShader(ResourceData& rData, GRIVertexShaderRef& handle) = 0;
 		//Create Fragment Shader
-		virtual void GRICreateFragmentShader(const char* fsCode, GRIFragmentShaderRef& handle) = 0;
+		virtual void GRICreateFragmentShader(ResourceData& rData, GRIFragmentShaderRef& handle) = 0;
 		//Create Pipeline Shader Stage State
 		virtual void GRICreatePipelineShader(GRIPipelineShaderRef& handle) = 0;
 		//Create Graphics Pipeline
@@ -69,7 +69,7 @@ namespace SkySnow
         //Create Compute Pipeline
         virtual void GRICreateComputePipeline(const GRICreateComputePipelineInfo& createInfo,GRIComputePipelineRef& handle) = 0;
 		//Create Buffer:index vertex SSBO
-		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,void* data, GRIBufferRef& handle) = 0;
+		virtual void GRICreateBuffer(BufferUsageType usageType, int size,int stride,ResourceData& rData, GRIBufferRef& handle) = 0;
         //Create Vertex Declaration for VertexBuffer
         virtual void GRICreateVertexDescriptor(const VertexElementList& vdel,GRIVertexDescriptorRef& handle) = 0;
         //Create Uniform Buffer
@@ -77,13 +77,13 @@ namespace SkySnow
         //Create Uniform Buffer Declaration
         virtual void GRICreateUniformDescriptor(const UniformBufferList& ubl,GRIUniformBufferDescriptorRef& handle) = 0;
         //Texture2D
-        virtual void GRICreateTexture2D(uint32 sizex,uint32 sizey,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data,GRITexture2DRef& handle) = 0;
+        virtual void GRICreateTexture2D(uint32 sizex,uint32 sizey,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,ResourceData& rData,GRITexture2DRef& handle) = 0;
         //Texture2DArray
-		virtual void GRICreateTexture2DArray(uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,uint8* data,GRITexture2DArrayRef& handle) = 0;
+		virtual void GRICreateTexture2DArray(uint32 sizex,uint32 sizey,uint32 sizez,uint8 format,uint32 numMips,uint32 numSamples,TextureUsageType usageType,ResourceData& rData,GRITexture2DArrayRef& handle) = 0;
 		//Texture3D
-		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,uint8* data,GRITexture3DRef& handle) = 0;
+		virtual void GRICreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, uint8 format, uint32 numMips,TextureUsageType usageType,ResourceData& rData,GRITexture3DRef& handle) = 0;
 		//TextureCube
-		virtual void GRICreateTextureCube(uint32 size, uint8 format,uint32 numMips, TextureUsageType usageType,uint8* data,GRITextureCubeRef& handle) = 0;
+		virtual void GRICreateTextureCube(uint32 size, uint8 format,uint32 numMips, TextureUsageType usageType,ResourceData& rData,GRITextureCubeRef& handle) = 0;
         //SamplerState
         virtual void GRICreateSampler(const SamplerState& sState,GRISamplerStateRef& handle) = 0;
 		//RenderState Rasterizer
@@ -101,10 +101,10 @@ namespace SkySnow
 		virtual void GRINextRenderSubPass() = 0;
 		virtual void GRIEndRenderPass() = 0;
         //Texture Update Data
-        virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,const uint8* data) {};
-        virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel,Texture3DRegion region,uint32 rowPitch,uint8 depthPitch,const uint8* data) {};
-        virtual void GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray,uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch,const uint8* data) {};
-        virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube,uint32 faceIndex,uint32 mipLevel, Texture2DRegion region, uint32 pitch, const uint8* data) {};
+        virtual void GRIUpdateTexture2D(GRITexture2DRef& tex2D,uint32 mipLevel,Texture2DRegion region,uint32 pitch,ResourceData& rData) {};
+        virtual void GRIUpdateTexture3D(GRITexture3DRef& tex3D, uint32 mipLevel,Texture3DRegion region,uint32 rowPitch,uint8 depthPitch,ResourceData& rData) {};
+        virtual void GRIUpdateTexture2DArray(GRITexture2DArrayRef& tex2DArray,uint32 textureIndex, uint32 mipLevel, Texture2DRegion region, uint32 pitch,ResourceData& rData) {};
+        virtual void GRIUpdateTextureCube(GRITextureCubeRef& texCube,uint32 faceIndex,uint32 mipLevel, Texture2DRegion region, uint32 pitch, ResourceData& rData) {};
         virtual void GRISetShaderTexture(GRIPipelineShaderRef& graphicsShader,GRITextureRef& texture,uint32 textureIndex) {};
         virtual void GRISetShaderSampler(GRIPipelineShaderRef& graphicsShader,GRISamplerStateRef& sampler,uint32 samplerIndex) {}
         
