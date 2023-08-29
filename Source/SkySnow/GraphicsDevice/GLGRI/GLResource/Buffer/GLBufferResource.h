@@ -163,7 +163,7 @@ namespace SkySnow
             {
                 _Size += contents[i]._Size;
             }
-            RecordUniformData(contents);
+            RecordSingleDrawUniformData(contents);
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
                 bool stream = (_UniformBufferUsagType == UniformBufferUsageType::UBT_SingleDraw || _UniformBufferUsagType == UniformBufferUsageType::UBT_SingleFrame);
@@ -189,7 +189,7 @@ namespace SkySnow
 
         void UpdateUniformBuffer(UniformSlotList& contents)
         {
-            RecordUniformData(contents);
+            RecordSingleDrawUniformData(contents);
             if (_UniformBufferUsagType != UniformBufferUsageType::UBT_UV_SingleDraw)
             {
                 char* combindData = new char[_Size];
@@ -209,7 +209,7 @@ namespace SkySnow
             _Dirty = true;
         }
     private:
-        void RecordUniformData(UniformSlotList& contents)
+        void RecordSingleDrawUniformData(UniformSlotList& contents)
         {
             ClearUniformData();
             if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
@@ -226,9 +226,12 @@ namespace SkySnow
         }
         void ClearUniformData()
         {
-            for (int i = 0; i < _UniformBufferData.size(); i ++)
+            if (_UniformBufferUsagType == UniformBufferUsageType::UBT_UV_SingleDraw)
             {
-                GMalloc::Free(_UniformBufferData[i].second);
+                for (int i = 0; i < _UniformBufferData.size(); i++)
+                {
+                    GMalloc::Free(_UniformBufferData[i].second);
+                }
             }
             _UniformBufferData.clear();
         }
