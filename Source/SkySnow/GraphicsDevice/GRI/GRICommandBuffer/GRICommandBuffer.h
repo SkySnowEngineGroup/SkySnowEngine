@@ -115,8 +115,6 @@ namespace SkySnow
         void BeginFrame();
 
         void EndFrame();
-
-        void FlushResource();
         
         void PresentQueue();
 

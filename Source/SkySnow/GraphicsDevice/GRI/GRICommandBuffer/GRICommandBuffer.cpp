@@ -130,7 +130,7 @@ namespace SkySnow
     }
     GRICommandBufferQueue::~GRICommandBufferQueue()
     {
-        
+        _RenderRunnable->Exit();
     }
 	void GRICommandBufferQueue::Init()
 	{
@@ -171,10 +171,6 @@ namespace SkySnow
         }
     }
 
-    void GRICommandBufferQueue::FlushResource()
-    {
-        
-    }
     void GRICommandBufferQueue::PresentQueue()
     {
         //TestCode Single MainThread Render Capacity
@@ -207,6 +203,15 @@ namespace SkySnow
 
     //GRI Globle Create Resource Interface
     //================================================================================================
+    void FlushResource()
+    {
+        if (!_GQueue->IsLowerVerion())
+        {
+            GRIResource::FlushResourceRelease();
+            return;
+        }
+        _GQueue->GetLowerCommandBuffer()->FlushResourceRelease();
+    }
     //Create Viewport and Attach a Context or device
     GRIViewportStateRef CreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
     {

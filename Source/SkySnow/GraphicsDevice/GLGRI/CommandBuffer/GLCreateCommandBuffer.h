@@ -31,6 +31,8 @@ namespace SkySnow
 
 		~GLCreateCommandBuffer();
 	public://Set Resource
+        virtual void FlushResourceRelease() final override;
+        
 		virtual GRIVertexShaderRef CreateVertexShader(ResourceData& rData) final override;
 
 		virtual GRIFragmentShaderRef CreateFragmentShader(ResourceData& rData) final override;

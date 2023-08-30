@@ -49,6 +49,7 @@ namespace SkySnow
 
 		~GRIGLBuffer()
 		{
+            SN_LOG("GRIGLBuffer DesConstruct.");
 		}
         //Create Buffer with buffer type
 		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size,ResourceData& rData)

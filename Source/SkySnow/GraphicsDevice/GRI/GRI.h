@@ -31,10 +31,12 @@ namespace SkySnow
     extern GRIDrive*                GRI;
     extern GRIPipelineCache*        _GPipelineCache;
     
-    //RHI Init
+    //GRI Init
     void GRIInit();
-    //RHI Exit
+    //GRI Exit
     void GRIExit();
+    //GRI Flush GPU Resource(GPU Handle Recycle)
+    void FlushResource();
     //Viewport Create
     GRIViewportStateRef CreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen);
     //Create VS

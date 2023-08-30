@@ -77,11 +77,14 @@ namespace SkySnow
 		}
 		//-----------------------------------------------------------
 	public:
-		static void FlushResourceRelease();
+		static void FlushResourceRelease()
+        {
+            ResourceReclaim::Instance().RemoveReclaimResource();
+        }
 	private:
 		void ReclaimResource()
 		{
-			delete this;
+            ResourceReclaim::Instance().AddReclaimResource(this);
 		}
 	private:
 		const EGRIResourceType	m_GRIResourceType;

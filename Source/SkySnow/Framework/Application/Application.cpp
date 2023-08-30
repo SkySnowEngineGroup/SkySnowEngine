@@ -68,7 +68,6 @@ namespace SkySnow
         _Framework->Init();
         //Start Engine MainUpdate
         MainUpdateInternal();
-        
         ShutDown();
         _Framework->ShutDown();
         _SkySnowEngine->ShutDown();
@@ -80,6 +79,7 @@ namespace SkySnow
         {
             //main thread start
             _GQueue->BeginFrame();
+            FlushResource();
             //Child App Init
             if (!_AppInit)
             {

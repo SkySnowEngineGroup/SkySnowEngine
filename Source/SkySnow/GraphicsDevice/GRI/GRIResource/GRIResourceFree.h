@@ -21,8 +21,30 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include <vector>
 namespace SkySnow
 {
-
+    class GRIResource;
+    class ResourceReclaim
+    {
+    public:
+        void AddReclaimResource(GRIResource* resource);
+        
+        void RemoveReclaimResource();
+        
+        void ShutDown();
+        
+        static ResourceReclaim& Instance()
+        {
+            static ResourceReclaim resourceReclaim;
+            return resourceReclaim;
+        }
+    private:
+        ResourceReclaim(){}
+        ~ResourceReclaim(){}
+        
+        void DeleteResourcePtr();
+    private:
+        std::vector<GRIResource*> _ReclaimList;
+    };
 }

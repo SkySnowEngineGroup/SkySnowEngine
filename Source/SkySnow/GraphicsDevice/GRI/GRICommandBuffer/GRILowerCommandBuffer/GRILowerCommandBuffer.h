@@ -85,6 +85,7 @@ namespace SkySnow
             _Lock.UnLock();
         }
     public:
+        virtual void FlushResourceRelease() = 0;
         virtual GRIVertexShaderRef CreateVertexShader(ResourceData& rData) = 0;
 
         virtual GRIFragmentShaderRef CreateFragmentShader(ResourceData& rData) = 0;

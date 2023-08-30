@@ -73,6 +73,10 @@ namespace SkySnow
         GRI->GRISetShaderSampler(_ShaderPipeline, _Sampler, _SamplerIndex);
     }
 	//===============================================================================
+    void GRIFlushResourceReleaseCommand::Execute(GRICommandBufferBase& cmdBuffer)
+    {
+        GRIResource::FlushResourceRelease();
+    }
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
 		GRI->GRICreateVertexShader(_ResourceData, _Handle);

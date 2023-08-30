@@ -25,8 +25,28 @@
 #include "GRIResource.h"
 namespace SkySnow
 {
-    //TODO: 核实计数器，Mark标记出所有计数位置
-	void GRIResource::FlushResourceRelease()
-	{
-	}
+    void ResourceReclaim::AddReclaimResource(GRIResource* resource)
+    {
+        _ReclaimList.emplace_back(resource);
+    }
+
+    void ResourceReclaim::RemoveReclaimResource()
+    {
+        DeleteResourcePtr();
+    }
+
+    void ResourceReclaim::ShutDown()
+    {
+        DeleteResourcePtr();
+    }
+
+    void ResourceReclaim::DeleteResourcePtr()
+    {
+        for(int i = 0; i < _ReclaimList.size(); i ++)
+        {
+            delete _ReclaimList[i];
+            _ReclaimList[i] = nullptr;
+        }
+        _ReclaimList.clear();
+    }
 }

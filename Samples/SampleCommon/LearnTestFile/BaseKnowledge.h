@@ -117,11 +117,10 @@ namespace SkySnowLearning
 	测试正式的智能指针的用法
 	*/
 
-	class Test : public SkySnow::RefThreadSafeCounted
+	class Test 
 	{
 	public:
 		Test()
-			: RefThreadSafeCounted()
 		{
 			SN_LOG("Test Construct.");
 		}

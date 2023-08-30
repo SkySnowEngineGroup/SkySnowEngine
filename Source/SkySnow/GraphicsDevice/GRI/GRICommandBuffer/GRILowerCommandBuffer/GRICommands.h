@@ -193,6 +193,14 @@ namespace SkySnow
 	//======================================================================================================================
 	// RenderResource Create
 	// CreateVertexShader
+    struct GRIFlushResourceReleaseCommand : public GRICommand<GRIFlushResourceReleaseCommand>
+    {
+        GRIFlushResourceReleaseCommand()
+        {
+        }
+        void Execute(GRICommandBufferBase& cmdBuffer);
+    };
+    
 	struct GRICreateVertexShaderCommand : public GRICommand<GRICreateVertexShaderCommand>
 	{
         GRICreateVertexShaderCommand(GRIVertexShaderRef& handle,ResourceData& rData)
