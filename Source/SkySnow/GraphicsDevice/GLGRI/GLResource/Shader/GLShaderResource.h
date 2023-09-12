@@ -44,6 +44,11 @@ namespace SkySnow
 		virtual ~GLShaderBase()
 		{
 			SN_LOG("GLShaderBase DesConstruct.");
+			if (_GpuHandle)
+			{
+				glDeleteShader(_GpuHandle);
+				SN_LOG("GLShaderBase Reclaiming GPU Resources.");
+			}
 		}
 
 
@@ -104,6 +109,11 @@ namespace SkySnow
         {
 			_InternalUBs.clear();
             SN_LOG("GLPipelineShader DesConstruct");
+			if (_ProgramId)
+			{
+				glDeleteProgram(_ProgramId);
+				SN_LOG("GLPipelineShader Reclaiming GPU Resources.");
+			}
         }
         inline GLVertexShader* GetVertexShader() { return dynamic_cast<GLVertexShader*>(_VertexShader.GetReference()); }
         inline GLFragmentShader* GetFragmentShader() { return dynamic_cast<GLFragmentShader*>(_FragmentShader.GetReference()); }

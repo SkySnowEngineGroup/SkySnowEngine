@@ -84,6 +84,21 @@ namespace SkySnow
         {
             return dynamic_cast<GRIGLUniformBufferDescriptor*>(_UBODescriptor.GetReference());
         }
+
+        void ReclaimPipelineResource()
+        {
+            _ShaderPipeline = nullptr;
+            _VertexDescriptor = nullptr;
+            _UBODescriptor = nullptr;
+            for (int i = 0; i < _Textures.size(); i ++)
+            {
+                _Textures.clear();
+            }
+            for (int i = 0; i < _Samplers.size(); i++)
+            {
+                _Samplers.clear();
+            }
+        }
     private:
         //this function use for _PendingState,other not use this function
         void InitialPipelineState()

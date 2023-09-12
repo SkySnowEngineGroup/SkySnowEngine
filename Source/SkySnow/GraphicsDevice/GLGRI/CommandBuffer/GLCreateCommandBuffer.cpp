@@ -43,7 +43,6 @@ namespace SkySnow
     void GLCreateCommandBuffer::FlushResourceRelease()
     {
         Alloc_CommandCreate(GRIFlushResourceReleaseCommand);
-        return;
     }
 	GRIVertexShaderRef GLCreateCommandBuffer::CreateVertexShader(ResourceData& rData)
 	{

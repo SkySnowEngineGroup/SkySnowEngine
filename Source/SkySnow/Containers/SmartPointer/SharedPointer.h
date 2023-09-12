@@ -40,7 +40,7 @@ namespace SkySnow
 		{
 		}
 
-		explicit SharedPtr(T* ptr) noexcept
+		SharedPtr(T* ptr) noexcept
 		{
 			if (ptr)
 			{
@@ -110,7 +110,7 @@ namespace SkySnow
 
 		inline void Reset(T* p_ptr = nullptr)
 		{
-			unref();
+			Release();
 
 			_Ptr = p_ptr;
 			_Counter = nullptr;
@@ -239,9 +239,9 @@ namespace SkySnow
 			_Counter = nullptr;
 			_Ptr = nullptr;
 
-			if (inSPtr.GetCounter() && inSPtr.get())
+			if (inSPtr.GetCounter() && inSPtr.Get())
 			{
-				_Ptr	 = inSPtr.get();
+				_Ptr	 = inSPtr.Get();
 				_Counter = inSPtr.GetCounter();
 				_Counter->Add();
 			}

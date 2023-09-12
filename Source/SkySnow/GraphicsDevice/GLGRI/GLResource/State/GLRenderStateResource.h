@@ -44,6 +44,16 @@ namespace SkySnow
             , _CompareFunc(GL_ALWAYS)
         {
         }
+
+        virtual ~GRIGLSamplerState()
+        {
+            SN_LOG("GRIGLSamplerState DesConstruct.");
+            if (_GpuHandle)
+            {
+                glDeleteSamplers(1, &_GpuHandle);
+                SN_LOG("GRIGLSamplerState Reclaiming GPU Resources.");
+            }
+        }
     public:
         GLuint  _GpuHandle;
         GLenum  _WrapS;

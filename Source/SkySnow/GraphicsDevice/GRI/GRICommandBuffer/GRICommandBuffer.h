@@ -121,6 +121,8 @@ namespace SkySnow
         GRICreateCommandBuffer* GetLowerCommandBuffer();
 
         bool IsLowerVerion();
+
+        void WaitForRenderThreadExit();
     private:
         GRICreateCommandBuffer*             _LowerComBuf;
         std::vector<GRICommandBufferBase*>  _ComBufList;

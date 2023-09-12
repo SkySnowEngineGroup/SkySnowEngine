@@ -38,6 +38,12 @@ namespace SkySnow
         }
         virtual ~GLBaseTexture()
         {
+            SN_LOG("GLBaseTexture DesConstruct.");
+            if (_GpuHandle)
+            {
+                glDeleteTextures(1, &_GpuHandle);
+                SN_LOG("GLBaseTexture Reclaiming GPU Resources.");
+            }
         }
 
         GLuint GetGpuHandle()

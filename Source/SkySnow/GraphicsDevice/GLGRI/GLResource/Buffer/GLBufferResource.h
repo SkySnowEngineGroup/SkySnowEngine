@@ -50,6 +50,11 @@ namespace SkySnow
 		~GRIGLBuffer()
 		{
             SN_LOG("GRIGLBuffer DesConstruct.");
+            if (_GpuHandle)
+            {
+                glDeleteBuffers(1, &_GpuHandle);
+                SN_LOG("GRIGLBuffer Reclaiming GPU Resources.");
+            }
 		}
         //Create Buffer with buffer type
 		void CreateBuffer(GLenum bufferType,GLenum usageType,GLuint size,ResourceData& rData)
@@ -154,6 +159,11 @@ namespace SkySnow
             SN_LOG("GRIGLUniformBuffer Destruct");
             ClearUniformData();
             OGLBuffer::UBBitSet::BSInstance().ReleaseUBBindingIndex(_BindingIndex);
+            if (_GpuHandle)
+            {
+                glDeleteBuffers(1, &_GpuHandle);
+                SN_LOG("GRIGLUniformBuffer Reclaiming GPU Resources.");
+            }
         }
 
         void SetUp(UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)

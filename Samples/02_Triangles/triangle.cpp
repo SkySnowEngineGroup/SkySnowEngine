@@ -86,6 +86,7 @@ public:
         meshCom->SetMesh(mesh);
 
         SPtr<Mesh> meshHandle = CreateSPtr<Mesh>();
+        SharedPtr<Mesh> mHanddle = new Mesh();
 		return true;
 	}
     

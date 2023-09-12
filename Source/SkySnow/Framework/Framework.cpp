@@ -62,5 +62,7 @@ namespace SkySnow
     {
         _RenderSystem->ShutDown();
         _ResourceSystem->ShutDown();
+        Context::Instance().RemoveSystem<RenderSystem>();
+        Context::Instance().RemoveSystem<ResourceSystem>();
     }
 }

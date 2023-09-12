@@ -31,7 +31,7 @@ namespace SkySnow
 
     Mesh::~Mesh()
     {
-
+        SN_LOG("Mesh DesConstruct.");
     }
 
     void Mesh::SetDefaultMeshType(DefaultMeshType dmt)

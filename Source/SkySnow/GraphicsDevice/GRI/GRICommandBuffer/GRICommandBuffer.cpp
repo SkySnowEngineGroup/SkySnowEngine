@@ -130,7 +130,7 @@ namespace SkySnow
     }
     GRICommandBufferQueue::~GRICommandBufferQueue()
     {
-        _RenderRunnable->Exit();
+       
     }
 	void GRICommandBufferQueue::Init()
 	{
@@ -194,6 +194,14 @@ namespace SkySnow
             return false;
         }
         return true;
+    }
+
+    void GRICommandBufferQueue::WaitForRenderThreadExit()
+    {
+        if (_RenderRunnable)
+        {
+            _RenderRunnable->WaitForRenderThread();
+        }
     }
     
     GRICreateCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()

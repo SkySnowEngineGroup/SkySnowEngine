@@ -48,6 +48,10 @@ namespace SkySnow
 
     void GRIGLDrive::Exit()
     {
+		_PendingState.ReclaimPipelineResource();
+		_RenderState.ReclaimPipelineResource();
+		_ShareState.ReclaimPipelineResource();
+		_InvalidState.ReclaimPipelineResource();
     }
 	//GRI Start
 	void GRIGLDrive::GRIDriveStart()

@@ -27,6 +27,9 @@
 namespace SkySnow
 {
     RenderRunnable::RenderRunnable()
+        : _ExitFlag(false)
+        , _FrameFinish(false)
+        , _RenderThreadEnd(false)
     {
         
     }
@@ -44,7 +47,7 @@ namespace SkySnow
     void RenderRunnable::OnRenderFrame()
     {
         _RenderSem.WaitForSignal();
-//        SN_LOG("RenderUpdate++++++++++++++");
+        //SN_LOG("RenderUpdate++++++++++++++");
         _GQueue->PresentQueue();
         _MainSem.Signal();
     }
@@ -56,11 +59,18 @@ namespace SkySnow
     void RenderRunnable::Run()
     {
         GRI->GRIDriveStart();
+        GRI->Init();
         while(!_ExitFlag)
         {
+            _FrameFinish = false;
             OnRenderFrame();
+            _FrameFinish = true;
         }
+        GRI->Exit();
+        GRIResource::FlushResourceRelease();
+        SN_LOG("RenderThread Exit.");
         GRI->GRIDriveEnd();
+        _RenderThreadEnd = true;
     }
 
     void RenderRunnable::Stop()
@@ -71,5 +81,16 @@ namespace SkySnow
     void RenderRunnable::Exit()
     {
         _ExitFlag = true;
+    }
+
+    void RenderRunnable::WaitForRenderThread()
+    {
+        while (!_FrameFinish)
+        {
+            BeginFrame();
+        }
+        _ExitFlag = true;
+        while (!_RenderThreadEnd)
+        {}
     }
 }

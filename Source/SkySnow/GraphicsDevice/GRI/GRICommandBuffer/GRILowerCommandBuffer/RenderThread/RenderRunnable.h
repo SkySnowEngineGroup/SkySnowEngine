@@ -44,10 +44,14 @@ namespace SkySnow
         virtual void Stop() override;
 
         virtual void Exit() override;
+
+        void WaitForRenderThread();
     private:
         void OnRenderFrame();
     private:
-        std::atomic<bool>   _ExitFlag = false;
+        std::atomic<bool>   _ExitFlag;
+        std::atomic<bool>   _FrameFinish;
+        std::atomic<bool>   _RenderThreadEnd;
         ThreadSemaphore     _RenderSem;
         ThreadSemaphore     _MainSem;
 	};

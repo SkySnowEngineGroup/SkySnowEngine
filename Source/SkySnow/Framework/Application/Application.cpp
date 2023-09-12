@@ -71,6 +71,7 @@ namespace SkySnow
         ShutDown();
         _Framework->ShutDown();
         _SkySnowEngine->ShutDown();
+        SN_LOG("MainThread Exit.");
     }
 
     void Application::MainUpdateInternal()
@@ -88,6 +89,7 @@ namespace SkySnow
             }
             //Chile App Update
             Update();
+            //SN_LOG("MainUpdate----------------");
             _Framework->MainUpdate();
             //main thread end
             _GQueue->EndFrame();
