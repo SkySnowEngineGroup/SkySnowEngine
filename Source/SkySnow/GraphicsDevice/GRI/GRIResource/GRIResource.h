@@ -507,6 +507,19 @@ namespace SkySnow
             SN_LOG("GRISamplerState DesConstruct.");
         }
     };
+	//RenderTarget---GRI Internal Use
+	class GRIRenderTarget : public GRIResource
+	{
+	public:
+		GRIRenderTarget()
+			: GRIResource(EGRIResourceType::GRT_RenderTarget)
+		{
+		}
+		virtual ~GRIRenderTarget()
+		{
+			SN_LOG("GRIRenderTarget DesConstruct.");
+		}
+	};
     //StateEnd===================================================================================
     //Texture: Texture2D/Array Texture3D/Array TextureCube
     typedef RefCountPtr<GRITexture>                 GRITextureRef;//Base class use for PipelineState

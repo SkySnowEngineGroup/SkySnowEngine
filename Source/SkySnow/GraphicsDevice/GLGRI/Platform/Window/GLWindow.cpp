@@ -186,17 +186,20 @@ namespace SkySnow
 
 	DrivePlatform::~DrivePlatform()
 	{
+		SN_LOG("DrivePlatform DesConstruct.");
 		if (_RenderContext)
 		{
 			_RenderContext->ReleaseContext();
 			delete _RenderContext;
 			_RenderContext = nullptr;
+			SN_LOG("DrivePlatform Reclaiming GPU Resources(_RenderContext).");
 		}
 		if (_MainContext)
 		{
 			_MainContext->ReleaseContext();
 			delete _MainContext;
 			_MainContext = nullptr;
+			SN_LOG("DrivePlatform Reclaiming GPU Resources(_MainContext).");
 		}
 	}
 
@@ -217,7 +220,7 @@ namespace SkySnow
 		{
 			glGenVertexArrays(1, &winMainContext->_VertexArrayObject);
 			glBindVertexArray(winMainContext->_VertexArrayObject);
-			glGenFramebuffers(1, &winMainContext->_VertexArrayObject);
+			glGenFramebuffers(1, &winMainContext->_FrameBufferObject);
 			wglMakeCurrent(nullptr, nullptr);
 		}
 		else

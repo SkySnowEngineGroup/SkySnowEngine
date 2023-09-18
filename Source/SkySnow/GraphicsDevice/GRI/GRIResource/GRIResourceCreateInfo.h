@@ -455,15 +455,16 @@ namespace SkySnow
         RenderTargetLoadOp  _StencilLoadOp;
         RenderTargetStoreOp _StencilStoreOp;
         GRITextureRef       _Texture;
-        GRITextureRef       _TextureResolve;
     };
 
     struct RenderPassInfo
     {
-        RenderPassInfo()
-        {
+        RenderPassInfo();
 
-        }
+        RenderPassInfo(const RenderPassInfo& other);
+
+        RenderPassInfo& operator=(const RenderPassInfo& other);
+
         DiscardRenderTarget     _DiscardRT;
 
         RenderTargetView        _ColorRTV[Max_RenderTarget_Textures];
@@ -471,6 +472,8 @@ namespace SkySnow
 
         RenderTargetView        _ColorResolveRTV[Max_RenderTarget_Textures];
         DepthRenderTargetView   _DepthStencilResolveRTV;
+
+
     };
     struct DataMemory
     {

@@ -117,6 +117,7 @@ namespace SkySnow
         GRIPipelineShaderRef            _ShaderPipeline;
         GRIVertexDescriptorRef          _VertexDescriptor;
         GRIUniformBufferDescriptorRef   _UBODescriptor;
+        RenderPassInfo                  _RenderPassInfo;
         std::vector<GRITextureRef>      _Textures;
         std::vector<GRISamplerStateRef> _Samplers;
 	};

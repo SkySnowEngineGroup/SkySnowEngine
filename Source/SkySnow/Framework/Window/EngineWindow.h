@@ -52,6 +52,8 @@ namespace SkySnow
 
         EngineWindowType GetEngineWindowType() const {return _EngineWindowType;}
 
+        void ExitViewPort();
+
         void ShutDown();
     private:
         EngineWindowType    _EngineWindowType;

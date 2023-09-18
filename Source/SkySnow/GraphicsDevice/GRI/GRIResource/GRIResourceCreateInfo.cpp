@@ -82,6 +82,26 @@ namespace SkySnow
 			   left._EnableMsaa == right._EnableMsaa &&
 			   left._EnableLineAA == right._EnableLineAA;
 	}
+	RenderPassInfo::RenderPassInfo()
+	{
+
+	}
+
+	RenderPassInfo::RenderPassInfo(const RenderPassInfo& other)
+	{
+
+	}
+
+	RenderPassInfo& RenderPassInfo::operator=(const RenderPassInfo& other)
+	{
+		if (this == &other) 
+		{
+			return *this; // 自我赋值检查
+		}
+		//
+		return *this;
+	}
+
     PixelFormatInfo GPixelFormats[PF_End] =
 	{
 		//				PixelFormat             Name			BlockSizeX  BlockSizeY  BlockSizeZ  ByteSize  NumComponents    Supported IsCompressed

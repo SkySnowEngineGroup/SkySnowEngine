@@ -52,6 +52,7 @@ namespace SkySnow
 		_RenderState.ReclaimPipelineResource();
 		_ShareState.ReclaimPipelineResource();
 		_InvalidState.ReclaimPipelineResource();
+		_Viewports.clear();
     }
 	//GRI Start
 	void GRIGLDrive::GRIDriveStart()

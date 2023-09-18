@@ -52,49 +52,48 @@ namespace SkySnow
     private:
         RenderTargetMap     _RenderTargetCache;
     };
-	class GLRenderTarget
+	class GLRenderTarget : public GRIRenderTarget
     {
     public:
-        GLRenderTarget()
-            : _GPUHandle(0)
-            , _DriveContext(nullptr)
-        {
-        }
+        GLRenderTarget() = default;
 
-        GLRenderTarget(uint32 inHandle, DriveContext* inContext)
-            : _GPUHandle(inHandle)
+        GLRenderTarget(DriveContext* inContext)
+            : GRIRenderTarget()
             , _DriveContext(inContext)
         {
-
+            CreateFrameBuffer();
         }
 
         ~GLRenderTarget()
         {
-            glDeleteFramebuffers( 1, &_GPUHandle);
-            _GPUHandle= 0;
+            SN_LOG("GLRenderTarget DesConstruct.");
+            if (_GPUHandle)
+            {
+                glDeleteFramebuffers(1, &_GPUHandle);
+                _GPUHandle = 0;
+                SN_LOG("GLRenderTarget Reclaiming GPU Resources.");
+            }
         }
         
         uint32 GetGpuHandle()
         {
             return _GPUHandle;
         }
-        
-        void SetGpuHandle(uint32 gphHandle)
-        {
-            _GPUHandle = gphHandle;
-        }
-
         bool operator==(const GLRenderTarget& other) const
         {
             return other._GPUHandle == _GPUHandle &&
                    other._DriveContext == _DriveContext;
         }
     private:
+        void CreateFrameBuffer()
+        {
+            glGenFramebuffers(1,&_GPUHandle);
+        }
+    private:
         GLuint          _GPUHandle;
         DriveContext*   _DriveContext;
     };
     
-
     struct RenderTargetKey
     {
         RenderTargetKey()

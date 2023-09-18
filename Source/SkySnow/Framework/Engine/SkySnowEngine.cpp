@@ -44,6 +44,14 @@ namespace SkySnow
 
     void SkySnowEngine::ShutDown()
     {
+        if (_GameWindow)
+        {
+            _GameWindow->ExitViewPort();
+        }
+        if (_EditorWindow)
+        {
+            _EditorWindow->ExitViewPort();
+        }
         GRIExit();
         if (_GameWindow)
         {

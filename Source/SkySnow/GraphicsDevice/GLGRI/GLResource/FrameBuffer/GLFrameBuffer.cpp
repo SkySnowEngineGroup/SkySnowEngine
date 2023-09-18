@@ -61,7 +61,7 @@ namespace SkySnow
 
     void GRIGLDrive::GRIBeginRenderPass(const RenderPassInfo& rpInfo, const char* passName)
     {
-
+        _PendingState._RenderPassInfo = rpInfo;
     }
 
     void GRIGLDrive::GRINextRenderSubPass()

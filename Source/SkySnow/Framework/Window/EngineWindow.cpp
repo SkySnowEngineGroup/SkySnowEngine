@@ -39,6 +39,11 @@ namespace SkySnow
         _Viewport->CreateEngineViewport(_OSWindow->GetNativeWindow(), width, height);
     }
 
+    void EngineWindow::ExitViewPort()
+    {
+        Delete_Object(_Viewport);
+    }
+
     void EngineWindow::ShutDown()
     {
         _OSWindow->ShutDown();

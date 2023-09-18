@@ -63,11 +63,13 @@ namespace SkySnow
 
     GRIGLViewport::~GRIGLViewport()
     {
+        SN_LOG("GRIGLViewport DesConstruct.");
         if (_DriveContext)
         {
             _DriveContext->ReleaseContext();
             delete _DriveContext;
             _DriveContext = nullptr;
+            SN_LOG("GRIGLViewport Reclaiming GPU Resources.");
         }
     }
     namespace OGLViewport

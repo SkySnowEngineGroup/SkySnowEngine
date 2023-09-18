@@ -65,6 +65,7 @@ namespace SkySnow
         GRT_BlendState,
         GRT_SamplerState,
         GRT_ViewportState,
+		GRT_RenderTarget,
 		GRT_Num
 	};
 
