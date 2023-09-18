@@ -117,8 +117,9 @@ namespace SkySnow
         GRICommandBase* cmd = _Head;
         while (cmd)
         {
+			GRICommandBase* nextCmd = cmd->_Next;
             cmd->ExecuteCommand(*this);
-            cmd = cmd->_Next;
+            cmd = nextCmd;
         }
         CmdReset();
 	}

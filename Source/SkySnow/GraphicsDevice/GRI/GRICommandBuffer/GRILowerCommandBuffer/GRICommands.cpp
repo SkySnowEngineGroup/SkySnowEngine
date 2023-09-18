@@ -27,7 +27,9 @@ namespace SkySnow
 {
 	void CmdBeginViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
+		SN_LOG("CmdBeginViewportCommand Texture Count Pre:%d", _RenderTexture.GetRefCount());
 		GRI->GRIBeginViewport(_ViewPort,_RenderTexture);
+		SN_LOG("CmdBeginViewportCommand Texture Count Pos:%d", _RenderTexture.GetRefCount());
 	}
 	void CmdEndViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{

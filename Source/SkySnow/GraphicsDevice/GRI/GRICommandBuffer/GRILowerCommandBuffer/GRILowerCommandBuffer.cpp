@@ -65,8 +65,9 @@ namespace SkySnow
 		while (cmd)
 		{
 			GRICommandBufferBase* cb = nullptr;
+			GRICommandBase* nextCmd = cmd->_Next;
 			cmd->ExecuteCommand(*cb);
-			cmd = cmd->_Next;
+			cmd = nextCmd;
 		}
 		CommandBufferReset();
 	}
