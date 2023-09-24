@@ -42,10 +42,14 @@ namespace SkySnow
 
     void ResourceReclaim::DeleteResourcePtr()
     {
-        for(int i = 0; i < _ReclaimList.size(); i ++)
+        //for(int i = 0; i < _ReclaimList.size(); i ++)
+        //{
+        //    delete _ReclaimList[i];
+        //    //_ReclaimList[i] = nullptr;
+        //}
+        for (auto entry : _ReclaimList)
         {
-            delete _ReclaimList[i];
-            _ReclaimList[i] = nullptr;
+            delete entry;
         }
         _ReclaimList.clear();
     }

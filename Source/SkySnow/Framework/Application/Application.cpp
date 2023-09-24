@@ -89,7 +89,6 @@ namespace SkySnow
             }
             //Chile App Update
             Update();
-            //SN_LOG("MainUpdate----------------");
             _Framework->MainUpdate();
             //main thread end
             _GQueue->EndFrame();

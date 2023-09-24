@@ -37,7 +37,7 @@ namespace SkySnow
         {
             GRI = GRICreate::CreateTargetGRI();
             _GPipelineCache = new GRIPipelineCache();
-            _GQueue = new GRICommandBufferQueue();
+            _GQueue = GRICreate::CreateTargetCBQueue();
             _GQueue->Init();
         }
     }
@@ -46,7 +46,7 @@ namespace SkySnow
     {
         _GPipelineCache->Shutdown();
         Delete_Object(_GPipelineCache);
-        _GQueue->WaitForRenderThreadExit();
+        _GQueue->WaitforRenderThreadExit();
         Delete_Object(_GQueue);
         Delete_Object(GRI);
     }

@@ -107,27 +107,24 @@ namespace SkySnow
     class GRICommandBufferQueue
     {
     public:
-        GRICommandBufferQueue();
-        ~GRICommandBufferQueue();
-        void Init();
-        void SubmitQueue(GRICommandBufferBase* comBuf);
+        GRICommandBufferQueue(){}
+        virtual ~GRICommandBufferQueue(){}
 
-        void BeginFrame();
-
-        void EndFrame();
+        virtual void Init() = 0;
         
-        void PresentQueue();
-
-        GRICreateCommandBuffer* GetLowerCommandBuffer();
-
+        virtual void SubmitCommandBuffer(GRICommandBufferBase* comBuf) = 0;
+        
+        virtual void BeginFrame() = 0;
+        
+        virtual void EndFrame() = 0;
+        //LC is Lower Create CommandBuffer for GL\GLES\DX9
+        virtual GRICreateCommandBuffer* GetLowerCommandBuffer() = 0;
+        
+        virtual void WaitforRenderThreadExit() {};
+        
+        virtual void PresentQueue(){};
+        
         bool IsLowerVerion();
-
-        void WaitForRenderThreadExit();
-    private:
-        GRICreateCommandBuffer*             _LowerComBuf;
-        std::vector<GRICommandBufferBase*>  _ComBufList;
-        RenderRunnable*                     _RenderRunnable;
-        RunnableThread*                     _RenderThread;
     };
     extern GRICommandBufferQueue*   _GQueue;
 }

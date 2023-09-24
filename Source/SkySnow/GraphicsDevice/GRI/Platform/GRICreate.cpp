@@ -22,6 +22,7 @@
 //
 #include "GRICreate.h"
 #include "GRIGLDrive.h"
+#include "GRILowerCommandBufferQueue.h"
 namespace SkySnow
 {
 	GRIDrive* GRICreate::CreateTargetGRI()
@@ -59,4 +60,37 @@ namespace SkySnow
 #endif
 		return nullptr;
 	}
+
+    GRICommandBufferQueue* GRICreate::CreateTargetCBQueue()
+    {
+#if PLATFORM == PLATFORM_WINDOW
+        return WindowOSCreateCBQueue();
+#elif PLATFORM == PLATFORM_IOS
+        
+#elif PLATFORM == PLATFORM_MAC
+        return MacOSCreateCBQueue();
+#elif PLATFORM == PLATFORM_ANDROID
+        
+#elif  PLATFORM == PLATFORM_LINUX
+        
+#endif
+    }
+    GRICommandBufferQueue* GRICreate::WindowOSCreateCBQueue()
+    {
+#if GRI_PLATFORM == GRI_GL
+        return new GRILowerCommandBufferQueue();
+#elif GRI_PLATFORM == GRI_VULKAN
+
+#endif
+        return nullptr;
+    }
+    GRICommandBufferQueue* GRICreate::MacOSCreateCBQueue()
+    {
+#if GRI_PLATFORM == GRI_GL
+        return new GRILowerCommandBufferQueue();
+#elif GRI_PLATFORM == GRI_METAL
+
+#endif
+        return nullptr;
+    }
 }

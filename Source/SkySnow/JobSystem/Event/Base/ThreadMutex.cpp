@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "ThreadMutex.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
 	ThreadMutex::ThreadMutex()
@@ -51,4 +52,60 @@ namespace SkySnow
 	{
 		return pthread_mutex_trylock(&m_mutex) == 0;
 	}
+
+    ThreadRWMutex::ThreadRWMutex()
+    {
+        int err = pthread_rwlock_init(&_Mutex, nullptr);
+        if(err != 0)
+        {
+            SN_ERR("pthread_rwlock_init failed with error:%d",err);
+        }
+    }
+
+    ThreadRWMutex::~ThreadRWMutex()
+    {
+        int err = pthread_rwlock_destroy(&_Mutex);
+        if(err != 0)
+        {
+            SN_ERR("pthread_rwlock_destroy failed with error: %d",err);
+        }
+    }
+
+    //read lock
+    void ThreadRWMutex::ReadLock()
+    {
+        int err = pthread_rwlock_rdlock(&_Mutex);
+        if(err != 0)
+        {
+            SN_ERR("pthread_rwlock_rdlock failed with error: %d",err);
+        }
+    }
+    //read unlock
+    void ThreadRWMutex::ReadUnLock()
+    {
+        int err = pthread_rwlock_unlock(&_Mutex);
+        if(err != 0)
+        {
+            SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
+        }
+    }
+    //write lock
+    void ThreadRWMutex::WriteLock()
+    {
+        int err = pthread_rwlock_wrlock(&_Mutex);
+        if(err != 0)
+        {
+            SN_ERR("pthread_rwlock_wrlock failed with error: %d",err);
+        }
+    }
+    //write unlock
+    void ThreadRWMutex::WriteUnlock()
+    {
+        int err = pthread_rwlock_unlock(&_Mutex);
+        if(err != 0)
+        {
+            SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
+        }
+    }
+
 }

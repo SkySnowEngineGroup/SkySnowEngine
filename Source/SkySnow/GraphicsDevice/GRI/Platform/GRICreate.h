@@ -24,12 +24,18 @@
 namespace SkySnow
 {
 	class GRIDrive;
+    class GRICommandBufferQueue;
 	class GRICreate
 	{
 	public:
 		static GRIDrive* CreateTargetGRI();
+        
+        static GRICommandBufferQueue* CreateTargetCBQueue();
 	private:
 		static GRIDrive* WindowOSCreateGRI();
 		static GRIDrive* MacOSCreateGRI();
+        
+        static GRICommandBufferQueue* WindowOSCreateCBQueue();
+        static GRICommandBufferQueue* MacOSCreateCBQueue();
 	};
 }

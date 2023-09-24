@@ -24,6 +24,7 @@
 #include "NonCopyable.h"
 #include <errno.h>
 #include "LogAssert.h"
+#include <thread>
 #if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
 #include <dispatch/dispatch.h>
 #else
@@ -34,7 +35,8 @@ namespace SkySnow
 	class ThreadSemaphore : public NonCopyable
 	{
 	public:
-		ThreadSemaphore() 
+		ThreadSemaphore()
+            : _DebugName("null")
 		{
             Create();
 		}
@@ -43,18 +45,23 @@ namespace SkySnow
 		{ 
             Destroy();
 		}
-
+        
+        void SetName(const std::string& debugName)
+        {
+            _DebugName = debugName;
+        }
+        
 		inline void Reset()
 		{ 
 			Destroy();
 			Create(); 
 		}
-
+        
         inline void WaitForSignal()
         {
 #if PLATFORM == PLATFORM_IOS || PLATFORM == PLATFORM_MAC
-            int ret = dispatch_semaphore_wait(m_Semaphore,DISPATCH_TIME_FOREVER);
-            if(ret != 0)
+            intptr_t ret = dispatch_semaphore_wait(m_Semaphore,DISPATCH_TIME_FOREVER);
+            if(ret)
             {
                 SN_ERR("Filed to wait on a semaphore.");
             }
@@ -115,5 +122,6 @@ namespace SkySnow
 #else
         sem_t m_Semaphore;
 #endif
+        std::string _DebugName;
 	};
 }

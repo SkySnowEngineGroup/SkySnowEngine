@@ -22,10 +22,8 @@
 //
 #include "GRICommandBuffer.h"
 #include "SkySnowProfiles.h"
-#include "GLCommandBuffer.h"
-#include "GLCreateCommandBuffer.h"
+#include "GLCommandBUffer.h"
 #include "GRI.h"
-#include "RenderRunnable.h"
 
 namespace SkySnow
 {
@@ -121,69 +119,6 @@ namespace SkySnow
     }
     //GRICommandBufferQueue
     //================================================================================================
-    GRICommandBufferQueue::GRICommandBufferQueue()
-        : _LowerComBuf(nullptr)
-        , _RenderRunnable(nullptr)
-        , _RenderThread(nullptr)
-    {
-        _ComBufList.clear();
-    }
-    GRICommandBufferQueue::~GRICommandBufferQueue()
-    {
-       
-    }
-	void GRICommandBufferQueue::Init()
-	{
-        GRIFeature version = GRI->GetGRIFeatureType();
-        switch (version)
-        {
-        case SkySnow::ENone:
-            break;
-        case SkySnow::EGLES:
-        case SkySnow::EOpenGL:
-            _LowerComBuf = new GLCreateCommandBuffer();
-            _RenderRunnable = new RenderRunnable();
-            _RenderThread = RunnableThread::Create(_RenderRunnable);
-            break;
-        default:
-            break;
-        }
-	}
-    
-    void GRICommandBufferQueue::SubmitQueue(GRICommandBufferBase* comBuf)
-    {
-        _ComBufList.push_back(comBuf);
-    }
-    
-    void GRICommandBufferQueue::BeginFrame()
-    {
-        if(_RenderRunnable)
-        {
-            _RenderRunnable->BeginFrame();
-        }
-    }
-
-    void GRICommandBufferQueue::EndFrame()
-    {
-        if(_RenderRunnable)
-        {
-            _RenderRunnable->EndFrame();
-        }
-    }
-
-    void GRICommandBufferQueue::PresentQueue()
-    {
-        //TestCode Single MainThread Render Capacity
-        //TestCode == Resource Create At Lower Api Version
-        _LowerComBuf->ResourceCreateExecutor();
-        //TestCode == Resource Set At Lower Api Version,At Height Api Version Use Self CommandBuffer
-        for (int i = 0; i < _ComBufList.size(); i ++)
-        {
-            GRICommandBufferBase* cmb = _ComBufList[i];
-            cmb->CmdResourceSetExecutor();
-        }
-        _ComBufList.clear();
-    }
     bool GRICommandBufferQueue::IsLowerVerion()
     {
         GRIFeature version = GRI->GetGRIFeatureType();
@@ -194,19 +129,6 @@ namespace SkySnow
             return false;
         }
         return true;
-    }
-
-    void GRICommandBufferQueue::WaitForRenderThreadExit()
-    {
-        if (_RenderRunnable)
-        {
-            _RenderRunnable->WaitForRenderThread();
-        }
-    }
-    
-    GRICreateCommandBuffer* GRICommandBufferQueue::GetLowerCommandBuffer()
-    {
-        return _LowerComBuf;
     }
 
     //GRI Globle Create Resource Interface

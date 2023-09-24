@@ -177,10 +177,11 @@ namespace SkySnow
         
         commandBuffer->CmdDrawPrimitive(2, 1);
         
-        
+//        SN_LOG("_PipelineShaderRef Count:%d",_PipelineShaderRef.GetRefCount());
+//        SN_LOG("_PSORef Count:%d",_PSORef.GetRefCount());
         commandBuffer->CmdEndViewport(viewport,false,false);
         
-        _GQueue->SubmitQueue(commandBuffer);
+        _GQueue->SubmitCommandBuffer(commandBuffer);
 //        SN_LOG("_PipelineShaderRef End Count:%d",_PipelineShaderRef.GetRefCount());
 //        SN_LOG("_PSORef Count:%d",_PSORef.GetRefCount());
     }

@@ -23,6 +23,7 @@
 #pragma once
 #include "NonCopyable.h"
 #include "SkySnowProfiles.h"
+#include "ThreadMutex.h"
 namespace SkySnow
 {
 	enum LogLevel
@@ -48,6 +49,7 @@ namespace SkySnow
 		static LogAssert* Instance();
 		void LogProcessing(LogLevel level,const char* str, ...);
 	private:
+        ThreadMutex     _LogLock;
 		char m_logBuffer[MAX_BUFFER_SIZE];
 #if PLATFORM == PLATFORM_WINDOW
 		HANDLE			m_WinHandle;

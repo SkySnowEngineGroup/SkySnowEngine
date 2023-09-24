@@ -86,7 +86,7 @@ namespace SkySnow
 	{
 		if (!alignedSize)
 		{
-			::malloc(size);
+			return ::malloc(size);
 		}
 		else
 		{

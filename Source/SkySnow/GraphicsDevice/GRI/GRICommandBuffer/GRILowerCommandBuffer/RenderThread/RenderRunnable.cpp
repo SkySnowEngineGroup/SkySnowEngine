@@ -31,7 +31,8 @@ namespace SkySnow
         , _FrameFinish(false)
         , _RenderThreadEnd(false)
     {
-        
+        _RenderSem.SetName("_RenderSem");
+        _MainSem.SetName("_MainSem");
     }
 
     RenderRunnable::~RenderRunnable()
@@ -47,7 +48,6 @@ namespace SkySnow
     void RenderRunnable::OnRenderFrame()
     {
         _RenderSem.WaitForSignal();
-        //SN_LOG("RenderUpdate++++++++++++++");
         _GQueue->PresentQueue();
         _MainSem.Signal();
     }

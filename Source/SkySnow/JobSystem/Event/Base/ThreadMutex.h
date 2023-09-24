@@ -23,7 +23,6 @@
 #pragma once
 #include "NonCopyable.h"
 #include <pthread.h>
-#include "LogAssert.h"
 namespace SkySnow
 {
 	class ThreadMutex : public NonCopyable
@@ -45,58 +44,16 @@ namespace SkySnow
     class ThreadRWMutex : public NonCopyable
     {
     public:
-        ThreadRWMutex()
-        {
-            int err = pthread_rwlock_init(&_Mutex, nullptr);
-            if(err != 0)
-            {
-                SN_ERR("pthread_rwlock_init failed with error:%d",err);
-            }
-        }
-        ~ThreadRWMutex()
-        {
-            int err = pthread_rwlock_destroy(&_Mutex);
-            if(err != 0)
-            {
-                SN_ERR("pthread_rwlock_destroy failed with error: %d",err);
-            }
-        }
+        ThreadRWMutex();
+        ~ThreadRWMutex();
         //read lock
-        void ReadLock()
-        {
-            int err = pthread_rwlock_rdlock(&_Mutex);
-            if(err != 0)
-            {
-                SN_ERR("pthread_rwlock_rdlock failed with error: %d",err);
-            }
-        }
+        void ReadLock();
         //read unlock
-        void ReadUnLock()
-        {
-            int err = pthread_rwlock_unlock(&_Mutex);
-            if(err != 0)
-            {
-                SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
-            }
-        }
+        void ReadUnLock();
         //write lock
-        void WriteLock()
-        {
-            int err = pthread_rwlock_wrlock(&_Mutex);
-            if(err != 0)
-            {
-                SN_ERR("pthread_rwlock_wrlock failed with error: %d",err);
-            }
-        }
+        void WriteLock();
         //write unlock
-        void WriteUnlock()
-        {
-            int err = pthread_rwlock_unlock(&_Mutex);
-            if(err != 0)
-            {
-                SN_ERR("pthread_rwlock_unlock failed with error: %d",err);
-            }
-        }
+        void WriteUnlock();
     private:
         pthread_rwlock_t _Mutex;
     };

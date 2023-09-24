@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "LogAssert.h"
+#include "ThreadMutex.h"
 
 namespace SkySnow
 {
@@ -53,6 +54,9 @@ namespace SkySnow
 
 	void LogAssert::LogProcessing(LogLevel level, const char* str, ...)
 	{
+#if Log_Lock
+        _LogLock.Lock();
+#endif
 		if (level < ELOG_TRACE || level >= ELOG_NONE)
 			return;
 		va_list args;
@@ -61,6 +65,9 @@ namespace SkySnow
 		va_end(args);
 		PrintLog(level,buffer);
 		RecordLog(level, buffer);
+#if Log_Lock
+        _LogLock.UnLock();
+#endif
 	}
 	void LogAssert::RecordLog(LogLevel level, char* str)
 	{
