@@ -24,7 +24,6 @@
 #include <atomic>
 #include <memory>
 #include "LogAssert.h"
-#include "MpscQueue.h"
 #include "GRIResource.h"
 #include <thread>
 namespace SkySnowLearning
@@ -92,46 +91,6 @@ namespace SkySnowLearning
 	{
 		return { hazard ,hpMap };
 	}
-	class TestMpscQueue
-	{
-	public:
-		TestMpscQueue()
-			: a(10)
-		{
-			SN_LOG("Construct TestMpscQueue.");
-		}
-		~TestMpscQueue()
-		{
-			SN_LOG("DeConstruct TestMpscQueue.");
-		}
-
-		void TestFun()
-		{
-			int atest = TestCa(1);
-			SN_LOG("atest:%d", atest);
-			int value = 1;
-			int v1 = (value >> 16) ^ value;
-			SN_LOG("atest:%d", v1);
-			mpscQueue.store(new SkySnow::MpscQueue<TestMpscQueue*>(),std::memory_order_release);
-			SkySnow::MpscQueue<TestMpscQueue*>* mpq = mpscQueue.load(std::memory_order_relaxed);
-			mpq->Enqueue(const_cast<TestMpscQueue*>(this));
-
-			std::vector<TestMpscQueue*> popData;
-//			mpq->Dequeue(popData);
-			int aa = 10;
-		}
-
-		int TestCa(int value)
-		{
-			value = ((value >> 16) ^ value) * 0x45d9f3b;
-			value = ((value >> 16) ^ value) * 0x45d9f3b;
-			value = (value >> 16) ^ value;
-			return value;
-		}
-	private:
-		std::atomic<SkySnow::MpscQueue<TestMpscQueue*>*> mpscQueue;
-		int a;
-	};
 	struct TNode
 	{
 		std::atomic<TNode*> next{ nullptr };
@@ -179,8 +138,6 @@ namespace SkySnowLearning
 
 		void Print()
 		{
-			TestMpscQueue* tq = new TestMpscQueue();
-			tq->TestFun();
 			//Enqueue();
 			//Enqueue();
 			//Dequeue();

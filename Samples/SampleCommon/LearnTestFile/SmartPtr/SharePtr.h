@@ -27,7 +27,7 @@
 #include "LogAssert.h"
 namespace SkySnowLearning
 {
-    class ResourceRaw : public RefThreadSafeCounted
+    class ResourceRaw
     {
     public:
         ResourceRaw(){}
@@ -37,13 +37,5 @@ namespace SkySnowLearning
     //测试GRI中Handle的用法是否存在逻辑漏洞，测试结果来看是存在逻辑漏洞
     void TestSharePtr()
     {
-        RefCountPtr<ResourceRaw> ptr1 = new ResourceRaw();
-        SN_LOG("ptr1 Count:%d",ptr1.GetRefCount());
-        
-        ResourceRaw* ptr2 = ptr1.GetReference();
-        SN_LOG("ptr2 Count:%d",ptr2->RefCount());
-        
-        RefCountPtr<ResourceRaw> ptr3 = ptr2;
-        SN_LOG("ptr3 Count:%d",ptr3.GetRefCount());
     }
 }

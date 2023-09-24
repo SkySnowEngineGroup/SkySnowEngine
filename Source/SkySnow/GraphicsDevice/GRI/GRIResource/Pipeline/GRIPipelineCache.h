@@ -42,15 +42,15 @@ namespace SkySnow
         template<typename TypePipeline>
         bool GetComputePipeline(const GRICreateComputePipelineInfo& pipelineInfo, GRIComputePipelineRef& handle);
     private:
-        DoubleMapCache<GRICreateGraphicsPipelineInfo,GRIGraphicsPipeline*>  _GraphicsPipelineCache;
-        DoubleMapCache<GRICreateComputePipelineInfo,GRIComputePipeline*>   _ComputePipelineCache;
+        DoubleMapCache<GRICreateGraphicsPipelineInfo, GRIGraphicsPipelineRef>  _GraphicsPipelineCache;
+        DoubleMapCache<GRICreateComputePipelineInfo, GRIComputePipelineRef>   _ComputePipelineCache;
     };
 
 
     template<typename TypePipeline>
     inline bool GRIPipelineCache::GetGraphicsPipeline(const GRICreateGraphicsPipelineInfo& pipelineInfo, GRIGraphicsPipelineRef& handle)
     {
-        GRIGraphicsPipeline* outPipeline = nullptr;
+        GRIGraphicsPipelineRef outPipeline = nullptr;
 
         bool find = _GraphicsPipelineCache.Find(pipelineInfo, outPipeline);
         if (!find)

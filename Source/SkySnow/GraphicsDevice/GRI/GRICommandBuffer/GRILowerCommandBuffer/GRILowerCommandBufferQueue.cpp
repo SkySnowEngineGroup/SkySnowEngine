@@ -35,12 +35,12 @@ namespace SkySnow
 
     GRILowerCommandBufferQueue::~GRILowerCommandBufferQueue()
     {
-        Delete_Object(_MainCreatCB);
-        Delete_Object(_RenderCreateCB);
-        //Delete_Object(_RenderThread);
-        //Delete_Object(_RenderRunnable);
         _MainCBList.clear();
         _RenderCBList.clear();
+        Delete_Object(_MainCreatCB);
+        Delete_Object(_RenderCreateCB);
+        Delete_Object(_RenderThread);
+        Delete_Object(_RenderRunnable);
     }
 
     void GRILowerCommandBufferQueue::Init()

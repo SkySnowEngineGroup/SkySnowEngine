@@ -74,10 +74,10 @@ namespace SkySnow
 
 	GRIGraphicsPipelineRef GLCreateCommandBuffer::CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
 	{
-		GRIGraphicsPipelineRef handle;
-		bool flag = _GPipelineCache->GetGraphicsPipeline<GLGraphicPipeline>(createInfo, handle);
-		if (!flag)
-			Alloc_CommandCreate(GRICreateGraphicsPipelineCommand, createInfo, handle);
+		GRIGraphicsPipelineRef handle = new GLGraphicPipeline(createInfo);
+		//bool flag = _GPipelineCache->GetGraphicsPipeline<GLGraphicPipeline>(createInfo, handle);
+		//if (!flag)
+		Alloc_CommandCreate(GRICreateGraphicsPipelineCommand, createInfo, handle);
 		return handle;
 	}
 
