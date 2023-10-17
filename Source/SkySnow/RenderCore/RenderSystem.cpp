@@ -37,7 +37,7 @@ namespace SkySnow
 
     RenderSystem::~RenderSystem()
     {
-        
+        SN_LOG("RenderSystem DesConstruct.");
     }
 
     void RenderSystem::PreUpdate()

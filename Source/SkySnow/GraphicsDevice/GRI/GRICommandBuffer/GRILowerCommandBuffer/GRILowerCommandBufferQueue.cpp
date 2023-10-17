@@ -29,7 +29,6 @@ namespace SkySnow
         : _MainCreatCB(nullptr)
         , _RenderCreateCB(nullptr)
         , _RenderRunnable(nullptr)
-        , _RenderThread(nullptr)
     {
     }
 
@@ -39,7 +38,7 @@ namespace SkySnow
         _RenderCBList.clear();
         Delete_Object(_MainCreatCB);
         Delete_Object(_RenderCreateCB);
-        Delete_Object(_RenderThread);
+        Delete_Object(GRenderThread);
         Delete_Object(_RenderRunnable);
     }
 
@@ -48,7 +47,7 @@ namespace SkySnow
         _MainCreatCB = new GLCreateCommandBuffer();
         _RenderCreateCB = new GLCreateCommandBuffer();
         _RenderRunnable = new RenderRunnable();
-        _RenderThread = RunnableThread::Create(_RenderRunnable);
+        GRenderThread = RunnableThread::Create(_RenderRunnable);
     }
     void GRILowerCommandBufferQueue::SubmitCommandBuffer(GRICommandBufferBase* comBuf)
     {

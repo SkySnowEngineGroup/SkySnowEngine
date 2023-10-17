@@ -65,6 +65,7 @@ namespace SkySnow
 
 		virtual ~GLGraphicPipeline()
 		{
+            ReclaimPipelineResource();
             SN_LOG("GLGraphicPipeline DesConstruct.");
 		}
         

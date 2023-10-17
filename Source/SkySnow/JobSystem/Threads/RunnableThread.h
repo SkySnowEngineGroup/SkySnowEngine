@@ -24,8 +24,17 @@
 #include "ThreadProfiles.h"
 #include "NonCopyable.h"
 #include "Runnable.h"
+#include <thread>
 namespace SkySnow
 {
+	struct ThreadID
+	{
+		static uint32 GetCurrThreadId()
+		{
+			std::thread::id threadId = std::this_thread::get_id();
+			return std::hash<std::thread::id>{}(threadId);
+		}
+	};
 	class RunnableThread : public NonCopyable
 	{
 	public:
@@ -41,11 +50,20 @@ namespace SkySnow
 		virtual bool Exit() = 0;
 
 		virtual void WaitForExit() = 0;
+
+		const uint32 GetThreadID() const
+		{
+			return _ThreadID;
+		}
 	protected:
 		virtual bool CreateThread(Runnable* runnable,std::string name = "NullName") = 0;
 	protected:
 		Runnable*		_Runnable;
 		ThreadPriority	_ThreadPriority;
 		std::string		_ThreadName;
+		uint32			_ThreadID;
 	};
+
+	extern RunnableThread* GRenderThread;
+	extern bool IsInRenderThread();
 }

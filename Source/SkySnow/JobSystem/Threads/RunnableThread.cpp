@@ -24,8 +24,11 @@
 #include "RunnablePThread.h"
 namespace SkySnow
 {
-
 	RunnableThread::RunnableThread()
+		: _Runnable(nullptr)
+		, _ThreadPriority(ETP_Normal)
+		, _ThreadName("SNNull")
+		, _ThreadID(0)
 	{
 
 	}
@@ -39,5 +42,17 @@ namespace SkySnow
 		RunnableThread* runnableThread = new RunnablePThread();
 		runnableThread->CreateThread(runable);
 		return runnableThread;
+	}
+
+
+	RunnableThread* GRenderThread = nullptr;
+
+	bool IsInRenderThread()
+	{
+		if (!GRenderThread)
+		{
+			return false;
+		}
+		return ThreadID::GetCurrThreadId() == GRenderThread->GetThreadID();
 	}
 }

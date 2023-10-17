@@ -22,6 +22,7 @@
 //
 #pragma once
 #include <vector>
+#include "ThreadMutex.h"
 namespace SkySnow
 {
     class GRIResource;
@@ -45,6 +46,9 @@ namespace SkySnow
         
         void DeleteResourcePtr();
     private:
+        ThreadMutex               _Lock;
+        int                       _DeferredDelete = 1;
         std::vector<GRIResource*> _ReclaimList;
+        std::vector<GRIResource*> _DeleteList;
     };
 }

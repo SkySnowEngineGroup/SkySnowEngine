@@ -107,6 +107,7 @@ namespace SkySnow
 
 	void RunnablePThread::Run()
 	{
+		_ThreadID = ThreadID::GetCurrThreadId();
 		if (_Runnable->Init())
 		{
 			_Runnable->Run();

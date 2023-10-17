@@ -56,7 +56,7 @@ namespace SkySnow
         std::vector<GRICommandBufferBase*>  _RenderCBList;
         
         //RenderThread
-        RunnableThread*                     _RenderThread;
+        //RunnableThread*                     _RenderThread;
         RenderRunnable*                     _RenderRunnable;
         //Submit Lock
         ThreadMutex                         _SubmitLock;

@@ -23,21 +23,45 @@
 
 #include "GRIResourceFree.h"
 #include "GRIResource.h"
+#include "RunnableThread.h"
 namespace SkySnow
 {
     void ResourceReclaim::AddReclaimResource(GRIResource* resource)
     {
-        _ReclaimList.emplace_back(resource);
+        _Lock.Lock();
+        if (IsInRenderThread())
+        {
+            delete resource;
+            resource = nullptr;
+        }
+        else
+        {
+            _ReclaimList.push_back(resource);
+            _DeferredDelete = 1;
+        }
+        _Lock.UnLock();
     }
 
     void ResourceReclaim::RemoveReclaimResource()
     {
-        DeleteResourcePtr();
+        _Lock.Lock();
+        if (!_DeferredDelete)
+        {
+            if (IsInRenderThread())
+            {
+                DeleteResourcePtr();
+            }
+        }
+        else
+        {
+            _DeferredDelete--;
+        }
+        _Lock.UnLock();
     }
 
     void ResourceReclaim::ShutDown()
     {
-        DeleteResourcePtr();
+        //DeleteResourcePtr();
     }
 
     void ResourceReclaim::DeleteResourcePtr()
