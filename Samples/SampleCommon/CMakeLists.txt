@@ -45,7 +45,7 @@ foreach (SourceHeader IN LISTS SampleCommonHeader)
 endforeach()
 
 if(WIN32)
-    target_link_libraries(${project_name} SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(${project_name} SkySnow Plugins glfw pthread_win ${FBX_LIBRARY} ${OpenGL_LIBRARY}) #ThirdParty glad
 else()
-    target_link_libraries(${project_name} SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(${project_name} SkySnow Plugins glfw ${FBX_LIBRARY} ${OpenGL_LIBRARY}) #ThirdParty glad
 endif(WIN32)

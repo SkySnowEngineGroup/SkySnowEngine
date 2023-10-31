@@ -48,7 +48,7 @@ namespace SkySnow
     private:
         ThreadMutex               _Lock;
         int                       _DeferredDelete = 1;
+        //TODO: LockFreeList
         std::vector<GRIResource*> _ReclaimList;
-        std::vector<GRIResource*> _DeleteList;
     };
 }
