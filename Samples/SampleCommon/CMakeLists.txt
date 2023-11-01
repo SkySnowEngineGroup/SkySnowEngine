@@ -36,7 +36,7 @@ endforeach()
 add_library(${project_name} ${SampleCommonSource})
 
 file(GLOB_RECURSE SampleCommonHeader "${SOURCES_DIR}/../SampleCommon/*.h")
-#°ü¹üSampleCommon±¾ÉíµÄÍ·ÎÄ¼þ
+#ï¿½ï¿½ï¿½ï¿½SampleCommonï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½
 foreach (SourceHeader IN LISTS SampleCommonHeader)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${SourceHeader}")
 	get_filename_component(source_path "${source_rel}" PATH)
@@ -45,7 +45,7 @@ foreach (SourceHeader IN LISTS SampleCommonHeader)
 endforeach()
 
 if(WIN32)
-    target_link_libraries(${project_name} SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(${project_name} SkySnow Plugins glfw ${FBX_LIBRARY} pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
 else()
-    target_link_libraries(${project_name} SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(${project_name} SkySnow Plugins glfw ${FBX_LIBRARY} ${OpenGL_LIBRARY}) #ThirdParty glad
 endif(WIN32)

@@ -11,3 +11,5 @@
 /Binaries/
 /bcmake
 /Source/SkySnow/ResourcePathConfig.h
+#fbxsdk
+/Source/SkySnow/ThirdParty/fbxsdk/

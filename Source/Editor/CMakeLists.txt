@@ -36,7 +36,7 @@ endforeach()
 add_executable(${project_name} ${EditorSource})
 
 file(GLOB_RECURSE EditorHeader "${SOURCES_DIR}/../Editor/*.h")
-#°ü¹ü±à¼­Æ÷±¾ÉíµÄÍ·ÎÄ¼þ
+#ï¿½ï¿½ï¿½ï¿½ï¿½à¼­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í·ï¿½Ä¼ï¿½
 foreach (SourceHeader IN LISTS EditorHeader)
 	file(RELATIVE_PATH source_rel "${CMAKE_CURRENT_SOURCE_DIR}" "${SourceHeader}")
 	get_filename_component(source_path "${source_rel}" PATH)
@@ -46,6 +46,6 @@ endforeach()
 
 if(WIN32)
     target_link_libraries(${project_name} SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
-else()
+else(APPLE)
     target_link_libraries(${project_name} SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
 endif(WIN32)

@@ -1,6 +1,6 @@
 #
 # Copyright (c) 2020-2022 the SkySnowEngine project.
-# Open source is written by liuqian(SkySnow),zhangshuangxue(Calence)
+# Open source is written by liuqian(SkySnow)、zhangshuangxue(Calence)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -21,32 +21,10 @@
 # THE SOFTWARE.
 #
 
-set(SOURCES_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
-#set(PLUGINS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/Plugins/")
-#set(THIRDPARTY_BASE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/ThirdParty/")
-
-#find OpenGL Library
-if(WIN32)
-    set(OpenGL_LIBRARY opengl32)
-elseif(UNIX AND NOT APPLE)
-elseif(APPLE)
-    include_directories(/System/Library/Frameworks)
-    find_library(COCOA_LIBRARY Cocoa)
-    find_library(OpenGL_LIBRARY OpenGL)
-    find_library(IOKit_LIBRARY IOKit)
-    find_library(CoreVideo_LIBRARY CoreVideo)
-    message("find library OpenGL Library ${OpenGL_LIBRARY}")
-endif(WIN32)
-
-include_directories("${SOURCES_DIR}/SkySnow")
-include_directories("${SOURCES_DIR}/Plugins")
-include_directories("${SOURCES_DIR}/ThirdParty")
-
-add_subdirectory(SkySnow)
-add_subdirectory(Plugins)
-add_subdirectory(ThirdParty)
-
-#window and macos was Editor
+#Link FbxSDK
 if(APPLE OR WIN32)
-add_subdirectory(Editor)
+	include(FindFBX)
 endif(APPLE OR WIN32)
+#link ...
+
+

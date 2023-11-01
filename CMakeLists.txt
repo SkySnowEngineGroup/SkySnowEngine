@@ -35,11 +35,14 @@ cmake_minimum_required(VERSION 3.10)
 if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
 	cmake_policy(SET CMP0074 NEW)
 endif()
-
+#cd targetplatform build dir command:cmake -DCMAKE_BUILD_TYPE=Release ../..
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 #工程名字
 project(SkySnow)
 
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 include(SkySnowCommon)
 include(SkySnowResourceConfig)
 
@@ -50,4 +53,5 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/Binaries)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/Binaries)
 
 add_subdirectory(Source)
+include(FindPackage)
 add_subdirectory(Samples)
