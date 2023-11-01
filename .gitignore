@@ -12,4 +12,4 @@
 /bcmake
 /Source/SkySnow/ResourcePathConfig.h
 #fbxsdk
-/Source/SkySnow/ThirdParty/fbxsdk/
+/Source/ThirdParty/fbxsdk/
