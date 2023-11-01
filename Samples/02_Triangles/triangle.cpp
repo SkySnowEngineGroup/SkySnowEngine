@@ -36,7 +36,6 @@
 #include "SkySnowEngine.h"
 #include "TextureImporter.h"
 #include "SPtr.h"
-#include "FBXImporter.h"
 using namespace SkySnow;
 using namespace SampleEntry;
 class Triangle : public SkySnow::Application
@@ -49,6 +48,7 @@ public:
 	}
 	~Triangle()
 	{
+        Delete_Object(_Scene);
 	}
 
 	bool Init()
@@ -85,10 +85,8 @@ public:
         meshCom->SetMaterial(mat,0);
         meshCom->SetMesh(mesh);
 
-
-        SPtr<FBXImporter> fbxim = new FBXImporter();
-        std::string pandaPath = g_RelativeMaterialPath + "Model/Panda/source/Panda.fbx";
-        fbxim->TestImport(pandaPath);
+        SPtr<Mesh> meshHandle = CreateSPtr<Mesh>();
+        SharedPtr<Mesh> mHanddle = new Mesh();
 		return true;
 	}
     
@@ -103,7 +101,7 @@ public:
     }
 
 private:
-    SPtr<Scene> _Scene;
+    Scene* _Scene;
 };
 
 SkySnow_SampleApplication(Triangle,"03-Triangles","Draw Trangle At Window&MacOS.", DEFAUT_WADTH, DEFAUT_HEIGHT);
