@@ -1,9 +1,17 @@
 # SkySnowEngine
 Mobile rendering engine, cool effects and cutting-edge rendering technology
 
-### 1.Compile Engineering
+### 1.Compile Engine
 
-#### 1.1window Visual Studio
+#### 1.0 Prebuild Depend
+
+- fbxsdk
+
+  - Window&MacOS
+
+    Please read this path (SkySnowEngine/Source/ThirdParty/fbxsdk/fbxsdk下载使用说明.txt) about FBXSDK configuration instructions
+
+#### 1.1 Window Visual Studio
 
 firt cd to "Build/Window"directory
 
