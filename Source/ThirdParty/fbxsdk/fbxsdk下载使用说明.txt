@@ -1,0 +1,5 @@
+从百度网盘下载fbxsdk压缩包
+链接为:https://pan.baidu.com/s/19mHM2VvpSFlG4LKIsTl1RA 
+提取码为: 1234
+
+下载完成后解压缩，将fbxsdk文件夹下的macos以及windows拷贝到此目录下
