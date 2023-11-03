@@ -25,6 +25,6 @@
 if(APPLE OR WIN32)
 	include(FindFBX)
 endif(APPLE OR WIN32)
-#link ...
-
+#link libxml2 for Macos
+include(FindXml2)
 

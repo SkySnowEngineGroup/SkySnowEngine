@@ -31,7 +31,7 @@ if(WIN32)
 	elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 		set(fbxPath "${FBX_DIR}/lib/vs2019/x64/release")
 	endif()
-	#message("fbxPath build:${fbxPath}")
+	#message("fbxsdk path:${fbxPath}")
 	find_library(FBX_LIBRARY
 				NAMES libfbxsdk.lib   # 库文件的名称，可根据版本和配置不同
 			 	HINTS "${fbxPath}"    # 指定库文件的搜索路径
@@ -53,10 +53,16 @@ elseif(APPLE)
 	elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
 		set(fbxPath "${FBX_DIR}/lib/clang/release")
 	endif()
+
 	find_library(FBX_LIBRARY
-				NAMES libfbxsdk.dylib   # 库文件的名称，可能根据版本和配置不同
-			 	HINTS "${fbxPath}"		# 指定库文件的搜索路径
-			)
+    			 NAMES libfbxsdk.a
+    			 HINTS "${fbxPath}"
+   				 NO_CMAKE_FIND_ROOT_PATH
+				)
+	# message("fbxsdk path:${FBX_LIBRARY}")
+	if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+		file(COPY "${FBX_LIBRARY}" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Debug")
+	elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+		file(COPY "${FBX_LIBRARY}" DESTINATION "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/Release")
+	endif()
 endif(WIN32)
-
-

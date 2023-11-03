@@ -24,17 +24,10 @@
 #include "Application.h"
 namespace Editor
 {
-	class EditorApplication : public SkySnow::Application
+	class WidgetBase
 	{
 	public:
-		EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height);
-
-		~EditorApplication();
-
-		virtual bool Init() final override;
-        
-        virtual void Update() final override;
-        
-        virtual void ShutDown() final override;
+		WidgetBase() {}
+		virtual ~WidgetBase() {}
 	};
 }

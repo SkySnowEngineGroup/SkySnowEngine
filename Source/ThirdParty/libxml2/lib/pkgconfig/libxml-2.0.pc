@@ -1,0 +1,13 @@
+prefix=/Users/SS3D/SkySnowEngine/Source/ThirdParty/libxml2/libxml2-2.9.10/temp
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+modules=1
+
+Name: libXML
+Version: 2.9.10
+Description: libXML library version2.
+Requires:
+Libs: -L${libdir} -lxml2
+Libs.private:  -lpthread -lz   -liconv -lm  
+Cflags: -I${includedir}/libxml2 

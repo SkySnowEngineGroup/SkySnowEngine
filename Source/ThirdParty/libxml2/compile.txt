@@ -1,0 +1,12 @@
+
+当重新需要下载新的libxml2版本时，可以按照如下步骤进行处理(后面编写一个shell脚本进行处理)
+Download lib from: https://download.gnome.org/sources/libxml2/
+下载libxml2-2.9.10.tar.xz压缩包后，解压缩到当前目录
+在MacOS系统下进行编译
+输出 Dir:/Users/SS3D/SkySnowEngine/Source/ThirdParty/libxml2/libxml2-2.9.10/temp
+cd Dir
+1. ./configure --prefix "$Dir" --with-pic=yes --with-python=no --with-lzma=no
+2. make
+3. make install
+编译完成后会在temp目录下生成share、lib、bin、include目录
+将这四个目录拷贝到ThirdParty/libxml2目录下即可

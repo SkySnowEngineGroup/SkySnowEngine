@@ -45,7 +45,7 @@ foreach (SourceHeader IN LISTS EditorHeader)
 endforeach()
 
 if(WIN32)
-    target_link_libraries(${project_name} SkySnow Plugins glfw pthread_win ${OpenGL_LIBRARY}) #ThirdParty glad
-else(APPLE)
-    target_link_libraries(${project_name} SkySnow Plugins glfw ${OpenGL_LIBRARY}) #ThirdParty glad
+    target_link_libraries(${project_name} SkySnow Plugins glfw zlib ${FBX_LIBRARY} ${OpenGL_LIBRARY} pthread_win) #ThirdParty glad
+else()
+    target_link_libraries(${project_name} SkySnow Plugins glfw zlib ${FBX_LIBRARY} ${OpenGL_LIBRARY} ${XML2_LIBRARY} ${Iconv_LIBRARY} ${CoreVideo_LIBRARY} ${CoreMedia_LIBRARY}) #ThirdParty glad
 endif(WIN32)
