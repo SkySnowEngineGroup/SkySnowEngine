@@ -1,4 +1,4 @@
-prefix=/Users/SS3D/SkySnowEngine/Source/ThirdParty/libxml2/libxml2-2.9.10/temp
+prefix=/Users/skysnow/Downloads/Temp/libxml2-2.9.10/temp
 exec_prefix=${prefix}
 libdir=${exec_prefix}/lib
 includedir=${prefix}/include

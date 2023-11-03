@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/Users/SS3D/SkySnowEngine/Source/ThirdParty/libxml2/libxml2-2.9.10/temp/lib'
+libdir='/Users/skysnow/Downloads/Temp/libxml2-2.9.10/temp/lib'
