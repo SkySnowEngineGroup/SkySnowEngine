@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
+#include "IStream.h"
 #include "GRICommons.h"
 #include "GRIResourceCreateInfo.h"
 namespace SkySnow
 {
-    class TextureStream : public NonCopyable
+    class TextureStream : public IStream
     {
     public:
         TextureStream() = delete;

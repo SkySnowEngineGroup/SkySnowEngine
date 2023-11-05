@@ -34,7 +34,7 @@
 #include "Texture.h"
 #include "StbImageLoad.h"
 #include "SkySnowEngine.h"
-#include "TextureImporter.h"
+#include "TextureLoader.h"
 #include "SPtr.h"
 using namespace SkySnow;
 using namespace SampleEntry;
@@ -67,8 +67,8 @@ public:
         //resSystem->PushLoadJob(GetImageAllPath("panda.png"),TextureRes);
 
         string imagePath = GetImageAllPath("panda.png");
-        TextureImporter* tImp = new TextureImporter();
-        TextureStream* texStream = tImp->Import<TextureStream>(imagePath);
+        TextureLoader* tImp = new TextureLoader();
+        TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
         Texture* texture = new Texture();
         texture->SetTextureStream(texStream);
 

@@ -20,36 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include <fbxsdk.h>
-#include "LogAssert.h"
+#include "MeshLoader.h"
 namespace SkySnow
 {
-	class FBXImporter
+	void* MeshLoader::DoLoad(const std::string filePath)
 	{
-	public:
-		void TestImport(std::string fbxPath)
+		switch (_MLoadType)
 		{
-			FbxManager* manager = FbxManager::Create();
-			FbxScene* scene = FbxScene::Create(manager, "TestScene");
-
-			FbxImporter* importer = FbxImporter::Create(manager,"");
-			if (importer->Initialize(fbxPath.c_str(), -1, manager->GetIOSettings()))
-			{
-				importer->Import(scene);
-				importer->Destroy();
-			}
-			else
-			{
-				SN_LOG("Import Fail.");
-			}
-			FbxNode* rootNode = scene->GetRootNode();
-			if (rootNode)
-			{
-				SN_LOG("Import FBX:%s Successful.", fbxPath.c_str());
-			}
-			scene->Destroy();
-			manager->Destroy();
+		case SkySnow::FBXLoader:
+			break;
+		case SkySnow::AssimpLoader:
+			break;
+		default:
+			SN_WARN("_MLoadType(%d) Not Support[Support(FBXLoader 0) (AssimpLoader 1)].", _MLoadType);
+			break;
 		}
-	};
+		return nullptr;
+	}
+	bool MeshLoader::Release(void* data)
+	{
+		return true;
+	}
 }

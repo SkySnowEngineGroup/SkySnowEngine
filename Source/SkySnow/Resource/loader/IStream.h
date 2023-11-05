@@ -21,32 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
+
 namespace SkySnow
 {
-    class IImporter : public Object
+    class IStream
     {
-        SkySnow_Object(IImporter, Object);
     public:
-        IImporter()
-        {
-        }
-        virtual ~IImporter()
-        {
-        }
-        template<typename T>
-        T* Import(const std::string& filePath)
-        {
-            T* res = static_cast<T*>(DoImport(filePath));
-            return res;
-        }
-        template<typename T>
-        void Release()
-        {
-
-        }
-    private:
-        virtual void* DoImport(const std::string filePath) = 0;
-        virtual bool Release(void* data) = 0;
+        IStream(){}
+        virtual ~IStream(){}
     };
 }

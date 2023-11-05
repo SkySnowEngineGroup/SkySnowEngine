@@ -20,25 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "MeshImporter.h"
+#pragma once
+#include "ILoader.h"
+#include "TextureStream.h"
 namespace SkySnow
 {
-	void* MeshImporter::DoImport(const std::string filePath)
-	{
-		switch (_MLoadType)
-		{
-		case SkySnow::FBXLoader:
-			break;
-		case SkySnow::AssimpLoader:
-			break;
-		default:
-			SN_WARN("_MLoadType(%d) Not Support[Support(FBXLoader 0) (AssimpLoader 1)].", _MLoadType);
-			break;
-		}
-		return nullptr;
-	}
-	bool MeshImporter::Release(void* data)
-	{
-		return true;
-	}
+    enum TLoaderType
+    {
+        StbImage,
+        PngLib,
+        Jpg
+    };
+    class TextureLoader : public ILoader
+    {
+        SkySnow_Object(TextureLoader, ILoader);
+    public:
+        TextureLoader(TLoaderType tLT = StbImage);
+        
+    private:
+        virtual void* DoLoad(const std::string filePath) final override;
+        virtual bool Release(void* data) final override;
+
+    private:
+        TLoaderType _LoadType = StbImage;
+        TextureStream* _TextureStream = nullptr;
+    };
 }

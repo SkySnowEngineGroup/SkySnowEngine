@@ -37,12 +37,14 @@ namespace SkySnow
 		{
 			SN_ERR("glfwInit() failed!");
 		}
-		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		GLFWwindow* tShareWindow = shareWindow ? (GLFWwindow*)shareWindow->GetClientWindow() : nullptr;
 		_Window = glfwCreateWindow(width, height, SkySnow_Name, NULL, tShareWindow);
 		if (!_Window)
 		{
-			SN_ERR("glfwCreateWindow failed!");
+			const char* description;
+			int error = glfwGetError(&description);
+			SN_ERR("glfwCreateWindow failed:%s", description);
 			glfwTerminate();
 		}
 	}

@@ -20,36 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "TextureImporter.h"
-#include "StbImageLoad.h"
-#include "LogAssert.h"
+#pragma once
+#include "ILoader.h"
 namespace SkySnow
 {
-    TextureImporter::TextureImporter(TLoaderType tLT)
-        : _LoadType(tLT)
+    enum MLoaderType
     {
-    }
-    void* TextureImporter::DoImport(const std::string filePath)
+        FBXLoader,
+        AssimpLoader
+    };
+    class MeshLoader : public ILoader
     {
-        switch (_LoadType)
+        SkySnow_Object(MeshLoader, ILoader);
+    public:
+        MeshLoader(MLoaderType tlt = FBXLoader)
+            : _MLoadType(tlt)
         {
-        case SkySnow::StbImage:
-            _TextureStream = StbImageLoad::StbLoadPNG(filePath);
-            break;
-        case SkySnow::PngLib:
-            break;
-        case SkySnow::Jpg:
-            break;
-        default:
-            SN_WARN("TLoaderType(%d) Not Support[Support(StbImage 0) (PngLib 1) (Jpg 2)].", _LoadType);
-            break;
         }
-        return _TextureStream;
-    }
-    bool TextureImporter::Release(void* data)
-    {
-        TextureStream* stream = static_cast<TextureStream*>(data);
-        Delete_Object(stream);
-        return true;
-    }
+        virtual ~MeshLoader()
+        {
+        }
+    private:
+        virtual void* DoLoad(const std::string filePath) final override;
+        virtual bool Release(void* data) final override;
+    private:
+        MLoaderType     _MLoadType = FBXLoader;
+    };
 }

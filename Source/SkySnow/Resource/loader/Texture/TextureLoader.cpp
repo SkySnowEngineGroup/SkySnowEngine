@@ -20,29 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "IImporter.h"
-#include "TextureStream.h"
+#include "TextureLoader.h"
+#include "StbImageLoad.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
-    enum TLoaderType
+    TextureLoader::TextureLoader(TLoaderType tLT)
+        : _LoadType(tLT)
     {
-        StbImage,
-        PngLib,
-        Jpg
-    };
-    class TextureImporter : public IImporter
+    }
+    void* TextureLoader::DoLoad(const std::string filePath)
     {
-        SkySnow_Object(TextureImporter, IImporter);
-    public:
-        TextureImporter(TLoaderType tLT = StbImage);
-        
-    private:
-        virtual void* DoImport(const std::string filePath) final override;
-        virtual bool Release(void* data) final override;
-
-    private:
-        TLoaderType _LoadType = StbImage;
-        TextureStream* _TextureStream = nullptr;
-    };
+        switch (_LoadType)
+        {
+        case SkySnow::StbImage:
+            _TextureStream = StbImageLoad::StbLoadPNG(filePath);
+            break;
+        case SkySnow::PngLib:
+            break;
+        case SkySnow::Jpg:
+            break;
+        default:
+            SN_WARN("TLoaderType(%d) Not Support[Support(StbImage 0) (PngLib 1) (Jpg 2)].", _LoadType);
+            break;
+        }
+        return _TextureStream;
+    }
+    bool TextureLoader::Release(void* data)
+    {
+        TextureStream* stream = static_cast<TextureStream*>(data);
+        Delete_Object(stream);
+        return true;
+    }
 }

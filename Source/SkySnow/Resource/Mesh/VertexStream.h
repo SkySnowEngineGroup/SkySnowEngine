@@ -21,11 +21,11 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
+#include "IStream.h"
 
 namespace SkySnow
 {
-    class VertexStream : public NonCopyable
+    class VertexStream : public IStream
     {
     public:
         VertexStream() = delete;

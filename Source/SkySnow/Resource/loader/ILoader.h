@@ -21,29 +21,32 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IImporter.h"
+#include "Object.h"
 namespace SkySnow
 {
-    enum MLoaderType
+    class ILoader : public Object
     {
-        FBXLoader,
-        AssimpLoader
-    };
-    class MeshImporter : public IImporter
-    {
-        SkySnow_Object(MeshImporter, IImporter);
+        SkySnow_Object(ILoader, Object);
     public:
-        MeshImporter(MLoaderType tlt = FBXLoader)
-            : _MLoadType(tlt)
+        ILoader()
         {
         }
-        virtual ~MeshImporter()
+        virtual ~ILoader()
         {
         }
+        template<typename T>
+        T* Load(const std::string& filePath)
+        {
+            T* res = static_cast<T*>(DoLoad(filePath));
+            return res;
+        }
+        template<typename T>
+        void Release()
+        {
+
+        }
     private:
-        virtual void* DoImport(const std::string filePath) final override;
-        virtual bool Release(void* data) final override;
-    private:
-        MLoaderType     _MLoadType = FBXLoader;
+        virtual void* DoLoad(const std::string filePath) = 0;
+        virtual bool Release(void* data) = 0;
     };
 }
