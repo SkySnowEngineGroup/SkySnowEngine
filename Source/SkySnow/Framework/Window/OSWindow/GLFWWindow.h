@@ -32,11 +32,12 @@ namespace SkySnow
 			, _Width(0)
 			, _Height(0)
 			, _Window(nullptr)
+			, _WindowName("")
 		{}
 
 		virtual ~GLFWWindow() {}
 	public:
-		virtual void CreateOSWindow(uint32 width, uint32 height, OSWindow* shareWindow = nullptr) override;
+		virtual void CreateOSWindow(uint32 width, uint32 height, OSWindow* shareWindow = nullptr, std::string windowName = "") override;
 
 		virtual void* GetClientWindow() override;
 
@@ -53,5 +54,6 @@ namespace SkySnow
 		unsigned int    _Width;
 		unsigned int    _Height;
 		GLFWwindow*		_Window;
+		std::string		_WindowName;
 	};
 }

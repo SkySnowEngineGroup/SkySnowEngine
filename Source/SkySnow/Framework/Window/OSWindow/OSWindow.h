@@ -42,7 +42,7 @@ namespace SkySnow
 		virtual ~OSWindow(){}
 	public:
 
-        virtual void CreateOSWindow(uint32 width,uint32 height,OSWindow* shareWindow = nullptr) = 0;
+        virtual void CreateOSWindow(uint32 width,uint32 height,OSWindow* shareWindow = nullptr, std::string windowName = "") = 0;
 
 		virtual void* GetClientWindow() = 0;
 		

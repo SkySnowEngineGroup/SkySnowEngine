@@ -65,14 +65,14 @@ namespace SkySnow
     EngineWindow* SkySnowEngine::CreateGameWindow(uint32 width, uint32 height)
     {
         _GameWindow = new EngineWindow(EGameWindow);
-        _GameWindow->CreateEngineWindow(width, height);
+        _GameWindow->CreateEngineWindow(width, height,"GameWindow");
         return _GameWindow;
     }
 
     EngineWindow* SkySnowEngine::CreateEditorWindow(uint32 width, uint32 height)
     {
         _EditorWindow = new EngineWindow(EEditorMainWindow);
-        _EditorWindow->CreateEngineWindow(width, height, _GameWindow ? _GameWindow : nullptr);
+        _EditorWindow->CreateEngineWindow(width, height, "EditorWindow",_GameWindow ? _GameWindow : nullptr);
         return _EditorWindow;
     }
 

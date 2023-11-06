@@ -20,43 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
+#include "StandardMesh.h"
 
 namespace SkySnow
 {
-	enum DefaultMeshType
+	void MQuad::InitData()
 	{
-		DMT_None,
-		DMT_Quad,
-		DMT_Cube,
-		DMT_Sphere,
-		DMT_Cone
-	};
-	struct MQuad
-	{
+		/*
+		*		0--------1
+		*		|		 |	
+		*		|		 |
+		*		|		 |
+		*	    3--------2
+		*/
+		_Vertexs = 
+		{
+			VMeta(-1, 1,0, 0,1, 0,0,1),
+			VMeta( 1, 1,0, 1,1, 0,0,1),
+			VMeta( 1,-1,0, 1,0, 0,0,1),
+			VMeta(-1,-1,0, 0,0, 0,0,1)
+		};
+		_Poss =
+		{
+			Pos(-1, 1, 0),
+			Pos( 1, 1, 0),
+			Pos( 1,-1, 0),
+			Pos(-1,-1, 0)
+		};
+		_Indices =
+		{
+			0,3,2,
+			0,2,1
+		};
 
-	};
-
-	struct MCube
-	{
-        float* _Vertex = new float[]
-                            {   0.5,0.5,0.5,
-                                0.5,0.5,-0.5,
-                                -0.5,0.5,-0.5,
-                                -0.5,0.5,0.5,//
-                                0.5,-0.5,0.5,
-                                0.5,-0.5,-0.5,
-                                -0.5,-0.5,-0.5,
-                                -0.5,-0.5,0.5};
-	};
-
-	struct MSphere
-	{
-
-	};
-
-	struct MCone
-	{
-
-	};
+		for (int i = 0; i < (int)_Indices.size(); i++)
+		{
+			_VertexArray.push_back(_Vertexs[_Indices[i]]);
+		}
+	}
 }

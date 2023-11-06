@@ -36,15 +36,13 @@ namespace SkySnow
 	public:
         EngineWindow(EngineWindowType windowType)
             : _EngineWindowType(windowType)
-            , _EWWeight(0)
-            , _EWHeight(0)
             , _OSWindow(nullptr)
             , _Viewport(nullptr)
         {}
 
         virtual ~EngineWindow();
 	public:
-        void CreateEngineWindow(uint32 width,uint32 height, EngineWindow* shareWindow = nullptr);
+        void CreateEngineWindow(uint32 width,uint32 height, std::string windowName = "",EngineWindow* shareWindow = nullptr);
 
         OSWindow* GetOSWindow() const { return _OSWindow; }
 
@@ -57,8 +55,6 @@ namespace SkySnow
         void ShutDown();
     private:
         EngineWindowType    _EngineWindowType;
-        uint32              _EWWeight;
-        uint32              _EWHeight;
         OSWindow*           _OSWindow;
         Viewport*           _Viewport;
 	};

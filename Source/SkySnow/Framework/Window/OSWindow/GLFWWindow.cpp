@@ -24,10 +24,11 @@
 #include "GLFWWindow.h"
 namespace SkySnow
 {
-	void GLFWWindow::CreateOSWindow(uint32 width, uint32 height, OSWindow* shareWindow)
+	void GLFWWindow::CreateOSWindow(uint32 width, uint32 height, OSWindow* shareWindow, std::string windowName)
 	{
 		_Width = width;
 		_Height = height;
+		_WindowName = windowName;
 		if (width == 0 || height == 0)
 		{
 			SN_ERR("The window height or width parameter set iszero.");
@@ -39,7 +40,7 @@ namespace SkySnow
 		}
 		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		GLFWwindow* tShareWindow = shareWindow ? (GLFWwindow*)shareWindow->GetClientWindow() : nullptr;
-		_Window = glfwCreateWindow(width, height, SkySnow_Name, NULL, tShareWindow);
+		_Window = glfwCreateWindow(width, height, _WindowName.c_str(), NULL, tShareWindow);
 		if (!_Window)
 		{
 			const char* description;

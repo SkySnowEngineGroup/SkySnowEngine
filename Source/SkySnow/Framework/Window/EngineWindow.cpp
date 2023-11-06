@@ -31,10 +31,10 @@ namespace SkySnow
         Delete_Object(_Viewport);
 	}
 
-    void EngineWindow::CreateEngineWindow(uint32 width, uint32 height, EngineWindow* shareWindow)
+    void EngineWindow::CreateEngineWindow(uint32 width, uint32 height, std::string windowName, EngineWindow* shareWindow)
     {
         _OSWindow = new GLFWWindow();
-        _OSWindow->CreateOSWindow(width, height, shareWindow ? shareWindow->GetOSWindow() : nullptr);
+        _OSWindow->CreateOSWindow(width, height, shareWindow ? shareWindow->GetOSWindow() : nullptr, windowName);
         _Viewport = new Viewport();
         _Viewport->CreateEngineViewport(_OSWindow->GetNativeWindow(), width, height);
     }

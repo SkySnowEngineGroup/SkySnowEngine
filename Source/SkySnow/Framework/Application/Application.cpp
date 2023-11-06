@@ -60,7 +60,7 @@ namespace SkySnow
         _GameWindow = _SkySnowEngine->CreateGameWindow(_Width, _Height);
         if (_EngineUsagType == Editor)
         {
-            _EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
+            //_EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
         }
         
         //Create Engine Framework
