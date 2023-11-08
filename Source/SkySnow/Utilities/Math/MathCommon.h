@@ -20,34 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "EditorApplication.h"
-#include "MathCommon.h"
-using namespace SkySnow;
-namespace Editor
+#pragma once
+#include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
+
+namespace SkySnow
 {
-    EditorApplication::EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height)
-        : SkySnow::Application(name, description, width, height)
-    {
-        
-    }
+    template<typename T>class Vector2;
+    template<typename T>class Vector3;
+    template<typename T>class Vector4;
 
-    EditorApplication::~EditorApplication()
-    {
-        
-    }
-
-    bool EditorApplication::Init()
-    {
-        Vector2f test;
-        return true;
-    }
-
-    void EditorApplication::Update()
-    {
-        
-    }
-    void EditorApplication::ShutDown()
-    {
-        
-    }
+    
+    typedef Vector2<int>    Vector2d;
+    typedef Vector2<float>  Vector2f;
 }

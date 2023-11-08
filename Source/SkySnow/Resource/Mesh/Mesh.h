@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "DefaultMesh.h"
+#include "StandardMesh.h"
 #include "IResource.h"
 namespace SkySnow
 {
@@ -31,9 +31,9 @@ namespace SkySnow
     public:
         Mesh();
         ~Mesh();
-        void SetDefaultMeshType(DefaultMeshType dmt);
-
+        
+        
     private:
-        DefaultMeshType	_Dmt = DMT_None;
+        
     };
 }

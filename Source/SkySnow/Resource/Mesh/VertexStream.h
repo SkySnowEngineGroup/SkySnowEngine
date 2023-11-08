@@ -22,13 +22,17 @@
 //
 #pragma once
 #include "IStream.h"
-
+#include "VertexDescriptor.h"
+#include "MathCommon.h"
 namespace SkySnow
 {
     class VertexStream : public IStream
     {
     public:
-        VertexStream() = delete;
+        VertexStream();
         ~VertexStream();
+        
+    private:
+        VertexDescriptor    _VertexDesc;
     };
 }

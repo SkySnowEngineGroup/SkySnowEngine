@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "DefaultMesh.h"
+#include "StandardMesh.h"
 #include "IResource.h"
 #include "Texture.h"
 #include "PropertyName.h"

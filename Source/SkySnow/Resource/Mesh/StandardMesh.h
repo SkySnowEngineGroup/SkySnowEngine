@@ -25,14 +25,6 @@
 #include <vector>
 namespace SkySnow
 {
-	enum DefaultMeshType
-	{
-		DMT_None,
-		DMT_Quad,
-		DMT_Cube,
-		DMT_Sphere,
-		DMT_Cone
-	};
 	struct Pos
 	{
 		Pos(float vx,float vy,float vz)

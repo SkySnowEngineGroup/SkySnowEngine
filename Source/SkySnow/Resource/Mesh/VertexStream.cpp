@@ -20,34 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "EditorApplication.h"
-#include "MathCommon.h"
-using namespace SkySnow;
-namespace Editor
+#include "VertexStream.h"
+namespace SkySnow
 {
-    EditorApplication::EditorApplication(const char* name, const char* description, uint32_t width, uint32_t height)
-        : SkySnow::Application(name, description, width, height)
-    {
-        
-    }
-
-    EditorApplication::~EditorApplication()
-    {
-        
-    }
-
-    bool EditorApplication::Init()
-    {
-        Vector2f test;
-        return true;
-    }
-
-    void EditorApplication::Update()
-    {
-        
-    }
-    void EditorApplication::ShutDown()
-    {
-        
-    }
+	VertexStream::VertexStream()
+	{
+	}
+	VertexStream::~VertexStream()
+	{
+	}
 }
