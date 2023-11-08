@@ -221,11 +221,11 @@ namespace SkySnow
         {
             return i == 0 ? x : y;
         }
-        uint Size()
+        int Size()
         {
             return 2;
         }
-        uint BitSize()
+        int BitSize()
         {
             return 2 * sizeof(T);
         }

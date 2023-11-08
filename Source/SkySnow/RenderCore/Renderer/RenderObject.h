@@ -24,6 +24,7 @@
 
 namespace SkySnow
 {
+	//Material Object
 	class RenderObject
 	{
 

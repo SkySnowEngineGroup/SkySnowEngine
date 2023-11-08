@@ -30,6 +30,5 @@ namespace SkySnow
         VertexDescriptor();
         ~VertexDescriptor();
         
-        void 
     };
 }
