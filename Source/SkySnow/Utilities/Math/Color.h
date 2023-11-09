@@ -20,19 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "VertexStream.h"
+#pragma once
+
 namespace SkySnow
 {
-	VertexStream::VertexStream()
-	{
-	}
-    
-	VertexStream::~VertexStream()
-	{
-	}
-    
-    VertexDescriptor VertexStream::GetVertexDesc()
+    //RGBAf
+    class Color
     {
-        return _VertexDesc;
-    }
+    public:
+        
+    };
 }

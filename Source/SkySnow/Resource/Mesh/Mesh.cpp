@@ -23,15 +23,24 @@
 #include "Mesh.h"
 namespace SkySnow
 {
-    Mesh::Mesh()
+    Mesh::Mesh(MeshType meshType)
         : IResource(MeshRes)
+        , _MeshType(meshType)
     {
-
     }
 
     Mesh::~Mesh()
     {
         SN_LOG("Mesh DesConstruct.");
     }
-    
+
+    void Mesh::PushVertexStream(SPtr<VertexStream>& vStream)
+    {
+        _VertexStreams.push_back(vStream);
+    }
+
+    std::vector<SPtr<VertexStream>> Mesh::GetVertexStreams()
+    {
+        return _VertexStreams;
+    }
 }

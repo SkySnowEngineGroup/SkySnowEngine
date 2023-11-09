@@ -20,19 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "VertexStream.h"
+#pragma once
+#include "Mesh.h"
 namespace SkySnow
 {
-	VertexStream::VertexStream()
-	{
-	}
-    
-	VertexStream::~VertexStream()
-	{
-	}
-    
-    VertexDescriptor VertexStream::GetVertexDesc()
+    class StaticMesh : public Mesh
     {
-        return _VertexDesc;
-    }
+        SkySnow_Object(StaticMesh,Mesh);
+    public:
+        StaticMesh();
+        
+        ~StaticMesh();
+    };
 }

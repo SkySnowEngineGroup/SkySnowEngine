@@ -23,17 +23,31 @@
 #pragma once
 #include "StandardMesh.h"
 #include "IResource.h"
+#include "VertexStream.h"
+#include "SPtr.h"
 namespace SkySnow
 {
+    enum MeshType
+    {
+        None,
+        Static_Mesh,
+        Skinned_Mesh,
+        BlendShape_Mesh,
+    };
     class Mesh : public IResource
     {
         SkySnow_Object(Mesh,IResource);
     public:
-        Mesh();
-        ~Mesh();
+        Mesh(MeshType meshType = None);
+        virtual ~Mesh();
         
+        MeshType GetMeshType(){return _MeshType;}
         
+        void PushVertexStream(SPtr<VertexStream>& vStream);
+        
+        std::vector<SPtr<VertexStream>> GetVertexStreams();
     private:
-        
+        MeshType                        _MeshType;
+        std::vector<SPtr<VertexStream>> _VertexStreams;
     };
 }

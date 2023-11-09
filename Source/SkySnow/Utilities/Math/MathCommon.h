@@ -34,4 +34,11 @@ namespace SkySnow
     
     typedef Vector2<int>    Vector2d;
     typedef Vector2<float>  Vector2f;
+
+
+    class Math
+    {
+    public:
+
+    };
 }

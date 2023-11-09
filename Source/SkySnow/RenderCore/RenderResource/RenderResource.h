@@ -20,19 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "VertexStream.h"
+#pragma once
+#include "GRICommandBuffer.h"
+#include "GRI.h"
 namespace SkySnow
 {
-	VertexStream::VertexStream()
-	{
-	}
-    
-	VertexStream::~VertexStream()
-	{
-	}
-    
-    VertexDescriptor VertexStream::GetVertexDesc()
+    class RenderResource
     {
-        return _VertexDesc;
-    }
+    public:
+        RenderResource();
+        virtual ~RenderResource();
+
+    };
 }

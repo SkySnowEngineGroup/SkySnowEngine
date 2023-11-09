@@ -26,12 +26,19 @@
 #include "MathCommon.h"
 namespace SkySnow
 {
+    struct BuildVertex
+    {
+        
+    };
     class VertexStream : public IStream
     {
     public:
         VertexStream();
         ~VertexStream();
         
+        VertexDescriptor GetVertexDesc();
+
+        void PushVertex();
     private:
         VertexDescriptor    _VertexDesc;
     };

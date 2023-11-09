@@ -79,7 +79,7 @@ public:
         mat->SetTexture(texName,texture);
 
         Mesh* mesh = new Mesh();
-        mesh->SetDefaultMeshType(DMT_Cube);
+
 
         meshCom->SetMaterialCount(1);
         meshCom->SetMaterial(mat,0);
