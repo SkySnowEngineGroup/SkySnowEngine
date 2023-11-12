@@ -20,38 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "StandardMesh.h"
-#include "IResource.h"
-#include "VertexStream.h"
 #include "IndicesStream.h"
-#include "SPtr.h"
+
 namespace SkySnow
 {
-    enum MeshType
-    {
-        None,
-        Static_Mesh,
-        Skinned_Mesh,
-        BlendShape_Mesh,
-    };
-    class Mesh : public IResource
-    {
-        SkySnow_Object(Mesh,IResource);
-    public:
-        Mesh(MeshType meshType = None);
-        virtual ~Mesh();
-        
-        MeshType GetMeshType(){ return _MeshType;}
-        
-        void PushVertexStream(SPtr<VertexStream>& vStream);
-        
-        std::vector<SPtr<VertexStream>> GetVertexStreams();
-
-        SPtr<IndicesStream>& GetIndicesStream();
-    private:
-        MeshType                        _MeshType;
-        std::vector<SPtr<VertexStream>> _VertexStreams;
-        SPtr<IndicesStream>             _IndicesStream;
-    };
+	IndicesStream::IndicesStream()
+	{
+	}
+	IndicesStream::~IndicesStream()
+	{
+	}
 }

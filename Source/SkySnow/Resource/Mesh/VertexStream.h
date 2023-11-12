@@ -26,10 +26,6 @@
 #include "MathCommon.h"
 namespace SkySnow
 {
-    struct BuildVertex
-    {
-        
-    };
     class VertexStream : public IStream
     {
     public:
@@ -38,8 +34,16 @@ namespace SkySnow
         
         VertexDescriptor GetVertexDesc();
 
-        void PushVertex();
+        void SetVertexCount(uint32 vlss,int count);
+
+        void PushVertex(VertexLayoutSlot slot, Vector2f inData);
+        void PushVertex(VertexLayoutSlot slot, Vector3f inData);
+        void PushVertex(VertexLayoutSlot slot, Vector4f inData);
     private:
         VertexDescriptor    _VertexDesc;
+        std::vector<char>   _Buffer;
+        int                 _VertexCount;
+        int                 _ChunkStride;
+        uint32              _VertexLayout;
     };
 }

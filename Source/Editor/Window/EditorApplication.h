@@ -36,5 +36,7 @@ namespace Editor
         virtual void Update() final override;
         
         virtual void ShutDown() final override;
+	private:
+
 	};
 }

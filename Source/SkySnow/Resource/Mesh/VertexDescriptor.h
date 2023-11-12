@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRIResourceCreateInfo.h"
 
 namespace SkySnow
 {
@@ -30,5 +31,10 @@ namespace SkySnow
         VertexDescriptor();
         ~VertexDescriptor();
         
+        std::vector<VertexElementSlot> GetVertexDesc();
+        
+        void PushElementSlot(VertexElementSlot veSlot);
+    private:
+        std::vector<VertexElementSlot> _SingleStreamDesc;
     };
 }

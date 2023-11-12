@@ -43,4 +43,9 @@ namespace SkySnow
     {
         return _VertexStreams;
     }
+
+    SPtr<IndicesStream>& Mesh::GetIndicesStream()
+    {
+        return _IndicesStream;
+    }
 }

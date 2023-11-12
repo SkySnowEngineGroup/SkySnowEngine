@@ -58,9 +58,7 @@ public:
 
 		GameObject* go = _Scene->AddRootToScene();
 
-//        CameraComponent* cameraCom = go->AddComponent<CameraComponent>();
         TransformComponent* transCom = go->AddComponent<TransformComponent>();
-        //RenderComponent* renderCom = go->AddComponent<RenderComponent>();
         MeshRenderComponent* meshCom = go->AddComponent<MeshRenderComponent>();
         
         //ResourceSystem* resSystem = Context::Instance().GetSystem<ResourceSystem>();
@@ -79,14 +77,13 @@ public:
         mat->SetTexture(texName,texture);
 
         Mesh* mesh = new Mesh();
-
+        SPtr<VertexStream> vStream = new VertexStream();
+        vStream->PushVertex();
+        mesh->PushVertexStream(vStream);
 
         meshCom->SetMaterialCount(1);
         meshCom->SetMaterial(mat,0);
         meshCom->SetMesh(mesh);
-
-        SPtr<Mesh> meshHandle = CreateSPtr<Mesh>();
-        SharedPtr<Mesh> mHanddle = new Mesh();
 
 		return true;
 	}

@@ -112,6 +112,26 @@ namespace SkySnow
 		PT_Trangle_Strip,
 		PT_Num,
 	};
+
+	enum VertexLayoutSlot : uint32
+	{
+		VLS_None = -1,
+		VLS_Position		= 1 << 0,	// Position		(Vector3)
+		VLS_Normal			= 1 << 1,	// Normal		(Vector3)
+		VLS_Tangent			= 1 << 2,	// Tangent		(Vector4) w is weight
+		VLS_Color			= 1 << 3,	// Vertex color	(Vector4)
+		VLS_TexCoord0		= 1 << 4,	// Texcoord 0	(Vector2)
+		VLS_TexCoord1		= 1 << 5,	// Texcoord 1	(Vector2)
+		VLS_TexCoord2		= 1 << 6,	// Texcoord 2	(Vector2)
+		VLS_TexCoord3		= 1 << 7,	// Texcoord 3	(Vector2)
+		VLS_TexCoord4		= 1 << 8,	// Texcoord 4	(Vector2)
+		VLS_TexCoord5		= 1 << 9,	// Texcoord 5	(Vector2)
+		VLS_TexCoord6		= 1 << 10,	// Texcoord 6	(Vector2)
+		VLS_TexCoord7		= 1 << 11,  // Texcoord 7	(Vector2)
+		VLS_BlendWeights	= 1 << 12,	// Blend weights
+		VLS_BlendIndices	= 1 << 13,	// Blend indices
+		VLS_Count			= 1 << 14	// Keep this last!
+	};
 	enum SamplerFilter
 	{
 		SF_Point,

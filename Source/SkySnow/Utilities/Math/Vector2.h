@@ -28,6 +28,12 @@ namespace SkySnow
     class Vector2
     {
     public:
+        union
+        {
+            struct { T x, y;};
+            T       _Data[2];
+        };
+    public:
         Vector2()
             : x(T(0))
             , y(T(0))
@@ -188,7 +194,7 @@ namespace SkySnow
         {
             Vector2 temp;
             T len = x * x + y * y;
-            if (fabs(len) < 1e-5)
+            if (Math::IsZero(T(len)))
             {
                 len = (T)1.0f;
             }
@@ -215,22 +221,31 @@ namespace SkySnow
         }
         T& operator[] (int i)
         {
-            return i == 0 ? x : y;
+            return _Data[i];
         }
         const T& operator[] (int i) const
         {
-            return i == 0 ? x : y;
+            return _Data[i];
         }
-        int Size()
+        int Count()
         {
             return 2;
         }
-        int BitSize()
+        static int ByteSize()
         {
             return 2 * sizeof(T);
         }
-    public:
-        T   x;
-        T   y;
+
+        const byte* Data() const
+        {
+            return (byte*)_Data;
+        }
+
+        bool CpyData(const byte* buff) const
+        {
+            memcpy(_Data, buff, ByteSize());
+            return true;
+        }
+
     };
 }

@@ -28,6 +28,13 @@ namespace SkySnow
     class Vector4
     {
     public:
+        union
+        {
+            struct { T	x, y, z, w; };
+            struct { T	r, g, b, a; };
+            T	    _Data[4];
+        };
+    public:
         Vector4()
             : x(T(0))
             , y(T(0))
@@ -42,10 +49,36 @@ namespace SkySnow
             , w(inW)
         {
         }
-    public:
-        T x;
-        T y;
-        T z;
-        T w;
+
+        T& operator[] (int i)
+        {
+            return _Data[i];
+        }
+
+        const T& operator[] (int i) const
+        {
+            return _Data[i];
+        }
+
+        int Count()
+        {
+            return 4;
+        }
+
+        static int ByteSize()
+        {
+            return 4 * sizeof(T);
+        }
+
+        const byte* Data() const
+        {
+            return (byte*)_Data;
+        }
+
+        bool CpyData(const byte* buff) const
+        {
+            memcpy(_Data, buff, ByteSize());
+            return true;
+        }
     };
 }

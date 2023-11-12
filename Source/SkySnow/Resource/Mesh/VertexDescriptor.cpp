@@ -20,38 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "StandardMesh.h"
-#include "IResource.h"
-#include "VertexStream.h"
-#include "IndicesStream.h"
-#include "SPtr.h"
+#include "VertexDescriptor.h"
+
 namespace SkySnow
 {
-    enum MeshType
+    VertexDescriptor::VertexDescriptor()
     {
-        None,
-        Static_Mesh,
-        Skinned_Mesh,
-        BlendShape_Mesh,
-    };
-    class Mesh : public IResource
+    }
+    VertexDescriptor::~VertexDescriptor()
     {
-        SkySnow_Object(Mesh,IResource);
-    public:
-        Mesh(MeshType meshType = None);
-        virtual ~Mesh();
-        
-        MeshType GetMeshType(){ return _MeshType;}
-        
-        void PushVertexStream(SPtr<VertexStream>& vStream);
-        
-        std::vector<SPtr<VertexStream>> GetVertexStreams();
+    }
 
-        SPtr<IndicesStream>& GetIndicesStream();
-    private:
-        MeshType                        _MeshType;
-        std::vector<SPtr<VertexStream>> _VertexStreams;
-        SPtr<IndicesStream>             _IndicesStream;
-    };
+    std::vector<VertexElementSlot> VertexDescriptor::GetVertexDesc()
+    {
+        return _SingleStreamDesc;
+    }
+
+    void VertexDescriptor::PushElementSlot(VertexElementSlot veSlot)
+    {
+        _SingleStreamDesc.push_back(veSlot);
+    }
 }

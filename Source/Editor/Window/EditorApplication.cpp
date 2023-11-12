@@ -22,6 +22,7 @@
 //
 #include "EditorApplication.h"
 #include "MathCommon.h"
+#include "StandardMesh.h"
 using namespace SkySnow;
 namespace Editor
 {
