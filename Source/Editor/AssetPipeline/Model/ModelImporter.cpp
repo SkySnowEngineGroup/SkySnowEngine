@@ -20,30 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "ILoader.h"
+
+#include "ModelImporter.h"
 namespace SkySnow
 {
-    enum MLoaderType
-    {
-        FBXLoader,
-        AssimpLoader
-    };
-    class MeshLoader : public ILoader
-    {
-        SkySnow_Object(MeshLoader, ILoader);
-    public:
-        MeshLoader(MLoaderType tlt = FBXLoader)
-            : _MLoadType(tlt)
-        {
-        }
-        virtual ~MeshLoader()
-        {
-        }
-    private:
-        virtual void* DoLoad(const std::string filePath) final override;
-        virtual bool Release(void* data) final override;
-    private:
-        MLoaderType     _MLoadType = FBXLoader;
-    };
+
 }

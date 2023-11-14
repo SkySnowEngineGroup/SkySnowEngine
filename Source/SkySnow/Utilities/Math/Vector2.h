@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include <math.h>
 namespace SkySnow
 {
     template<typename T>
@@ -35,8 +35,8 @@ namespace SkySnow
         };
     public:
         Vector2()
-            : x(T(0))
-            , y(T(0))
+            : x(0)
+            , y(0)
         {
         }
         
@@ -194,7 +194,7 @@ namespace SkySnow
         {
             Vector2 temp;
             T len = x * x + y * y;
-            if (Math::IsZero(T(len)))
+            if (std::fabs(float(len)) < 1e-6)
             {
                 len = (T)1.0f;
             }

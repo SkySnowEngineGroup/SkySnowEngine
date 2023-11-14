@@ -27,9 +27,9 @@
 
 namespace SkySnow
 {
-    template<typename T>class Vector2;
-    template<typename T>class Vector3;
-    template<typename T>class Vector4;
+//    template<typename T>class Vector2;
+//    template<typename T>class Vector3;
+//    template<typename T>class Vector4;
 
     
     typedef Vector2<int>    Vector2i;
@@ -44,16 +44,16 @@ namespace SkySnow
     typedef Vector4<float>  Vector4f;
     typedef Vector4<double> Vector4d;
 
-    class Math
-    {
-    public:
-        static inline bool IsZero(float value)
-        {
-            return fabs(value) < 1e-6;
-        }
-        static inline bool IsZero(double value)
-        {
-            return fabs(value) < 1e-15;
-        }
-    };
+    //Math Base Function
+//    namespace Math
+//    {
+//        static inline bool IsZero(float value)
+//        {
+//            return fabs(value) < 1e-6;
+//        }
+//        static inline bool IsZero(double value)
+//        {
+//            return fabs(value) < 1e-15;
+//        }
+//    }
 }

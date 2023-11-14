@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ImporterBase.h"
+#include "ModelImporter.h"
 #include <fbxsdk.h>
 #include "LogAssert.h"
 namespace Editor
 {
-	class FBXImporter : public ImporterBase
+	class FBXImporter : public ModelImporter
 	{
 	public:
 		void TestImport(std::string fbxPath)

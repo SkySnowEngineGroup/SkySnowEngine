@@ -27,6 +27,7 @@
 #include "File.h"
 namespace SkySnow
 {
+    //RenderSystem for ue: https://neil3d.github.io/assets/pdf/2016-vr-summit-ue4.pdf
     class RenderSystem : public ISystem
     {
         SkySnow_Object(RenderSystem,ISystem);

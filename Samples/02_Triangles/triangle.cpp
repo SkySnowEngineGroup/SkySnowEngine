@@ -78,7 +78,7 @@ public:
 
         Mesh* mesh = new Mesh();
         SPtr<VertexStream> vStream = new VertexStream();
-        vStream->PushVertex();
+//        vStream->PushVertex();
         mesh->PushVertexStream(vStream);
 
         meshCom->SetMaterialCount(1);

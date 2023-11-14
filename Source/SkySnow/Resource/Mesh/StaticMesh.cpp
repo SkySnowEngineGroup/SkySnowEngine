@@ -25,7 +25,7 @@
 namespace SkySnow
 {
     StaticMesh::StaticMesh()
-        : Mesh(Static_Mesh)
+        : Mesh(MT_StaticMesh)
     {
     }
 

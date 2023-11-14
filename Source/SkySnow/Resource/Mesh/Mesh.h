@@ -30,16 +30,16 @@ namespace SkySnow
 {
     enum MeshType
     {
-        None,
-        Static_Mesh,
-        Skinned_Mesh,
-        BlendShape_Mesh,
+        MT_None,
+        MT_StaticMesh,
+        MT_SkinnedMesh,
+        MT_BlendShapeMesh,
     };
     class Mesh : public IResource
     {
         SkySnow_Object(Mesh,IResource);
     public:
-        Mesh(MeshType meshType = None);
+        Mesh(MeshType meshType = MT_None);
         virtual ~Mesh();
         
         MeshType GetMeshType(){ return _MeshType;}

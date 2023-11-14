@@ -20,25 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "MeshLoader.h"
+#pragma once
+#include "ImporterBase.h"
 namespace SkySnow
 {
-	void* MeshLoader::DoLoad(const std::string filePath)
-	{
-		switch (_MLoadType)
-		{
-		case SkySnow::FBXLoader:
-			break;
-		case SkySnow::AssimpLoader:
-			break;
-		default:
-			SN_WARN("_MLoadType(%d) Not Support[Support(FBXLoader 0) (AssimpLoader 1)].", _MLoadType);
-			break;
-		}
-		return nullptr;
-	}
-	bool MeshLoader::Release(void* data)
-	{
-		return true;
-	}
+    class ModelImporter : public ImporterBase
+    {
+    public:
+        ModelImporter();
+        virtual ~ModelImporter();
+    };
 }

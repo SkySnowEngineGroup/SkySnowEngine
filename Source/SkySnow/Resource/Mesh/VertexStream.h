@@ -36,9 +36,13 @@ namespace SkySnow
 
         void SetVertexCount(uint32 vlss,int count);
 
-        void PushVertex(VertexLayoutSlot slot, Vector2f inData);
-        void PushVertex(VertexLayoutSlot slot, Vector3f inData);
-        void PushVertex(VertexLayoutSlot slot, Vector4f inData);
+        void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
+        void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
+        void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
+        
+        const void* GetBufferData() const;
+    private:
+        int CalcuChunkStride(uint32 vlss);
     private:
         VertexDescriptor    _VertexDesc;
         std::vector<char>   _Buffer;

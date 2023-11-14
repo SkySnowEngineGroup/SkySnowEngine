@@ -115,7 +115,7 @@ namespace SkySnow
 
 	enum VertexLayoutSlot : uint32
 	{
-		VLS_None = -1,
+		VLS_None            = 0,
 		VLS_Position		= 1 << 0,	// Position		(Vector3)
 		VLS_Normal			= 1 << 1,	// Normal		(Vector3)
 		VLS_Tangent			= 1 << 2,	// Tangent		(Vector4) w is weight
