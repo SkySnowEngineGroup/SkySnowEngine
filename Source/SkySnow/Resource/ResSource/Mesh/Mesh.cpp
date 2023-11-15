@@ -20,23 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GRIResource.h"
-#include "TextureStream.h"
-#include "IResource.h"
+#include "Mesh.h"
 namespace SkySnow
 {
-    class Texture : public IResource
+    Mesh::Mesh(MeshType meshType)
+        : IResSource(RS_MeshSource)
+        , _MeshType(meshType)
     {
-        SkySnow_Object(Texture,IResource);
-    public:
-        Texture();
-        
-        virtual ~Texture();
+    }
 
-        void SetTextureStream(TextureStream* stream);
-    private:
-        GRITexture2DRef _TextureHandle;//GpuResource
-        TextureStream*  _TextureStream;//CPUResource
-    };
+    Mesh::~Mesh()
+    {
+        SN_LOG("Mesh DesConstruct.");
+    }
+
+    void Mesh::PushVertexStream(SPtr<VertexStream>& vStream)
+    {
+        _VertexStreams.push_back(vStream);
+    }
+
+    std::vector<SPtr<VertexStream>> Mesh::GetVertexStreams()
+    {
+        return _VertexStreams;
+    }
+
+    SPtr<IndicesStream>& Mesh::GetIndicesStream()
+    {
+        return _IndicesStream;
+    }
 }

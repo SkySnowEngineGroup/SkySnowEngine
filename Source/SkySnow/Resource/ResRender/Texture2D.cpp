@@ -20,24 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "VertexDescriptor.h"
-
+#include "Texture2D.h"
+#include "GRI.h"
 namespace SkySnow
 {
-    VertexDescriptor::VertexDescriptor()
+    Texture2D::Texture2D()
+        : IResRender(GRT_Texture2D)
     {
-    }
-    VertexDescriptor::~VertexDescriptor()
-    {
-    }
-
-    std::vector<VertexElementSlot> VertexDescriptor::GetVertexDesc()
-    {
-        return _SingleStreamDesc;
+        
     }
 
-    void VertexDescriptor::PushElementSlot(VertexElementSlot veSlot)
+    Texture2D::~Texture2D()
     {
-        _SingleStreamDesc.push_back(veSlot);
+        
+    }
+
+    void Texture2D::SetTextureStream(TextureStream* stream)
+    {
+        _TextureStream = stream;
+        ResourceData texRD;
+        texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
+        uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
+        _GRITexture2D = CreateTexture2D(_TextureStream->GetImageWidth(),
+                                         _TextureStream->GetImageHeight(),
+                                         _TextureStream->GetPixelFormat(),
+                                         1, 1,
+                                         (TextureUsageType)tut,
+                                         texRD);
     }
 }

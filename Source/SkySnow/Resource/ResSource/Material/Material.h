@@ -20,33 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#include "Material.h"
+#pragma once
+#include "StandardMesh.h"
+#include "IResSource.h"
+#include "Texture2D.h"
+#include "PropertyName.h"
 namespace SkySnow
 {
-    Material::Material()
-        : IResource(MaterialRes)
+    class Material : public IResSource
     {
+        SkySnow_Object(Material, IResSource);
+    public:
+        Material();
+        ~Material();
 
-    }
+        void SetTexture(PropertyName name,Texture2D* texture);
 
-    Material::~Material()
-    {
-
-    }
-
-    void Material::SetTexture(PropertyName name, Texture* texture)
-    {
-        _Textures[name.GetIndex()] = texture;
-    }
-
-    Texture* Material::GetTexture(PropertyName name)
-    {
-        auto find = _Textures.find(name.GetIndex());
-        if (find != _Textures.end())
-        {
-            return find->second;
-        }
-        return nullptr;
-    }
+        Texture2D* GetTexture(PropertyName name);
+    private:
+        std::unordered_map<int, Texture2D*>    _Textures;
+    };
 }

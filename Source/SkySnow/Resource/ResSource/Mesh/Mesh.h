@@ -22,22 +22,36 @@
 //
 #pragma once
 #include "StandardMesh.h"
-#include "IResource.h"
-#include "Texture.h"
-#include "PropertyName.h"
+#include "IResSource.h"
+#include "VertexStream.h"
+#include "IndicesStream.h"
+#include "SPtr.h"
 namespace SkySnow
 {
-    class Material : public IResource
+    enum MeshType
     {
-        SkySnow_Object(Material,IResource);
+        MT_None,
+        MT_StaticMesh,
+        MT_SkinnedMesh,
+        MT_BlendShapeMesh,
+    };
+    class Mesh : public IResSource
+    {
+        SkySnow_Object(Mesh, IResSource);
     public:
-        Material();
-        ~Material();
+        Mesh(MeshType meshType = MT_None);
+        virtual ~Mesh();
+        
+        MeshType GetMeshType(){ return _MeshType;}
+        
+        void PushVertexStream(SPtr<VertexStream>& vStream);
+        
+        std::vector<SPtr<VertexStream>> GetVertexStreams();
 
-        void SetTexture(PropertyName name,Texture* texture);
-
-        Texture* GetTexture(PropertyName name);
+        SPtr<IndicesStream>& GetIndicesStream();
     private:
-        std::unordered_map<int, Texture*>    _Textures;
+        MeshType                        _MeshType;
+        std::vector<SPtr<VertexStream>> _VertexStreams;
+        SPtr<IndicesStream>             _IndicesStream;
     };
 }

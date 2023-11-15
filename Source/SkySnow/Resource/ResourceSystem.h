@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "ISystem.h"
-#include "IResource.h"
+#include "IResSource.h"
 #include <vector>
 #include <unordered_map>
 
@@ -31,13 +31,13 @@ namespace SkySnow
     struct ResKeyWords
     {
         std::string     _ResPath;
-        EResourceType   _Ert;
+        EResSource      _Ert;
     };
 
     struct ResResult
     {
         ResKeyWords _KeyWords;
-        IResource*  _Resource;
+        IResSource* _ResSource;
     };
     class ResourceSystem : public ISystem
     {
@@ -46,7 +46,7 @@ namespace SkySnow
         ResourceSystem();
         virtual ~ResourceSystem();
         
-        void PushLoadJob(std::string resPath,EResourceType ert);
+        void PushLoadJob(std::string resPath, EResSource rst);
 
         virtual void PreUpdate() final override;
 

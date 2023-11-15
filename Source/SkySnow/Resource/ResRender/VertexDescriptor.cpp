@@ -20,17 +20,25 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#include "VertexDescriptor.h"
 
-#include "IResource.h"
 namespace SkySnow
 {
-    IResource::IResource(EResourceType ert)
-        : _ResourceType(ert)
+    VertexDescriptor::VertexDescriptor()
+        : IResRender(GRT_VertexDescriptor)
     {
-        
     }
-    IResource::~IResource()
+    VertexDescriptor::~VertexDescriptor()
     {
-        
+    }
+
+    std::vector<VertexElementSlot> VertexDescriptor::GetVertexDesc()
+    {
+        return _SingleStreamDesc;
+    }
+
+    void VertexDescriptor::PushElementSlot(VertexElementSlot veSlot)
+    {
+        _SingleStreamDesc.push_back(veSlot);
     }
 }

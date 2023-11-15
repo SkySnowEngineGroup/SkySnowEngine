@@ -20,32 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Mesh.h"
+#pragma once
+#include "Object.h"
 namespace SkySnow
 {
-    Mesh::Mesh(MeshType meshType)
-        : IResource(MeshRes)
-        , _MeshType(meshType)
+    enum EResSource
     {
-    }
+        RS_NoneSource,
+        RS_TextureSource,
+        RS_MeshSource,
+        RS_MaterialSource,
+        RS_SceneSource
+    };
+    class IResSource : public Object
+    {
+        SkySnow_Object(IResSource,Object);
+    public:
+        IResSource(EResSource ert);
+        virtual ~IResSource();
 
-    Mesh::~Mesh()
-    {
-        SN_LOG("Mesh DesConstruct.");
-    }
-
-    void Mesh::PushVertexStream(SPtr<VertexStream>& vStream)
-    {
-        _VertexStreams.push_back(vStream);
-    }
-
-    std::vector<SPtr<VertexStream>> Mesh::GetVertexStreams()
-    {
-        return _VertexStreams;
-    }
-
-    SPtr<IndicesStream>& Mesh::GetIndicesStream()
-    {
-        return _IndicesStream;
-    }
+        void SetKeepSource(bool keepSource)
+        {
+            _IsKeepSource = keepSource;
+        }
+        bool IsKeepSource()
+        {
+            return _IsKeepSource;
+        }
+    protected:
+        EResSource _ResourceType;
+        bool       _IsKeepSource;
+    };
 }

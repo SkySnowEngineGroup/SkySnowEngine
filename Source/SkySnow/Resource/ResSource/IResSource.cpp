@@ -20,34 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "IStream.h"
-#include "VertexDescriptor.h"
-#include "MathCommon.h"
+
+#include "IResSource.h"
 namespace SkySnow
 {
-    class VertexStream : public IStream
+    IResSource::IResSource(EResSource ert)
+        : _ResourceType(ert)
+        , _IsKeepSource(true)
     {
-    public:
-        VertexStream();
-        ~VertexStream();
         
-        VertexDescriptor GetVertexDesc();
-
-        void SetVertexCount(uint32 vlss,int count);
-
-        void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
-        void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
-        void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
+    }
+    IResSource::~IResSource()
+    {
         
-        const void* GetBufferData() const;
-    private:
-        int CalcuChunkStride(uint32 vlss);
-    private:
-        VertexDescriptor    _VertexDesc;
-        std::vector<char>   _Buffer;
-        int                 _VertexCount;
-        int                 _ChunkStride;
-        uint32              _VertexLayout;
-    };
+    }
 }

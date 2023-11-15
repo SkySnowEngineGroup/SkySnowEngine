@@ -21,24 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
+#include "GRIResource.h"
+#include "TextureStream.h"
+#include "IResRender.h"
 namespace SkySnow
 {
-    enum EResourceType
+    class Texture2D : public IResRender
     {
-        NoneRes,
-        TextureRes,
-        MeshRes,
-        MaterialRes,
-        SceneRes
-    };
-    class IResource : public Object
-    {
-        SkySnow_Object(IResource,Object);
+        SkySnow_Object(Texture2D, IResRender);
     public:
-        IResource(EResourceType ert);
-        virtual ~IResource();
-    protected:
-        EResourceType _ResourceType = NoneRes;
+        Texture2D();
+        
+        virtual ~Texture2D();
+    public:
+        void SetTextureStream(TextureStream* stream);
+    public:
+        GRITexture2DRef     _GRITexture2D;//GpuResource
+    private:
+        TextureStream*      _TextureStream;//CPUResource
     };
 }

@@ -20,38 +20,33 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "StandardMesh.h"
-#include "IResource.h"
-#include "VertexStream.h"
-#include "IndicesStream.h"
-#include "SPtr.h"
+
+#include "Material.h"
 namespace SkySnow
 {
-    enum MeshType
+    Material::Material()
+        : IResSource(RS_MaterialSource)
     {
-        MT_None,
-        MT_StaticMesh,
-        MT_SkinnedMesh,
-        MT_BlendShapeMesh,
-    };
-    class Mesh : public IResource
-    {
-        SkySnow_Object(Mesh,IResource);
-    public:
-        Mesh(MeshType meshType = MT_None);
-        virtual ~Mesh();
-        
-        MeshType GetMeshType(){ return _MeshType;}
-        
-        void PushVertexStream(SPtr<VertexStream>& vStream);
-        
-        std::vector<SPtr<VertexStream>> GetVertexStreams();
 
-        SPtr<IndicesStream>& GetIndicesStream();
-    private:
-        MeshType                        _MeshType;
-        std::vector<SPtr<VertexStream>> _VertexStreams;
-        SPtr<IndicesStream>             _IndicesStream;
-    };
+    }
+
+    Material::~Material()
+    {
+
+    }
+
+    void Material::SetTexture(PropertyName name, Texture2D* texture)
+    {
+        _Textures[name.GetIndex()] = texture;
+    }
+
+    Texture2D* Material::GetTexture(PropertyName name)
+    {
+        auto find = _Textures.find(name.GetIndex());
+        if (find != _Textures.end())
+        {
+            return find->second;
+        }
+        return nullptr;
+    }
 }

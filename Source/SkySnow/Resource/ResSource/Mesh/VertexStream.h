@@ -20,32 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Texture.h"
-#include "GRI.h"
+#pragma once
+#include "IStream.h"
+#include "VertexDescriptor.h"
+#include "MathCommon.h"
 namespace SkySnow
 {
-    Texture::Texture()
-        : IResource(TextureRes)
+    class VertexStream : public IStream
     {
-        
-    }
+    public:
+        VertexStream();
+        ~VertexStream();
 
-    Texture::~Texture()
-    {
-        
-    }
+        void SetVertexCount(uint32 vlss,int count);
 
-    void Texture::SetTextureStream(TextureStream* stream)
-    {
-        _TextureStream = stream;
-        ResourceData texRD;
-        texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
-        uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
-        _TextureHandle = CreateTexture2D(_TextureStream->GetImageWidth(),
-                                         _TextureStream->GetImageHeight(),
-                                         _TextureStream->GetPixelFormat(),
-                                         1, 1,
-                                         (TextureUsageType)tut,
-                                         texRD);
-    }
+        void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
+        void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
+        void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
+        const void* GetBufferData() const;
+    private:
+        int CalcuChunkStride(uint32 vlss);
+    private:
+        std::vector<char>   _Buffer;
+        int                 _VertexCount;
+        int                 _ChunkStride;
+        uint32              _VertexLayout;
+    };
 }

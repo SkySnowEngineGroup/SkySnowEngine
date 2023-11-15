@@ -31,7 +31,7 @@
 #include "MeshRenderComponent.h"
 #include "SampleApplication.h"
 #include "Context.h"
-#include "Texture.h"
+#include "Texture2D.h"
 #include "StbImageLoad.h"
 #include "SkySnowEngine.h"
 #include "TextureLoader.h"
@@ -67,7 +67,7 @@ public:
         string imagePath = GetImageAllPath("panda.png");
         TextureLoader* tImp = new TextureLoader();
         TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
-        Texture* texture = new Texture();
+        Texture2D* texture = new Texture2D();
         texture->SetTextureStream(texStream);
 
         PropertyName texName;

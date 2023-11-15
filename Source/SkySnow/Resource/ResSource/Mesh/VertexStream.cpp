@@ -33,11 +33,6 @@ namespace SkySnow
 	VertexStream::~VertexStream()
 	{
 	}
-    
-    VertexDescriptor VertexStream::GetVertexDesc()
-    {
-        return _VertexDesc;
-    }
 
     void VertexStream::SetVertexCount(uint32 vlss, int count)
     {

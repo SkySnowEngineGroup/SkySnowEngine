@@ -21,20 +21,28 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIResourceCreateInfo.h"
-
+#include "GRI.h"
+#include "GRICommandBuffer.h"
+#include "Object.h"
+#include "SPtr.h"
 namespace SkySnow
 {
-    class VertexDescriptor
+    class IStream;
+    class IResRender : public Object
     {
+        SkySnow_Object(IResRender, Object);
     public:
-        VertexDescriptor();
-        ~VertexDescriptor();
-        
-        std::vector<VertexElementSlot> GetVertexDesc();
-        
-        void PushElementSlot(VertexElementSlot veSlot);
-    private:
-        std::vector<VertexElementSlot> _SingleStreamDesc;
+        IResRender(EGRIResourceType grirt) 
+            : _GRIResType(grirt)
+        {
+        }
+        virtual ~IResRender() {}
+
+        EGRIResourceType GetResRenderType()
+        {
+            return _GRIResType;
+        }
+    protected:
+        EGRIResourceType    _GRIResType;
     };
 }

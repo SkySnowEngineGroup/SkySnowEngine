@@ -21,16 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RenderResource.h"
-#include "GRIResource.h"
+#include "GRIResourceCreateInfo.h"
+#include "IResRender.h"
 namespace SkySnow
 {
-	class VertexBuffer : RenderResource
-	{
-	public:
-
-
-	private:
-		GRIVertexBufferRef	_VertexBuffer;
-	};
+    class VertexDescriptor : public IResRender
+    {
+        SkySnow_Object(VertexDescriptor, IResRender);
+    public:
+        VertexDescriptor();
+        ~VertexDescriptor();
+    public:
+        std::vector<VertexElementSlot> GetVertexDesc();
+        
+        void PushElementSlot(VertexElementSlot veSlot);
+    public:
+        GRIVertexDescriptorRef          _GRIVertexDesc;
+    private:
+        std::vector<VertexElementSlot>  _SingleStreamDesc;
+    };
 }

@@ -33,15 +33,15 @@ namespace SkySnow
 
     }
 
-    void ResourceSystem::PushLoadJob(std::string resPath,EResourceType ert)
+    void ResourceSystem::PushLoadJob(std::string resPath, EResSource rst)
     {
         std::size_t hash = 0;
         HashCombine(resPath,hash);
-        HashCombine((int)ert, hash);
+        HashCombine((int)rst, hash);
 
         ResKeyWords meta;
         meta._ResPath   = resPath;
-        meta._Ert       = ert;
+        meta._Ert       = rst;
         _ResMapJob[hash] = meta;
     }
 
