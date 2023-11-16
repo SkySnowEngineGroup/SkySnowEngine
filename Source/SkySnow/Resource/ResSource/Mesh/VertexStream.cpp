@@ -67,51 +67,51 @@ namespace SkySnow
     int VertexStream::CalcuChunkStride(uint32 vlss)
     {
         int chunkStride = 0;
-        if (vlss | VertexLayoutSlot::VLS_Position)
+        if (vlss & VertexLayoutSlot::VLS_Position)
         {
             chunkStride += Vector3f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_Normal)
+        if (vlss & VertexLayoutSlot::VLS_Normal)
         {
             chunkStride += Vector3f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_Tangent)
+        if (vlss & VertexLayoutSlot::VLS_Tangent)
         {
             chunkStride += Vector4f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_Color)
+        if (vlss & VertexLayoutSlot::VLS_Color)
         {
             chunkStride += Vector4f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord0)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord0)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord1)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord1)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord2)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord2)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord3)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord3)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord4)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord4)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord5)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord5)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord6)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord6)
         {
             chunkStride += Vector2f::ByteSize();
         }
-        if (vlss | VertexLayoutSlot::VLS_TexCoord7)
+        if (vlss & VertexLayoutSlot::VLS_TexCoord7)
         {
             chunkStride += Vector2f::ByteSize();
         }

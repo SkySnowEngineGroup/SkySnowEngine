@@ -60,9 +60,6 @@ public:
 
         TransformComponent* transCom = go->AddComponent<TransformComponent>();
         MeshRenderComponent* meshCom = go->AddComponent<MeshRenderComponent>();
-        
-        //ResourceSystem* resSystem = Context::Instance().GetSystem<ResourceSystem>();
-        //resSystem->PushLoadJob(GetImageAllPath("panda.png"),TextureRes);
 
         string imagePath = GetImageAllPath("panda.png");
         TextureLoader* tImp = new TextureLoader();
@@ -77,9 +74,8 @@ public:
         mat->SetTexture(texName,texture);
 
         Mesh* mesh = new Mesh();
-        SPtr<VertexStream> vStream = new VertexStream();
-//        vStream->PushVertex();
-        mesh->PushVertexStream(vStream);
+        MQuad quad;
+        mesh->PushVertexStream(quad._ArrayStream);
 
         meshCom->SetMaterialCount(1);
         meshCom->SetMaterial(mat,0);

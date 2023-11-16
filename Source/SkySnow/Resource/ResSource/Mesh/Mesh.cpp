@@ -34,7 +34,7 @@ namespace SkySnow
         SN_LOG("Mesh DesConstruct.");
     }
 
-    void Mesh::PushVertexStream(SPtr<VertexStream>& vStream)
+    void Mesh::PushVertexStream(const SPtr<VertexStream>& vStream)
     {
         _VertexStreams.push_back(vStream);
     }

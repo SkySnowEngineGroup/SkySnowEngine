@@ -23,75 +23,20 @@
 #pragma once
 #include "SPtr.h"
 #include <vector>
+#include "VertexStream.h"
+#include "IndicesStream.h"
+
 namespace SkySnow
 {
-	struct Pos
-	{
-		Pos(float vx,float vy,float vz)
-			: x(vx)
-			, y(vy)
-			, z(vz)
-		{
-		}
-		float x = 0;
-		float y = 0;
-		float z = 0;
-	};
-	struct Uv
-	{
-		Uv(float uvx,float uvy)
-			: u(uvx)
-			, v(uvy)
-		{
-		}
-		float u = 0;
-		float v = 0;
-	};
-	struct Normal
-	{
-		Normal(float nx,float ny,float nz)
-			: x(nx)
-			, y(ny)
-			, z(nz)
-		{
-		}
-		float x = 0;
-		float y = 0;
-		float z = 0;
-	};
-	
-	struct VMeta
-	{
-		VMeta(Pos ver,Uv uv,Normal nor)
-			: _Vertex(ver)
-			, _Uv(uv)
-			, _Normal(nor)
-		{
-		}
-		VMeta(float vx,float vy,float vz,
-			  float uvx,float uvy,
-			  float nx,float ny,float nz)
-			: _Vertex(vx,vy,vz)
-			, _Uv(uvx,uvy)
-			, _Normal(nx,ny,nz)
-		{
-		}
-		Pos		_Vertex;
-		Uv		_Uv;
-		Normal	_Normal;
-	};
 	struct MQuad
 	{
 		MQuad()
 		{
 			InitData();
 		}
-		std::vector<Pos>	_Poss;
-		//DrawElement
-		std::vector<VMeta>	_Vertexs;
-		std::vector<int>	_Indices;
-		//DrawArray
-		std::vector<VMeta>	_VertexArray;
+		SPtr<VertexStream>	_ArrayStream;
+		SPtr<VertexStream>	_ElementStream;
+		SPtr<IndicesStream> _IndicesStream;
 		
 	private:
 		void InitData();

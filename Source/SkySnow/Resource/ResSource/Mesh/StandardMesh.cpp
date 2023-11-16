@@ -33,29 +33,39 @@ namespace SkySnow
 		*		|		 |
 		*	    3--------2
 		*/
-		_Vertexs = 
+		std::vector<float> tempVertex =
 		{
-			VMeta(-1, 1,0, 0,1, 0,0,1),
-			VMeta( 1, 1,0, 1,1, 0,0,1),
-			VMeta( 1,-1,0, 1,0, 0,0,1),
-			VMeta(-1,-1,0, 0,0, 0,0,1)
-		};
-		_Poss =
-		{
-			Pos(-1, 1, 0),
-			Pos( 1, 1, 0),
-			Pos( 1,-1, 0),
-			Pos(-1,-1, 0)
-		};
-		_Indices =
-		{
-			0,3,2,
-			0,2,1
-		};
+			-1, 1,0, 0,0,1, 0,1,//0
+			-1,-1,0, 0,0,1, 0,0,//3
+			 1,-1,0, 0,0,1, 1,0,//2
 
-		for (int i = 0; i < (int)_Indices.size(); i++)
+			-1, 1,0, 0,0,1, 0,1,//0
+			 1,-1,0, 0,0,1, 1,0,//2
+			 1, 1,0, 0,0,1, 1,1 //1
+		};
+		int stride = 8;
+		int davCount = 6;
+		uint32 vertexLayout = VLS_Position | VLS_Normal | VLS_TexCoord0;
+
+		_ArrayStream = new VertexStream();
+		_ArrayStream->SetVertexCount(vertexLayout, davCount);
+
+		for (int i = 0; i < davCount; i ++)
 		{
-			_VertexArray.push_back(_Vertexs[_Indices[i]]);
+			float px = tempVertex[i * stride + 0];
+			float py = tempVertex[i * stride + 1];
+			float pz = tempVertex[i * stride + 2];
+
+			float nx = tempVertex[i * stride + 3];
+			float ny = tempVertex[i * stride + 4];
+			float nz = tempVertex[i * stride + 5];
+
+			float ux = tempVertex[i * stride + 6];
+			float uy = tempVertex[i * stride + 7];
+
+			_ArrayStream->PushVertex(VLS_Position, Vector3f(px,py,pz));
+			_ArrayStream->PushVertex(VLS_Normal, Vector3f(nx,ny,nz));
+			_ArrayStream->PushVertex(VLS_TexCoord0, Vector2f(ux,uy));
 		}
 	}
 }

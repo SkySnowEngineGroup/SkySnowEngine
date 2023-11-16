@@ -44,7 +44,7 @@ namespace SkySnow
         
         MeshType GetMeshType(){ return _MeshType;}
         
-        void PushVertexStream(SPtr<VertexStream>& vStream);
+        void PushVertexStream(const SPtr<VertexStream>& vStream);
         
         std::vector<SPtr<VertexStream>> GetVertexStreams();
 
