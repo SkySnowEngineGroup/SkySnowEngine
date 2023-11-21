@@ -26,7 +26,7 @@
 #include "LogAssert.h"
 #include "SceneManager.h"
 #include "GameObject.h"
-#include "RenderComponent.h"
+#include "Renderer.h"
 #include "CameraComponent.h"
 #include "MeshRenderComponent.h"
 #include "SampleApplication.h"

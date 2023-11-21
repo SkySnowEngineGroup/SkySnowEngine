@@ -29,5 +29,9 @@ namespace SkySnow
 	public:
         Behaviour(){}
         virtual ~Behaviour(){}
+        
+        virtual void Update(){}
+        virtual void FixedUpdate(){}
+        virtual void LateUpdate(){}
 	};
 }

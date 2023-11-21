@@ -30,8 +30,6 @@ namespace SkySnow
     public:
         TransformComponent();
         virtual ~TransformComponent();
-        
-        virtual void Update() override;
     private:
     };
 }

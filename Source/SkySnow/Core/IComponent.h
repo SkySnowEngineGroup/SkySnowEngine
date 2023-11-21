@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once
 #include "Object.h"
+#include "SPtr.h"
 #include <vector>
 namespace SkySnow
 {
@@ -39,8 +40,6 @@ namespace SkySnow
         {
         }
 
-		virtual void Update() = 0;
-
 		virtual void Deactivate()
         {
             _Enable = false;
@@ -56,12 +55,12 @@ namespace SkySnow
             _Enable = enable;
         }
         //attach this comonent to gameobject
-        void AttachToGameObject(GameObject* go)
+        void AttachGO(GameObject* go)
         {
             _GameObject = go;
         }
         //Detach curr component with gameobject
-        void DetachToGameObject()
+        void DetachGO()
         {
             _GameObject = nullptr;
         }

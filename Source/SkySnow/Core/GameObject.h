@@ -51,8 +51,6 @@ namespace SkySnow
         GameObject* AddChild();
         void RemoveChild(GameObject* childGO);
         void SetParent(GameObject* parentGO);
-    private:
-        void UpdateActiveGameObject();
 	private:
         bool                        _Enable;
         //GameObject at Layer
@@ -76,7 +74,7 @@ namespace SkySnow
             }
         }
         T* newCom = new T();
-        newCom->AttachToGameObject(this);
+        newCom->AttachGO(this);
         _ComponentList.push_back(newCom);
         return newCom;
     }
@@ -86,7 +84,7 @@ namespace SkySnow
         {
             if((*iter)->GetTypeName() == T::GetTypeNameStatic())
             {
-                (*iter)->DetachToGameObject();
+                (*iter)->DetachGO();
                 delete *iter;
                 _ComponentList.erase(iter);
                 break;

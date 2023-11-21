@@ -33,9 +33,4 @@ namespace SkySnow
     {
         
     }
-
-    void TransformComponent::Update()
-    {
-        
-    }
 }

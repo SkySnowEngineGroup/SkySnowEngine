@@ -26,8 +26,7 @@
 namespace SkySnow
 {
     Scene::Scene(std::string sceneName)
-        : _Enable(true)
-        , _IsSubScene(false)
+        : _IsSubScene(false)
         , _SceneHandle(-1)
         , _CullingMask(g_DefaultCullingMask)
         , _SceneName(sceneName)
@@ -48,20 +47,6 @@ namespace SkySnow
     std::string Scene::GetSceneName() const
     {
         return _SceneName;
-    }
-
-    void Scene::SetEnable(bool enable)
-    {
-        _Enable = enable;
-        for(auto iter = _RootList.begin(); iter != _RootList.end(); iter ++)
-        {
-            (*iter)->SetEnable(enable);
-        }
-    }
-
-    bool Scene::IsEnable() const
-    {
-        return _Enable;
     }
 
     TransformComponent* Scene::SetupRootTransform()

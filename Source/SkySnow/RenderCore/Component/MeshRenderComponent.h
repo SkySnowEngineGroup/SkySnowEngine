@@ -21,27 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Renderable.h"
+#include "Renderer.h"
 #include "Mesh.h"
 namespace SkySnow
 {
-	class MeshRenderComponent : public Renderable
+	class MeshRenderComponent : public Renderer
 	{
-		SkySnow_Object(MeshRenderComponent, Renderable);
+		SkySnow_Object(MeshRenderComponent, Renderer);
 	public:
 		MeshRenderComponent()
 		{
 		}
-
 		~MeshRenderComponent()
 		{
 		}
         
-        virtual void UpdateRenderer() final override;
-        
-        virtual void Update() final override;
-		void SetMesh(Mesh* mesh);
+		void SetMesh(SPtr<Mesh> mesh);
 	private:
-		Mesh* _Mesh;
+        SPtr<Mesh>  _Mesh;
 	};
 }
