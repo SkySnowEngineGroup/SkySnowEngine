@@ -22,6 +22,7 @@
 #pragma once
 #include "Object.h"
 #include "IComponent.h"
+#include <memory>
 namespace SkySnow
 {
     //if GO has parent-child,A TransformComponent must be mounted
@@ -41,41 +42,40 @@ namespace SkySnow
         
         void SetTag(int16_t tag);
         int16_t GetTag() const;
-        
-		template<typename T> T* GetComponent();
-		template<typename T> bool HasComponent();
 
-        template<typename T> T* AddComponent();
+        template<typename T> SPtr<T> AddComponent();
         template<typename T> void RemoveComponent();
         
-        GameObject* AddChild();
-        void RemoveChild(GameObject* childGO);
-        void SetParent(GameObject* parentGO);
+        template<typename T> SPtr<T> GetComponent();
+        template<typename T> bool HasComponent();
+        
+        SPtr<GameObject> AddChild();
+        void RemoveChild(SPtr<GameObject> childGO);
+        void SetParent(SPtr<GameObject> parentGO);
 	private:
         bool                        _Enable;
         //GameObject at Layer
-        int32_t                     _Layer;
-        int16_t                     _Tag;
-        GameObject*                 _Parent;
-        std::vector<GameObject*>    _ChildList;
-        //TODO: Whether the array is going to be here, whether it's going to be a miss in cache
-		std::vector<IComponent*>    _ComponentList;
+        int32_t                         _Layer;
+        int16_t                         _Tag;
+        SPtr<GameObject>                _Parent;
+        std::vector<SPtr<GameObject>>   _ChildList;
+        std::vector<SPtr<IComponent>>   _ComponentList;
 	};
 
     //========================================================================================
-    template<typename T> inline T* GameObject::AddComponent()
+    template<typename T> inline SPtr<T> GameObject::AddComponent()
     {
-        for(auto entry:_ComponentList)
+        for (int i = 0; i < _ComponentList.size(); i++)
         {
-            if(entry->GetTypeName() == T::GetTypeNameStatic())
+            if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
             {
-                SN_WARN("A component of this type(%s) is already included",entry->GetTypeName());
-                return dynamic_cast<T*>(entry);
+                SN_WARN("A component of this type(%s) is already included",_ComponentList[i]->GetTypeName());
+                return SPtr<T>(dynamic_cast<T*>(_ComponentList[i].get()));
             }
         }
-        T* newCom = new T();
+        SPtr<T> newCom = CreateSPtr<T>();
         newCom->AttachGO(this);
-        _ComponentList.push_back(newCom);
+        _ComponentList.emplace_back(newCom);
         return newCom;
     }
     template<typename T> void GameObject::RemoveComponent()
@@ -85,20 +85,18 @@ namespace SkySnow
             if((*iter)->GetTypeName() == T::GetTypeNameStatic())
             {
                 (*iter)->DetachGO();
-                delete *iter;
                 _ComponentList.erase(iter);
                 break;
             }
         }
     }
-    template<typename T> inline T* GameObject::GetComponent()
+    template<typename T> inline SPtr<T> GameObject::GetComponent()
     {
         for (int i = 0; i < _ComponentList.size(); i++)
         {
             if (T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
             {
-                IComponent* com = _ComponentList[i];
-                return dynamic_cast<T*>(com);
+                return dynamic_cast<T>(_ComponentList[i]);
             }
         }
         return nullptr;

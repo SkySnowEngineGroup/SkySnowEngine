@@ -22,47 +22,12 @@
 #pragma once
 #include "RefCounted.h"
 #include "Reference.h"
-#include "SharedPointer.h"
-#include "WeakPtr.h"
-#include "UniquePtr.h"
+#include <memory>
 namespace SkySnow
 {
     //RefCounted use for gri,resource recycle(flushResource)
-#if Use_Smart_Ptr
-    //Shared pointer
-    template <class T>
-    using SPtr = SharedPtr<T>;
-
-    template <typename T, typename... Args>
-    SPtr<T> CreateSPtr(Args&&... args)
-    {
-        auto ptr = new T(std::forward<Args>(args)...);
-
-        return SPtr<T>(ptr);
-    }
-    //Weak Pointer
-    template <class T>
-    using WPtr = WeakPtr<T>;
-
-    //Unique Pointer
-    template <class T>
-    using UPtr = UniquePtr<T>;
-
-    template <typename T, typename... Args>
-    UPtr<T> CreateUPtr(Args&&... args)
-    {
-        auto ptr = new T(std::forward<Args>(args)...);
-        return UPtr<T>(ptr);
-    }
-#else
     template <class T>
     using SPtr = std::shared_ptr<T>;
-
-    template <typename T, typename... Args>
-    SPtr<T> CreateSPtr(Args&&... args)
-    {
-        return std::make_shared<T>(std::forward<Args>(args)...);
-    }
 
     template <class T>
     using WPtr = std::weak_ptr<T>;
@@ -71,24 +36,14 @@ namespace SkySnow
     using UPtr = std::unique_ptr<T>;
 
     template <typename T, typename... Args>
+    SPtr<T> CreateSPtr(Args&&... args)
+    {
+        return std::make_shared<T>(std::forward<Args>(args)...);
+    }
+
+    template <typename T, typename... Args>
     UPtr<T> CreateUPtr(Args&&... args)
     {
         return std::make_unique<T>(std::forward<Args>(args)...);
     }
-
-#endif
 }
-
-#if Use_Smart_Ptr
-namespace std
-{
-    template <typename T>
-    struct hash<SkySnow::SharedPtr<T>>
-    {
-        size_t operator()(const SkySnow::SharedPtr<T>& x) const
-        {
-            return hash<T*>()(x.Get());
-        }
-    };
-}
-#endif

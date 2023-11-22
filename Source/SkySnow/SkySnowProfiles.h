@@ -35,7 +35,7 @@
 
 #define DEBUG 1
 #define Log_Lock 1
-#define Use_Smart_Ptr 1 //Use custom smart Pointers
+//#define Use_Smart_Ptr 1 //Use custom smart Pointers
 
 #define DEFAUT_WADTH 800
 #define DEFAUT_HEIGHT 600

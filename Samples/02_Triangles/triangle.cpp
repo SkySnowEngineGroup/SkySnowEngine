@@ -48,18 +48,16 @@ public:
 	}
 	~Triangle()
 	{
-        Delete_Object(_Scene);
 	}
 
 	bool Init()
 	{
         _Scene = GetSceneManager().CreateScene("Test");
-        TransformComponent* rootTrans = _Scene->SetupRootTransform();
 
-		GameObject* go = _Scene->AddRootToScene();
+		SPtr<GameObject> go = _Scene->GetRootGo();
 
-        TransformComponent* transCom = go->AddComponent<TransformComponent>();
-        MeshRenderComponent* meshCom = go->AddComponent<MeshRenderComponent>();
+        SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
+        SPtr<MeshRenderComponent> meshCom = go->AddComponent<MeshRenderComponent>();
 
         string imagePath = GetImageAllPath("panda.png");
         TextureLoader* tImp = new TextureLoader();
@@ -70,10 +68,10 @@ public:
         PropertyName texName;
         texName.SetName("panda.png");
 
-        Material* mat = new Material();
+        SPtr<Material> mat = CreateSPtr<Material>();
         mat->SetTexture(texName,texture);
 
-        Mesh* mesh = new Mesh();
+        SPtr<Mesh> mesh = CreateSPtr<Mesh>();
         MQuad quad;
         mesh->PushVertexStream(quad._ArrayStream);
 
@@ -95,7 +93,7 @@ public:
     }
 
 private:
-    Scene* _Scene;
+    SPtr<Scene> _Scene;
 };
 
 SkySnow_SampleApplication(Triangle,"03-Triangles","Draw Trangle At Window&MacOS.", DEFAUT_WADTH, DEFAUT_HEIGHT);

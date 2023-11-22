@@ -37,16 +37,9 @@ namespace SkySnow
     
     GameObject::~GameObject()
     {
-        for (auto entry:_ComponentList)
-        {
-            delete entry;
-        }
         _ComponentList.clear();
-        for(auto entry:_ChildList)
-        {
-            delete entry;
-        }
         _ChildList.clear();
+        SN_LOG("GameObject DesConstruct.");
     }
 
     void GameObject::SetEnable(bool enable)
@@ -99,28 +92,28 @@ namespace SkySnow
         return _Tag;
     }
 
-    GameObject* GameObject::AddChild()
+    SPtr<GameObject> GameObject::AddChild()
     {
-        GameObject* cgo = new GameObject();
+        SPtr<GameObject> cgo = CreateSPtr<GameObject>();
         _ChildList.push_back(cgo);
         int32_t layer = _Layer + 1;
         cgo->SetLayer(layer);
         return cgo;
     }
 
-    void GameObject::RemoveChild(GameObject* childGO)
+    void GameObject::RemoveChild(SPtr<GameObject> childGO)
     {
-        for(auto entry:_ChildList)
+        for (auto iter = _ChildList.begin(); iter != _ChildList.end(); iter++)
         {
-            if(entry == childGO)
+            if (*iter == childGO)
             {
-                delete entry;
+                _ChildList.erase(iter);
                 break;
             }
         }
     }
 
-    void GameObject::SetParent(GameObject* parentGO)
+    void GameObject::SetParent(SPtr<GameObject> parentGO)
     {
         _Parent = parentGO;
     }

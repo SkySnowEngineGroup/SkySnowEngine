@@ -62,7 +62,7 @@ namespace SkySnow
         {
         }
     public:
-        std::atomic<int> _Count;
+        std::atomic_int _Count = {0};
     };
 
     class RefCount

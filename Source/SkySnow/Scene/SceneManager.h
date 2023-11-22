@@ -24,6 +24,7 @@
 #include "NonCopyable.h"
 #include <vector>
 #include "Scene.h"
+#include "SPtr.h"
 namespace SkySnow
 {
     //SkySnow use HybridECS framework
@@ -32,32 +33,18 @@ namespace SkySnow
     public:
         static SceneManager& Instance();
         //TODO: Create a Scene where memory is allocated from the memory pool, what type of memory pool should be used?
-        Scene* CreateScene(std::string name = "");
+        SPtr<Scene> CreateScene(std::string name = "");
         //Get all scene list
-        void GetScenes(std::vector<Scene*>& sceneList);
+        void GetScenes(std::vector<SPtr<Scene>>& sceneList);
         //Get Taget SceneName Scene
-        Scene* GetScene(std::string name);
+        SPtr<Scene> GetScene(std::string name);
     private:
         SceneManager();
         ~SceneManager();
     private:
-        std::vector<Scene*> _SceneList;
+        std::vector<SPtr<Scene>> _SceneList;
     };
 
-    class GameObjectManager : public NonCopyable
-    {
-    public:
-        static GameObjectManager& Instance();
-    private:
-        GameObjectManager(){}
-        ~GameObjectManager(){}
-    private:
-        std::vector<GameObject*> _TagGameObjects;
-        std::vector<GameObject*> _ActiveGameObject;
-    };
-
-
-    GameObjectManager& GetGameObjectManager();
     SceneManager& GetSceneManager();
 }
 

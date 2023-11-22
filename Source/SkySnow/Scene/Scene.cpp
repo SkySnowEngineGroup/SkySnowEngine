@@ -30,40 +30,18 @@ namespace SkySnow
         , _SceneHandle(-1)
         , _CullingMask(g_DefaultCullingMask)
         , _SceneName(sceneName)
-        , _CurrSceneTransform(nullptr)
+        , _RootGo(nullptr)
     {
+        AddRootGo();
     }
 
     Scene::~Scene()
     {
-        for(auto entry:_RootList)
-        {
-            delete entry;
-        }
-        _RootList.clear();
-        Delete_Object(_CurrSceneTransform);
     }
 
     std::string Scene::GetSceneName() const
     {
         return _SceneName;
-    }
-
-    TransformComponent* Scene::SetupRootTransform()
-    {
-        if(!_CurrSceneTransform)
-        {
-            _CurrSceneTransform = new TransformComponent();
-        }
-        return _CurrSceneTransform;
-    }
-    TransformComponent* Scene::GetRootTransform()
-    {
-        if(!_CurrSceneTransform)
-        {
-            _CurrSceneTransform = SetupRootTransform();
-        }
-        return _CurrSceneTransform;
     }
     
     void Scene::SetSubScene(bool subScene)
@@ -85,33 +63,18 @@ namespace SkySnow
     {
         return _CullingMask;
     }
-    GameObject* Scene::AddRootToScene(GameObject* goRoot)
+    SPtr<GameObject> Scene::AddRootGo()
     {
-        if (goRoot)
+        if(!_RootGo)
         {
-            bool findRepeat = false;
-            for (auto iter = _RootList.begin(); iter != _RootList.end(); iter++)
-            {
-                if (*iter == goRoot)
-                {
-                    findRepeat = true;
-                    break;
-                }
-            }
-            if (!findRepeat)
-            {
-                _RootList.emplace_back(goRoot);
-                goRoot->SetEnable(true);
-            }
+            _RootGo = CreateSPtr<GameObject>();
         }
-        else
-        {
-            goRoot = new GameObject();
-            _RootList.emplace_back(goRoot);
-            goRoot->SetEnable(true);
-        }
-
-        return goRoot;
+        return _RootGo;
+    }
+    
+    SPtr<GameObject> Scene::GetRootGo()
+    {
+        return AddRootGo();
     }
 }
 

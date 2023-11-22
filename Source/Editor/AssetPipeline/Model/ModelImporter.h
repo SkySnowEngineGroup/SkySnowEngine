@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "ImporterBase.h"
-namespace SkySnow
+namespace Editor
 {
     class ModelImporter : public ImporterBase
     {

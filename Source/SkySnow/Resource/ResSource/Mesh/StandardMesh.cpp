@@ -47,7 +47,7 @@ namespace SkySnow
 		int davCount = 6;
 		uint32 vertexLayout = VLS_Position | VLS_Normal | VLS_TexCoord0;
 
-		_ArrayStream = new VertexStream();
+		_ArrayStream = CreateSPtr<VertexStream>();
 		_ArrayStream->SetVertexCount(vertexLayout, davCount);
 
 		for (int i = 0; i < davCount; i ++)

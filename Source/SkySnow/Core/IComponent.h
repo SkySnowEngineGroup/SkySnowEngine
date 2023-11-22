@@ -32,7 +32,6 @@ namespace SkySnow
 	public:
 		IComponent()
 			: _Enable(true)
-            , _GameObject(nullptr)
 		{
 		}
         
@@ -57,24 +56,20 @@ namespace SkySnow
         //attach this comonent to gameobject
         void AttachGO(GameObject* go)
         {
-            _GameObject = go;
+            _GameObject = SPtr<GameObject>(go);
         }
-        //Detach curr component with gameobject
-        void DetachGO()
-        {
-            _GameObject = nullptr;
-        }
+       
         //Get curr component attach gameobject
-        GameObject* GetGameObject() const
+        WPtr<GameObject> GetGameObject() const
         {
-            if(!_GameObject)
+            if(!_GameObject.lock())
             {
                 SN_WARN("Curr Component Not Attach Any GameObject.");
             }
             return _GameObject;
         }
 	protected:
-		bool		_Enable;
-        GameObject* _GameObject;
+		bool		     _Enable;
+        WPtr<GameObject> _GameObject;
 	};
 }

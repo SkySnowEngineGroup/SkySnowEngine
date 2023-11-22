@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 #pragma once
 #include <string>
+#include <memory>
 namespace SkySnow
 {
 	struct RTTI

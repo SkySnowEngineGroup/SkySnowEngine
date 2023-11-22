@@ -38,14 +38,14 @@ namespace SkySnow
         return instance;
     }
 
-    Scene* SceneManager::CreateScene(std::string name)
+    SPtr<Scene> SceneManager::CreateScene(std::string name)
     {
-        Scene* sn =  new Scene(name);
-        _SceneList.push_back(sn);
-        return sn;
+        SPtr<Scene> scene = CreateSPtr<Scene>(name);
+        _SceneList.push_back(scene);
+        return scene;
     }
 
-    Scene* SceneManager::GetScene(std::string name)
+    SPtr<Scene> SceneManager::GetScene(std::string name)
     {
         for(auto entry:_SceneList)
         {
@@ -57,7 +57,7 @@ namespace SkySnow
         SN_WARN("Not Find This %s Scene.",name.c_str());
         return nullptr;
     }
-    void SceneManager::GetScenes(std::vector<Scene*>& sceneList)
+    void SceneManager::GetScenes(std::vector<SPtr<Scene>>& sceneList)
     {
         for(auto entry:_SceneList)
         {
@@ -65,21 +65,10 @@ namespace SkySnow
         }
     }
     //========================================================================
-
-    GameObjectManager& GetGameObjectManager()
-    {
-        return GameObjectManager::Instance();
-    }
-
     SceneManager& GetSceneManager()
     {
         return SceneManager::Instance();
     }
 
-    GameObjectManager& GameObjectManager::Instance()
-    {
-        static GameObjectManager instance;
-        return instance;
-    }
 }
 
