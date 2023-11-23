@@ -26,9 +26,12 @@
 namespace SkySnow
 {
     //if GO has parent-child,A TransformComponent must be mounted
-	class GameObject : public Object
+    //https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
+    class Scene;
+	class GameObject : public Object , public std::enable_shared_from_this<GameObject>
 	{
 		SkySnow_Object(GameObject, Object);
+        friend class Scene;
 	public:
 		GameObject();
 		virtual ~GameObject();
@@ -52,12 +55,32 @@ namespace SkySnow
         SPtr<GameObject> AddChild();
         void RemoveChild(SPtr<GameObject> childGO);
         void SetParent(SPtr<GameObject> parentGO);
+
+        WPtr<Scene> GetHostScene() const
+        {
+            if (!_HostScene.lock())
+            {
+                SN_WARN("Curr GameObject Not Attach Any Scene.");
+            }
+            return _HostScene;
+        }
 	private:
+        SPtr<GameObject> GetPtr()
+        {
+            return shared_from_this();
+        }
+
+        void AttachScene(WPtr<Scene> scene)
+        {
+            _HostScene = scene;
+        }
+    private:
         bool                        _Enable;
         //GameObject at Layer
         int32_t                         _Layer;
         int16_t                         _Tag;
         SPtr<GameObject>                _Parent;
+        WPtr<Scene>                     _HostScene;
         std::vector<SPtr<GameObject>>   _ChildList;
         std::vector<SPtr<IComponent>>   _ComponentList;
 	};
@@ -74,7 +97,7 @@ namespace SkySnow
             }
         }
         SPtr<T> newCom = CreateSPtr<T>();
-        newCom->AttachGO(this);
+        newCom->AttachGO(GetPtr());
         _ComponentList.emplace_back(newCom);
         return newCom;
     }

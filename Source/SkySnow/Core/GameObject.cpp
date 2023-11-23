@@ -95,9 +95,12 @@ namespace SkySnow
     SPtr<GameObject> GameObject::AddChild()
     {
         SPtr<GameObject> cgo = CreateSPtr<GameObject>();
-        _ChildList.push_back(cgo);
+        cgo->_Parent = GetPtr();
+        cgo->AttachScene(_HostScene);
         int32_t layer = _Layer + 1;
         cgo->SetLayer(layer);
+
+        _ChildList.push_back(cgo);
         return cgo;
     }
 
@@ -115,6 +118,10 @@ namespace SkySnow
 
     void GameObject::SetParent(SPtr<GameObject> parentGO)
     {
-        _Parent = parentGO;
+        if (parentGO != _Parent)
+        {
+            _Parent = parentGO;
+            _HostScene = parentGO->GetHostScene();
+        }
     }
 }

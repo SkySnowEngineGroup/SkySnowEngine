@@ -32,7 +32,6 @@ namespace SkySnow
         , _SceneName(sceneName)
         , _RootGo(nullptr)
     {
-        AddRootGo();
     }
 
     Scene::~Scene()
@@ -68,6 +67,7 @@ namespace SkySnow
         if(!_RootGo)
         {
             _RootGo = CreateSPtr<GameObject>();
+            _RootGo->AttachScene(GetPtr());
         }
         return _RootGo;
     }

@@ -54,9 +54,9 @@ namespace SkySnow
             _Enable = enable;
         }
         //attach this comonent to gameobject
-        void AttachGO(GameObject* go)
+        void AttachGO(WPtr<GameObject> go)
         {
-            _GameObject = SPtr<GameObject>(go);
+            _GameObject = go;
         }
        
         //Get curr component attach gameobject
