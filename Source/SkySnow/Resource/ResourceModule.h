@@ -19,30 +19,44 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
 #pragma once
+#include "IModule.h"
+#include "IResSource.h"
+#include <vector>
+#include <unordered_map>
 
-#pragma once
-#include "Object.h"
 namespace SkySnow
 {
-    class ISystem : public Object
+    struct ResKeyWords
     {
-        SkySnow_Object(ISystem,Object);
+        std::string     _ResPath;
+        EResSource      _Ert;
+    };
+
+    struct ResResult
+    {
+        ResKeyWords _KeyWords;
+        IResSource* _ResSource;
+    };
+    class ResourceModule : public IModule
+    {
+        SkySnow_Object(ResourceModule, IModule);
     public:
-        ISystem()
-        {
-        }
+        ResourceModule();
+        virtual ~ResourceModule();
         
-        virtual ~ISystem()
-        {
-        }
-        
-        virtual void PreUpdate() = 0;
-        
-        virtual void Update() = 0;
-        
-        virtual void PostUpdate() = 0;
-        
-        virtual void ShutDown() = 0;
+        void PushLoadJob(std::string resPath, EResSource rst);
+
+        virtual void PreUpdate() final override;
+
+        virtual void Update() final override;
+
+        virtual void PostUpdate() final override;
+
+        virtual void ShutDown() final override;
+    private:
+        std::unordered_map<std::size_t, ResKeyWords>    _ResMapJob;
+        std::vector<ResResult>                          _ResResultMap;
     };
 }

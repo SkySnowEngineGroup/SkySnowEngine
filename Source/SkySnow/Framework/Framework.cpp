@@ -28,20 +28,20 @@
 namespace SkySnow
 {
     Framework::Framework()
-        : _RenderSystem(nullptr)
+        : _RenderModule(nullptr)
     {
 
     }
     Framework::~Framework()
     {
-        Context::Instance().RemoveSystem<RenderSystem>();
+        Context::Instance().RemoveModule<RenderModule>();
     }
 
     void Framework::Init()
     {
         //register rendersystem
-        _RenderSystem = Context::Instance().RegisterSystem<RenderSystem>();
-        _ResourceSystem = Context::Instance().RegisterSystem<ResourceSystem>();
+        _RenderModule = Context::Instance().RegisterModule<RenderModule>();
+        _ResourceModule = Context::Instance().RegisterModule<ResourceModule>();
     }
     void Framework::MainUpdate()
     {
@@ -49,20 +49,20 @@ namespace SkySnow
         //-----ResourceSystem   ---load asyn
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
         //-----EventSystem      ---BoardCast Result Event(Input Output)
-        _ResourceSystem->PreUpdate();
-        _ResourceSystem->Update();
-        _ResourceSystem->PostUpdate();
+        _ResourceModule->PreUpdate();
+        _ResourceModule->Update();
+        _ResourceModule->PostUpdate();
 
-        _RenderSystem->PreUpdate();
-        _RenderSystem->Update();
-        _RenderSystem->PostUpdate();
+        _RenderModule->PreUpdate();
+        _RenderModule->Update();
+        _RenderModule->PostUpdate();
     }
 
     void Framework::ShutDown()
     {
-        _RenderSystem->ShutDown();
-        _ResourceSystem->ShutDown();
-        Context::Instance().RemoveSystem<RenderSystem>();
-        Context::Instance().RemoveSystem<ResourceSystem>();
+        _RenderModule->ShutDown();
+        _ResourceModule->ShutDown();
+        Context::Instance().RemoveModule<RenderModule>();
+        Context::Instance().RemoveModule<ResourceModule>();
     }
 }

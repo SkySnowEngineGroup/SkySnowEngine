@@ -21,45 +21,23 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ISystem.h"
-#include "GRICommandBuffer.h"
-#include "GRI.h"
-#include "File.h"
+#include "IModule.h"
 namespace SkySnow
 {
-    //RenderSystem for ue: https://neil3d.github.io/assets/pdf/2016-vr-summit-ue4.pdf
-    class RenderSystem : public ISystem
+    class CullModule : public IModule
     {
-        SkySnow_Object(RenderSystem,ISystem);
+        SkySnow_Object(CullModule, IModule);
     public:
-        RenderSystem();
+        CullModule();
         
-        ~RenderSystem();
+        ~CullModule();
         
         virtual void PreUpdate() final override;
         
         virtual void Update() final override;
         
-        virtual void PostUpdate()final override;
+        virtual void PostUpdate() final override;
         
         virtual void ShutDown() final override;
-    private:
-        bool                        _TestInit = false;
-        File*                       _File;
-        Data*                       _VsData;
-        Data*                       _FsData;
-        GRIVertexShaderRef          _vsRef;
-        GRIFragmentShaderRef        _fsRef;
-        GRIBufferRef                _VertexBufferRef;
-        GRIBufferRef                _ColorBufferRef;
-        GRIVertexDescriptorRef      _VertexDescriptor;
-        GRIPipelineShaderRef        _PipelineShaderRef;
-        GRIGraphicsPipelineRef      _PSORef;
-        GRICommandBufferPool*       _CMBPool = nullptr;
-        GRIUniformBufferRef         _UBO_Md;
-        GRIUniformBufferRef         _UBO_Sd;
-        GRIUniformBufferDescriptorRef _UBODesc;
-        GRISamplerStateRef          _Sampler;
-        GRITexture2DRef             _Tex2D;
     };
 }

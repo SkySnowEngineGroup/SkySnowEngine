@@ -37,11 +37,6 @@ namespace SkySnow
     Scene::~Scene()
     {
     }
-
-    std::string Scene::GetSceneName() const
-    {
-        return _SceneName;
-    }
     
     void Scene::SetSubScene(bool subScene)
     {

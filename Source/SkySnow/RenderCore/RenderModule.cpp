@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RenderSystem.h"
+#include "RenderModule.h"
 #include "Context.h"
 #include "SceneRenderer.h"
 #include "GRIResourceCreateInfo.h"
@@ -30,22 +30,22 @@
 #include "TextureLoader.h"
 namespace SkySnow
 {
-    RenderSystem::RenderSystem()
+    RenderModule::RenderModule()
     {
         
     }
 
-    RenderSystem::~RenderSystem()
+    RenderModule::~RenderModule()
     {
         SN_LOG("RenderSystem DesConstruct.");
     }
 
-    void RenderSystem::PreUpdate()
+    void RenderModule::PreUpdate()
     {
         
     }
 
-    void RenderSystem::Update()
+    void RenderModule::Update()
     {
         Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
         if (!_CMBPool)
@@ -215,12 +215,12 @@ namespace SkySnow
     *               -----------------------------------
     *       EndRenderPass()
     */
-    void RenderSystem::PostUpdate()
+    void RenderModule::PostUpdate()
     {
         
     }
     
-    void RenderSystem::ShutDown()
+    void RenderModule::ShutDown()
     {
         
     }

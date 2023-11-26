@@ -32,7 +32,7 @@ namespace SkySnow
     {
     public:
         static SceneManager& Instance();
-        //TODO: Create a Scene where memory is allocated from the memory pool, what type of memory pool should be used?
+        
         SPtr<Scene> CreateScene(std::string name = "");
         //Get all scene list
         void GetScenes(std::vector<SPtr<Scene>>& sceneList);

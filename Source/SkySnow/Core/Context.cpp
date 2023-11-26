@@ -26,16 +26,16 @@ namespace SkySnow
     Context::Context()
         : _SceneRenderer(nullptr)
     {
-        _Systems.clear();
+        _Modules.clear();
     }
     Context::~Context()
     {
         RemoveSceneRenderer();
-        for (auto entry : _Systems)
+        for (auto entry : _Modules)
         {
             delete entry;
         }
-        _Systems.clear();
+        _Modules.clear();
     }
     Context& Context::Instance()
     {

@@ -35,7 +35,8 @@ namespace SkySnow
         Scene(std::string sceneName = "");
         ~Scene();
         
-        std::string GetSceneName() const;
+        const std::string GetSceneName() const { return _SceneName; }
+        const SceneHandle GetSceneHandle() const { return _SceneHandle; }
         //setup subscene flag
         void SetSubScene(bool subScene);
         //get subscene flag
@@ -55,7 +56,7 @@ namespace SkySnow
         SPtr<GameObject> AddRootGo();
     private:
         bool                        _IsSubScene;
-        SkySnowSceneHandle          _SceneHandle;
+        SceneHandle                 _SceneHandle;
         uint64_t                    _CullingMask;
         std::string                 _SceneName;
         SPtr<GameObject>            _RootGo;

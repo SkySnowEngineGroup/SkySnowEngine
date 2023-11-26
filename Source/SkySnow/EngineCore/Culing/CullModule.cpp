@@ -20,24 +20,37 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "ISystem.h"
+#include "CullModule.h"
+
 namespace SkySnow
 {
-    class CullSystem : public ISystem
+    CullModule::CullModule()
     {
-        SkySnow_Object(CullSystem,ISystem);
-    public:
-        CullSystem();
         
-        ~CullSystem();
+    }
+
+    CullModule::~CullModule()
+    {
         
-        virtual void PreUpdate() final override;
+    }
+
+    void CullModule::PreUpdate()
+    {
         
-        virtual void Update() final override;
+    }
+
+    void CullModule::Update()
+    {
         
-        virtual void PostUpdate() final override;
+    }
+
+    void CullModule::PostUpdate()
+    {
         
-        virtual void ShutDown() final override;
-    };
+    }
+
+    void CullModule::ShutDown()
+    {
+        
+    }
 }

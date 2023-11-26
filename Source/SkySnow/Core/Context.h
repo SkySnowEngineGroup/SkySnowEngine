@@ -22,7 +22,7 @@
 #pragma once
 #include "NonCopyable.h"
 #include "SkySnowEngine.h"
-#include "ISystem.h"
+#include "IModule.h"
 #include <vector>
 namespace SkySnow
 {
@@ -31,7 +31,7 @@ namespace SkySnow
     {
     public:
         static Context& Instance();
-        
+        //TODO Not Single Instance
         SceneRenderer* RegisterSceneRenderer();
         
         SceneRenderer* GetSceneRenderer();
@@ -54,54 +54,54 @@ namespace SkySnow
         {
             return _SkySnowEngine;
         }
-        template<typename T> T* RegisterSystem();
+        template<typename T> T* RegisterModule();
 
-        template<typename T> T* GetSystem();
+        template<typename T> T* GetModule();
 
-        template<typename T> void RemoveSystem();
+        template<typename T> void RemoveModule();
     private:
         Context();
         ~Context();
     private:
         SceneRenderer*          _SceneRenderer;
-        std::vector<ISystem*>   _Systems;
+        std::vector<IModule*>   _Modules;
         SkySnowEngine*          _SkySnowEngine;
     };
 
-    template<typename T> inline T* Context::RegisterSystem()
+    template<typename T> inline T* Context::RegisterModule()
     {
-        for(auto entry:_Systems)
+        for(auto entry: _Modules)
         {
             if (T::GetTypeNameStatic() == entry->GetTypeName())
             {
                 return dynamic_cast<T*>(entry);
             }
         }
-        T* system = new T();
-        _Systems.push_back(system);
-        return dynamic_cast<T*>(system);
+        T* module = new T();
+        _Modules.push_back(module);
+        return dynamic_cast<T*>(module);
     }
 
-    template<typename T> inline T* Context::GetSystem()
+    template<typename T> inline T* Context::GetModule()
     {
-        for(auto entry:_Systems)
+        for(auto entry: _Modules)
         {
             if (T::GetTypeNameStatic() == entry->GetTypeName())
             {
                 return dynamic_cast<T*>(entry);
             }
         }
-        return RegisterSystem<T>();
+        return RegisterModule<T>();
     }
 
-    template<typename T> inline void Context::RemoveSystem()
+    template<typename T> inline void Context::RemoveModule()
     {
-        for (auto iter = _Systems.begin(); iter != _Systems.end();iter++)
+        for (auto iter = _Modules.begin(); iter != _Modules.end();iter++)
         {
             if ((*iter)->GetTypeName() == T::GetTypeNameStatic())
             {
                 delete (*iter);
-                _Systems.erase(iter);
+                _Modules.erase(iter);
                 break;
             }
         }

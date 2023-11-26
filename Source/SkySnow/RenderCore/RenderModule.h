@@ -21,42 +21,45 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ISystem.h"
-#include "IResSource.h"
-#include <vector>
-#include <unordered_map>
-
+#include "IModule.h"
+#include "GRICommandBuffer.h"
+#include "GRI.h"
+#include "File.h"
 namespace SkySnow
 {
-    struct ResKeyWords
+    //RenderSystem for ue: https://neil3d.github.io/assets/pdf/2016-vr-summit-ue4.pdf
+    class RenderModule : public IModule
     {
-        std::string     _ResPath;
-        EResSource      _Ert;
-    };
-
-    struct ResResult
-    {
-        ResKeyWords _KeyWords;
-        IResSource* _ResSource;
-    };
-    class ResourceSystem : public ISystem
-    {
-        SkySnow_Object(ResourceSystem,ISystem);
+        SkySnow_Object(RenderModule, IModule);
     public:
-        ResourceSystem();
-        virtual ~ResourceSystem();
+        RenderModule();
         
-        void PushLoadJob(std::string resPath, EResSource rst);
-
+        ~RenderModule();
+        
         virtual void PreUpdate() final override;
-
+        
         virtual void Update() final override;
-
-        virtual void PostUpdate() final override;
-
+        
+        virtual void PostUpdate()final override;
+        
         virtual void ShutDown() final override;
     private:
-        std::unordered_map<std::size_t, ResKeyWords>    _ResMapJob;
-        std::vector<ResResult>                          _ResResultMap;
+        bool                        _TestInit = false;
+        File*                       _File;
+        Data*                       _VsData;
+        Data*                       _FsData;
+        GRIVertexShaderRef          _vsRef;
+        GRIFragmentShaderRef        _fsRef;
+        GRIBufferRef                _VertexBufferRef;
+        GRIBufferRef                _ColorBufferRef;
+        GRIVertexDescriptorRef      _VertexDescriptor;
+        GRIPipelineShaderRef        _PipelineShaderRef;
+        GRIGraphicsPipelineRef      _PSORef;
+        GRICommandBufferPool*       _CMBPool = nullptr;
+        GRIUniformBufferRef         _UBO_Md;
+        GRIUniformBufferRef         _UBO_Sd;
+        GRIUniformBufferDescriptorRef _UBODesc;
+        GRISamplerStateRef          _Sampler;
+        GRITexture2DRef             _Tex2D;
     };
 }

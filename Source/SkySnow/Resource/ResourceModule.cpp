@@ -20,37 +20,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "CullSystem.h"
-
+#include "ResourceModule.h"
+#include "HashUtil.h"
 namespace SkySnow
 {
-    CullSystem::CullSystem()
+    ResourceModule::ResourceModule()
     {
-        
+
+    }
+    ResourceModule::~ResourceModule()
+    {
+
     }
 
-    CullSystem::~CullSystem()
+    void ResourceModule::PushLoadJob(std::string resPath, EResSource rst)
     {
-        
+        std::size_t hash = 0;
+        HashCombine(resPath,hash);
+        HashCombine((int)rst, hash);
+
+        ResKeyWords meta;
+        meta._ResPath   = resPath;
+        meta._Ert       = rst;
+        _ResMapJob[hash] = meta;
     }
 
-    void CullSystem::PreUpdate()
+    void ResourceModule::PreUpdate()
     {
-        
+
     }
 
-    void CullSystem::Update()
+    void ResourceModule::Update()
     {
-        
+
     }
 
-    void CullSystem::PostUpdate()
+    void ResourceModule::PostUpdate()
     {
-        
+
     }
 
-    void CullSystem::ShutDown()
+    void ResourceModule::ShutDown()
     {
-        
+
     }
 }

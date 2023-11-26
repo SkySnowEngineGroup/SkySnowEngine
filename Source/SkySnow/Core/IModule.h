@@ -19,49 +19,30 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
-#include "ResourceSystem.h"
-#include "HashUtil.h"
+#pragma once
+
+#pragma once
+#include "Object.h"
 namespace SkySnow
 {
-    ResourceSystem::ResourceSystem()
+    class IModule : public Object
     {
-
-    }
-    ResourceSystem::~ResourceSystem()
-    {
-
-    }
-
-    void ResourceSystem::PushLoadJob(std::string resPath, EResSource rst)
-    {
-        std::size_t hash = 0;
-        HashCombine(resPath,hash);
-        HashCombine((int)rst, hash);
-
-        ResKeyWords meta;
-        meta._ResPath   = resPath;
-        meta._Ert       = rst;
-        _ResMapJob[hash] = meta;
-    }
-
-    void ResourceSystem::PreUpdate()
-    {
-
-    }
-
-    void ResourceSystem::Update()
-    {
-
-    }
-
-    void ResourceSystem::PostUpdate()
-    {
-
-    }
-
-    void ResourceSystem::ShutDown()
-    {
-
-    }
+        SkySnow_Object(IModule,Object);
+    public:
+        IModule()
+        {
+        }
+        
+        virtual ~IModule()
+        {
+        }
+        
+        virtual void PreUpdate() = 0;
+        
+        virtual void Update() = 0;
+        
+        virtual void PostUpdate() = 0;
+        
+        virtual void ShutDown() = 0;
+    };
 }
