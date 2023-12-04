@@ -24,8 +24,6 @@
 #include "LogAssert.h"
 namespace SkySnow
 {
-
-
     SceneManager::SceneManager()
     {
     }

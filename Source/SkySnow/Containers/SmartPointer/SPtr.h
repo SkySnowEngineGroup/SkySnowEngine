@@ -44,6 +44,8 @@ namespace SkySnow
     template <typename T, typename... Args>
     UPtr<T> CreateUPtr(Args&&... args)
     {
-        return std::make_unique<T>(std::forward<Args>(args)...);
+        //return std::make_unique<T>(std::forward<Args>(args)...);
+        std::unique_ptr<T> uptr(new T(std::forward<Args>(args)...));
+        return uptr;
     }
 }

@@ -21,16 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
-namespace SkySnow
-{
-    class IStream : public Object
-    {
-        SkySnow_Object(IStream, Object);
-    public:
-        IStream()
-            : Object()
-        {}
-        virtual ~IStream(){}
-    };
-}
+#include "GRI.h"
+#include "GRICommons.h"
+#include "GRIResource.h"
+#include "GRIResourceCreateInfo.h"
+#include "GRICommandBuffer.h"

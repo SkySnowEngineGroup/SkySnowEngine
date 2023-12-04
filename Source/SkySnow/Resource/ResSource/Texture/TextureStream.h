@@ -28,6 +28,7 @@ namespace SkySnow
 {
     class TextureStream : public IStream
     {
+        SkySnow_Object(TextureStream, IStream);
     public:
         TextureStream() = delete;
         TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight);

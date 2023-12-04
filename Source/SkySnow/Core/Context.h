@@ -67,7 +67,7 @@ namespace SkySnow
         std::vector<IModule*>   _Modules;
         SkySnowEngine*          _SkySnowEngine;
     };
-
+    Context& SSContext();
     template<typename T> inline T* Context::RegisterModule()
     {
         for(auto entry: _Modules)

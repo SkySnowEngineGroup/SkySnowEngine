@@ -28,6 +28,7 @@ namespace SkySnow
 {
     class VertexStream : public IStream
     {
+        SkySnow_Object(VertexStream, IStream);
     public:
         VertexStream();
         ~VertexStream();

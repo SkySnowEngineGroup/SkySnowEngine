@@ -26,6 +26,7 @@ namespace SkySnow
 {
 	class IndicesStream : public IStream
 	{
+		SkySnow_Object(IndicesStream, IStream);
 	public:
 		IndicesStream();
 		~IndicesStream();

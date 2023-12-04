@@ -69,4 +69,9 @@ namespace SkySnow
             _SceneRenderer = nullptr;
         }
     }
+
+    Context& SSContext()
+    {
+        return Context::Instance();
+    }
 }

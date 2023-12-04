@@ -162,7 +162,7 @@ int main()
 //		delete t1;
 //	}
 	//system("pause");
-    TestSharePtr();
+    //TestSharePtr();
 	getchar();
 	return 0;
 }

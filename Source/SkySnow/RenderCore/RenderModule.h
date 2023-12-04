@@ -22,8 +22,7 @@
 //
 #pragma once
 #include "IModule.h"
-#include "GRICommandBuffer.h"
-#include "GRI.h"
+#include "GRIHeaders.h"
 #include "File.h"
 namespace SkySnow
 {
