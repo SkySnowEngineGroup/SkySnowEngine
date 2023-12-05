@@ -37,17 +37,19 @@
 #include "FunCb.h"
 #include "Framework.h"
 #include "SharePtr.h"
+#include "SortBase.h"
 using namespace SkySnow;
 using namespace SkySnowLearning;
 int main()
 {
 	SN_LOG("Learning KnowLedge!");
+	TestQS();
     //Study Base Data Structure
-    {
-//        StudyList();
-//        Stack_Data();
-        //StudyNumberProcess();
-    }
+    //{
+    //    StudyList();
+    //    Stack_Data();
+    //    StudyNumberProcess();
+    //}
 
 	//{
 	//	CommandBuffer* cb = new CommandBuffer();

@@ -24,24 +24,24 @@
 #include "Context.h"
 #include "GLFWWindow.h"
 #include <string>
+#include "ModuleHeaders.h"
 
 namespace SkySnow
 {
     Framework::Framework()
-        : _RenderModule(nullptr)
     {
 
     }
     Framework::~Framework()
     {
-        Context::Instance().RemoveModule<RenderModule>();
     }
 
     void Framework::Init()
     {
-        //register rendersystem
-        _RenderModule = Context::Instance().RegisterModule<RenderModule>();
-        _ResourceModule = Context::Instance().RegisterModule<ResourceModule>();
+        SSContext().RegisterModule<TimeModule>();         //Register TimeModule
+        SSContext().RegisterModule<BehaviourModule>();    //Register BehaviourModule
+        SSContext().RegisterModule<ResourceModule>();     //Register ResourceModule
+        SSContext().RegisterModule<RenderModule>();       //Register RenderModule
     }
     void Framework::MainUpdate()
     {
@@ -49,20 +49,25 @@ namespace SkySnow
         //-----ResourceSystem   ---load asyn
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
         //-----EventSystem      ---BoardCast Result Event(Input Output)
-        _ResourceModule->PreUpdate();
-        _ResourceModule->Update();
-        _ResourceModule->PostUpdate();
+        SSContext().GetModule<ResourceModule>()->PreUpdate();
+        
+        SSContext().GetModule<RenderModule>()->PreUpdate();
+        
+        SSContext().GetModule<ResourceModule>()->Update();
+        SSContext().GetModule<ResourceModule>()->PostUpdate();
 
-        _RenderModule->PreUpdate();
-        _RenderModule->Update();
-        _RenderModule->PostUpdate();
+        
+        SSContext().GetModule<RenderModule>()->Update();
+        SSContext().GetModule<RenderModule>()->PostUpdate();
     }
 
     void Framework::ShutDown()
     {
-        _RenderModule->ShutDown();
-        _ResourceModule->ShutDown();
-        Context::Instance().RemoveModule<RenderModule>();
-        Context::Instance().RemoveModule<ResourceModule>();
+        SSContext().GetModule<TimeModule>()->ShutDown();
+        SSContext().GetModule<BehaviourModule>()->ShutDown();
+        SSContext().GetModule<RenderModule>()->ShutDown();
+        SSContext().GetModule<ResourceModule>()->ShutDown();
+        SSContext().RemoveModule<RenderModule>();
+        SSContext().RemoveModule<ResourceModule>();
     }
 }

@@ -19,29 +19,24 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Context.h"
+//
+#pragma once
+#include <vector>
 namespace SkySnow
 {
-    Context::Context()
+    class Renderable;
+    class RendererScene
     {
-        _Modules.clear();
-    }
-    Context::~Context()
-    {
-        for (auto it = _Modules.begin(); it != _Modules.end(); ++it)
-        {
-            delete it->second; //释放内存
-        }
-        _Modules.clear();
-    }
-    Context& Context::Instance()
-    {
-        static Context instance;
-        return instance;
-    }
-
-    Context& SSContext()
-    {
-        return Context::Instance();
-    }
+    public:
+        RendererScene();
+        
+        virtual ~RendererScene();
+        
+        virtual void AddRenderer(Renderable* renderer);
+        
+        virtual void RemoveRenderer(Renderable* renderer);
+    private:
+        // TODO: Render
+        std::vector<Renderable*>    _RenderNodes;
+    };
 }

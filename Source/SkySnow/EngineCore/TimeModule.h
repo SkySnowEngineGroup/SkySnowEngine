@@ -20,49 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "SceneRenderer.h"
-#include "LogAssert.h"
+#pragma once
+#include "IModule.h"
 namespace SkySnow
 {
-    SceneRenderer::SceneRenderer()
+    class TimeModule : public IModule
     {
+        SkySnow_Object(TimeModule, IModule);
+    public:
+        TimeModule();
         
-    }
-
-    SceneRenderer::~SceneRenderer()
-    {
+        ~TimeModule();
         
-    }
+        virtual void PreUpdate() final override;
+        
+        virtual void Update() final override;
 
-    void SceneRenderer::AddRenderer(Renderable* renderer)
-    {
-        bool isRepeat = false;
-        for(auto entry:_RenderNodes)
-        {
-            if (entry == renderer)
-            {
-                isRepeat = true;
-            }
-        }
-        if (!isRepeat)
-        {
-            _RenderNodes.push_back(renderer);
-        }
-    }
-
-    void SceneRenderer::RemoveRenderer(Renderable* renderer)
-    {
-        for(auto iter = _RenderNodes.begin(); iter != _RenderNodes.end(); iter ++)
-        {
-            if(*iter == renderer)
-            {
-                _RenderNodes.erase(iter);
-            }
-        }
-    }
-
-    void SceneRenderer::UpdateAllRenderers()
-    {
-//        SN_LOG("RenderNodes Size:%d",_RenderNodes.size());
-    }
+        virtual void FixedUpdate() final override;
+        
+        virtual void PostUpdate() final override;
+        
+        virtual void ShutDown() final override;
+    };
 }

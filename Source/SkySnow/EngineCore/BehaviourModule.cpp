@@ -19,29 +19,41 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Context.h"
+//
+#include "BehaviourModule.h"
 namespace SkySnow
 {
-    Context::Context()
+    BehaviourModule::BehaviourModule()
     {
-        _Modules.clear();
-    }
-    Context::~Context()
-    {
-        for (auto it = _Modules.begin(); it != _Modules.end(); ++it)
-        {
-            delete it->second; //释放内存
-        }
-        _Modules.clear();
-    }
-    Context& Context::Instance()
-    {
-        static Context instance;
-        return instance;
+        
     }
 
-    Context& SSContext()
+    BehaviourModule::~BehaviourModule()
     {
-        return Context::Instance();
+        
+    }
+    void BehaviourModule::PreUpdate()
+    {
+        
+    }
+
+    void BehaviourModule::Update()
+    {
+        
+    }
+
+    void BehaviourModule::FixedUpdate()
+    {
+        
+    }
+
+    void BehaviourModule::PostUpdate()
+    {
+        
+    }
+
+    void BehaviourModule::ShutDown()
+    {
+        
     }
 }

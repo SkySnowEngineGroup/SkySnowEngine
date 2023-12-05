@@ -21,23 +21,25 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include <vector>
+#include "IModule.h"
 namespace SkySnow
 {
-    class Renderable;
-    class SceneRenderer
+    class BehaviourModule : public IModule
     {
+        SkySnow_Object(BehaviourModule, IModule);
     public:
-        SceneRenderer();
+        BehaviourModule();
         
-        virtual ~SceneRenderer();
+        ~BehaviourModule();
         
-        virtual void AddRenderer(Renderable* renderer);
+        virtual void PreUpdate() final override;
         
-        virtual void RemoveRenderer(Renderable* renderer);
+        virtual void Update() final override;
+
+        virtual void FixedUpdate() final override;
         
-        virtual void UpdateAllRenderers();
-    private:
-        std::vector<Renderable*>    _RenderNodes;
+        virtual void PostUpdate() final override;
+        
+        virtual void ShutDown() final override;
     };
 }

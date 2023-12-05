@@ -23,11 +23,8 @@
 #pragma once
 #include "SkySnowProfiles.h"
 #include "LogAssert.h"
-#include "RenderModule.h"
-#include "ResourceModule.h"
 namespace SkySnow
 {
-    class RenderModule;
     class Framework
     {
     public:
@@ -40,8 +37,7 @@ namespace SkySnow
         
         void ShutDown();
     private:
-        RenderModule*       _RenderModule;
-        ResourceModule*     _ResourceModule;
+        
     };
 	
 }

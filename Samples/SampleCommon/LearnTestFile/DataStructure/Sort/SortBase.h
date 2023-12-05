@@ -19,29 +19,58 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Context.h"
-namespace SkySnow
+//
+#pragma once
+#include <vector>
+#include "LogAssert.h"
+using namespace std;
+namespace SkySnowLearning
 {
-    Context::Context()
-    {
-        _Modules.clear();
-    }
-    Context::~Context()
-    {
-        for (auto it = _Modules.begin(); it != _Modules.end(); ++it)
-        {
-            delete it->second; //释放内存
-        }
-        _Modules.clear();
-    }
-    Context& Context::Instance()
-    {
-        static Context instance;
-        return instance;
-    }
+	static void QuickSort(int numsArr[],int left,int right)
+	{
+		if (left >= right)
+		{
+			return;
+		}
 
-    Context& SSContext()
-    {
-        return Context::Instance();
-    }
+		int i = left;
+		int j = right;
+		int piove = numsArr[i];
+		while (i < j)
+		{
+			while (i < j && numsArr[j] >= piove)
+			{
+				j--;
+			}
+			if (i < j)
+			{
+				numsArr[i] = numsArr[j];
+			}
+			while (i < j && numsArr[i] <= piove)
+			{
+				i++;
+			}
+			if (i < j)
+			{
+				numsArr[j] = numsArr[i];
+			}
+			if (i >= j)
+			{
+				numsArr[i] = piove;
+			}
+		}
+		QuickSort(numsArr,left,j - 1);
+		QuickSort(numsArr, j + 1, right);
+	}
+
+	static void TestQS()
+	{
+		int count = 5;
+		int array[] = {3,4,2,5,7};
+		QuickSort(array,0,4);
+		for (int i = 0; i < count;i ++)
+		{
+			SN_LOG(" %d",array[i]);
+		}
+	}
 }

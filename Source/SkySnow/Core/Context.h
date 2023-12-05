@@ -26,17 +26,10 @@
 #include <vector>
 namespace SkySnow
 {
-    class SceneRenderer;
     class Context : public NonCopyable
     {
     public:
         static Context& Instance();
-        //TODO Not Single Instance
-        SceneRenderer* RegisterSceneRenderer();
-        
-        SceneRenderer* GetSceneRenderer();
-        
-        void RemoveSceneRenderer();
 
         SkySnowEngine* RegisterSkySnowEngine()
         {
@@ -63,47 +56,42 @@ namespace SkySnow
         Context();
         ~Context();
     private:
-        SceneRenderer*          _SceneRenderer;
-        std::vector<IModule*>   _Modules;
-        SkySnowEngine*          _SkySnowEngine;
+        std::unordered_map<std::string, IModule*>    _Modules;
+        SkySnowEngine*                          _SkySnowEngine;
     };
     Context& SSContext();
     template<typename T> inline T* Context::RegisterModule()
     {
-        for(auto entry: _Modules)
+        if(_Modules.find(T::GetTypeNameStatic()) != _Modules.end())
         {
-            if (T::GetTypeNameStatic() == entry->GetTypeName())
-            {
-                return dynamic_cast<T*>(entry);
-            }
+            return dynamic_cast<T*>(_Modules[T::GetTypeNameStatic()]);
         }
-        T* module = new T();
-        _Modules.push_back(module);
-        return dynamic_cast<T*>(module);
+        
+        T* tModule = new T();
+        _Modules[tModule->GetTypeName()] = tModule;
+        return dynamic_cast<T*>(tModule);
     }
 
     template<typename T> inline T* Context::GetModule()
     {
-        for(auto entry: _Modules)
+        if(_Modules.find(T::GetTypeNameStatic()) != _Modules.end())
         {
-            if (T::GetTypeNameStatic() == entry->GetTypeName())
-            {
-                return dynamic_cast<T*>(entry);
-            }
+            return dynamic_cast<T*>(_Modules[T::GetTypeNameStatic()]);
         }
         return RegisterModule<T>();
     }
 
     template<typename T> inline void Context::RemoveModule()
     {
-        for (auto iter = _Modules.begin(); iter != _Modules.end();iter++)
+        auto iter = _Modules.find(T::GetTypeNameStatic());
+        if(iter != _Modules.end())
         {
-            if ((*iter)->GetTypeName() == T::GetTypeNameStatic())
-            {
-                delete (*iter);
-                _Modules.erase(iter);
-                break;
-            }
+            delete iter->second; // 释放内存
+            _Modules.erase(iter);
+        }
+        else
+        {
+            SN_LOG("Not find this module:%s",T::GetTypeNameStatic());
         }
     }
 }

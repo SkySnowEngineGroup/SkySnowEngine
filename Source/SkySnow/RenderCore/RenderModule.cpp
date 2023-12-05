@@ -22,7 +22,7 @@
 //
 #include "RenderModule.h"
 #include "Context.h"
-#include "SceneRenderer.h"
+#include "RendererScene.h"
 #include "GRIResourceCreateInfo.h"
 #include "HashUtil.h"
 #include "StbImageLoad.h"
@@ -47,7 +47,6 @@ namespace SkySnow
 
     void RenderModule::Update()
     {
-        Context::Instance().GetSceneRenderer()->UpdateAllRenderers();
         if (!_CMBPool)
         {
             _CMBPool = new GRICommandBufferPool();

@@ -59,7 +59,7 @@ public:
         SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
         SPtr<MeshRenderComponent> meshCom = go->AddComponent<MeshRenderComponent>();
 
-        string imagePath = GetImageAllPath("panda.png");
+        std::string imagePath = GetImageAllPath("panda.png");
         TextureLoader* tImp = new TextureLoader();
         TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
         Texture2D* texture = new Texture2D();

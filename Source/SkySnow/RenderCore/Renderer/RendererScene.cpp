@@ -19,29 +19,45 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Context.h"
+//
+#include "RendererScene.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
-    Context::Context()
+    RendererScene::RendererScene()
     {
-        _Modules.clear();
-    }
-    Context::~Context()
-    {
-        for (auto it = _Modules.begin(); it != _Modules.end(); ++it)
-        {
-            delete it->second; //释放内存
-        }
-        _Modules.clear();
-    }
-    Context& Context::Instance()
-    {
-        static Context instance;
-        return instance;
+        
     }
 
-    Context& SSContext()
+    RendererScene::~RendererScene()
     {
-        return Context::Instance();
+        
+    }
+
+    void RendererScene::AddRenderer(Renderable* renderer)
+    {
+        bool isRepeat = false;
+        for(auto entry:_RenderNodes)
+        {
+            if (entry == renderer)
+            {
+                isRepeat = true;
+            }
+        }
+        if (!isRepeat)
+        {
+            _RenderNodes.push_back(renderer);
+        }
+    }
+
+    void RendererScene::RemoveRenderer(Renderable* renderer)
+    {
+        for(auto iter = _RenderNodes.begin(); iter != _RenderNodes.end(); iter ++)
+        {
+            if(*iter == renderer)
+            {
+                _RenderNodes.erase(iter);
+            }
+        }
     }
 }
