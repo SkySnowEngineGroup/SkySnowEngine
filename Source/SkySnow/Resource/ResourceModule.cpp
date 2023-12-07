@@ -45,17 +45,12 @@ namespace SkySnow
         _ResMapJob[hash] = meta;
     }
 
-    void ResourceModule::PreUpdate()
+    void ResourceModule::StartUp()
     {
 
     }
 
     void ResourceModule::Update()
-    {
-
-    }
-
-    void ResourceModule::PostUpdate()
     {
 
     }

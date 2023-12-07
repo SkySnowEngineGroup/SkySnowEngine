@@ -40,9 +40,9 @@ namespace SkySnow
         SN_LOG("RenderSystem DesConstruct.");
     }
 
-    void RenderModule::PreUpdate()
+    void RenderModule::StartUp()
     {
-        
+
     }
 
     void RenderModule::Update()
@@ -214,10 +214,6 @@ namespace SkySnow
     *               -----------------------------------
     *       EndRenderPass()
     */
-    void RenderModule::PostUpdate()
-    {
-        
-    }
     
     void RenderModule::ShutDown()
     {

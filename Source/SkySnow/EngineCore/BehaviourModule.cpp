@@ -32,6 +32,12 @@ namespace SkySnow
     {
         
     }
+
+    void BehaviourModule::StartUp()
+    {
+
+    }
+
     void BehaviourModule::PreUpdate()
     {
         

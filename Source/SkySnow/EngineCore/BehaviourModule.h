@@ -32,6 +32,8 @@ namespace SkySnow
         
         ~BehaviourModule();
         
+        virtual void StartUp() final override;
+
         virtual void PreUpdate() final override;
         
         virtual void Update() final override;

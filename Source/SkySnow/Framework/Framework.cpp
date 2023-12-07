@@ -50,7 +50,6 @@ namespace SkySnow
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
         //-----EventSystem      ---BoardCast Result Event(Input Output)
         SSContext().GetModule<ResourceModule>()->PreUpdate();
-        
         SSContext().GetModule<RenderModule>()->PreUpdate();
         
         SSContext().GetModule<ResourceModule>()->Update();

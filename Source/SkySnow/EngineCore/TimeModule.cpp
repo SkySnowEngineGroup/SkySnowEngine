@@ -34,22 +34,12 @@ namespace SkySnow
         
     }
 
-    void TimeModule::PreUpdate()
+    void TimeModule::StartUp()
     {
-        
+
     }
 
     void TimeModule::Update()
-    {
-        
-    }
-
-    void TimeModule::FixedUpdate()
-    {
-        
-    }
-
-    void TimeModule::PostUpdate()
     {
         
     }

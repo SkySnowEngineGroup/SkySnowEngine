@@ -35,11 +35,9 @@ namespace SkySnow
         
         ~RenderModule();
         
-        virtual void PreUpdate() final override;
+        virtual void StartUp() final override;
         
         virtual void Update() final override;
-        
-        virtual void PostUpdate()final override;
         
         virtual void ShutDown() final override;
     private:

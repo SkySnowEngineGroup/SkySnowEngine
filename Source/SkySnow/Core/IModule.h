@@ -36,7 +36,10 @@ namespace SkySnow
         virtual ~IModule()
         {
         }
-        
+        virtual void StartUp() = 0;
+
+        virtual void ShutDown() = 0;
+
         virtual void PreUpdate() {};
         
         virtual void Update() {};
@@ -44,7 +47,5 @@ namespace SkySnow
         virtual void FixedUpdate() {};
         
         virtual void PostUpdate() {};
-        
-        virtual void ShutDown() {};
     };
 }

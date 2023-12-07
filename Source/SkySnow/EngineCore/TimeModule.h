@@ -31,15 +31,11 @@ namespace SkySnow
         TimeModule();
         
         ~TimeModule();
-        
-        virtual void PreUpdate() final override;
+
+        virtual void StartUp() final override;
         
         virtual void Update() final override;
 
-        virtual void FixedUpdate() final override;
-        
-        virtual void PostUpdate() final override;
-        
         virtual void ShutDown() final override;
     };
 }
