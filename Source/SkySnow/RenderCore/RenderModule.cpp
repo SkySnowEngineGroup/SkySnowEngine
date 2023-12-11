@@ -47,6 +47,7 @@ namespace SkySnow
 
     void RenderModule::Update()
     {
+        RenderInternal();
         if (!_CMBPool)
         {
             _CMBPool = new GRICommandBufferPool();
@@ -183,6 +184,10 @@ namespace SkySnow
         _GQueue->SubmitCommandBuffer(commandBuffer);
 //        SN_LOG("_PipelineShaderRef End Count:%d",_PipelineShaderRef.GetRefCount());
 //        SN_LOG("_PSORef Count:%d",_PSORef.GetRefCount());
+    }
+    void RenderModule::RenderInternal()
+    {
+
     }
     /*
     * If(Support SubPass)

@@ -20,35 +20,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Renderer.h"
+#pragma once
 
 namespace SkySnow
 {
-    Renderer::Renderer()
-    {
-        
-    }
-    Renderer::~Renderer()
-    {
-        
-    }
-    
-    void Renderer::SetMaterialCount(int matCount)
-    {
-        const size_t oldSize = _Materials.size();
-        if (matCount != (int)oldSize)
-        {
-            _Materials.clear();
-            _Materials.resize(matCount);
-        }
-    }
+	class Quaternion
+	{
+	public:
 
-    void Renderer::SetMaterial(SPtr<Material> material, int index)
-    {
-        if (index > _Materials.size())
-        {
-            SN_ERR("The index is larger than the material array size.");
-        }
-        _Materials[index] = material;
-    }
+	};
 }

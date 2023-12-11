@@ -24,14 +24,15 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Vector4.h"
+#include "Matrix3.h"
+#include "Matrix4.h"
+#include "Quaternion.h"
 
 namespace SkySnow
 {
 //    template<typename T>class Vector2;
 //    template<typename T>class Vector3;
 //    template<typename T>class Vector4;
-
-    
     typedef Vector2<int>    Vector2i;
     typedef Vector2<float>  Vector2f;
     typedef Vector2<double> Vector2d;

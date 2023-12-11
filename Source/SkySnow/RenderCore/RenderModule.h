@@ -40,6 +40,9 @@ namespace SkySnow
         virtual void Update() final override;
         
         virtual void ShutDown() final override;
+
+    private:
+        void RenderInternal();
     private:
         bool                        _TestInit = false;
         File*                       _File;

@@ -24,19 +24,20 @@
 #include <vector>
 namespace SkySnow
 {
+    //每帧组建一个可渲染的场景
+    class RSceneInfo
+    {
+        
+    };
     class Renderable;
-    class RendererScene
+    class RendererScene final
     {
     public:
         RendererScene();
         
-        virtual ~RendererScene();
-        
-        virtual void AddRenderer(Renderable* renderer);
-        
-        virtual void RemoveRenderer(Renderable* renderer);
+        ~RendererScene();
+
     private:
-        // TODO: Render
-        std::vector<Renderable*>    _RenderNodes;
+        RSceneInfo      _RSceneInfo;
     };
 }

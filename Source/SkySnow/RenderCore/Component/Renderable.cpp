@@ -20,13 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
+#include "Renderable.h"
 
 namespace SkySnow
 {
-	//Material Object
-	class RenderObject
-	{
+    Renderable::Renderable()
+    {
+        
+    }
+    Renderable::~Renderable()
+    {
+        
+    }
+    
+    void Renderable::SetMaterialCount(int matCount)
+    {
+        const size_t oldSize = _Materials.size();
+        if (matCount != (int)oldSize)
+        {
+            _Materials.clear();
+            _Materials.resize(matCount);
+        }
+    }
 
-	};
+    void Renderable::SetMaterial(SPtr<Material> material, int index)
+    {
+        if (index > _Materials.size())
+        {
+            SN_ERR("The index is larger than the material array size.");
+        }
+        _Materials[index] = material;
+    }
 }

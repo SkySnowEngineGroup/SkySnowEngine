@@ -54,4 +54,17 @@ namespace SkySnow
         std::vector<SPtr<VertexStream>> _VertexStreams;
         SPtr<IndicesStream>             _IndicesStream;
     };
+
+    class SubMesh
+    {
+    public:
+        SubMesh() = default;
+        SubMesh(uint32 indexOffset, uint32 indexCount)
+            : _IndexOffset(indexOffset)
+            , _IndexCount(indexCount)
+        {
+        }
+        uint32 _IndexOffset = 0;
+        uint32 _IndexCount = 0;
+    };
 }

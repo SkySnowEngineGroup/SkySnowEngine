@@ -21,13 +21,16 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include <list>
-#include <memory>
-using namespace std;
+#include "Object.h"
 namespace SkySnow
 {
-	class RenderLoop
-	{
-
-	};
+    class RenderElement : public Object
+    {
+        SkySnow_Object(RenderElement, Object);
+    public:
+        RenderElement();
+        virtual ~RenderElement();
+        
+    private:
+    };
 }

@@ -20,21 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-#include "Material.h"
+#include "Matrix3.h"
 namespace SkySnow
 {
-	class Renderer : public IComponent
-	{
-		SkySnow_Object(Renderer, IComponent);
-	public:
-		Renderer();
-		~Renderer();
-        
-        void SetMaterialCount(int matCount);
-        void SetMaterial(SPtr<Material> material,int index);
-    protected:
-        std::vector<SPtr<Material>> _Materials;
-	};
+
 }

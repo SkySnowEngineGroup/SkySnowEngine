@@ -20,24 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "Renderable.h"
-#include "Mesh.h"
+#include "RenderElement.h"
+
 namespace SkySnow
 {
-	class MeshRenderComponent : public Renderable
-	{
-		SkySnow_Object(MeshRenderComponent, Renderable);
-	public:
-		MeshRenderComponent()
-		{
-		}
-		~MeshRenderComponent()
-		{
-		}
+    RenderElement::RenderElement()
+    {
         
-		void SetMesh(SPtr<Mesh> mesh);
-	private:
-        SPtr<Mesh>  _Mesh;
-	};
+    }
+    RenderElement::~RenderElement()
+    {
+        
+    }
 }

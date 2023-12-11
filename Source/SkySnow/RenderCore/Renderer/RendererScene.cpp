@@ -33,31 +33,4 @@ namespace SkySnow
     {
         
     }
-
-    void RendererScene::AddRenderer(Renderable* renderer)
-    {
-        bool isRepeat = false;
-        for(auto entry:_RenderNodes)
-        {
-            if (entry == renderer)
-            {
-                isRepeat = true;
-            }
-        }
-        if (!isRepeat)
-        {
-            _RenderNodes.push_back(renderer);
-        }
-    }
-
-    void RendererScene::RemoveRenderer(Renderable* renderer)
-    {
-        for(auto iter = _RenderNodes.begin(); iter != _RenderNodes.end(); iter ++)
-        {
-            if(*iter == renderer)
-            {
-                _RenderNodes.erase(iter);
-            }
-        }
-    }
 }

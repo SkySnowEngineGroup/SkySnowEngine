@@ -21,23 +21,19 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Renderable.h"
-#include "Mesh.h"
+#include "SPtr.h"
+#include "RenderQueue.h"
 namespace SkySnow
 {
-	class MeshRenderComponent : public Renderable
+	class RenderView
 	{
-		SkySnow_Object(MeshRenderComponent, Renderable);
 	public:
-		MeshRenderComponent()
-		{
-		}
-		~MeshRenderComponent()
-		{
-		}
-        
-		void SetMesh(SPtr<Mesh> mesh);
+		RenderView();
+
+		virtual ~RenderView();
 	private:
-        SPtr<Mesh>  _Mesh;
+		SPtr<RenderQueue> _ForwardOpaqueQueue;
+		//SPtr<RenderQueue> _DeferredOpaqueQueue;
+		SPtr<RenderQueue> _TransparentQueue;
 	};
 }
