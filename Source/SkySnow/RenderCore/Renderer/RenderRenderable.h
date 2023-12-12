@@ -24,8 +24,10 @@
 #include "RenderableElement.h"
 #include <vector>
 #include "MathCommon.h"
+#include "SPtr.h"
 namespace SkySnow
 {
+    class Renderable;
     class RenderRenderable
     {
     public:
@@ -33,7 +35,8 @@ namespace SkySnow
         ~RenderRenderable();
         
     private:
-        std::vector<RenderableElement> _Elements;
-        Matrix4 _WorldTransform;
+        SPtr<Renderable>                _RenderableProxy;
+        std::vector<RenderableElement>  _Elements;
+        Matrix4                         _WorldTransform;
     };
 }

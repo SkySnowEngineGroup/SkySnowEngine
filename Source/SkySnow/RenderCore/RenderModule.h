@@ -24,9 +24,12 @@
 #include "IModule.h"
 #include "GRIHeaders.h"
 #include "File.h"
+#include "SPtr.h"
+#include <map>
 namespace SkySnow
 {
     //RenderSystem for ue: https://neil3d.github.io/assets/pdf/2016-vr-summit-ue4.pdf
+    class RendererScene;
     class RenderModule : public IModule
     {
         SkySnow_Object(RenderModule, IModule);
@@ -41,6 +44,12 @@ namespace SkySnow
         
         virtual void ShutDown() final override;
 
+        //Call from SceneManager
+        void NotifyCreateRendererScene(SceneHandle sceneHandle);
+        //Call from SceneManager
+        void NotifyRemoveRendererScene(SceneHandle sceneHandle);
+        //Get RenderScene
+        SPtr<RendererScene> GetRendererScene(SceneHandle sceneHandle);
     private:
         void RenderInternal();
     private:
@@ -61,5 +70,7 @@ namespace SkySnow
         GRIUniformBufferDescriptorRef _UBODesc;
         GRISamplerStateRef          _Sampler;
         GRITexture2DRef             _Tex2D;
+
+        std::map<SceneHandle, SPtr<RendererScene>> _RendererScenes;
     };
 }

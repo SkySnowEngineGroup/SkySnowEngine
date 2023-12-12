@@ -33,4 +33,9 @@ namespace SkySnow
 	{
 
 	}
+
+    void RenderViewFamily::AddRenderView(SPtr<RenderView> renderView)
+    {
+        _RenderViews.push_back(renderView);
+    }
 }

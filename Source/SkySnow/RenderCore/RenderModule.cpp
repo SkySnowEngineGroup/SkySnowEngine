@@ -28,6 +28,7 @@
 #include "StbImageLoad.h"
 #include "SkySnowEngine.h"
 #include "TextureLoader.h"
+#include "RendererScene.h"
 namespace SkySnow
 {
     RenderModule::RenderModule()
@@ -187,7 +188,10 @@ namespace SkySnow
     }
     void RenderModule::RenderInternal()
     {
-
+        for(const auto& pair : _RendererScenes)
+        {
+            pair.second->RenderCore();
+        }
     }
     /*
     * If(Support SubPass)
@@ -219,9 +223,32 @@ namespace SkySnow
     *               -----------------------------------
     *       EndRenderPass()
     */
-    
+    //Call from SceneManager
+    void RenderModule::NotifyCreateRendererScene(SceneHandle sceneHandle)
+    {
+        _RendererScenes[sceneHandle] = CreateSPtr<RendererScene>();
+    }
+    //Call from SceneManager
+    void RenderModule::NotifyRemoveRendererScene(SceneHandle sceneHandle)
+    {
+        auto iter = _RendererScenes.find(sceneHandle);
+        if(iter != _RendererScenes.end())
+        {
+            _RendererScenes.erase(iter);
+        }
+    }
+    SPtr<RendererScene> RenderModule::GetRendererScene(SceneHandle sceneHandle)
+    {
+        auto iter = _RendererScenes.find(sceneHandle);
+        if(iter != _RendererScenes.end())
+        {
+            return _RendererScenes[sceneHandle];
+        }
+        SN_WARN("Not find this SceneHandle(%d) RendererScene.",sceneHandle);
+        return nullptr;
+    }
     void RenderModule::ShutDown()
     {
-        
+        _RendererScenes.clear();
     }
 }

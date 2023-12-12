@@ -26,7 +26,7 @@
 namespace SkySnow
 {
     class GameObject;
-	class IComponent : public Object
+	class IComponent : public Object , public std::enable_shared_from_this<IComponent>
 	{
 		SkySnow_Object(IComponent,Object);
 	public:
@@ -67,6 +67,11 @@ namespace SkySnow
                 SN_WARN("Curr Component Not Attach Any GameObject.");
             }
             return _GameObject;
+        }
+    protected:
+        SPtr<IComponent> GetPtr()
+        {
+            return shared_from_this();
         }
 	protected:
 		bool		     _Enable;

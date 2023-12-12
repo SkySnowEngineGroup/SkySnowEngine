@@ -22,6 +22,9 @@
 //
 #include "SceneManager.h"
 #include "LogAssert.h"
+#include "Context.h"
+#include "RenderModule.h"
+#include "Scene.h"
 namespace SkySnow
 {
     SceneManager::SceneManager()
@@ -39,17 +42,20 @@ namespace SkySnow
     SPtr<Scene> SceneManager::CreateScene(std::string name)
     {
         SPtr<Scene> scene = CreateSPtr<Scene>(name);
-        _SceneList.push_back(scene);
+        g_SceneHandle ++;
+        _ActiveScenes[g_SceneHandle] = scene;
+        scene->_SceneHandle = g_SceneHandle;
+        SSContext().GetModule<RenderModule>()->NotifyCreateRendererScene(g_SceneHandle);
         return scene;
     }
 
     SPtr<Scene> SceneManager::GetScene(std::string name)
     {
-        for(auto entry:_SceneList)
+        for(auto iter = _ActiveScenes.begin(); iter != _ActiveScenes.end(); iter ++)
         {
-            if(entry->GetSceneName() == name)
+            if(iter->second->GetSceneName() == name)
             {
-                return entry;
+                return iter->second;
             }
         }
         SN_WARN("Not Find This %s Scene.",name.c_str());
@@ -57,10 +63,62 @@ namespace SkySnow
     }
     void SceneManager::GetScenes(std::vector<SPtr<Scene>>& sceneList)
     {
-        for(auto entry:_SceneList)
+        for(auto iter = _ActiveScenes.begin(); iter != _ActiveScenes.end(); iter ++)
         {
-            sceneList.push_back(entry);
+            sceneList.push_back(iter->second);
         }
+    }
+    SPtr<Scene> SceneManager::GetScene(int index)
+    {
+        auto iter = _ActiveScenes.find(index);
+        if(iter == _ActiveScenes.end())
+        {
+            SN_WARN("Not has this index(%d) scene.",index);
+            return  nullptr;
+        }
+        return _ActiveScenes[index];
+    }
+    bool SceneManager::RemoveScene(int index)
+    {
+        auto iter = _ActiveScenes.find(index);
+        if(iter == _ActiveScenes.end())
+        {
+            SN_WARN("Not has this index(%d) scene.",index);
+            return false;
+        }
+        SPtr<Scene> removeScene = _ActiveScenes[index];
+        _DeleteScenes[index] = removeScene;
+        _ActiveScenes.erase(iter);
+        return true;
+    }
+    bool SceneManager::RemoveScene(std::string name)
+    {
+        int index = -1;
+        for(auto iter = _ActiveScenes.begin(); iter != _ActiveScenes.end(); iter ++)
+        {
+            if(iter->second->GetSceneName() == name)
+            {
+                index = iter->first;
+            }
+        }
+        if(index < 0)
+        {
+            SN_WARN("Not Find This %s Scene.",name.c_str());
+            return false;
+        }
+        SPtr<Scene> removeScene = _ActiveScenes[index];
+        _DeleteScenes[index] = removeScene;
+        _ActiveScenes.erase(_ActiveScenes.find(index));
+        return true;
+    }
+    bool SceneManager::ClearRemoveScene()
+    {
+        for(auto iter = _DeleteScenes.begin(); iter != _DeleteScenes.end(); iter ++)
+        {
+            SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(iter->first);
+        }
+        _DeleteScenes.clear();
+        return true;
     }
     //========================================================================
     SceneManager& GetSceneManager()

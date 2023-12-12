@@ -31,6 +31,7 @@ namespace SkySnow
     class Scene : public Object , public std::enable_shared_from_this<Scene>
     {
         SkySnow_Object(Scene,Object);
+        friend class SceneManager;
     public:
         Scene(std::string sceneName = "");
         ~Scene();

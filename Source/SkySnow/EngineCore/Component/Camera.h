@@ -21,36 +21,14 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "NonCopyable.h"
-#include <map>
-#include "Scene.h"
-#include "SPtr.h"
+#include "Behaviour.h"
 namespace SkySnow
 {
-    //SkySnow use HybridECS framework
-    class SceneManager : public NonCopyable
+    class Camera : public Behaviour
     {
+        SkySnow_Object(Camera, Behaviour);
     public:
-        static SceneManager& Instance();
-        
-        SPtr<Scene> CreateScene(std::string name = "");
-        //Get all scene list
-        void GetScenes(std::vector<SPtr<Scene>>& sceneList);
-        //Get Taget SceneName Scene
-        SPtr<Scene> GetScene(std::string name);
-        //Get Target SceneIndex Scene
-        SPtr<Scene> GetScene(int index);
-        bool RemoveScene(int index);
-        bool RemoveScene(std::string name);
-        bool ClearRemoveScene();
-    private:
-        SceneManager();
-        ~SceneManager();
-    private:
-        std::map<int, SPtr<Scene>> _ActiveScenes;
-        std::map<int, SPtr<Scene>> _DeleteScenes;
+        Camera();
+        ~Camera();
     };
-
-    SceneManager& GetSceneManager();
 }
-

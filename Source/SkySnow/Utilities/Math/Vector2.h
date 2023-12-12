@@ -22,6 +22,8 @@
 //
 #pragma once
 #include <math.h>
+#include <cmath>
+#include <iostream>
 namespace SkySnow
 {
     template<typename T>

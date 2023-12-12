@@ -22,12 +22,18 @@
 //
 #pragma once
 #include <vector>
+#include "SPtr.h"
+#include "RenderRenderable.h"
+#include "RenderViewFamily.h"
 namespace SkySnow
 {
-    //每帧组建一个可渲染的场景
-    class RSceneInfo
+    class RenderRenderable;
+    //每个Scene对应一个RendererScene，当Scene卸载加载时，RendererScene同时卸载加载
+    struct RSceneInfo
     {
+        std::vector<SPtr<RenderRenderable>> _RenderRenderables;
         
+        SPtr<RenderViewFamily>              _RenderViewFamily;
     };
     class Renderable;
     class RendererScene final
@@ -36,7 +42,16 @@ namespace SkySnow
         RendererScene();
         
         ~RendererScene();
+        //Renderable
+        void NotifyRenderableAdded(SPtr<Renderable> renderable);
+        void NotifyRenderableUpdate(SPtr<Renderable> renderable);
+        void NotifyRenderableRemoved(SPtr<Renderable> renderable);
+        //Camera
+        void NotifyCameraAdded(SPtr<Camera> renderable);
+        void NotifyCameraUpdate(SPtr<Camera> renderable);
+        void NotifyCameraRemoved(SPtr<Camera> renderable);
 
+        void RenderCore();
     private:
         RSceneInfo      _RSceneInfo;
     };

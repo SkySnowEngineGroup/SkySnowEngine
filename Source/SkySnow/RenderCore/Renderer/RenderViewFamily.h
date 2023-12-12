@@ -33,6 +33,8 @@ namespace SkySnow
 		RenderViewFamily();
 		
 		~RenderViewFamily();
+        
+        void AddRenderView(SPtr<RenderView> renderView);
 	private:
 		std::vector<SPtr<RenderView>> _RenderViews;
 	};

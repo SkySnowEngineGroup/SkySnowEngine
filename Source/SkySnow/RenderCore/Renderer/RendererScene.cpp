@@ -22,6 +22,7 @@
 //
 #include "RendererScene.h"
 #include "LogAssert.h"
+#include "Renderable.h"
 namespace SkySnow
 {
     RendererScene::RendererScene()
@@ -30,6 +31,37 @@ namespace SkySnow
     }
 
     RendererScene::~RendererScene()
+    {
+        
+    }
+
+    void RendererScene::NotifyRenderableAdded(SPtr<Renderable> renderable)
+    {
+        std::string typeName = renderable->GetTypeName();
+        SN_LOG("Renderable Type Name:%s",typeName.c_str());
+    }
+    void RendererScene::NotifyRenderableUpdate(SPtr<Renderable> renderable)
+    {
+        
+    }
+    void RendererScene::NotifyRenderableRemoved(SPtr<Renderable> renderable)
+    {
+        
+    }
+    void RendererScene::NotifyCameraAdded(SPtr<Camera> renderable)
+    {
+        
+    }
+    void RendererScene::NotifyCameraUpdate(SPtr<Camera> renderable)
+    {
+        
+    }
+    void RendererScene::NotifyCameraRemoved(SPtr<Camera> renderable)
+    {
+        
+    }
+
+    void RendererScene::RenderCore()
     {
         
     }

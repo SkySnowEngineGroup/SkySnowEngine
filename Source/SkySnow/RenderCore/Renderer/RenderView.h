@@ -25,6 +25,7 @@
 #include "RenderQueue.h"
 namespace SkySnow
 {
+    class Camera;
 	class RenderView
 	{
 	public:
@@ -32,8 +33,9 @@ namespace SkySnow
 
 		virtual ~RenderView();
 	private:
-		SPtr<RenderQueue> _ForwardOpaqueQueue;
-		//SPtr<RenderQueue> _DeferredOpaqueQueue;
-		SPtr<RenderQueue> _TransparentQueue;
+        SPtr<Camera>        _CameraProxy;
+		SPtr<RenderQueue>   _ForwardOpaqueQueue;
+		SPtr<RenderQueue>   _TransparentQueue;
+        //SPtr<RenderQueue> _DeferredOpaqueQueue;
 	};
 }

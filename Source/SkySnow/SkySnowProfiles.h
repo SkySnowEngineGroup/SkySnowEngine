@@ -102,7 +102,8 @@ namespace SkySnow
 	static const int g_Min_Capacity = 8;//min cap is 8byte
 	static const unsigned NPOS = 0xffffffff;
 	static const uint64_t g_DefaultCullingMask = 1ULL << 63;
-	typedef int SceneHandle;
+    typedef int SceneHandle;
+    static SceneHandle g_SceneHandle = -1;
 	//globle Function
 	static std::string GetMaterialAllPath(const std::string mpath)
 	{
