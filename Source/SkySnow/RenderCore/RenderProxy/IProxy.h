@@ -19,66 +19,14 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+//
 #pragma once
-#include "Object.h"
-#include "SPtr.h"
-#include <vector>
+
 namespace SkySnow
 {
-    class GameObject;
-    class Scene;
-	class IComponent : public Object , public std::enable_shared_from_this<IComponent>
+	class IProxy
 	{
-		SkySnow_Object(IComponent,Object);
 	public:
-		IComponent()
-			: _Enable(true)
-		{
-		}
-        
-		virtual ~IComponent()
-        {
-        }
 
-		virtual void Deactivate()
-        {
-            _Enable = false;
-        }
-
-		virtual bool HasEnabled() const
-        {
-            return _Enable;
-        }
-
-		virtual void SetEnabled(bool enable)
-        {
-            _Enable = enable;
-        }
-        //attach this comonent to gameobject
-        void AttachGO(WPtr<GameObject> go)
-        {
-            _GameObject = go;
-        }
-       
-        //Get curr component attach gameobject
-        WPtr<GameObject> GetGameObject() const
-        {
-            if(!_GameObject.lock())
-            {
-                SN_WARN("Curr Component Not Attach Any GameObject.");
-            }
-            return _GameObject;
-        }
-        //Get Scene
-        WPtr<Scene> GetHostScene() const;
-        //
-    protected:
-        SPtr<IComponent> GetPtr()
-        {
-            return shared_from_this();
-        }
-	protected:
-		bool		     _Enable;
-        WPtr<GameObject> _GameObject;
 	};
 }
