@@ -26,22 +26,26 @@ namespace SkySnow
 {
     static int G_PropertyIndex = 0;
     static int G_MaxPropertyIndex = 256;
-    struct PropertyName
-    {
-        void SetName(const char* name)
-        {
-            Init();
-        }
-        int GetIndex()
-        {
-            return _Index;
-        }
-    private:
-        void Init()
-        {
-            _Index = G_PropertyIndex;
-            G_PropertyIndex ++;
-        }
-        int _Index;
-    };
+    //struct PropertyName
+    //{
+    //    PropertyName(const char* name)
+    //        : 
+    //    {
+    //    }
+    //    void SetName(const char* name)
+    //    {
+    //        Init();
+    //    }
+    //    int GetIndex()
+    //    {
+    //        return _Index;
+    //    }
+    //private:
+    //    void Init()
+    //    {
+    //        _Index = G_PropertyIndex;
+    //        G_PropertyIndex ++;
+    //    }
+    //    int _Index;
+    //};
 }

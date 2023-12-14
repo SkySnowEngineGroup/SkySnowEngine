@@ -34,7 +34,8 @@ namespace SkySnow
 		
 		~RenderViewFamily();
         
-        void AddRenderView(SPtr<RenderView> renderView);
+        void AddRenderView(CameraProxy* cameraProxy);
+        void RemoveRenderView(CameraProxy* cameraProxy);
 	private:
 		std::vector<SPtr<RenderView>> _RenderViews;
 	};

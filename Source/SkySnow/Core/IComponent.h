@@ -27,6 +27,7 @@ namespace SkySnow
 {
     class GameObject;
     class Scene;
+    class IProxy;
 	class IComponent : public Object , public std::enable_shared_from_this<IComponent>
 	{
 		SkySnow_Object(IComponent,Object);
@@ -55,11 +56,12 @@ namespace SkySnow
             _Enable = enable;
         }
         //attach this comonent to gameobject
-        void AttachGO(WPtr<GameObject> go)
+        void AttachGO(WPtr<GameObject> go);
+        
+        SceneHandle GetSceneHandle()
         {
-            _GameObject = go;
+            return _SceneHandle;
         }
-       
         //Get curr component attach gameobject
         WPtr<GameObject> GetGameObject() const
         {
@@ -71,7 +73,9 @@ namespace SkySnow
         }
         //Get Scene
         WPtr<Scene> GetHostScene() const;
-        //
+        //proxy
+        //引擎层与渲染层代理，每个引擎层组件只能绑定一个代理
+        virtual void CreateProxy(){}
     protected:
         SPtr<IComponent> GetPtr()
         {
@@ -80,5 +84,6 @@ namespace SkySnow
 	protected:
 		bool		     _Enable;
         WPtr<GameObject> _GameObject;
+        SceneHandle      _SceneHandle;
 	};
 }

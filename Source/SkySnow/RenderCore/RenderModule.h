@@ -45,13 +45,15 @@ namespace SkySnow
         virtual void ShutDown() final override;
 
         //Call from SceneManager
-        void NotifyCreateRendererScene(SceneHandle sceneHandle);
+        RendererScene* NotifyCreateRendererScene(SceneHandle sceneHandle);
         //Call from SceneManager
         void NotifyRemoveRendererScene(SceneHandle sceneHandle);
         //Get RenderScene
-        SPtr<RendererScene> GetRendererScene(SceneHandle sceneHandle);
+        RendererScene* GetRendererScene(SceneHandle sceneHandle);
     private:
         void RenderInternal();
+        
+        void TempCode();
     private:
         bool                        _TestInit = false;
         File*                       _File;
@@ -71,6 +73,6 @@ namespace SkySnow
         GRISamplerStateRef          _Sampler;
         GRITexture2DRef             _Tex2D;
 
-        std::map<SceneHandle, SPtr<RendererScene>> _RendererScenes;
+        std::map<SceneHandle, RendererScene*> _RendererScenes;
     };
 }

@@ -24,11 +24,17 @@
 #include "Behaviour.h"
 namespace SkySnow
 {
+    class CameraProxy;
     class Camera : public Behaviour
     {
         SkySnow_Object(Camera, Behaviour);
     public:
         Camera();
         ~Camera();
+        
+        //proxy
+        virtual void CreateProxy() override;
+    private:
+        CameraProxy* _CameraProxy;
     };
 }

@@ -24,7 +24,8 @@
 
 namespace SkySnow
 {
-	RenderView::RenderView()
+	RenderView::RenderView(CameraProxy* cameraProxy)
+        : _CameraProxy(cameraProxy)
 	{
 
 	}
@@ -33,4 +34,9 @@ namespace SkySnow
 	{
 
 	}
+
+    bool RenderView::IsEqual(CameraProxy* cameraProxy)
+    {
+        return _CameraProxy == cameraProxy;
+    }
 }

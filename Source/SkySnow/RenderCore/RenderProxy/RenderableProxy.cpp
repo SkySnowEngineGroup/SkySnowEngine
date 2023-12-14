@@ -20,38 +20,38 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RenderViewFamily.h"
-
+#include "RenderableProxy.h"
+#include "Renderable.h"
+#include "Scene.h"
+#include "RenderModule.h"
+#include "RendererScene.h"
+#include "Context.h"
 namespace SkySnow
 {
-	RenderViewFamily::RenderViewFamily()
-	{
-
-	}
-
-	RenderViewFamily::~RenderViewFamily()
-	{
-
-	}
-
-    void RenderViewFamily::AddRenderView(CameraProxy* cameraProxy)
+    RenderableProxy::RenderableProxy(Renderable* renderable)
+        : _Renderable(renderable)
     {
-        auto renderView = CreateSPtr<RenderView>(cameraProxy);
-        _RenderViews.push_back(renderView);
+        
+    }
+    RenderableProxy::~RenderableProxy()
+    {
+        
     }
 
-    void RenderViewFamily::RemoveRenderView(CameraProxy* cameraProxy)
+    void RenderableProxy::ProxyRegister(IComponent* com)
     {
-        for(auto iter = _RenderViews.begin(); iter != _RenderViews.end();)
+        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Renderable->GetSceneHandle());
+        if(rScene)
         {
-            if((*iter)->IsEqual(cameraProxy))
-            {
-                iter = _RenderViews.erase(iter);
-            }
-            else
-            {
-                iter ++;
-            }
+            rScene->NotifyRenderableAdded(this);
+        }
+    }
+    void RenderableProxy::ProxyUnRegister(IComponent* com)
+    {
+        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Renderable->GetSceneHandle());
+        if(rScene)
+        {
+            rScene->NotifyRenderableRemoved(this);
         }
     }
 }

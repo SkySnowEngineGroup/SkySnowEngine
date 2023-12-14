@@ -25,6 +25,8 @@
 #include "IResSource.h"
 #include "Texture2D.h"
 #include "PropertyName.h"
+#include "GRIHeaders.h"
+#include "File.h"
 namespace SkySnow
 {
     class Material : public IResSource
@@ -34,10 +36,21 @@ namespace SkySnow
         Material();
         ~Material();
 
-        void SetTexture(PropertyName name,Texture2D* texture);
+        void SetTexture(std::string name,Texture2D* texture);
 
-        Texture2D* GetTexture(PropertyName name);
+        Texture2D* GetTexture(std::string name);
+        
+        //temp code
+        void CreateShader(std::string vsName,std::string fsName);
+        GRIPipelineShaderRef GetPShader() { return _PipelineShaderRef;}
+
     private:
-        std::unordered_map<int, Texture2D*>    _Textures;
+        std::unordered_map<std::string, Texture2D*>    _Textures;
+        File*                       _File;
+        Data*                       _VsData;
+        Data*                       _FsData;
+        GRIVertexShaderRef          _vsRef;
+        GRIFragmentShaderRef        _fsRef;
+        GRIPipelineShaderRef        _PipelineShaderRef;
     };
 }

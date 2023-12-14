@@ -20,7 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
 #include "Material.h"
 namespace SkySnow
 {
@@ -35,18 +34,39 @@ namespace SkySnow
 
     }
 
-    void Material::SetTexture(PropertyName name, Texture2D* texture)
+    void Material::SetTexture(std::string name, Texture2D* texture)
     {
-        _Textures[name.GetIndex()] = texture;
+        _Textures[name] = texture;
     }
 
-    Texture2D* Material::GetTexture(PropertyName name)
+    Texture2D* Material::GetTexture(std::string name)
     {
-        auto find = _Textures.find(name.GetIndex());
+        auto find = _Textures.find(name);
         if (find != _Textures.end())
         {
             return find->second;
         }
         return nullptr;
+    }
+
+    void Material::CreateShader(std::string vsName,std::string fsName)
+    {
+        string vsShaderPath = GetMaterialAllPath("Test/" + vsName);
+        string fsShaderPath = GetMaterialAllPath("Test/" + fsName);
+        _File = new File();
+        _VsData = new Data();
+        _FsData = new Data();
+        //TODO Shader SourceData Manage
+        _File->ReadData(vsShaderPath, _VsData);
+        _File->ReadData(fsShaderPath, _FsData);
+        //Create VS And PS
+        ResourceData vsRD;
+        vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
+        _vsRef = CreateVertexShader(vsRD);
+        ResourceData fsRD;
+        fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
+        _fsRef = CreateFragmentShader(fsRD);
+        //Create ShaderPipeline
+        _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
     }
 }

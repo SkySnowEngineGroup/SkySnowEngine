@@ -24,12 +24,17 @@
 
 namespace SkySnow
 {
-    RenderRenderable::RenderRenderable()
+    RenderRenderable::RenderRenderable(RenderableProxy* renderProxy)
+        : _RenderableProxy(renderProxy)
     {
         
     }
     RenderRenderable::~RenderRenderable()
     {
         
+    }
+    bool RenderRenderable::IsEqual(RenderableProxy* renderProxy)
+    {
+        return _RenderableProxy == renderProxy;
     }
 }

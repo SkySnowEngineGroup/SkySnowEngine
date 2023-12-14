@@ -70,7 +70,8 @@ public:
 
         SPtr<Material> mat = CreateSPtr<Material>();
         mat->SetTexture(texName,texture);
-
+        mat->CreateShader("QuadVS.sns", "QuadFS.sns");
+        
         SPtr<Mesh> mesh = CreateSPtr<Mesh>();
         MQuad quad;
         mesh->PushVertexStream(quad._ArrayStream);

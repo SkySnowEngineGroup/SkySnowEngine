@@ -22,6 +22,7 @@
 
 #include "IComponent.h"
 #include "GameObject.h"
+#include "Scene.h"
 namespace SkySnow
 {
 	WPtr<Scene> IComponent::GetHostScene() const
@@ -32,4 +33,10 @@ namespace SkySnow
 		}
 		return _GameObject.lock()->GetHostScene();
 	}
+
+    void IComponent::AttachGO(WPtr<GameObject> go)
+    {
+        _GameObject = go;
+        _SceneHandle = _GameObject.lock()->GetHostScene().lock()->GetSceneHandle();
+    }
 }

@@ -21,11 +21,29 @@
 // THE SOFTWARE.
 //
 #include "MeshRenderComponent.h"
+#include "RenderableProxy.h"
 namespace SkySnow
 {
-	void MeshRenderComponent::SetMesh(SPtr<Mesh> mesh)
-	{
-		_Mesh = mesh;
-	}
+    MeshRenderComponent::MeshRenderComponent()
+        : _Proxy(nullptr)
+    {
+    }
+    MeshRenderComponent::~MeshRenderComponent()
+    {
+        if(_Proxy)
+        {
+            _Proxy->ProxyUnRegister(this);
+            Delete_Object(_Proxy);
+        }
+    }
 
+
+    void MeshRenderComponent::CreateProxy()
+    {
+        if(!_Proxy)
+        {
+            _Proxy = new RenderableProxy(this);
+            _Proxy->ProxyRegister(this);
+        }
+    }
 }

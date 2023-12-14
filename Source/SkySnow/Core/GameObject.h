@@ -99,6 +99,7 @@ namespace SkySnow
         SPtr<T> newCom = CreateSPtr<T>();
         newCom->AttachGO(GetPtr());
         _ComponentList.emplace_back(newCom);
+        newCom->CreateProxy();
         return newCom;
     }
     template<typename T> void GameObject::RemoveComponent()

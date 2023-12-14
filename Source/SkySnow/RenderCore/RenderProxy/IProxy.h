@@ -24,9 +24,14 @@
 
 namespace SkySnow
 {
+    class IComponent;
 	class IProxy
 	{
 	public:
-
+        IProxy(){}
+        virtual ~IProxy(){}
+        
+        virtual void ProxyRegister(IComponent* com) = 0;
+        virtual void ProxyUnRegister(IComponent* com) = 0;
 	};
 }

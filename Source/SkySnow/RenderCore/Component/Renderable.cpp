@@ -51,4 +51,14 @@ namespace SkySnow
         }
         _Materials[index] = material;
     }
+
+    std::vector<SPtr<Material>> Renderable::GetMaterials()
+    {
+        return _Materials;
+    }
+
+    void Renderable::SetMesh(SPtr<Mesh> mesh)
+    {
+        _Mesh = mesh;
+    }
 }

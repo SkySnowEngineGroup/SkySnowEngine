@@ -28,6 +28,8 @@
 namespace SkySnow
 {
     class RenderRenderable;
+    class RenderableProxy;
+    class CameraProxy;
     //每个Scene对应一个RendererScene，当Scene卸载加载时，RendererScene同时卸载加载
     struct RSceneInfo
     {
@@ -43,16 +45,18 @@ namespace SkySnow
         
         ~RendererScene();
         //Renderable
-        void NotifyRenderableAdded(SPtr<Renderable> renderable);
-        void NotifyRenderableUpdate(SPtr<Renderable> renderable);
-        void NotifyRenderableRemoved(SPtr<Renderable> renderable);
+        void NotifyRenderableAdded(RenderableProxy* renderable);
+        void NotifyRenderableUpdate(RenderableProxy* renderable);
+        void NotifyRenderableRemoved(RenderableProxy* renderable);
         //Camera
-        void NotifyCameraAdded(SPtr<Camera> renderable);
-        void NotifyCameraUpdate(SPtr<Camera> renderable);
-        void NotifyCameraRemoved(SPtr<Camera> renderable);
+        void NotifyCameraAdded(CameraProxy* camera);
+        void NotifyCameraUpdate(CameraProxy* camera);
+        void NotifyCameraRemoved(CameraProxy* camera);
 
         void RenderCore();
     private:
         RSceneInfo      _RSceneInfo;
+        GRIGraphicsPipelineRef      _PSORef;
+        GRISamplerStateRef          _Sampler;
     };
 }

@@ -28,6 +28,7 @@
 namespace SkySnow
 {
     class GameObject;
+    class RendererScene;
     class Scene : public Object , public std::enable_shared_from_this<Scene>
     {
         SkySnow_Object(Scene,Object);
@@ -48,6 +49,8 @@ namespace SkySnow
         uint64_t GetSceneCullingMask() const;
         //Get Root GameObject
         SPtr<GameObject> GetRootGo();
+        
+        RendererScene* GetRendererScene() const;
     private:
         SPtr<Scene> GetPtr()
         {
@@ -61,5 +64,6 @@ namespace SkySnow
         uint64_t                    _CullingMask;
         std::string                 _SceneName;
         SPtr<GameObject>            _RootGo;
+        RendererScene*              _RendererScene;
     };
 }

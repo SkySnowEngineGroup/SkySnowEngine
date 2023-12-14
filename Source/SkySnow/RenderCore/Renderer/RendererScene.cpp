@@ -23,6 +23,9 @@
 #include "RendererScene.h"
 #include "LogAssert.h"
 #include "Renderable.h"
+#include "RenderRenderable.h"
+#include "RenderableProxy.h"
+#include "SPtr.h"
 namespace SkySnow
 {
     RendererScene::RendererScene()
@@ -35,34 +38,77 @@ namespace SkySnow
         
     }
 
-    void RendererScene::NotifyRenderableAdded(SPtr<Renderable> renderable)
+    void RendererScene::NotifyRenderableAdded(RenderableProxy* renderable)
     {
-        std::string typeName = renderable->GetTypeName();
-        SN_LOG("Renderable Type Name:%s",typeName.c_str());
+        auto renderElement = CreateSPtr<RenderRenderable>(renderable);
+        _RSceneInfo._RenderRenderables.push_back(renderElement);
     }
-    void RendererScene::NotifyRenderableUpdate(SPtr<Renderable> renderable)
+    void RendererScene::NotifyRenderableUpdate(RenderableProxy* renderable)
     {
         
     }
-    void RendererScene::NotifyRenderableRemoved(SPtr<Renderable> renderable)
+    void RendererScene::NotifyRenderableRemoved(RenderableProxy* renderable)
+    {
+        for(auto iter = _RSceneInfo._RenderRenderables.begin();iter != _RSceneInfo._RenderRenderables.end();)
+        {
+            if((*iter)->IsEqual(renderable))
+            {
+                iter = _RSceneInfo._RenderRenderables.erase(iter);
+            }
+            else
+            {
+                iter ++;
+            }
+        }
+    }
+    void RendererScene::NotifyCameraAdded(CameraProxy* camera)
+    {
+        if(!_RSceneInfo._RenderViewFamily)
+        {
+            _RSceneInfo._RenderViewFamily = CreateSPtr<RenderViewFamily>();
+        }
+        _RSceneInfo._RenderViewFamily->AddRenderView(camera);
+    }
+    void RendererScene::NotifyCameraUpdate(CameraProxy* camera)
     {
         
     }
-    void RendererScene::NotifyCameraAdded(SPtr<Camera> renderable)
+    void RendererScene::NotifyCameraRemoved(CameraProxy* camera)
     {
-        
-    }
-    void RendererScene::NotifyCameraUpdate(SPtr<Camera> renderable)
-    {
-        
-    }
-    void RendererScene::NotifyCameraRemoved(SPtr<Camera> renderable)
-    {
-        
+        _RSceneInfo._RenderViewFamily->RemoveRenderView(camera);
     }
 
     void RendererScene::RenderCore()
     {
-        
+        //temp code
+        for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
+        {
+            SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
+//            SN_LOG("RenderScene Render");
+            auto renderable = render->_RenderableProxy->GetRenderable();
+
+            auto matList = renderable->GetMaterials();
+            auto mesh    = renderable->GetMesh();
+            for (int i = 0; i < matList.size(); i ++)
+            {
+                auto mat = matList[i];
+
+                if (!_PSORef)
+                {
+                    SamplerState samplerState;
+                    _Sampler = CreateSampler(samplerState);
+
+                    GRICreateGraphicsPipelineInfo psoCreateInfo;
+                    psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
+                    psoCreateInfo._ShaderPipelineInfo._PipelineShader = mat->GetPShader();
+                    //psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
+                    psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();// ;
+                    psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
+                    _PSORef = CreateGraphicsPipeline(psoCreateInfo);
+                }
+            }
+
+
+        }
     }
 }

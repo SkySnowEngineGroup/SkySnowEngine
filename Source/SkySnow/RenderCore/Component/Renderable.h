@@ -23,6 +23,7 @@
 #pragma once 
 #include "IComponent.h"
 #include "Material.h"
+#include "Mesh.h"
 namespace SkySnow
 {
 	class Renderable : public IComponent
@@ -34,7 +35,11 @@ namespace SkySnow
         
         void SetMaterialCount(int matCount);
         void SetMaterial(SPtr<Material> material,int index);
+		void SetMesh(SPtr<Mesh> mesh);
+		SPtr<Mesh> GetMesh() { return _Mesh; }
+		std::vector<SPtr<Material>> GetMaterials();
     protected:
         std::vector<SPtr<Material>> _Materials;
+		SPtr<Mesh>  _Mesh;
 	};
 }

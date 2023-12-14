@@ -22,22 +22,20 @@
 //
 #pragma once
 #include "Renderable.h"
-#include "Mesh.h"
+
 namespace SkySnow
 {
+    class RenderableProxy;
 	class MeshRenderComponent : public Renderable
 	{
 		SkySnow_Object(MeshRenderComponent, Renderable);
 	public:
-		MeshRenderComponent()
-		{
-		}
-		~MeshRenderComponent()
-		{
-		}
-        
-		void SetMesh(SPtr<Mesh> mesh);
+        MeshRenderComponent();
+        ~MeshRenderComponent();
+        //proxy
+        virtual void CreateProxy() override;
 	private:
-        SPtr<Mesh>  _Mesh;
+        
+        RenderableProxy* _Proxy;
 	};
 }

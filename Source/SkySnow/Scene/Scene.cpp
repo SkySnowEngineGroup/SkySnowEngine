@@ -31,6 +31,7 @@ namespace SkySnow
         , _CullingMask(g_DefaultCullingMask)
         , _SceneName(sceneName)
         , _RootGo(nullptr)
+        , _RendererScene(nullptr)
     {
     }
 
@@ -70,6 +71,10 @@ namespace SkySnow
     SPtr<GameObject> Scene::GetRootGo()
     {
         return AddRootGo();
+    }
+    RendererScene* Scene::GetRendererScene() const
+    {
+        return _RendererScene;
     }
 }
 

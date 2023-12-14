@@ -25,15 +25,16 @@
 #include "RenderQueue.h"
 namespace SkySnow
 {
-    class Camera;
+    class CameraProxy;
 	class RenderView
 	{
 	public:
-		RenderView();
+		RenderView(CameraProxy* cameraProxy);
 
 		virtual ~RenderView();
+        bool IsEqual(CameraProxy* cameraProxy);
 	private:
-        SPtr<Camera>        _CameraProxy;
+        CameraProxy*        _CameraProxy;
 		SPtr<RenderQueue>   _ForwardOpaqueQueue;
 		SPtr<RenderQueue>   _TransparentQueue;
         //SPtr<RenderQueue> _DeferredOpaqueQueue;

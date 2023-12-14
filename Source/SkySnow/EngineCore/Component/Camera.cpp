@@ -21,21 +21,28 @@
 // THE SOFTWARE.
 //
 #include "Camera.h"
-#include "Context.h"
-#include "ModuleHeaders.h"
-#include "GameObject.h"
-#include "Scene.h"
-
+#include "CameraProxy.h"
 namespace SkySnow
 {
     Camera::Camera()
+        : _CameraProxy(nullptr)
     {
-        SceneHandle handle = GetGameObject().lock()->GetHostScene().lock()->GetSceneHandle();
-        SSContext().GetModule<RenderModule>()->NotifyCreateRendererScene(handle);
     }
     Camera::~Camera()
     {
-        SceneHandle handle = GetGameObject().lock()->GetHostScene().lock()->GetSceneHandle();
-        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(handle);
+        if(_CameraProxy)
+        {
+            _CameraProxy->ProxyUnRegister(this);
+            Delete_Object(_CameraProxy);
+        }
+    }
+
+    void Camera::CreateProxy()
+    {
+        if(!_CameraProxy)
+        {
+            _CameraProxy = new CameraProxy(this);
+            _CameraProxy->ProxyRegister(this);
+        }
     }
 }

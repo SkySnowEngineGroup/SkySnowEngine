@@ -39,8 +39,8 @@ namespace SkySnow
         //Get Taget SceneName Scene
         SPtr<Scene> GetScene(std::string name);
         //Get Target SceneIndex Scene
-        SPtr<Scene> GetScene(int index);
-        bool RemoveScene(int index);
+        SPtr<Scene> GetScene(SceneHandle handle);
+        bool RemoveScene(SceneHandle handle);
         bool RemoveScene(std::string name);
         bool ClearRemoveScene();
     private:

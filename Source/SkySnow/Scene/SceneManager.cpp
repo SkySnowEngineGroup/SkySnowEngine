@@ -45,7 +45,7 @@ namespace SkySnow
         g_SceneHandle ++;
         _ActiveScenes[g_SceneHandle] = scene;
         scene->_SceneHandle = g_SceneHandle;
-        SSContext().GetModule<RenderModule>()->NotifyCreateRendererScene(g_SceneHandle);
+        scene->_RendererScene = SSContext().GetModule<RenderModule>()->NotifyCreateRendererScene(g_SceneHandle);
         return scene;
     }
 
@@ -68,26 +68,26 @@ namespace SkySnow
             sceneList.push_back(iter->second);
         }
     }
-    SPtr<Scene> SceneManager::GetScene(int index)
+    SPtr<Scene> SceneManager::GetScene(SceneHandle handle)
     {
-        auto iter = _ActiveScenes.find(index);
+        auto iter = _ActiveScenes.find(handle);
         if(iter == _ActiveScenes.end())
         {
             SN_WARN("Not has this index(%d) scene.",index);
             return  nullptr;
         }
-        return _ActiveScenes[index];
+        return _ActiveScenes[handle];
     }
-    bool SceneManager::RemoveScene(int index)
+    bool SceneManager::RemoveScene(SceneHandle handle)
     {
-        auto iter = _ActiveScenes.find(index);
+        auto iter = _ActiveScenes.find(handle);
         if(iter == _ActiveScenes.end())
         {
             SN_WARN("Not has this index(%d) scene.",index);
             return false;
         }
-        SPtr<Scene> removeScene = _ActiveScenes[index];
-        _DeleteScenes[index] = removeScene;
+        SPtr<Scene> removeScene = _ActiveScenes[handle];
+        _DeleteScenes[handle] = removeScene;
         _ActiveScenes.erase(iter);
         return true;
     }

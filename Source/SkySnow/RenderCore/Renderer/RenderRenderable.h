@@ -27,15 +27,16 @@
 #include "SPtr.h"
 namespace SkySnow
 {
-    class Renderable;
+    class RenderableProxy;
     class RenderRenderable
     {
     public:
-        RenderRenderable();
+        RenderRenderable(RenderableProxy* renderProxy);
         ~RenderRenderable();
         
-    private:
-        SPtr<Renderable>                _RenderableProxy;
+        bool IsEqual(RenderableProxy* renderProxy);
+    public:
+        RenderableProxy*                _RenderableProxy;
         std::vector<RenderableElement>  _Elements;
         Matrix4                         _WorldTransform;
     };
