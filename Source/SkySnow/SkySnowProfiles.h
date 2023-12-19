@@ -93,6 +93,17 @@
 #    define Debug_Shader 1
 #endif // DEBUG
 
+#ifndef  Assert
+	#ifdef DEBUG
+		#include <assert.h>
+		#define Assert(f) assert(f)
+		#define DebugCode(x) x
+	#else
+		#define Assert(f)
+		#define DebugCode(x)
+	#endif
+#endif
+
 namespace SkySnow
 {
 	//Globle config for engine

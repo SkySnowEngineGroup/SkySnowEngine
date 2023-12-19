@@ -21,9 +21,10 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRIResourceCreateInfo.h"
 #include "IStream.h"
-#include "VertexDescriptor.h"
 #include "MathCommon.h"
+#include <vector>
 namespace SkySnow
 {
     class VertexStream : public IStream
@@ -33,18 +34,21 @@ namespace SkySnow
         VertexStream();
         ~VertexStream();
 
-        void SetVertexCount(uint32 vlss,int count);
+        void SetVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType);
+
+        void SetVertexCount(int count);
 
         void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
         void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
         void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
         const void* GetBufferData() const;
+        VertexElementList GetVertexLayout();
     private:
         int CalcuChunkStride(uint32 vlss);
     private:
         std::vector<char>   _Buffer;
         int                 _VertexCount;
         int                 _ChunkStride;
-        uint32              _VertexLayout;
+        VertexElementList   _VertexLayout;
     };
 }

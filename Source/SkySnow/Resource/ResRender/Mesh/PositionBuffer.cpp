@@ -20,27 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "PositionBuffer.h"
+
 namespace SkySnow
 {
-	class Renderable : public IComponent
-	{
-		SkySnow_Object(Renderable, IComponent);
-	public:
-        Renderable();
-		~Renderable();
-        
-        void SetMaterialCount(int matCount);
-        void SetMaterial(SPtr<Material> material,int index);
-        std::vector<SPtr<Material>> GetMaterials();
-        
-		void SetShareMesh(SPtr<MeshBase> mesh);
-		SPtr<MeshBase> GetShareMesh() { return _Mesh; }
-    protected:
-        std::vector<SPtr<Material>> _Materials;
-		SPtr<MeshBase>              _Mesh;
-	};
+    PositionBuffer::PositionBuffer()
+    {
+    }
+    PositionBuffer::~PositionBuffer()
+    {
+    }
+
+    std::vector<VertexElementSlot> PositionBuffer::GetVertexDesc()
+    {
+        return _SingleStreamDesc;
+    }
+
+    void PositionBuffer::PushElementSlot(VertexElementSlot veSlot)
+    {
+        _SingleStreamDesc.push_back(veSlot);
+    }
 }

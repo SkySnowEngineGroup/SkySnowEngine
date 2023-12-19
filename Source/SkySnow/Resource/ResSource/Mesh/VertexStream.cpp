@@ -34,7 +34,7 @@ namespace SkySnow
 	{
 	}
 
-    void VertexStream::SetVertexCount(uint32 vlss, int count)
+    void VertexStream::SetVertexCount(int count)
     {
         _ChunkStride    = 0;
         _VertexLayout   = vlss;

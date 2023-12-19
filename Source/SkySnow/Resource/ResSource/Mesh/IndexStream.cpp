@@ -20,24 +20,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "GRIResourceCreateInfo.h"
-#include "IResRender.h"
+#include "IndexStream.h"
+
 namespace SkySnow
 {
-    class VertexDescriptor : public IResRender
-    {
-        SkySnow_Object(VertexDescriptor, IResRender);
-    public:
-        VertexDescriptor();
-        ~VertexDescriptor();
-    public:
-        std::vector<VertexElementSlot> GetVertexDesc();
-        
-        void PushElementSlot(VertexElementSlot veSlot);
-    public:
-        GRIVertexDescriptorRef          _GRIVertexDesc;
-    private:
-        std::vector<VertexElementSlot>  _SingleStreamDesc;
-    };
+    IndexStream::IndexStream()
+	{
+	}
+    IndexStream::~IndexStream()
+	{
+	}
 }

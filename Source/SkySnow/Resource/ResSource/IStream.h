@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "Object.h"
+#include "SPtr.h"
 namespace SkySnow
 {
     class IStream : public Object

@@ -20,27 +20,28 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-#include "Material.h"
-#include "Mesh.h"
+#include "MeshComponent.h"
+#include "MeshRenderComponent.h"
+#include "GameObject.h"
 namespace SkySnow
 {
-	class Renderable : public IComponent
-	{
-		SkySnow_Object(Renderable, IComponent);
-	public:
-        Renderable();
-		~Renderable();
+    MeshComponent::MeshComponent()
+    {
         
-        void SetMaterialCount(int matCount);
-        void SetMaterial(SPtr<Material> material,int index);
-        std::vector<SPtr<Material>> GetMaterials();
+    }
+    
+    MeshComponent::~MeshComponent()
+    {
         
-		void SetShareMesh(SPtr<MeshBase> mesh);
-		SPtr<MeshBase> GetShareMesh() { return _Mesh; }
-    protected:
-        std::vector<SPtr<Material>> _Materials;
-		SPtr<MeshBase>              _Mesh;
-	};
+    }
+
+    void MeshComponent::SetShareMesh(SPtr<MeshBase> mesh)
+    {
+        _Mesh = mesh;
+        auto go = GetGameObject().lock();
+        if(go && go->HasComponent<MeshRenderComponent>())
+        {
+            go->GetComponent<MeshRenderComponent>()->SetShareMesh(_Mesh);
+        }
+    }
 }

@@ -29,6 +29,8 @@
 #include "Renderable.h"
 #include "CameraComponent.h"
 #include "MeshRenderComponent.h"
+#include "MeshComponent.h"
+#include "StaticMesh.h"
 #include "SampleApplication.h"
 #include "Context.h"
 #include "Texture2D.h"
@@ -57,7 +59,8 @@ public:
 		SPtr<GameObject> go = _Scene->GetRootGo();
 
         SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
-        SPtr<MeshRenderComponent> meshCom = go->AddComponent<MeshRenderComponent>();
+        SPtr<MeshRenderComponent> meshRenderCom = go->AddComponent<MeshRenderComponent>();
+        SPtr<MeshComponent>       meshCom = go->AddComponent<MeshComponent>();
 
         std::string imagePath = GetImageAllPath("panda.png");
         TextureLoader* tImp = new TextureLoader();
@@ -65,20 +68,16 @@ public:
         Texture2D* texture = new Texture2D();
         texture->SetTextureStream(texStream);
 
-        PropertyName texName;
-        texName.SetName("panda.png");
-
         SPtr<Material> mat = CreateSPtr<Material>();
-        mat->SetTexture(texName,texture);
+        mat->SetTexture("panda.png",texture);
         mat->CreateShader("QuadVS.sns", "QuadFS.sns");
         
-        SPtr<Mesh> mesh = CreateSPtr<Mesh>();
-        MQuad quad;
-        mesh->PushVertexStream(quad._ArrayStream);
+        SPtr<StaticMesh> mesh = CreateSPtr<StaticMesh>();
+        mesh->PushStandardMesh(StandardMeshType::SM_Quad);
+        meshCom->SetShareMesh(mesh);
 
-        meshCom->SetMaterialCount(1);
-        meshCom->SetMaterial(mat,0);
-        meshCom->SetMesh(mesh);
+        meshRenderCom->SetMaterialCount(1);
+        meshRenderCom->SetMaterial(mat,0);
 
 		return true;
 	}

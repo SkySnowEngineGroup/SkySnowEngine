@@ -22,13 +22,19 @@
 //
 #pragma once
 #include "IComponent.h"
+#include "Mesh.h"
 namespace SkySnow
 {
-    //Thing TODO
+    //For Dynamin and pyhix
     class MeshComponent : public IComponent
     {
         SkySnow_Object(MeshComponent, IComponent);
     public:
-
+        MeshComponent();
+        ~MeshComponent();
+        
+        void SetShareMesh(SPtr<MeshBase> mesh);
+    private:
+        SPtr<MeshBase>  _Mesh;
     };
 }

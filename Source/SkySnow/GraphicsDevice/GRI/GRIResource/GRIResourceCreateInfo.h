@@ -48,7 +48,7 @@ namespace SkySnow
         {
         }
         VertexElementSlot(
-           uint8_t inBufferIndex,//VBO Index
+           uint8_t inBufferIndex,//VBO Index stream index
            uint8_t inAttributeIndex,//Vertex Attri
            uint8_t inStrid,
            uint8_t inOffset,

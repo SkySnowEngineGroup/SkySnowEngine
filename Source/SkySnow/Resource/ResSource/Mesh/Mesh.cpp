@@ -23,29 +23,14 @@
 #include "Mesh.h"
 namespace SkySnow
 {
-    Mesh::Mesh(MeshType meshType)
+    MeshBase::MeshBase(MeshType meshType)
         : IResSource(RS_MeshSource)
         , _MeshType(meshType)
     {
     }
 
-    Mesh::~Mesh()
+    MeshBase::~MeshBase()
     {
         SN_LOG("Mesh DesConstruct.");
-    }
-
-    void Mesh::PushVertexStream(const SPtr<VertexStream>& vStream)
-    {
-        _VertexStreams.push_back(vStream);
-    }
-
-    std::vector<SPtr<VertexStream>> Mesh::GetVertexStreams()
-    {
-        return _VertexStreams;
-    }
-
-    SPtr<IndicesStream>& Mesh::GetIndicesStream()
-    {
-        return _IndicesStream;
     }
 }

@@ -22,14 +22,22 @@
 //
 #pragma once
 #include "Mesh.h"
+#include "StaticMeshBuffer.h"
+#include "StaticVertexData.h"
+
 namespace SkySnow
 {
-    class StaticMesh : public Mesh
+    class StaticMesh : public MeshBase
     {
-        SkySnow_Object(StaticMesh,Mesh);
+        SkySnow_Object(StaticMesh,MeshBase);
     public:
         StaticMesh();
         
         ~StaticMesh();
+        
+        virtual void PushStandardMesh(StandardMeshType smType) override;
+    private:
+        SPtr<StaticVertexData>      _VertexData;
+        SPtr<StaticMeshBuffer>      _MeshBuffer;
     };
 }

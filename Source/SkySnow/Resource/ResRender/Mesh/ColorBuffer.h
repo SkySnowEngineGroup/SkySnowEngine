@@ -20,27 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-#include "Material.h"
-#include "Mesh.h"
+#pragma once
+#include "IResRender.h"
+
 namespace SkySnow
 {
-	class Renderable : public IComponent
-	{
-		SkySnow_Object(Renderable, IComponent);
-	public:
-        Renderable();
-		~Renderable();
-        
-        void SetMaterialCount(int matCount);
-        void SetMaterial(SPtr<Material> material,int index);
-        std::vector<SPtr<Material>> GetMaterials();
-        
-		void SetShareMesh(SPtr<MeshBase> mesh);
-		SPtr<MeshBase> GetShareMesh() { return _Mesh; }
-    protected:
-        std::vector<SPtr<Material>> _Materials;
-		SPtr<MeshBase>              _Mesh;
-	};
+    class ColorBuffer : public VertexBuffer
+    {
+        SkySnow_Object(ColorBuffer, VertexBuffer);
+    public:
+        ColorBuffer();
+        ~ColorBuffer();
+    };
 }

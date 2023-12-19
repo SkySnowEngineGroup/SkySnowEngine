@@ -24,43 +24,44 @@
 #include "SPtr.h"
 #include <vector>
 #include "VertexStream.h"
-#include "IndicesStream.h"
+#include "IndexStream.h"
 
 namespace SkySnow
 {
-	struct MQuad
+    enum StandardMeshType
+    {
+        SM_Quad,
+        SM_Cube,
+        SM_Sphere,
+        SM_Cone
+    };
+    struct SMesh
+    {
+        SPtr<VertexStream>      _ArrayStream;
+        SPtr<VertexStream>      _ElementStream;
+        SPtr<IndexStream>       _IndicesStream;
+    };
+	struct MQuad : public SMesh
 	{
 		MQuad()
 		{
 			InitData();
 		}
-		SPtr<VertexStream>	_ArrayStream;
-		SPtr<VertexStream>	_ElementStream;
-		SPtr<IndicesStream> _IndicesStream;
-		
 	private:
 		void InitData();
 	};
 
-	struct MCube
+	struct MCube : public SMesh
 	{
-        float* _Vertex = new float[]
-                            {   0.5,0.5,0.5,
-                                0.5,0.5,-0.5,
-                                -0.5,0.5,-0.5,
-                                -0.5,0.5,0.5,//
-                                0.5,-0.5,0.5,
-                                0.5,-0.5,-0.5,
-                                -0.5,-0.5,-0.5,
-                                -0.5,-0.5,0.5};
+        
 	};
 
-	struct MSphere
+	struct MSphere : public SMesh
 	{
 
 	};
 
-	struct MCone
+	struct MCone : public SMesh
 	{
 
 	};

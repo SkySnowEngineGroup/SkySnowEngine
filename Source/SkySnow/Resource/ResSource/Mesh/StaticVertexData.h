@@ -20,27 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once 
-#include "IComponent.h"
-#include "Material.h"
-#include "Mesh.h"
+#pragma once
+#include "IndexStream.h"
+#include "VertexStream.h"
+#include <map>
 namespace SkySnow
 {
-	class Renderable : public IComponent
-	{
-		SkySnow_Object(Renderable, IComponent);
-	public:
-        Renderable();
-		~Renderable();
+    class StaticVertexData
+    {
+    public:
+        StaticVertexData();
+        ~StaticVertexData();
         
-        void SetMaterialCount(int matCount);
-        void SetMaterial(SPtr<Material> material,int index);
-        std::vector<SPtr<Material>> GetMaterials();
+        void PushVertexStream(SPtr<VertexStream> vStream,int index = 0);
         
-		void SetShareMesh(SPtr<MeshBase> mesh);
-		SPtr<MeshBase> GetShareMesh() { return _Mesh; }
+        void SetIndexStream(SPtr<IndexStream> iStream);
+        
+        SPtr<IndexStream>   GetIndexStream();
+        std::vector<SPtr<VertexStream>> GetVertexStreams();
     protected:
-        std::vector<SPtr<Material>> _Materials;
-		SPtr<MeshBase>              _Mesh;
-	};
+        SPtr<IndexStream>               _IndexStream;
+        std::vector<SPtr<VertexStream>> _VertexStreams;
+    };
 }

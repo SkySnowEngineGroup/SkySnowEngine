@@ -21,11 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "StandardMesh.h"
 #include "IResSource.h"
-#include "VertexStream.h"
-#include "IndicesStream.h"
-#include "SPtr.h"
+#include "StandardMesh.h"
 namespace SkySnow
 {
     enum MeshType
@@ -35,36 +32,17 @@ namespace SkySnow
         MT_SkinnedMesh,
         MT_BlendShapeMesh,
     };
-    class Mesh : public IResSource
+    class MeshBase : public IResSource
     {
-        SkySnow_Object(Mesh, IResSource);
+        SkySnow_Object(MeshBase, IResSource);
     public:
-        Mesh(MeshType meshType = MT_None);
-        virtual ~Mesh();
+        MeshBase(MeshType meshType = MT_None);
+        virtual ~MeshBase();
         
         MeshType GetMeshType(){ return _MeshType;}
         
-        void PushVertexStream(const SPtr<VertexStream>& vStream);
-        
-        std::vector<SPtr<VertexStream>> GetVertexStreams();
-
-        SPtr<IndicesStream>& GetIndicesStream();
-    private:
+        virtual void PushStandardMesh(StandardMeshType smType) = 0;
+    protected:
         MeshType                        _MeshType;
-        std::vector<SPtr<VertexStream>> _VertexStreams;
-        SPtr<IndicesStream>             _IndicesStream;
-    };
-
-    class SubMesh
-    {
-    public:
-        SubMesh() = default;
-        SubMesh(uint32 indexOffset, uint32 indexCount)
-            : _IndexOffset(indexOffset)
-            , _IndexCount(indexCount)
-        {
-        }
-        uint32 _IndexOffset = 0;
-        uint32 _IndexCount = 0;
     };
 }

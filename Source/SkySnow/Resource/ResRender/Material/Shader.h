@@ -20,25 +20,40 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "VertexDescriptor.h"
+#pragma once
+#include "Object.h"
+#include "GRIHeaders.h"
+#include "SPtr.h"
 
 namespace SkySnow
 {
-    VertexDescriptor::VertexDescriptor()
-        : IResRender(GRT_VertexDescriptor)
+    class IResRender : public Object
     {
-    }
-    VertexDescriptor::~VertexDescriptor()
-    {
-    }
+        SkySnow_Object(IResRender, Object);
+    public:
+        IResRender(EGRIResourceType grirt) 
+            : _GRIResType(grirt)
+        {
+        }
+        virtual ~IResRender() {}
 
-    std::vector<VertexElementSlot> VertexDescriptor::GetVertexDesc()
-    {
-        return _SingleStreamDesc;
-    }
+        EGRIResourceType GetResRenderType()
+        {
+            return _GRIResType;
+        }
+    protected:
+        EGRIResourceType    _GRIResType;
+    };
 
-    void VertexDescriptor::PushElementSlot(VertexElementSlot veSlot)
+    class VertexBuffer : public IResRender
     {
-        _SingleStreamDesc.push_back(veSlot);
-    }
+        SkySnow_Object(VertexBuffer, IResRender);
+    public:
+        VertexBuffer()
+            : IResRender(GRT_Buffer)
+        {}
+        virtual ~VertexBuffer(){}
+    public:
+        GRIVertexBufferRef  _VertexBufferGRI;
+    };
 }

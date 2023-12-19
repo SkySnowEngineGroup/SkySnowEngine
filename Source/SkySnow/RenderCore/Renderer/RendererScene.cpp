@@ -26,6 +26,7 @@
 #include "RenderRenderable.h"
 #include "RenderableProxy.h"
 #include "SPtr.h"
+#include "Context.h"
 namespace SkySnow
 {
     RendererScene::RendererScene()
@@ -81,6 +82,17 @@ namespace SkySnow
     void RendererScene::RenderCore()
     {
         //temp code
+        if (!_CMBPool)
+        {
+            _CMBPool = new GRICommandBufferPool();
+        }
+        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
+        SkySnowEngine* engine = SSContext().GetSkySnowEngine();
+        GRIViewportStateRef viewport = engine->GetEngineWindow(EGameWindow)->GetViewport()->GetGRIViewport();
+        
+        GRITexture2DRef tex2DGRI;
+        commandBuffer->CmdBeginViewport(viewport,tex2DGRI);
+        
         for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
         {
             SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
@@ -88,11 +100,11 @@ namespace SkySnow
             auto renderable = render->_RenderableProxy->GetRenderable();
 
             auto matList = renderable->GetMaterials();
-            auto mesh    = renderable->GetMesh();
+            //auto mesh    = renderable->GetMesh();
+            //auto vertexStreams = mesh->GetVertexStreams();
             for (int i = 0; i < matList.size(); i ++)
             {
                 auto mat = matList[i];
-
                 if (!_PSORef)
                 {
                     SamplerState samplerState;
@@ -102,13 +114,18 @@ namespace SkySnow
                     psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
                     psoCreateInfo._ShaderPipelineInfo._PipelineShader = mat->GetPShader();
                     //psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
-                    psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();// ;
+                    psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();
                     psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
                     _PSORef = CreateGraphicsPipeline(psoCreateInfo);
+                    
+                    tex2DGRI = mat->GetTexture("panda.png")->GetTexture();;
                 }
             }
-
-
+            commandBuffer->CmdSetGraphicsPipeline(_PSORef);
+            
+            commandBuffer->CmdDrawPrimitive(2, 1);
         }
+        
+        commandBuffer->CmdEndViewport(viewport,false,false);
     }
 }

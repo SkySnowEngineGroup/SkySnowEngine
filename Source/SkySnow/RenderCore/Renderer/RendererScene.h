@@ -25,6 +25,7 @@
 #include "SPtr.h"
 #include "RenderRenderable.h"
 #include "RenderViewFamily.h"
+#include "GRIHeaders.h"
 namespace SkySnow
 {
     class RenderRenderable;
@@ -58,5 +59,6 @@ namespace SkySnow
         RSceneInfo      _RSceneInfo;
         GRIGraphicsPipelineRef      _PSORef;
         GRISamplerStateRef          _Sampler;
+        GRICommandBufferPool*       _CMBPool = nullptr;
     };
 }

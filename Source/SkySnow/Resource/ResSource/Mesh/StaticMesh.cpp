@@ -25,7 +25,7 @@
 namespace SkySnow
 {
     StaticMesh::StaticMesh()
-        : Mesh(MT_StaticMesh)
+        : MeshBase(MT_StaticMesh)
     {
     }
 
@@ -33,4 +33,25 @@ namespace SkySnow
     {
         
     }
+
+    void StaticMesh::PushStandardMesh(StandardMeshType smType)
+    {
+        SMesh sMesh;
+        switch(smType)
+        {
+            case SM_Quad: sMesh = MQuad(); break;
+            case SM_Cube: sMesh = MCube(); break;
+            case SM_Sphere: sMesh = MSphere(); break;
+            case SM_Cone: sMesh = MCone(); break;
+            default:
+                SN_LOG("Not support this StandardMeshType:%d",smType);
+                break;
+        }
+        if(!_VertexData)
+        {
+            _VertexData = CreateSPtr<StaticVertexData>();
+        }
+        _VertexData->PushVertexStream(sMesh._ArrayStream);
+    }
+    
 }
