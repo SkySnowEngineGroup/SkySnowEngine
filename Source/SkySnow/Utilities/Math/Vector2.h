@@ -229,7 +229,7 @@ namespace SkySnow
         {
             return _Data[i];
         }
-        int Count()
+        static int Count()
         {
             return 2;
         }

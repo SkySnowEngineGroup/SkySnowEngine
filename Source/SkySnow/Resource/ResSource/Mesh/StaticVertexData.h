@@ -31,14 +31,15 @@ namespace SkySnow
     public:
         StaticVertexData();
         ~StaticVertexData();
-        
+
         void PushVertexStream(SPtr<VertexStream> vStream,int index = 0);
         
         void SetIndexStream(SPtr<IndexStream> iStream);
         
-        SPtr<IndexStream>   GetIndexStream();
+        SPtr<IndexStream> GetIndexStream();
         std::vector<SPtr<VertexStream>> GetVertexStreams();
     protected:
+        int                             _VSCount;
         SPtr<IndexStream>               _IndexStream;
         std::vector<SPtr<VertexStream>> _VertexStreams;
     };

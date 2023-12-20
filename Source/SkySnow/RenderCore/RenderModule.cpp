@@ -199,8 +199,8 @@ void RenderModule::TempCode()
         VertexElementList veList;
         //bufferindex attritubeindex stride offset
         veList.push_back(VertexElementSlot(0,0,3,0,VertexElementType::VET_Float3,_VertexBufferRef));
-        veList.push_back(VertexElementSlot(1,1,6,0,VertexElementType::VET_Float4,_ColorBufferRef));
-        veList.push_back(VertexElementSlot(1,2,6,16,VertexElementType::VET_Float2,_ColorBufferRef));
+        veList.push_back(VertexElementSlot(1,3,4,0,VertexElementType::VET_Float4,_ColorBufferRef));
+        veList.push_back(VertexElementSlot(1,4,2,16,VertexElementType::VET_Float2,_ColorBufferRef));
         _VertexDescriptor = CreateVertexDescriptor(veList);
         //Consider: Need?
 //            _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef,_VertexDeclaration);

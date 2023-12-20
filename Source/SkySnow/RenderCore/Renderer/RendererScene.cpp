@@ -26,6 +26,7 @@
 #include "RenderRenderable.h"
 #include "RenderableProxy.h"
 #include "SPtr.h"
+#include "StaticMesh.h"
 #include "Context.h"
 namespace SkySnow
 {
@@ -98,10 +99,10 @@ namespace SkySnow
             SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
 //            SN_LOG("RenderScene Render");
             auto renderable = render->_RenderableProxy->GetRenderable();
-
+            
+            auto mesh = std::static_pointer_cast<StaticMesh>(renderable->GetShareMesh());
             auto matList = renderable->GetMaterials();
-            //auto mesh    = renderable->GetMesh();
-            //auto vertexStreams = mesh->GetVertexStreams();
+
             for (int i = 0; i < matList.size(); i ++)
             {
                 auto mat = matList[i];
@@ -109,16 +110,15 @@ namespace SkySnow
                 {
                     SamplerState samplerState;
                     _Sampler = CreateSampler(samplerState);
-
+                    mesh->CreateMeshBuffer();
+                    
                     GRICreateGraphicsPipelineInfo psoCreateInfo;
                     psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
                     psoCreateInfo._ShaderPipelineInfo._PipelineShader = mat->GetPShader();
-                    //psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = _VertexDescriptor;
+                    psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = mesh->GetMeshBuffer()->GetVertexDesc();
                     psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();
                     psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
                     _PSORef = CreateGraphicsPipeline(psoCreateInfo);
-                    
-                    tex2DGRI = mat->GetTexture("panda.png")->GetTexture();;
                 }
             }
             commandBuffer->CmdSetGraphicsPipeline(_PSORef);
@@ -127,5 +127,7 @@ namespace SkySnow
         }
         
         commandBuffer->CmdEndViewport(viewport,false,false);
+
+        _GQueue->SubmitCommandBuffer(commandBuffer);
     }
 }

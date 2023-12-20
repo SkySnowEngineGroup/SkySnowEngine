@@ -31,13 +31,5 @@ namespace SkySnow
     {
     }
 
-    std::vector<VertexElementSlot> PositionBuffer::GetVertexDesc()
-    {
-        return _SingleStreamDesc;
-    }
 
-    void PositionBuffer::PushElementSlot(VertexElementSlot veSlot)
-    {
-        _SingleStreamDesc.push_back(veSlot);
-    }
 }

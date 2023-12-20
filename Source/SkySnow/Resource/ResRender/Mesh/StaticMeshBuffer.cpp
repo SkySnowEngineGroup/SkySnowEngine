@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "StaticMeshBuffer.h"
+#include "StaticVertexData.h"
 
 namespace SkySnow
 {
@@ -32,5 +33,15 @@ namespace SkySnow
     StaticMeshBuffer::~StaticMeshBuffer()
     {
         
+    }
+
+    void StaticMeshBuffer::CreateBuffer(SPtr<StaticVertexData> vertexData)
+    {
+
+    }
+
+    GRIVertexDescriptorRef StaticMeshBuffer::GetVertexDesc()
+    {
+        return _VertexDesc;
     }
 }

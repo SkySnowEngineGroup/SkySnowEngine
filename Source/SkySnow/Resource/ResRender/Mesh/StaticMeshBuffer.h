@@ -26,16 +26,19 @@
 
 namespace SkySnow
 {
+    class StaticVertexData;
     class StaticMeshBuffer
     {
     public:
         StaticMeshBuffer();
         ~StaticMeshBuffer();
         
-        
+        void CreateBuffer(SPtr<StaticVertexData> vertexData);
+
+        GRIVertexDescriptorRef GetVertexDesc();
     private:
-        SPtr<ColorBuffer>       _ColorBuffer;
         SPtr<PositionBuffer>    _PositionBuffer;
+        SPtr<ColorBuffer>       _ColorBuffer;
         SPtr<IndexBuffer>       _IndexBuffer;
         GRIVertexDescriptorRef  _VertexDesc;
     };

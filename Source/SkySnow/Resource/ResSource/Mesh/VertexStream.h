@@ -34,21 +34,39 @@ namespace SkySnow
         VertexStream();
         ~VertexStream();
 
-        void SetVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType);
-
-        void SetVertexCount(int count);
+        void ReserveBuffer(uint32 count);
+        
+        void AddVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType);
 
         void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
         void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
         void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
         const void* GetBufferData() const;
-        VertexElementList GetVertexLayout();
+        VertexElementList GetVertexElementList();
     private:
-        int CalcuChunkStride(uint32 vlss);
+        inline int ComBinaryBitIndex(VertexLayoutSlot slot);
+        void ResizeBuffer();
     private:
         std::vector<char>   _Buffer;
         int                 _VertexCount;
-        int                 _ChunkStride;
-        VertexElementList   _VertexLayout;
+        int                 _Offset;
+        VertexElementList   _VertexElementList;
+        bool                _IsDirty;
     };
+
+    inline int VertexStream::ComBinaryBitIndex(VertexLayoutSlot slot)
+    {
+        int bitIndex = 0;
+        int value = slot;
+        while(value > 0)
+        {
+            if(value & 1)
+            {
+                break;
+            }
+            value >>= 1;
+            bitIndex++;
+        }
+        return bitIndex;
+    }
 }

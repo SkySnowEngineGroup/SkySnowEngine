@@ -30,11 +30,6 @@ namespace SkySnow
     public:
         PositionBuffer();
         ~PositionBuffer();
-    public:
-        std::vector<VertexElementSlot> GetVertexDesc();
-        
-        void PushElementSlot(VertexElementSlot veSlot);
-    private:
-        std::vector<VertexElementSlot>  _SingleStreamDesc;
+
     };
 }

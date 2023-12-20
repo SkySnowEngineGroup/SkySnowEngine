@@ -73,7 +73,7 @@ public:
         mat->CreateShader("QuadVS.sns", "QuadFS.sns");
         
         SPtr<StaticMesh> mesh = CreateSPtr<StaticMesh>();
-        mesh->PushStandardMesh(StandardMeshType::SM_Quad);
+        mesh->CreateStandardMesh(StandardMeshType::SM_Quad);
         meshCom->SetShareMesh(mesh);
 
         meshRenderCom->SetMaterialCount(1);

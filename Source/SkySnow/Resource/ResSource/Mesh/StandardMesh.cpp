@@ -45,11 +45,13 @@ namespace SkySnow
 		};
 		int stride = 8;
 		int davCount = 6;
-		uint32 vertexLayout = VLS_Position | VLS_Normal | VLS_TexCoord0;
 
 		_ArrayStream = CreateSPtr<VertexStream>();
-		_ArrayStream->SetVertexCount(vertexLayout, davCount);
-
+        _ArrayStream->ReserveBuffer(davCount);
+        _ArrayStream->AddVertexElementSlot(VLS_Position, VertexElementType::VET_Float3);
+        _ArrayStream->AddVertexElementSlot(VLS_Normal, VertexElementType::VET_Float3);
+        _ArrayStream->AddVertexElementSlot(VLS_TexCoord0, VertexElementType::VET_Float2);
+        
 		for (int i = 0; i < davCount; i ++)
 		{
 			float px = tempVertex[i * stride + 0];

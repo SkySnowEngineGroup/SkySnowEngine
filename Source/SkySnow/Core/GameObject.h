@@ -120,7 +120,7 @@ namespace SkySnow
         {
             if (T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
             {
-                return dynamic_cast<T>(_ComponentList[i]);
+                return std::static_pointer_cast<T>(_ComponentList[i]);
             }
         }
         return nullptr;

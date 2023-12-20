@@ -25,7 +25,25 @@
 
 namespace SkySnow
 {
+    StaticVertexData::StaticVertexData()
+        : _VSCount(0)
+    {
+        
+    }
 
+    StaticVertexData::~StaticVertexData()
+    {
+        
+    }
+    
+    void StaticVertexData::PushVertexStream(SPtr<VertexStream> vStream,int index)
+    {
+        _VertexStreams.push_back(vStream);
+    }
+    void StaticVertexData::SetIndexStream(SPtr<IndexStream> iStream)
+    {
+        _IndexStream = iStream;
+    }
     SPtr<IndexStream> StaticVertexData::GetIndexStream()
     {
         return _IndexStream;
@@ -33,15 +51,5 @@ namespace SkySnow
     std::vector<SPtr<VertexStream>> StaticVertexData::GetVertexStreams()
     {
         return _VertexStreams;
-    }
-
-    StaticVertexData::StaticVertexData()
-    {
-        
-    }
-    
-    StaticVertexData::~StaticVertexData()
-    {
-        
     }
 }

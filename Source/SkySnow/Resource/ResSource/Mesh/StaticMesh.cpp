@@ -34,7 +34,7 @@ namespace SkySnow
         
     }
 
-    void StaticMesh::PushStandardMesh(StandardMeshType smType)
+    void StaticMesh::CreateStandardMesh(StandardMeshType smType)
     {
         SMesh sMesh;
         switch(smType)
@@ -52,6 +52,30 @@ namespace SkySnow
             _VertexData = CreateSPtr<StaticVertexData>();
         }
         _VertexData->PushVertexStream(sMesh._ArrayStream);
+    }
+
+    void StaticMesh::SetVertexData(const SPtr<StaticVertexData>& vertexData)
+    {
+        _VertexData = vertexData;
+    }
+
+    SPtr<StaticVertexData> StaticMesh::GetVertexData()
+    {
+        return _VertexData;
+    }
+
+    void StaticMesh::CreateMeshBuffer()
+    {
+        if (!_MeshBuffer)
+        {
+            _MeshBuffer = CreateSPtr<StaticMeshBuffer>();
+            _MeshBuffer->CreateBuffer(_VertexData);
+        }
+    }
+
+    SPtr<StaticMeshBuffer> StaticMesh::GetMeshBuffer()
+    {
+        return _MeshBuffer;
     }
     
 }

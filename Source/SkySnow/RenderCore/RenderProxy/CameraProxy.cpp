@@ -24,6 +24,8 @@
 #include "Camera.h"
 #include "Scene.h"
 #include "RendererScene.h"
+#include "Context.h"
+#include "RenderModule.h"
 namespace SkySnow
 {
     CameraProxy::CameraProxy(Camera* camera)
@@ -47,7 +49,7 @@ namespace SkySnow
 
     void CameraProxy::ProxyUnRegister(IComponent* com)
     {
-        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Camera->GetSceneHandle())
+        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Camera->GetSceneHandle());
         if(rScene)
         {
             rScene->NotifyCameraRemoved(this);

@@ -41,7 +41,7 @@ namespace SkySnow
         
         MeshType GetMeshType(){ return _MeshType;}
         
-        virtual void PushStandardMesh(StandardMeshType smType) = 0;
+        virtual void CreateStandardMesh(StandardMeshType smType) {};
     protected:
         MeshType                        _MeshType;
     };

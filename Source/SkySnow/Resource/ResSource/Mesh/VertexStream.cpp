@@ -25,8 +25,8 @@ namespace SkySnow
 {
 	VertexStream::VertexStream()
         : _VertexCount(0)
-        , _ChunkStride(0)
-        , _VertexLayout(0)
+        , _Offset(0)
+        , _IsDirty(false)
 	{
 	}
     
@@ -34,29 +34,65 @@ namespace SkySnow
 	{
 	}
 
-    void VertexStream::SetVertexCount(int count)
+    void VertexStream::ReserveBuffer(uint32 count)
     {
-        _ChunkStride    = 0;
-        _VertexLayout   = vlss;
-        _VertexCount    = count;
-        _ChunkStride = CalcuChunkStride(vlss);
-        if (count)
+        if(_VertexCount != count)
         {
-            int dataSize = _ChunkStride * _VertexCount;
-            _Buffer.reserve(dataSize);
+            _VertexCount = count;
+            _IsDirty = true;
         }
+    }
+
+    void VertexStream::AddVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType)
+    {
+        int vtSize      = 0;
+        int veCount     = 0;
+        switch(veType)
+        {
+            case VertexElementType::VET_Float1:
+                veCount = 1;
+                vtSize = sizeof(float);
+                break;
+            case VertexElementType::VET_Float2:
+                veCount = 2;
+                vtSize = sizeof(float);
+                break;
+            case VertexElementType::VET_Float3:
+                veCount = 3;
+                vtSize = sizeof(float);
+                break;
+            case VertexElementType::VET_Float4:
+                veCount = 4;
+                vtSize = sizeof(float);
+                break;
+            default:
+                SN_LOG("Not support VertexElementType(%d).",veType);
+                break;
+        }
+        VertexElementSlot veSlot;
+        veSlot._AttributeIndex = ComBinaryBitIndex(eSlot);
+        veSlot._Strid          = veCount;
+        veSlot._Offset         = _Offset;
+        veSlot._VET_Type       = veType;
+        
+        _Offset += vtSize * veCount;
+        
+        _VertexElementList.push_back(veSlot);
     }
 
     void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector2f& inData)
     {
+        ResizeBuffer();
         _Buffer.insert(_Buffer.end(), inData.Data(),inData.Data() + inData.ByteSize());
     }
     void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector3f& inData)
     {
+        ResizeBuffer();
         _Buffer.insert(_Buffer.end(), inData.Data(),inData.Data() + inData.ByteSize());
     }
     void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector4f& inData)
     {
+        ResizeBuffer();
         _Buffer.insert(_Buffer.end(), inData.Data(),inData.Data() + inData.ByteSize());
     }
     const void* VertexStream::GetBufferData() const
@@ -64,57 +100,17 @@ namespace SkySnow
         return &_Buffer[0];
     }
 
-    int VertexStream::CalcuChunkStride(uint32 vlss)
+    VertexElementList VertexStream::GetVertexElementList()
     {
-        int chunkStride = 0;
-        if (vlss & VertexLayoutSlot::VLS_Position)
+        return _VertexElementList;
+    }
+
+    void VertexStream::ResizeBuffer()
+    {
+        if(_IsDirty)
         {
-            chunkStride += Vector3f::ByteSize();
+            _Buffer.resize(_Offset * _VertexCount);
+            _IsDirty = false;
         }
-        if (vlss & VertexLayoutSlot::VLS_Normal)
-        {
-            chunkStride += Vector3f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_Tangent)
-        {
-            chunkStride += Vector4f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_Color)
-        {
-            chunkStride += Vector4f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord0)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord1)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord2)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord3)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord4)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord5)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord6)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        if (vlss & VertexLayoutSlot::VLS_TexCoord7)
-        {
-            chunkStride += Vector2f::ByteSize();
-        }
-        return chunkStride;
     }
 }

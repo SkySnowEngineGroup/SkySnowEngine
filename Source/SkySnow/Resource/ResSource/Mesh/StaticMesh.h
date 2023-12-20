@@ -35,7 +35,14 @@ namespace SkySnow
         
         ~StaticMesh();
         
-        virtual void PushStandardMesh(StandardMeshType smType) override;
+        virtual void CreateStandardMesh(StandardMeshType smType) override;
+
+        void SetVertexData(const SPtr<StaticVertexData>& vertexData);
+        SPtr<StaticVertexData> GetVertexData();
+
+        void CreateMeshBuffer();
+
+        SPtr<StaticMeshBuffer> GetMeshBuffer();
     private:
         SPtr<StaticVertexData>      _VertexData;
         SPtr<StaticMeshBuffer>      _MeshBuffer;
