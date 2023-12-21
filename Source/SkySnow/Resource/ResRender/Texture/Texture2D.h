@@ -36,7 +36,15 @@ namespace SkySnow
     public:
         void SetTextureStream(TextureStream* stream);
         //temp code
-        GRITexture2DRef GetTexture() { return _GRITexture2D; }
+        GRITexture2DRef GetTexture()
+        {
+            if(!_GRITexture2D.GetReference())
+            {
+                CreateGTex();
+            }
+            return _GRITexture2D;
+        }
+        void CreateGTex();
     public:
         GRITexture2DRef     _GRITexture2D;//GpuResource
     private:

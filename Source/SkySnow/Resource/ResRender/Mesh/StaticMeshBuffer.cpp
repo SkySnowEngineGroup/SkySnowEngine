@@ -35,9 +35,30 @@ namespace SkySnow
         
     }
 
-    void StaticMeshBuffer::CreateBuffer(SPtr<StaticVertexData> vertexData)
+    void StaticMeshBuffer::SMCreateBuffer(SPtr<StaticVertexData> vertexData)
     {
-
+        if(!_PositionBuffer)
+        {
+            _PositionBuffer = CreateSPtr<PositionBuffer>();
+        }
+        std::vector<SPtr<VertexStream>> stream = vertexData->GetVertexStreams();
+        const void* data = stream[0]->GetBufferData();
+        int dataSize = stream[0]->GetBufferSize();
+        int vStrid = stream[0]->GetVertexStrid();
+        
+        ResourceData vexRD;
+        vexRD.MakeCopy(stream[0]->GetBufferData(), dataSize);
+        _PositionBuffer->_VertexBufferGRI = CreateBuffer(BufferUsageType::BUT_VertexBuffer,
+                                                         dataSize,
+                                                         vStrid,
+                                                         vexRD);
+        VertexElementList veList = stream[0]->GetVertexElementList();
+        for(auto& entry: veList)
+        {
+            entry._GRIBuffer = _PositionBuffer->_VertexBufferGRI;
+            entry._BufferIndex = 0;
+        }
+        _VertexDesc = CreateVertexDescriptor(veList);
     }
 
     GRIVertexDescriptorRef StaticMeshBuffer::GetVertexDesc()

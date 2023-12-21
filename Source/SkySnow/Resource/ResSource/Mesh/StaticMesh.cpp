@@ -69,7 +69,7 @@ namespace SkySnow
         if (!_MeshBuffer)
         {
             _MeshBuffer = CreateSPtr<StaticMeshBuffer>();
-            _MeshBuffer->CreateBuffer(_VertexData);
+            _MeshBuffer->SMCreateBuffer(_VertexData);
         }
     }
 

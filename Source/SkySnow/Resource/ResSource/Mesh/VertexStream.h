@@ -42,13 +42,16 @@ namespace SkySnow
         void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
         void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
         const void* GetBufferData() const;
-        VertexElementList GetVertexElementList();
+        int GetBufferSize(){return _Offset * _VertexCount;}
+        int GetVertexStrid(){return _Strid;}
+        VertexElementList& GetVertexElementList();
     private:
         inline int ComBinaryBitIndex(VertexLayoutSlot slot);
         void ResizeBuffer();
     private:
         std::vector<char>   _Buffer;
         int                 _VertexCount;
+        int                 _Strid;
         int                 _Offset;
         VertexElementList   _VertexElementList;
         bool                _IsDirty;

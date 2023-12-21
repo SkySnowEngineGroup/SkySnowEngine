@@ -54,7 +54,7 @@ namespace SkySnow
         {}
         virtual ~VertexBuffer(){}
     public:
-        GRIVertexBufferRef  _VertexBufferGRI;
+        GRIBufferRef  _VertexBufferGRI;
     };
 
     class IndexBuffer : public IResRender

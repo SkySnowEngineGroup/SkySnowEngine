@@ -73,7 +73,7 @@ namespace SkySnow
         auto iter = _ActiveScenes.find(handle);
         if(iter == _ActiveScenes.end())
         {
-            SN_WARN("Not has this index(%d) scene.",index);
+            SN_WARN("Not has this index(%d) scene.", handle);
             return  nullptr;
         }
         return _ActiveScenes[handle];
@@ -83,7 +83,7 @@ namespace SkySnow
         auto iter = _ActiveScenes.find(handle);
         if(iter == _ActiveScenes.end())
         {
-            SN_WARN("Not has this index(%d) scene.",index);
+            SN_WARN("Not has this index(%d) scene.", handle);
             return false;
         }
         SPtr<Scene> removeScene = _ActiveScenes[handle];

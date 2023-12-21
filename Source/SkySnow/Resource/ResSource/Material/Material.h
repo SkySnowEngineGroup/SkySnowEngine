@@ -42,7 +42,22 @@ namespace SkySnow
         
         //temp code
         void CreateShader(std::string vsName,std::string fsName);
-        GRIPipelineShaderRef GetPShader() { return _PipelineShaderRef;}
+        GRIPipelineShaderRef GetPShader()
+        {
+            if(!_PipelineShaderRef.GetReference())
+            {
+                //Create VS And PS
+                ResourceData vsRD;
+                vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
+                _vsRef = CreateVertexShader(vsRD);
+                ResourceData fsRD;
+                fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
+                _fsRef = CreateFragmentShader(fsRD);
+                //Create ShaderPipeline
+                _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
+            }
+            return _PipelineShaderRef;
+        }
 
     private:
         std::unordered_map<std::string, Texture2D*>    _Textures;

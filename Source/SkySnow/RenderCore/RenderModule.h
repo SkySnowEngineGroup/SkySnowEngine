@@ -55,24 +55,6 @@ namespace SkySnow
         
         void TempCode();
     private:
-        bool                        _TestInit = false;
-        File*                       _File;
-        Data*                       _VsData;
-        Data*                       _FsData;
-        GRIVertexShaderRef          _vsRef;
-        GRIFragmentShaderRef        _fsRef;
-        GRIBufferRef                _VertexBufferRef;
-        GRIBufferRef                _ColorBufferRef;
-        GRIVertexDescriptorRef      _VertexDescriptor;
-        GRIPipelineShaderRef        _PipelineShaderRef;
-        GRIGraphicsPipelineRef      _PSORef;
-        GRICommandBufferPool*       _CMBPool = nullptr;
-        GRIUniformBufferRef         _UBO_Md;
-        GRIUniformBufferRef         _UBO_Sd;
-        GRIUniformBufferDescriptorRef _UBODesc;
-        GRISamplerStateRef          _Sampler;
-        GRITexture2DRef             _Tex2D;
-
         std::map<SceneHandle, RendererScene*> _RendererScenes;
     };
 }

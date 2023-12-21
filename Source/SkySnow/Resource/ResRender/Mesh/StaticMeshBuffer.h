@@ -33,7 +33,7 @@ namespace SkySnow
         StaticMeshBuffer();
         ~StaticMeshBuffer();
         
-        void CreateBuffer(SPtr<StaticVertexData> vertexData);
+        void SMCreateBuffer(SPtr<StaticVertexData> vertexData);
 
         GRIVertexDescriptorRef GetVertexDesc();
     private:

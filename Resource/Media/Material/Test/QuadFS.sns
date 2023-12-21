@@ -1,7 +1,7 @@
 #version 330 core
 out vec4 FragColor;
 uniform sampler2D TestMap_Sampler0;
-in vec4 vColor;
+in vec4 vNormal;
 in vec2 vUv;
 void main()
 {

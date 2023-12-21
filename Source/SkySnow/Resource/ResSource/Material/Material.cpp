@@ -59,14 +59,5 @@ namespace SkySnow
         //TODO Shader SourceData Manage
         _File->ReadData(vsShaderPath, _VsData);
         _File->ReadData(fsShaderPath, _FsData);
-        //Create VS And PS
-        ResourceData vsRD;
-        vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
-        _vsRef = CreateVertexShader(vsRD);
-        ResourceData fsRD;
-        fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
-        _fsRef = CreateFragmentShader(fsRD);
-        //Create ShaderPipeline
-        _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
     }
 }

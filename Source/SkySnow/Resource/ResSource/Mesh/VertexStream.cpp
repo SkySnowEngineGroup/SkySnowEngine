@@ -27,6 +27,7 @@ namespace SkySnow
         : _VertexCount(0)
         , _Offset(0)
         , _IsDirty(false)
+        , _Strid(0)
 	{
 	}
     
@@ -76,7 +77,7 @@ namespace SkySnow
         veSlot._VET_Type       = veType;
         
         _Offset += vtSize * veCount;
-        
+        _Strid  += veCount;
         _VertexElementList.push_back(veSlot);
     }
 
@@ -100,7 +101,7 @@ namespace SkySnow
         return &_Buffer[0];
     }
 
-    VertexElementList VertexStream::GetVertexElementList()
+    VertexElementList& VertexStream::GetVertexElementList()
     {
         return _VertexElementList;
     }
@@ -109,7 +110,7 @@ namespace SkySnow
     {
         if(_IsDirty)
         {
-            _Buffer.resize(_Offset * _VertexCount);
+            _Buffer.reserve(_Offset * _VertexCount);
             _IsDirty = false;
         }
     }
