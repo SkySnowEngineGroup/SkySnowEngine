@@ -42,6 +42,9 @@ namespace SkySnow
         SSContext().RegisterModule<BehaviourModule>();    //Register BehaviourModule
         SSContext().RegisterModule<ResourceModule>();     //Register ResourceModule
         SSContext().RegisterModule<RenderModule>();       //Register RenderModule
+
+        SSContext().GetModule<ResourceModule>()->StartUp();
+        SSContext().GetModule<RenderModule>()->StartUp();
     }
     void Framework::MainUpdate()
     {
@@ -49,15 +52,10 @@ namespace SkySnow
         //-----ResourceSystem   ---load asyn
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
         //-----EventSystem      ---BoardCast Result Event(Input Output)
-        SSContext().GetModule<ResourceModule>()->PreUpdate();
-        SSContext().GetModule<RenderModule>()->PreUpdate();
         
         SSContext().GetModule<ResourceModule>()->Update();
-        SSContext().GetModule<ResourceModule>()->PostUpdate();
 
-        
         SSContext().GetModule<RenderModule>()->Update();
-        SSContext().GetModule<RenderModule>()->PostUpdate();
     }
 
     void Framework::ShutDown()

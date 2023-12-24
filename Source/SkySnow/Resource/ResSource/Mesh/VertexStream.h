@@ -30,10 +30,12 @@ namespace SkySnow
     class VertexStream : public IStream
     {
         SkySnow_Object(VertexStream, IStream);
+        friend class VertexData;
     public:
         VertexStream();
         ~VertexStream();
 
+        
         void ReserveBuffer(uint32 count);
         
         void AddVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType);
@@ -42,17 +44,20 @@ namespace SkySnow
         void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
         void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
         const void* GetBufferData() const;
-        int GetBufferSize(){return _Offset * _VertexCount;}
+        int GetBufferSize(){return _StridSize * _VertexCount;}
         int GetVertexStrid(){return _Strid;}
-        VertexElementList& GetVertexElementList();
+        const VertexElementList& GetVertexElementList();
+
+        const int GetStreamIndex() { return _StreamIndex; }
     private:
         inline int ComBinaryBitIndex(VertexLayoutSlot slot);
         void ResizeBuffer();
     private:
+        int                 _StreamIndex;
         std::vector<char>   _Buffer;
         int                 _VertexCount;
         int                 _Strid;
-        int                 _Offset;
+        int                 _StridSize;
         VertexElementList   _VertexElementList;
         bool                _IsDirty;
     };

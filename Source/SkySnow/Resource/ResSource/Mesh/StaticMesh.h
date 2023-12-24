@@ -22,8 +22,8 @@
 //
 #pragma once
 #include "Mesh.h"
-#include "StaticMeshBuffer.h"
-#include "StaticVertexData.h"
+#include "MeshBuffer.h"
+#include "VertexData.h"
 
 namespace SkySnow
 {
@@ -37,14 +37,14 @@ namespace SkySnow
         
         virtual void CreateStandardMesh(StandardMeshType smType) override;
 
-        void SetVertexData(const SPtr<StaticVertexData>& vertexData);
-        SPtr<StaticVertexData> GetVertexData();
+        void SetVertexData(const SPtr<VertexData>& vertexData);
+        SPtr<VertexData> GetVertexData();
 
         void CreateMeshBuffer();
 
-        SPtr<StaticMeshBuffer> GetMeshBuffer();
+        SPtr<MeshBuffer> GetMeshBuffer();
     private:
-        SPtr<StaticVertexData>      _VertexData;
-        SPtr<StaticMeshBuffer>      _MeshBuffer;
+        SPtr<VertexData>      _VertexData;
+        SPtr<MeshBuffer>      _MeshBuffer;
     };
 }

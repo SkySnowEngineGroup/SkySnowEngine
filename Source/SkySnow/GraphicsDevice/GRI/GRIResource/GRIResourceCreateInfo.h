@@ -40,6 +40,7 @@ namespace SkySnow
     public:
         VertexElementSlot()
             : _GRIBuffer(nullptr)
+            , _VESize(0)
             , _BufferIndex(-1)
             , _Offset(0)
             , _Strid(0)
@@ -53,9 +54,11 @@ namespace SkySnow
            uint8_t inStrid,
            uint8_t inOffset,
            VertexElementType inVET_Type,
+           uint8_t _VESize = 0,
            GRIBuffer* inGRIBuffer = nullptr
         )
             : _BufferIndex(inBufferIndex)
+            , _VESize(0)
             , _GRIBuffer(inGRIBuffer)
             , _AttributeIndex(inAttributeIndex)
             , _Strid(inStrid)
@@ -66,6 +69,7 @@ namespace SkySnow
         
         void operator=(const VertexElementSlot& other)
         {
+            _VESize         = other._VESize;
             _BufferIndex    = other._BufferIndex;
             _Offset         = other._Offset;
             _Strid          = other._Strid;
@@ -74,6 +78,7 @@ namespace SkySnow
             _VET_Type       = other._VET_Type;
         }
         //buffer key
+        uint8_t             _VESize;
         uint8_t             _BufferIndex;       //数据存储的Key值
         uint8_t             _Offset;            //偏移量
         uint8_t             _Strid;             //间隔

@@ -20,14 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "IndicesStream.h"
+#pragma once
+#include "ColorBuffer.h"
+#include "PositionBuffer.h"
 
 namespace SkySnow
 {
-	IndicesStream::IndicesStream()
-	{
-	}
-	IndicesStream::~IndicesStream()
-	{
-	}
+    class VertexData;
+    class MeshBuffer
+    {
+    public:
+        MeshBuffer();
+        ~MeshBuffer();
+        
+        void SMCreateBuffer(SPtr<VertexData> vertexData);
+
+        GRIVertexDescriptorRef GetVertexDesc();
+    private:
+        SPtr<PositionBuffer>    _PositionBuffer;
+        SPtr<ColorBuffer>       _ColorBuffer;
+        SPtr<IndexBuffer>       _IndexBuffer;
+        GRIVertexDescriptorRef  _VertexDesc;
+    };
 }

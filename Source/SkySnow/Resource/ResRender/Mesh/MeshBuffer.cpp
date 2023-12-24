@@ -20,36 +20,49 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#include "StaticVertexData.h"
+#include "MeshBuffer.h"
+#include "VertexData.h"
 
 namespace SkySnow
 {
-    StaticVertexData::StaticVertexData()
-        : _VSCount(0)
+    MeshBuffer::MeshBuffer()
     {
         
     }
 
-    StaticVertexData::~StaticVertexData()
+    MeshBuffer::~MeshBuffer()
     {
         
     }
-    
-    void StaticVertexData::PushVertexStream(SPtr<VertexStream> vStream,int index)
+
+    void MeshBuffer::SMCreateBuffer(SPtr<VertexData> vertexData)
     {
-        _VertexStreams.push_back(vStream);
+        if(!_PositionBuffer)
+        {
+            _PositionBuffer = CreateSPtr<PositionBuffer>();
+        }
+        std::vector<SPtr<VertexStream>> stream = vertexData->GetVertexStreams();
+        const void* data = stream[0]->GetBufferData();
+        int dataSize = stream[0]->GetBufferSize();
+        int vStrid = stream[0]->GetVertexStrid();
+        
+        ResourceData vexRD;
+        vexRD.MakeCopy(stream[0]->GetBufferData(), dataSize);
+        _PositionBuffer->_VertexBufferGRI = GRCCreateBuffer(BufferUsageType::BUT_VertexBuffer,
+                                                         dataSize,
+                                                         vStrid,
+                                                         vexRD);
+        VertexElementList veList = stream[0]->GetVertexElementList();
+        for(auto& entry: veList)
+        {
+            entry._GRIBuffer = _PositionBuffer->_VertexBufferGRI;
+            entry._BufferIndex = 0;
+        }
+        _VertexDesc = GRCCreateVertexDescriptor(veList);
     }
-    void StaticVertexData::SetIndexStream(SPtr<IndexStream> iStream)
+
+    GRIVertexDescriptorRef MeshBuffer::GetVertexDesc()
     {
-        _IndexStream = iStream;
-    }
-    SPtr<IndexStream> StaticVertexData::GetIndexStream()
-    {
-        return _IndexStream;
-    }
-    std::vector<SPtr<VertexStream>> StaticVertexData::GetVertexStreams()
-    {
-        return _VertexStreams;
+        return _VertexDesc;
     }
 }

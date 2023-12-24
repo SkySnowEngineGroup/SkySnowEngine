@@ -97,7 +97,6 @@ namespace SkySnow
         for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
         {
             SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
-//            SN_LOG("RenderScene Render");
             auto renderable = render->_RenderableProxy->GetRenderable();
             
             auto mesh = std::static_pointer_cast<StaticMesh>(renderable->GetShareMesh());
@@ -109,7 +108,7 @@ namespace SkySnow
                 if (!_PSORef)
                 {
                     SamplerState samplerState;
-                    _Sampler = CreateSampler(samplerState);
+                    _Sampler = GRCCreateSampler(samplerState);
                     mesh->CreateMeshBuffer();
                     
                     GRICreateGraphicsPipelineInfo psoCreateInfo;
@@ -118,7 +117,7 @@ namespace SkySnow
                     psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = mesh->GetMeshBuffer()->GetVertexDesc();
                     psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();
                     psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
-                    _PSORef = CreateGraphicsPipeline(psoCreateInfo);
+                    _PSORef = GRCCreateGraphicsPipeline(psoCreateInfo);
                 }
             }
             commandBuffer->CmdSetGraphicsPipeline(_PSORef);

@@ -143,11 +143,11 @@ namespace SkySnow
         _GQueue->GetLowerCommandBuffer()->FlushResourceRelease();
     }
     //Create Viewport and Attach a Context or device
-    GRIViewportStateRef CreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
+    GRIViewportStateRef GRCCreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
     {
         return GRI->GRICreateViewport(windowHandle, width, height, format, isFullScreen);
     }
-    GRIVertexShaderRef CreateVertexShader(ResourceData& rData)
+    GRIVertexShaderRef GRCCreateVertexShader(ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -158,7 +158,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateVertexShader(rData);
     }
 
-    GRIFragmentShaderRef CreateFragmentShader(ResourceData& rData)
+    GRIFragmentShaderRef GRCCreateFragmentShader(ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -169,7 +169,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(rData);
     }
 
-    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
+    GRIPipelineShaderRef GRCCreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -180,7 +180,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs);
     }
 
-    GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData)
+    GRIBufferRef GRCCreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -191,7 +191,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, rData);
     }
     
-    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel)
+    GRIVertexDescriptorRef GRCCreateVertexDescriptor(const VertexElementList& vdel)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -201,7 +201,7 @@ namespace SkySnow
         }
         return _GQueue->GetLowerCommandBuffer()->CreateVertexDescriptor(vdel);
     }
-    GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
+    GRIGraphicsPipelineRef GRCCreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -212,7 +212,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
     }
 
-    GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
+    GRIUniformBufferRef GRCCreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
     {
         if(!_GQueue->IsLowerVerion())
         {
@@ -223,7 +223,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateUniformBuffer(contents,ubName,ubType);
     }
     
-    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl)
+    GRIUniformBufferDescriptorRef GRCCreateUniformDescriptor(const UniformBufferList& ubl)
     {
         if(!_GQueue->IsLowerVerion())
         {
@@ -234,7 +234,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
     }
     //Create Texture2D
-    GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
+    GRITexture2DRef GRCCreateTexture2D(uint32 sizex, uint32 sizey, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -245,7 +245,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, rData);
     }
     //Texture2DArray
-    GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
+    GRITexture2DArrayRef GRCCreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -256,7 +256,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, rData);
     }
     //Texture3D
-    GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, TextureUsageType usageType, ResourceData& rData)
+    GRITexture3DRef GRCCreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, TextureUsageType usageType, ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -267,7 +267,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, rData);
     }
     //TextureCube
-    GRITextureCubeRef CreateTextureCube(uint32 size, PixelFormat format, uint32 numMips, TextureUsageType usageType,ResourceData& rData)
+    GRITextureCubeRef GRCCreateTextureCube(uint32 size, PixelFormat format, uint32 numMips, TextureUsageType usageType,ResourceData& rData)
     {
         if (!_GQueue->IsLowerVerion())
         {
@@ -278,7 +278,7 @@ namespace SkySnow
         return _GQueue->GetLowerCommandBuffer()->CreateTextureCube(size, format, numMips, usageType, rData);
     }
     //SamplerState
-    GRISamplerStateRef CreateSampler(const SamplerState& sState)
+    GRISamplerStateRef GRCCreateSampler(const SamplerState& sState)
     {
         if (!_GQueue->IsLowerVerion())
         {

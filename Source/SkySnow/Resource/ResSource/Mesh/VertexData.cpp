@@ -20,22 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "CameraComponent.h"
+
+#include "VertexData.h"
 
 namespace SkySnow
 {
-	CameraComponent::CameraComponent()
-	{
+    VertexData::VertexData()
+        : _VSCount(0)
+    {
+        
+    }
 
-	}
+    VertexData::~VertexData()
+    {
+        
+    }
+    
+    void VertexData::PushVertexStream(SPtr<VertexStream> vStream,int index)
+    {
+        _VertexStreams.push_back(vStream);
+        vStream->_StreamIndex = _VertexStreams.size() - 1;
+    }
+    void VertexData::SetIndexStream(SPtr<IndexStream> iStream)
+    {
+        _IndexStream = iStream;
+    }
+    SPtr<IndexStream> VertexData::GetIndexStream()
+    {
+        return _IndexStream;
+    }
+    std::vector<SPtr<VertexStream>> VertexData::GetVertexStreams()
+    {
+        return _VertexStreams;
+    }
 
-	CameraComponent::~CameraComponent()
-	{
-
-	}
-
-	void CameraComponent::Update()
-	{
-
-	}
+    int VertexData::GetVertexStreamCount()
+    {
+        return (int)_VertexStreams.size();
+    }
 }

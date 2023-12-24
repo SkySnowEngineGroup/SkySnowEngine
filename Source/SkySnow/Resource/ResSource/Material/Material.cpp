@@ -31,7 +31,9 @@ namespace SkySnow
 
     Material::~Material()
     {
-
+        Delete_Object(_File);
+        Delete_Object(_VsData);
+        Delete_Object(_FsData);
     }
 
     void Material::SetTexture(std::string name, Texture2D* texture)

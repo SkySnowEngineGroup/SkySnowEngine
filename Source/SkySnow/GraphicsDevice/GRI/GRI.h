@@ -38,31 +38,31 @@ namespace SkySnow
     //GRI Flush GPU Resource(GPU Handle Recycle)
     void FlushResource();
     //Viewport Create
-    GRIViewportStateRef CreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen);
+    GRIViewportStateRef GRCCreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen);
     //Create VS
-    GRIVertexShaderRef CreateVertexShader(ResourceData& rData);
+    GRIVertexShaderRef GRCCreateVertexShader(ResourceData& rData);
     //Create Fs
-    GRIFragmentShaderRef CreateFragmentShader(ResourceData& rData);
+    GRIFragmentShaderRef GRCCreateFragmentShader(ResourceData& rData);
     //Create PipelineShader
-    GRIPipelineShaderRef CreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs);
+    GRIPipelineShaderRef GRCCreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs);
     //Create Buffer BufferType:IndexBuffer\VertexBuffer\SSBO
-    GRIBufferRef CreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData);
+    GRIBufferRef GRCCreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData);
     //Create Vertex Declaration
-    GRIVertexDescriptorRef CreateVertexDescriptor(const VertexElementList& vdel);
+    GRIVertexDescriptorRef GRCCreateVertexDescriptor(const VertexElementList& vdel);
     //Create Pipeline
-    GRIGraphicsPipelineRef CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo);
+    GRIGraphicsPipelineRef GRCCreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo);
     //Create UniformBuffer
-    GRIUniformBufferRef CreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType);
+    GRIUniformBufferRef GRCCreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType);
     //Create UniformBufferList Desc
-    GRIUniformBufferDescriptorRef CreateUniformDescriptor(const UniformBufferList& ubl);
+    GRIUniformBufferDescriptorRef GRCCreateUniformDescriptor(const UniformBufferList& ubl);
     //Create Texture2D
-    GRITexture2DRef CreateTexture2D(uint32 sizex, uint32 sizey, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData);
+    GRITexture2DRef GRCCreateTexture2D(uint32 sizex, uint32 sizey, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData);
     //Texture2DArray
-    GRITexture2DArrayRef CreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData);
+    GRITexture2DArrayRef GRCCreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData);
     //Texture3D
-    GRITexture3DRef CreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, TextureUsageType usageType, ResourceData& rData);
+    GRITexture3DRef GRCCreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, TextureUsageType usageType, ResourceData& rData);
     //TextureCube
-    GRITextureCubeRef CreateTextureCube(uint32 size, PixelFormat format, uint32 numMips, TextureUsageType usageType,ResourceData& rData);
+    GRITextureCubeRef GRCCreateTextureCube(uint32 size, PixelFormat format, uint32 numMips, TextureUsageType usageType,ResourceData& rData);
     //SamplerState
-    GRISamplerStateRef CreateSampler(const SamplerState& sState);
+    GRISamplerStateRef GRCCreateSampler(const SamplerState& sState);
 }

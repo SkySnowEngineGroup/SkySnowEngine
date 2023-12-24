@@ -21,13 +21,17 @@
 // THE SOFTWARE.
 //
 #include "VertexStream.h"
+#include <iostream>
+#include <vector>
+#include <algorithm>
 namespace SkySnow
 {
 	VertexStream::VertexStream()
         : _VertexCount(0)
-        , _Offset(0)
+        , _StridSize(0)
         , _IsDirty(false)
         , _Strid(0)
+        , _StreamIndex(0)
 	{
 	}
     
@@ -70,15 +74,31 @@ namespace SkySnow
                 SN_LOG("Not support VertexElementType(%d).",veType);
                 break;
         }
+
         VertexElementSlot veSlot;
         veSlot._AttributeIndex = ComBinaryBitIndex(eSlot);
         veSlot._Strid          = veCount;
-        veSlot._Offset         = _Offset;
+        veSlot._VESize         = vtSize;
+        veSlot._Offset         = 0;
         veSlot._VET_Type       = veType;
-        
-        _Offset += vtSize * veCount;
-        _Strid  += veCount;
         _VertexElementList.push_back(veSlot);
+
+        _StridSize += vtSize * veCount;
+        _Strid += veCount;
+
+        //Sort with attritube index
+        auto compare = [](const VertexElementSlot& x, const VertexElementSlot& y)
+        {
+            return x._AttributeIndex < y._AttributeIndex;
+        };
+        std::sort(_VertexElementList.begin(), _VertexElementList.end(), compare);
+        //Re Calcute vertexElement offset
+        int tOffset = 0;
+        for (auto& entry : _VertexElementList)
+        {
+            entry._Offset = tOffset;
+            tOffset += entry._Strid * entry._VESize;
+        }
     }
 
     void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector2f& inData)
@@ -101,7 +121,7 @@ namespace SkySnow
         return &_Buffer[0];
     }
 
-    VertexElementList& VertexStream::GetVertexElementList()
+    const VertexElementList& VertexStream::GetVertexElementList()
     {
         return _VertexElementList;
     }
@@ -110,7 +130,7 @@ namespace SkySnow
     {
         if(_IsDirty)
         {
-            _Buffer.reserve(_Offset * _VertexCount);
+            _Buffer.reserve(_StridSize * _VertexCount);
             _IsDirty = false;
         }
     }

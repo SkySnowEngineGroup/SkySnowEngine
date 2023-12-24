@@ -26,18 +26,18 @@
 #include <map>
 namespace SkySnow
 {
-    class StaticVertexData
+    class VertexData
     {
     public:
-        StaticVertexData();
-        ~StaticVertexData();
+        VertexData();
+        ~VertexData();
 
-        void PushVertexStream(SPtr<VertexStream> vStream,int index = 0);
-        
         void SetIndexStream(SPtr<IndexStream> iStream);
-        
         SPtr<IndexStream> GetIndexStream();
+
+        void PushVertexStream(SPtr<VertexStream> vStream, int index = 0);
         std::vector<SPtr<VertexStream>> GetVertexStreams();
+        int GetVertexStreamCount();
     protected:
         int                             _VSCount;
         SPtr<IndexStream>               _IndexStream;

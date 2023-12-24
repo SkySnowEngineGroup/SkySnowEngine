@@ -44,7 +44,7 @@ namespace SkySnow
         ResourceData texRD;
         texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
         uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
-        _GRITexture2D = CreateTexture2D(_TextureStream->GetImageWidth(),
+        _GRITexture2D = GRCCreateTexture2D(_TextureStream->GetImageWidth(),
                                          _TextureStream->GetImageHeight(),
                                          _TextureStream->GetPixelFormat(),
                                          1, 1,

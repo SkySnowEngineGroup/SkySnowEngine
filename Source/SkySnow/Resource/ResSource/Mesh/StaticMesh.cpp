@@ -27,6 +27,14 @@ namespace SkySnow
     StaticMesh::StaticMesh()
         : MeshBase(MT_StaticMesh)
     {
+        if (!_VertexData)
+        {
+            _VertexData = CreateSPtr<VertexData>();
+        }
+        if (!_MeshBuffer)
+        {
+            _MeshBuffer = CreateSPtr<MeshBuffer>();
+        }
     }
 
     StaticMesh::~StaticMesh()
@@ -47,33 +55,25 @@ namespace SkySnow
                 SN_LOG("Not support this StandardMeshType:%d",smType);
                 break;
         }
-        if(!_VertexData)
-        {
-            _VertexData = CreateSPtr<StaticVertexData>();
-        }
         _VertexData->PushVertexStream(sMesh._ArrayStream);
     }
 
-    void StaticMesh::SetVertexData(const SPtr<StaticVertexData>& vertexData)
+    void StaticMesh::SetVertexData(const SPtr<VertexData>& vertexData)
     {
         _VertexData = vertexData;
     }
 
-    SPtr<StaticVertexData> StaticMesh::GetVertexData()
+    SPtr<VertexData> StaticMesh::GetVertexData()
     {
         return _VertexData;
     }
 
     void StaticMesh::CreateMeshBuffer()
     {
-        if (!_MeshBuffer)
-        {
-            _MeshBuffer = CreateSPtr<StaticMeshBuffer>();
-            _MeshBuffer->SMCreateBuffer(_VertexData);
-        }
+        _MeshBuffer->SMCreateBuffer(_VertexData);
     }
 
-    SPtr<StaticMeshBuffer> StaticMesh::GetMeshBuffer()
+    SPtr<MeshBuffer> StaticMesh::GetMeshBuffer()
     {
         return _MeshBuffer;
     }

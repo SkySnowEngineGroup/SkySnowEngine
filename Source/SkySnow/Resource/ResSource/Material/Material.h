@@ -35,7 +35,7 @@ namespace SkySnow
     public:
         Material();
         ~Material();
-
+        virtual void OnInit() final override;
         void SetTexture(std::string name,Texture2D* texture);
 
         Texture2D* GetTexture(std::string name);
@@ -49,12 +49,12 @@ namespace SkySnow
                 //Create VS And PS
                 ResourceData vsRD;
                 vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
-                _vsRef = CreateVertexShader(vsRD);
+                _vsRef = GRCCreateVertexShader(vsRD);
                 ResourceData fsRD;
                 fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
-                _fsRef = CreateFragmentShader(fsRD);
+                _fsRef = GRCCreateFragmentShader(fsRD);
                 //Create ShaderPipeline
-                _PipelineShaderRef = CreatePipelineShader(_vsRef, _fsRef);
+                _PipelineShaderRef = GRCCreatePipelineShader(_vsRef, _fsRef);
             }
             return _PipelineShaderRef;
         }

@@ -43,6 +43,6 @@ namespace SkySnow
         _Width = width;
         _Height = height;
         _NativeWindow = nativeWindow;
-        _GRIViewport = CreateViewport(nativeWindow,width,height,PF_R8G8B8A8,true);
+        _GRIViewport = GRCCreateViewport(nativeWindow,width,height,PF_R8G8B8A8,true);
     }
 }
