@@ -78,7 +78,7 @@ namespace SkySnow
             _VET_Type       = other._VET_Type;
         }
         //buffer key
-        uint8_t             _VESize;
+        uint8_t             _VESize;            //顶点基础数据类型大小float\char
         uint8_t             _BufferIndex;       //数据存储的Key值
         uint8_t             _Offset;            //偏移量
         uint8_t             _Strid;             //间隔

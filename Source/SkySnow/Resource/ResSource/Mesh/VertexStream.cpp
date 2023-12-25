@@ -32,6 +32,7 @@ namespace SkySnow
         , _IsDirty(false)
         , _Strid(0)
         , _StreamIndex(0)
+        , _PusherSize(0)
 	{
 	}
     
@@ -81,40 +82,31 @@ namespace SkySnow
         veSlot._VESize         = vtSize;
         veSlot._Offset         = 0;
         veSlot._VET_Type       = veType;
-        _VertexElementList.push_back(veSlot);
 
-        _StridSize += vtSize * veCount;
-        _Strid += veCount;
+        _PusherIndexMap[eSlot] = veSlot;
+        //_VertexElementList.push_back(veSlot);
 
-        //Sort with attritube index
-        auto compare = [](const VertexElementSlot& x, const VertexElementSlot& y)
-        {
-            return x._AttributeIndex < y._AttributeIndex;
-        };
-        std::sort(_VertexElementList.begin(), _VertexElementList.end(), compare);
-        //Re Calcute vertexElement offset
-        int tOffset = 0;
-        for (auto& entry : _VertexElementList)
-        {
-            entry._Offset = tOffset;
-            tOffset += entry._Strid * entry._VESize;
-        }
-    }
+        _StridSize  += vtSize * veCount;
+        _Strid      += veCount;
 
-    void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector2f& inData)
-    {
-        ResizeBuffer();
-        _Buffer.insert(_Buffer.end(), inData.Data(),inData.Data() + inData.ByteSize());
-    }
-    void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector3f& inData)
-    {
-        ResizeBuffer();
-        _Buffer.insert(_Buffer.end(), inData.Data(),inData.Data() + inData.ByteSize());
-    }
-    void VertexStream::PushVertex(VertexLayoutSlot slot, const Vector4f& inData)
-    {
-        ResizeBuffer();
-        _Buffer.insert(_Buffer.end(), inData.Data(),inData.Data() + inData.ByteSize());
+        ////Sort with attritube index
+        //auto compare = [](const VertexElementSlot& x, const VertexElementSlot& y)
+        //{
+        //    return x._AttributeIndex < y._AttributeIndex;
+        //};
+        //std::sort(_VertexElementList.begin(), _VertexElementList.end(), compare);
+        ////Re Calcute vertexElement offset
+        //int tOffset = 0;
+        //for (auto& entry : _VertexElementList)
+        //{
+        //    entry._Offset = tOffset;
+        //    tOffset += entry._Strid * entry._VESize;
+        //}
+        //if (_BufferPusher.size() != _StridSize)
+        //{
+        //    _BufferPusher.resize(_StridSize);
+        //}
+        
     }
     const void* VertexStream::GetBufferData() const
     {
@@ -124,14 +116,5 @@ namespace SkySnow
     const VertexElementList& VertexStream::GetVertexElementList()
     {
         return _VertexElementList;
-    }
-
-    void VertexStream::ResizeBuffer()
-    {
-        if(_IsDirty)
-        {
-            _Buffer.reserve(_StridSize * _VertexCount);
-            _IsDirty = false;
-        }
     }
 }

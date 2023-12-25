@@ -35,7 +35,7 @@ namespace SkySnow
     public:
         Material();
         ~Material();
-        virtual void OnInit() final override;
+        
         void SetTexture(std::string name,Texture2D* texture);
 
         Texture2D* GetTexture(std::string name);

@@ -31,6 +31,7 @@ namespace SkySnow
     {
         SkySnow_Object(VertexStream, IStream);
         friend class VertexData;
+        typedef std::unordered_map<VertexLayoutSlot, VertexElementSlot> VertexLayouts;
     public:
         VertexStream();
         ~VertexStream();
@@ -40,9 +41,11 @@ namespace SkySnow
         
         void AddVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType);
 
-        void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
-        void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
-        void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
+        //void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
+        //void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
+        //void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
+        template<typename T>
+        void PushVertex(VertexLayoutSlot slot, const T& inData);
         const void* GetBufferData() const;
         int GetBufferSize(){return _StridSize * _VertexCount;}
         int GetVertexStrid(){return _Strid;}
@@ -51,7 +54,12 @@ namespace SkySnow
         const int GetStreamIndex() { return _StreamIndex; }
     private:
         inline int ComBinaryBitIndex(VertexLayoutSlot slot);
-        void ResizeBuffer();
+        void ReserveBuffer();
+        void DoPushVertex(const char* data);
+    private:
+        std::vector<char>   _BufferPusher;
+        int                 _PusherSize;
+        VertexLayouts       _PusherIndexMap;
     private:
         int                 _StreamIndex;
         std::vector<char>   _Buffer;
@@ -62,6 +70,32 @@ namespace SkySnow
         bool                _IsDirty;
     };
 
+    template<typename T>
+    inline void VertexStream::PushVertex(VertexLayoutSlot slot, const T& inData)
+    {
+        ReserveBuffer();
+        _PusherSize += T::ByteSize();
+        auto& layout = _PusherIndexMap[slot];
+        std::memcpy(&_BufferPusher[layout._Offset],inData.Data(),T::ByteSize());
+        if (_PusherSize >= _StridSize)
+        {
+            DoPushVertex(_BufferPusher.data());
+            _PusherSize = 0;
+            _BufferPusher.clear();
+        }
+    }
+    inline void VertexStream::DoPushVertex(const char* data)
+    {
+        _Buffer.insert(_Buffer.end(), data, data + _StridSize);
+    }
+    inline void VertexStream::ReserveBuffer()
+    {
+        if (_IsDirty)
+        {
+            _Buffer.reserve(_StridSize * _VertexCount);
+            _IsDirty = false;
+        }
+    }
     inline int VertexStream::ComBinaryBitIndex(VertexLayoutSlot slot)
     {
         int bitIndex = 0;

@@ -65,9 +65,9 @@ namespace SkySnow
 			float ux = tempVertex[i * stride + 6];
 			float uy = tempVertex[i * stride + 7];
 
-			_ArrayStream->PushVertex(VLS_Position, Vector3f(px,py,pz));
-			_ArrayStream->PushVertex(VLS_Normal, Vector3f(nx,ny,nz));
-			_ArrayStream->PushVertex(VLS_TexCoord0, Vector2f(ux,uy));
+			_ArrayStream->PushVertex<Vector3f>(VLS_Position, Vector3f(px,py,pz));
+			_ArrayStream->PushVertex<Vector3f>(VLS_Normal, Vector3f(nx,ny,nz));
+			_ArrayStream->PushVertex<Vector2f>(VLS_TexCoord0, Vector2f(ux,uy));
 		}
 	}
 }
