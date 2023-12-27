@@ -130,7 +130,7 @@ namespace SkySnow
 		VLS_TexCoord7		= 1 << 11,  // Texcoord 7	(Vector2)
 		VLS_BlendWeights	= 1 << 12,	// Blend weights
 		VLS_BlendIndices	= 1 << 13,	// Blend indices
-		VLS_Count			= 1 << 14	// Keep this last!
+		VLS_Count			= 14	// Keep this last!
 	};
 	enum SamplerFilter
 	{

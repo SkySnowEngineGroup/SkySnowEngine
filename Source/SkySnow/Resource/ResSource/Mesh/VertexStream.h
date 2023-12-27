@@ -31,7 +31,7 @@ namespace SkySnow
     {
         SkySnow_Object(VertexStream, IStream);
         friend class VertexData;
-        typedef std::unordered_map<VertexLayoutSlot, VertexElementSlot> VertexLayouts;
+        typedef std::unordered_map<uint32, VertexElementSlot> VertexLayouts;
     public:
         VertexStream();
         ~VertexStream();
@@ -40,10 +40,7 @@ namespace SkySnow
         void ReserveBuffer(uint32 count);
         
         void AddVertexElementSlot(VertexLayoutSlot eSlot, VertexElementType veType);
-
-        //void PushVertex(VertexLayoutSlot slot, const Vector2f& inData);
-        //void PushVertex(VertexLayoutSlot slot, const Vector3f& inData);
-        //void PushVertex(VertexLayoutSlot slot, const Vector4f& inData);
+        
         template<typename T>
         void PushVertex(VertexLayoutSlot slot, const T& inData);
         const void* GetBufferData() const;
@@ -75,6 +72,10 @@ namespace SkySnow
     {
         ReserveBuffer();
         _PusherSize += T::ByteSize();
+        if(_PusherIndexMap.find(slot) == _PusherIndexMap.end())
+        {
+            SN_WARN("VertexStream not have VertexLayoutSlot(%d).",slot);
+        }
         auto& layout = _PusherIndexMap[slot];
         std::memcpy(&_BufferPusher[layout._Offset],inData.Data(),T::ByteSize());
         if (_PusherSize >= _StridSize)
@@ -92,7 +93,21 @@ namespace SkySnow
     {
         if (_IsDirty)
         {
+            _VertexElementList.clear();
+            _BufferPusher.resize(_StridSize);
             _Buffer.reserve(_StridSize * _VertexCount);
+            
+            int offset = 0;
+            for(int i = 0; i < VLS_Count; i ++)
+            {
+                auto iter = _PusherIndexMap.find(1 << i);
+                if(iter != _PusherIndexMap.end())
+                {
+                    iter->second._Offset = offset;
+                    offset += iter->second._VESize * iter->second._Strid;
+                    _VertexElementList.push_back(iter->second);
+                }
+            }
             _IsDirty = false;
         }
     }

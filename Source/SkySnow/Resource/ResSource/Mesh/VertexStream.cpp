@@ -84,29 +84,10 @@ namespace SkySnow
         veSlot._VET_Type       = veType;
 
         _PusherIndexMap[eSlot] = veSlot;
-        //_VertexElementList.push_back(veSlot);
-
+        
         _StridSize  += vtSize * veCount;
         _Strid      += veCount;
-
-        ////Sort with attritube index
-        //auto compare = [](const VertexElementSlot& x, const VertexElementSlot& y)
-        //{
-        //    return x._AttributeIndex < y._AttributeIndex;
-        //};
-        //std::sort(_VertexElementList.begin(), _VertexElementList.end(), compare);
-        ////Re Calcute vertexElement offset
-        //int tOffset = 0;
-        //for (auto& entry : _VertexElementList)
-        //{
-        //    entry._Offset = tOffset;
-        //    tOffset += entry._Strid * entry._VESize;
-        //}
-        //if (_BufferPusher.size() != _StridSize)
-        //{
-        //    _BufferPusher.resize(_StridSize);
-        //}
-        
+        _IsDirty = true;
     }
     const void* VertexStream::GetBufferData() const
     {
