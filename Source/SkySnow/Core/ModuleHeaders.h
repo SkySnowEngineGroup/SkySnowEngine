@@ -26,3 +26,4 @@
 #include "TimeModule.h"
 #include "BehaviourModule.h"
 #include "ResourceModule.h"
+#include "GRIModule.h"

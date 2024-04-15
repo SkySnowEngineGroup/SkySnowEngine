@@ -57,4 +57,5 @@ namespace SkySnow
         std::unordered_map<std::size_t, ResKeyWords>    _ResMapJob;
         std::vector<ResResult>                          _ResResultMap;
     };
+    ResourceModule* ResourceSystem();
 }

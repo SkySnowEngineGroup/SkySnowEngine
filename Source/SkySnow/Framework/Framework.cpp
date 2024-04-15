@@ -34,17 +34,15 @@ namespace SkySnow
     }
     Framework::~Framework()
     {
+        SN_LOG("Framework::~Framework()");
+        SSContext().RemoveModule<RenderModule>();
+        SSContext().RemoveModule<ResourceModule>();
     }
 
     void Framework::Init()
     {
-        SSContext().RegisterModule<TimeModule>();         //Register TimeModule
-        SSContext().RegisterModule<BehaviourModule>();    //Register BehaviourModule
-        SSContext().RegisterModule<ResourceModule>();     //Register ResourceModule
-        SSContext().RegisterModule<RenderModule>();       //Register RenderModule
-
-        SSContext().GetModule<ResourceModule>()->StartUp();
-        SSContext().GetModule<RenderModule>()->StartUp();
+        ResourceSystem()->StartUp();
+        RenderSystem()->StartUp();
     }
     void Framework::MainUpdate()
     {
@@ -53,18 +51,14 @@ namespace SkySnow
         //-----CullingSystem    ---Cull Scene(Octree,BSP,LOD)
         //-----EventSystem      ---BoardCast Result Event(Input Output)
         
-        SSContext().GetModule<ResourceModule>()->Update();
+        ResourceSystem()->Update();
 
-        SSContext().GetModule<RenderModule>()->Update();
+        RenderSystem()->Update();
     }
 
     void Framework::ShutDown()
     {
-        SSContext().GetModule<TimeModule>()->ShutDown();
-        SSContext().GetModule<BehaviourModule>()->ShutDown();
-        SSContext().GetModule<RenderModule>()->ShutDown();
-        SSContext().GetModule<ResourceModule>()->ShutDown();
-        SSContext().RemoveModule<RenderModule>();
-        SSContext().RemoveModule<ResourceModule>();
+        RenderSystem()->ShutDown();
+        ResourceSystem()->ShutDown();
     }
 }

@@ -22,10 +22,8 @@
 //
 #pragma once
 #include "IEngine.h"
-#include "SkySnowProfiles.h"
 #include "LogAssert.h"
-#include "GRICommandBuffer.h"
-#include "GRI.h"
+#include "Framework.h"
 
 namespace SkySnow
 {
@@ -38,28 +36,14 @@ namespace SkySnow
         
         virtual void Init() final override;
         
-        virtual EngineWindow* CreateGameWindow(uint32 width, uint32 height) final override;
+        virtual void BeginFrame() final override;
         
-        virtual EngineWindow* CreateEditorWindow(uint32 width, uint32 height) final override;
-
-        EngineWindow* GetEngineWindow(EngineWindowType windowType) const
-        {
-            if (windowType == EGameWindow)
-            {
-                return _GameWindow;
-            }
-            else if(windowType == EEditorMainWindow)
-            {
-                return _EditorWindow;
-            }
-            return nullptr;
-        }
+        virtual void EngineLoop() final override;
+        
+        virtual void EndFrame() final override;
         
         void ShutDown() final override;
-
-        virtual bool IsEngineWindowClose() final override;
     private:
-        EngineWindow*   _GameWindow;
-        EngineWindow*   _EditorWindow;
+        Framework*  _Framework;
 	};
 }

@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "TimeModule.h"
+#include "Context.h"
 
 namespace SkySnow
 {
@@ -47,5 +48,10 @@ namespace SkySnow
     void TimeModule::ShutDown()
     {
         
+    }
+
+    TimeModule* TimeSystem()
+    {
+        return SSContext().GetModule<TimeModule>();
     }
 }

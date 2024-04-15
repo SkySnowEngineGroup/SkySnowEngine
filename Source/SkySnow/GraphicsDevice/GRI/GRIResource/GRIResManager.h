@@ -21,25 +21,32 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRI.h"
-#include "GRIResource.h"
-#include "GRIDrive.h"
+#include <vector>
+#include "ThreadMutex.h"
+#include "NonCopyable.h"
+#include "RefCounted.h"
 namespace SkySnow
 {
-	class Viewport
-	{
-	public:
-        Viewport();
-        virtual ~Viewport();
-        
-        void CreateEngineViewport(void* nativeWindow,uint32 width,uint32 height);
-        
-        GRIViewportStateRef GetGRIViewport() { return _GRIViewport;}
+    class GRIResource;
+    class GRIResManager : public NonCopyable
+    {
+    public:
+        static GRIResManager& Instance();
+        //GRI resources are registered with the administrator at the time of creation
+        void RegisterResource(GRIResource* res);
+        //
+        void MoveToDelete(GRIResource* res);
+        //At the beginning of each frame, the GRI resources that are not in use are cleared
+        void FlushResource();
+        //All GRI resources are reclaimed when GRI stops
+        //If OpenGL&ES is called in the RenderThread thread, Meta/Vulkan/Dx12 can be called in the main thread
+        void ShutDown();
     private:
-        uint32              _Width;
-        uint32              _Height;
-        void*               _NativeWindow;
-        PixelFormat         _PixelFormat;
-        GRIViewportStateRef _GRIViewport;
-	};
+        GRIResManager(){}
+        ~GRIResManager(){}
+    private:
+        ThreadMutex                 _ResLock;
+        std::vector<GRIResource*>   _GRIResList;
+        std::vector<GRIResource*>   _DeleteList;
+    };
 }

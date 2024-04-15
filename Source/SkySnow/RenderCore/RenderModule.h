@@ -52,9 +52,8 @@ namespace SkySnow
         RendererScene* GetRendererScene(SceneHandle sceneHandle);
     private:
         void RenderInternal();
-        
-        void TempCode();
     private:
         std::map<SceneHandle, RendererScene*> _RendererScenes;
     };
+    RenderModule* RenderSystem();
 }

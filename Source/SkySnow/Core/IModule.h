@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 #pragma once
 
-#pragma once
 #include "Object.h"
 namespace SkySnow
 {

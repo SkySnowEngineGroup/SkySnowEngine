@@ -83,6 +83,7 @@ namespace SkySnow
             DoPushVertex(_BufferPusher.data());
             _PusherSize = 0;
             _BufferPusher.clear();
+            _BufferPusher.resize(_StridSize);
         }
     }
     inline void VertexStream::DoPushVertex(const char* data)

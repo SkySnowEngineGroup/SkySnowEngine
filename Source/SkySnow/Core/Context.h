@@ -24,6 +24,8 @@
 #include "SkySnowEngine.h"
 #include "IModule.h"
 #include <vector>
+#include <unordered_map>
+
 namespace SkySnow
 {
     class Context : public NonCopyable
@@ -31,7 +33,7 @@ namespace SkySnow
     public:
         static Context& Instance();
 
-        SkySnowEngine* RegisterSkySnowEngine()
+        SkySnowEngine* RegisterEngine()
         {
             if(!_SkySnowEngine)
             {
@@ -39,14 +41,17 @@ namespace SkySnow
             }
             return _SkySnowEngine;
         }
-        void RemoveSkySnowEngine()
+        void RemoveEngine()
         {
             Delete_Object(_SkySnowEngine);
         }
-        SkySnowEngine* GetSkySnowEngine() const
+        SkySnowEngine* GetEngine() const
         {
             return _SkySnowEngine;
         }
+        
+        void SetGameWindow(EngineWindow* window){_GameWindow = window;}
+        EngineWindow* GetGameWindow(){return _GameWindow;}
         template<typename T> T* RegisterModule();
 
         template<typename T> T* GetModule();
@@ -57,9 +62,10 @@ namespace SkySnow
         ~Context();
     private:
         std::unordered_map<std::string, IModule*>    _Modules;
-        SkySnowEngine*                          _SkySnowEngine;
+        SkySnowEngine*                               _SkySnowEngine;
+        EngineWindow*                                _GameWindow;
     };
-    Context& SSContext();
+    
     template<typename T> inline T* Context::RegisterModule()
     {
         if(_Modules.find(T::GetTypeNameStatic()) != _Modules.end())
@@ -87,11 +93,13 @@ namespace SkySnow
         if(iter != _Modules.end())
         {
             delete iter->second; // 释放内存
-            _Modules.erase(iter);
+            iter = _Modules.erase(iter);
         }
         else
         {
             SN_LOG("Not find this module:%s",T::GetTypeNameStatic());
         }
+        int a = 10;
     }
+    Context& SSContext();
 }

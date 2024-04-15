@@ -24,7 +24,7 @@
 #include "RefCounted.h"
 #include "GRICommons.h"
 #include "LogAssert.h"
-#include "GRIResourceFree.h"
+#include "GRIResManager.h"
 #include "AtomicVar.h"
 namespace SkySnow
 {
@@ -36,7 +36,6 @@ namespace SkySnow
 		GRIResource()
 			: m_GRIResourceType(EGRIResourceType::GRT_None)
 		{
-
 		}
 		GRIResource(EGRIResourceType grit)
 			: m_GRIResourceType(grit)
@@ -55,6 +54,10 @@ namespace SkySnow
 		inline int Add()
 		{
 			int newCount = m_Atomic.Add(std::memory_order_acquire);
+			if (newCount != 0)
+			{
+				GRIResManager::Instance().RegisterResource(this);
+			}
 			return newCount;
 		}
 		//RefCount sub
@@ -63,7 +66,7 @@ namespace SkySnow
 			int newCount = m_Atomic.Release(std::memory_order_release);
 			if (newCount == 0)
 			{
-				ReclaimResource();
+                GRIResManager::Instance().MoveToDelete(this);
 			}
 			return newCount;
 		}
@@ -76,16 +79,6 @@ namespace SkySnow
 			return m_Atomic.IsValid(std::memory_order_relaxed);
 		}
 		//-----------------------------------------------------------
-	public:
-		static void FlushResourceRelease()
-        {
-            ResourceReclaim::Instance().RemoveReclaimResource();
-        }
-	private:
-		void ReclaimResource()
-		{
-            ResourceReclaim::Instance().AddReclaimResource(this);
-		}
 	private:
 		const EGRIResourceType	m_GRIResourceType;
 		mutable AtomicCount		m_Atomic;
@@ -553,34 +546,34 @@ namespace SkySnow
     typedef RefCountPtr<GRIDepthStencilState>       GRIDepthStencilStateRef;
     typedef RefCountPtr<GRIBlendState>              GRIBlendStateRef;
 
-    //OnScreen and OffScreen and MultiWindow
-    class GRIViewportState : public GRIResource
-    {
-    public:
-        GRIViewportState()
-            : GRIResource(EGRIResourceType::GRT_ViewportState)
-        {
-        }
-        virtual ~GRIViewportState()
-        {
-            SN_LOG("GRIViewport DesConstruct.");
-        }
+	//OnScreen and OffScreen and MultiWindow
+	class GRIViewportState : public GRIResource
+	{
+	public:
+		GRIViewportState()
+			: GRIResource(EGRIResourceType::GRT_ViewportState)
+		{
+		}
+		virtual ~GRIViewportState()
+		{
+			SN_LOG("GRIViewport DesConstruct.");
+		}
 
-        virtual void* GetDriveContext() = 0;
+		virtual void* GetDriveContext() = 0;
 
-        virtual void* GetWindowHandle() = 0;
+		virtual void* GetWindowHandle() = 0;
 
-        virtual GRITexture2DRef GetBackBuffer() = 0;
+		virtual GRITexture2DRef GetBackBuffer() = 0;
 
-        virtual PixelFormat GetWindowPixelFormat() const { return PF_None;}
+		virtual PixelFormat GetWindowPixelFormat() const { return PF_None; }
 
-        virtual uint32 GetWindowWidth() const { return 0;}
+		virtual uint32 GetWindowWidth() const { return 0; }
 
-        virtual uint32 GetWindowHeight() const { return 0;}
+		virtual uint32 GetWindowHeight() const { return 0; }
 
-        virtual bool IsFullScreen() const { return true; }
-    private:
-    };
+		virtual bool IsFullScreen() const { return true; }
+	private:
+	};
     //OnScreen and OffScreen
     typedef RefCountPtr<GRIViewportState>           GRIViewportStateRef;
 }

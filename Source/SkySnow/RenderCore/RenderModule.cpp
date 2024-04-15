@@ -93,6 +93,11 @@ namespace SkySnow
         SN_LOG("RenderModule ShutDown.");
     }
 
+    RenderModule* RenderSystem()
+    {
+        return SSContext().GetModule<RenderModule>();
+    }
+
 //直接使用RHI代码，临时放到这里。后面作为一个RHI使用示范
 //bool                        _TestInit = false;
 //File* _File;

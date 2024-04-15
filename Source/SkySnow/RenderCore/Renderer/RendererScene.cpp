@@ -28,6 +28,8 @@
 #include "SPtr.h"
 #include "StaticMesh.h"
 #include "Context.h"
+#include "GRIModule.h"
+
 namespace SkySnow
 {
     RendererScene::RendererScene()
@@ -88,12 +90,9 @@ namespace SkySnow
             _CMBPool = new GRICommandBufferPool();
         }
         GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        SkySnowEngine* engine = SSContext().GetSkySnowEngine();
-        GRIViewportStateRef viewport = engine->GetEngineWindow(EGameWindow)->GetViewport()->GetGRIViewport();
-        
-        GRITexture2DRef tex2DGRI;
-        commandBuffer->CmdBeginViewport(viewport,tex2DGRI);
-        
+        GRITexture2DRef tempTex;
+        GRIViewportStateRef curVp = SSContext().GetGameWindow()->GetViewport()->GetGRIViewport();
+        commandBuffer->CmdBeginViewport(curVp, tempTex);
         for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
         {
             SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
@@ -124,9 +123,8 @@ namespace SkySnow
             
             commandBuffer->CmdDrawPrimitive(2, 1);
         }
+        commandBuffer->CmdEndViewport(curVp, false, false);
+        CBQueue()->SubmitCommandBuffer(commandBuffer);
         
-        commandBuffer->CmdEndViewport(viewport,false,false);
-
-        _GQueue->SubmitCommandBuffer(commandBuffer);
     }
 }

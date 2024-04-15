@@ -22,8 +22,9 @@
 //
 #include "GRICommandBuffer.h"
 #include "SkySnowProfiles.h"
-#include "GLCommandBUffer.h"
-#include "GRI.h"
+#include "GLCommandBuffer.h"
+#include "GRIGLDrive.h"
+#include "GRIModule.h"
 
 namespace SkySnow
 {
@@ -74,7 +75,7 @@ namespace SkySnow
     {
         _Lock.Lock();
         GRICommandBufferBase* tempCmb = nullptr;
-        GRIFeature version = GRI->GetGRIFeatureType();
+        GRIFeature version = Drive()->GetGRIFeatureType();
         switch (version)
         {
         case SkySnow::ENone:
@@ -121,7 +122,7 @@ namespace SkySnow
     //================================================================================================
     bool GRICommandBufferQueue::IsLowerVerion()
     {
-        GRIFeature version = GRI->GetGRIFeatureType();
+        GRIFeature version = Drive()->GetGRIFeatureType();
         if (version == EVulkan ||
             version == EMetal  ||
             version == EDX12)
@@ -135,157 +136,157 @@ namespace SkySnow
     //================================================================================================
     void FlushResource()
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
-            GRIResource::FlushResourceRelease();
+            GRIResManager::Instance().FlushResource();
             return;
         }
-        _GQueue->GetLowerCommandBuffer()->FlushResourceRelease();
+        CBQueue()->GetLowerCommandBuffer()->FlushResourceRelease();
     }
     //Create Viewport and Attach a Context or device
     GRIViewportStateRef GRCCreateViewport(void* windowHandle,uint32 width,uint32 height,PixelFormat format,bool isFullScreen)
     {
-        return GRI->GRICreateViewport(windowHandle, width, height, format, isFullScreen);
+        return Drive()->GRICreateViewport(windowHandle, width, height, format, isFullScreen);
     }
     GRIVertexShaderRef GRCCreateVertexShader(ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRIVertexShaderRef handle;
-            GRI->GRICreateVertexShader(rData, handle);
+            Drive()->GRICreateVertexShader(rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateVertexShader(rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateVertexShader(rData);
     }
 
     GRIFragmentShaderRef GRCCreateFragmentShader(ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRIFragmentShaderRef handle;
-            GRI->GRICreateFragmentShader(rData, handle);
+            Drive()->GRICreateFragmentShader(rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateFragmentShader(rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateFragmentShader(rData);
     }
 
     GRIPipelineShaderRef GRCCreatePipelineShader(GRIVertexShader* vs, GRIFragmentShader* fs)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRIPipelineShaderRef handle;
-            GRI->GRICreatePipelineShader(handle);
+            Drive()->GRICreatePipelineShader(handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs);
+        return CBQueue()->GetLowerCommandBuffer()->CreatePipelineShader(vs,fs);
     }
 
     GRIBufferRef GRCCreateBuffer(BufferUsageType usageType, int size, int stride,ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRIBufferRef handle;
-            GRI->GRICreateBuffer(usageType,size,stride,rData, handle);
+            Drive()->GRICreateBuffer(usageType,size,stride,rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateBuffer(usageType, size, stride, rData);
     }
     
     GRIVertexDescriptorRef GRCCreateVertexDescriptor(const VertexElementList& vdel)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRIVertexDescriptorRef handle;
-            GRI->GRICreateVertexDescriptor(vdel, handle);
+            Drive()->GRICreateVertexDescriptor(vdel, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateVertexDescriptor(vdel);
+        return CBQueue()->GetLowerCommandBuffer()->CreateVertexDescriptor(vdel);
     }
     GRIGraphicsPipelineRef GRCCreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRIGraphicsPipelineRef handle;
-            GRI->GRICreateGraphicsPipeline(createInfo, handle);
+            Drive()->GRICreateGraphicsPipeline(createInfo, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
+        return CBQueue()->GetLowerCommandBuffer()->CreateGraphicsPipeline(createInfo);
     }
 
     GRIUniformBufferRef GRCCreateUniformBuffer(const UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
     {
-        if(!_GQueue->IsLowerVerion())
+        if(!CBQueue()->IsLowerVerion())
         {
             GRIUniformBufferRef handle;
-            GRI->GRICreateUniformBuffer(contents,ubName,ubType, handle);
+            Drive()->GRICreateUniformBuffer(contents,ubName,ubType, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateUniformBuffer(contents,ubName,ubType);
+        return CBQueue()->GetLowerCommandBuffer()->CreateUniformBuffer(contents,ubName,ubType);
     }
     
     GRIUniformBufferDescriptorRef GRCCreateUniformDescriptor(const UniformBufferList& ubl)
     {
-        if(!_GQueue->IsLowerVerion())
+        if(!CBQueue()->IsLowerVerion())
         {
             GRIUniformBufferDescriptorRef handle;
-            GRI->GRICreateUniformDescriptor(ubl, handle);
+            Drive()->GRICreateUniformDescriptor(ubl, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
+        return CBQueue()->GetLowerCommandBuffer()->CreateUniformDescriptor(ubl);
     }
     //Create Texture2D
     GRITexture2DRef GRCCreateTexture2D(uint32 sizex, uint32 sizey, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRITexture2DRef handle;
-            GRI->GRICreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, rData, handle);
+            Drive()->GRICreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateTexture2D(sizex, sizey, format, numMips, numSamples, usageType, rData);
     }
     //Texture2DArray
     GRITexture2DArrayRef GRCCreateTexture2DArray(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, uint32 numSamples, TextureUsageType usageType,ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRITexture2DArrayRef handle;
-            GRI->GRICreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, rData, handle);
+            Drive()->GRICreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateTexture2DArray(sizex, sizey, sizez, format, numMips, numSamples, usageType, rData);
     }
     //Texture3D
     GRITexture3DRef GRCCreateTexture3D(uint32 sizex, uint32 sizey, uint32 sizez, PixelFormat format, uint32 numMips, TextureUsageType usageType, ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRITexture3DRef handle;
-            GRI->GRICreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, rData, handle);
+            Drive()->GRICreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateTexture3D(sizex, sizey, sizez, format, numMips, usageType, rData);
     }
     //TextureCube
     GRITextureCubeRef GRCCreateTextureCube(uint32 size, PixelFormat format, uint32 numMips, TextureUsageType usageType,ResourceData& rData)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRITextureCubeRef handle;
-            GRI->GRICreateTextureCube(size, format, numMips, usageType, rData, handle);
+            Drive()->GRICreateTextureCube(size, format, numMips, usageType, rData, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateTextureCube(size, format, numMips, usageType, rData);
+        return CBQueue()->GetLowerCommandBuffer()->CreateTextureCube(size, format, numMips, usageType, rData);
     }
     //SamplerState
     GRISamplerStateRef GRCCreateSampler(const SamplerState& sState)
     {
-        if (!_GQueue->IsLowerVerion())
+        if (!CBQueue()->IsLowerVerion())
         {
             GRISamplerStateRef handle;
-            GRI->GRICreateSampler(sState, handle);
+            Drive()->GRICreateSampler(sState, handle);
             return handle;
         }
-        return _GQueue->GetLowerCommandBuffer()->CreateSampler(sState);
+        return CBQueue()->GetLowerCommandBuffer()->CreateSampler(sState);
     }
 }

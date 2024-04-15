@@ -60,7 +60,6 @@ namespace SkySnow
         IEngine*            _SkySnowEngine;
 		EngineWindow*       _EditorWindow;
 		EngineWindow*       _GameWindow;
-        Framework*          _Framework;
 		bool				_AppInit = false;
 	};
 	

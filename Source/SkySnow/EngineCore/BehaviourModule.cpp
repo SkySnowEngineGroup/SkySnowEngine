@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 //
 #include "BehaviourModule.h"
+#include "Context.h"
+
 namespace SkySnow
 {
     BehaviourModule::BehaviourModule()
@@ -61,5 +63,10 @@ namespace SkySnow
     void BehaviourModule::ShutDown()
     {
         
+    }
+
+    BehaviourModule* BehaviourSystem()
+    {
+        return SSContext().GetModule<BehaviourModule>();
     }
 }

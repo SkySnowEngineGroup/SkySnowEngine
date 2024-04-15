@@ -22,62 +22,48 @@
 //
 #include "SkySnowEngine.h"
 #include "SkySnowProfiles.h"
+#include "ModuleHeaders.h"
+#include "Context.h"
+
 namespace SkySnow
 {
     SkySnowEngine::SkySnowEngine()
-        : _GameWindow(nullptr)
-        , _EditorWindow(nullptr)
+        : _Framework(nullptr)
     {
         
     }
 
     SkySnowEngine::~SkySnowEngine()
     {
-        Delete_Object(_GameWindow);
-        Delete_Object(_EditorWindow);
+        Delete_Object(_Framework);
+        SSContext().RemoveModule<GRIModule>();
     }
     
     void SkySnowEngine::Init()
     {
-        GRIInit();
+        
+        GRISystem()->StartUp();
+        _Framework = new Framework();
+        _Framework->Init();
     }
 
+    void SkySnowEngine::BeginFrame()
+    {
+        GRISystem()->BeginFrame();
+    }
+    
+    void SkySnowEngine::EngineLoop()
+    {
+        _Framework->MainUpdate();
+    }
+
+    void SkySnowEngine::EndFrame()
+    {
+        GRISystem()->EndFrame();
+    }
     void SkySnowEngine::ShutDown()
     {
-        if (_GameWindow)
-        {
-            _GameWindow->ExitViewPort();
-        }
-        if (_EditorWindow)
-        {
-            _EditorWindow->ExitViewPort();
-        }
-        GRIExit();
-        if (_GameWindow)
-        {
-            _GameWindow->ShutDown();
-        }
-        if (_EditorWindow)
-        {
-            _EditorWindow->ShutDown();
-        }
-    }
-    EngineWindow* SkySnowEngine::CreateGameWindow(uint32 width, uint32 height)
-    {
-        _GameWindow = new EngineWindow(EGameWindow);
-        _GameWindow->CreateEngineWindow(width, height,"GameWindow");
-        return _GameWindow;
-    }
-
-    EngineWindow* SkySnowEngine::CreateEditorWindow(uint32 width, uint32 height)
-    {
-        _EditorWindow = new EngineWindow(EEditorMainWindow);
-        _EditorWindow->CreateEngineWindow(width, height, "EditorWindow",_GameWindow ? _GameWindow : nullptr);
-        return _EditorWindow;
-    }
-
-    bool SkySnowEngine::IsEngineWindowClose()
-    {
-        return _EditorWindow ? _EditorWindow->GetOSWindow()->IsCloseWindow() : _GameWindow->GetOSWindow()->IsCloseWindow();
+        _Framework->ShutDown();
+        GRISystem()->ShutDown();
     }
 }

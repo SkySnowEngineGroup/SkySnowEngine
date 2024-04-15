@@ -25,19 +25,17 @@
 #include "GLRenderStateResource.h"
 #include "GLTextureResource.h"
 #include "GLPipelineResource.h"
-#include "GRIPipelineCache.h"
 #include "VarType.h"
-#include "GRI.h"
+#include "GRIModule.h"
+
 namespace SkySnow
 {
 	GLCreateCommandBuffer::GLCreateCommandBuffer()
 	{
-
 	}
 
 	GLCreateCommandBuffer::~GLCreateCommandBuffer()
 	{
-
 	}
 	//ResourceCreate====================================================================
     void GLCreateCommandBuffer::FlushResourceRelease()
@@ -75,9 +73,7 @@ namespace SkySnow
 	GRIGraphicsPipelineRef GLCreateCommandBuffer::CreateGraphicsPipeline(const GRICreateGraphicsPipelineInfo& createInfo)
 	{
 		GRIGraphicsPipelineRef handle = new GLGraphicPipeline(createInfo);
-		bool flag = _GPipelineCache->GetGraphicsPipeline<GLGraphicPipeline>(createInfo, handle);
-		if (!flag)
-			Alloc_CommandCreate(GRICreateGraphicsPipelineCommand, createInfo, handle);
+		Alloc_CommandCreate(GRICreateGraphicsPipelineCommand, createInfo, handle);
 		return handle;
 	}
 

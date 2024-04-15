@@ -47,8 +47,6 @@ namespace SkySnow
 
         void WaitForRenderThread();
     private:
-        void OnRenderFrame();
-    private:
         std::atomic<bool>   _ExitFlag;
         std::atomic<bool>   _FrameFinish;
         std::atomic<bool>   _RenderThreadEnd;

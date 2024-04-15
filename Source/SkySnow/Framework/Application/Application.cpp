@@ -23,9 +23,9 @@
 #include "Application.h"
 #include "LogAssert.h"
 #include "SkySnowProfiles.h"
-#include "GRI.h"
 #include "SkySnowEngine.h"
 #include "Context.h"
+#include "EngineWindow.h"
 namespace SkySnow
 {
 	Application::Application(const char* name, const char* description,uint32_t width, uint32_t height)
@@ -37,14 +37,13 @@ namespace SkySnow
         , _SkySnowEngine(nullptr)
         , _EditorWindow(nullptr)
         , _GameWindow(nullptr)
-        , _Framework(nullptr)
 	{
 
 	}
 	Application::~Application()
 	{
-        Delete_Object(_Framework);
-        Context::Instance().RemoveSkySnowEngine();
+        Context::Instance().RemoveEngine();
+        Delete_Object(_GameWindow);
 	}
 
 	void Application::RunApplication()
@@ -54,33 +53,27 @@ namespace SkySnow
     void Application::RunAppInternal()
     {
         //注册SkySnowEngine到Context中
-        _SkySnowEngine = Context::Instance().RegisterSkySnowEngine();
+        _SkySnowEngine = Context::Instance().RegisterEngine();
         _SkySnowEngine->Init();
-        //Create Window
-        _GameWindow = _SkySnowEngine->CreateGameWindow(_Width, _Height);
-        if (_EngineUsagType == Editor)
-        {
-            //_EditorWindow = _SkySnowEngine->CreateEditorWindow(_Width, _Height);
-        }
         
-        //Create Engine Framework
-        _Framework = new Framework();
-        _Framework->Init();
+        //Create Window
+        _GameWindow = new EngineWindow(EGameWindow);
+        _GameWindow->CreateEngineWindow(_Width, _Height);
+        SSContext().SetGameWindow(_GameWindow);
         //Start Engine MainUpdate
         MainUpdateInternal();
+        
         ShutDown();
-        _Framework->ShutDown();
+        _GameWindow->ShutDown();
         _SkySnowEngine->ShutDown();
-        SN_LOG("MainThread Exit.");
     }
 
     void Application::MainUpdateInternal()
     {
-        while (!_SkySnowEngine->IsEngineWindowClose())
+        while (!_GameWindow->GetOSWindow()->IsCloseWindow())
         {
-            //main thread start
-            _GQueue->BeginFrame();
-            FlushResource();
+            _SkySnowEngine->BeginFrame();
+            _GameWindow->BeginWindow();
             //Child App Init
             if (!_AppInit)
             {
@@ -89,9 +82,10 @@ namespace SkySnow
             }
             //Chile App Update
             Update();
-            _Framework->MainUpdate();
-            //main thread end
-            _GQueue->EndFrame();
+            _SkySnowEngine->EngineLoop();
+            
+            _GameWindow->EndWindow();
+            _SkySnowEngine->EndFrame();
             glfwPollEvents();
         }
     }

@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "Texture2D.h"
-#include "GRI.h"
+
 namespace SkySnow
 {
     Texture2D::Texture2D()

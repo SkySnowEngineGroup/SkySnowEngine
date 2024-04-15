@@ -20,35 +20,30 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include <vector>
-#include "ThreadMutex.h"
+#include "Viewport.h"
+#include "GRIHeaders.h"
+
 namespace SkySnow
 {
-    class GRIResource;
-    class ResourceReclaim
+    Viewport::Viewport()
+        : _Width(0)
+        , _Height(0)
+        , _NativeWindow(nullptr)
+        , _PixelFormat(PF_R8G8B8A8)
     {
-    public:
-        void AddReclaimResource(GRIResource* resource);
         
-        void RemoveReclaimResource();
+    }
+    
+    Viewport::~Viewport()
+    {
         
-        void ShutDown();
-        
-        static ResourceReclaim& Instance()
-        {
-            static ResourceReclaim resourceReclaim;
-            return resourceReclaim;
-        }
-    private:
-        ResourceReclaim(){}
-        ~ResourceReclaim(){}
-        
-        void DeleteResourcePtr();
-    private:
-        ThreadMutex               _Lock;
-        int                       _DeferredDelete = 1;
-        std::vector<GRIResource*> _ReclaimList;
-        std::vector<GRIResource*> _DeleteList;
-    };
+    }
+
+    void Viewport::CreateEngineViewport(void* nativeWindow,uint32 width,uint32 height)
+    {
+        _Width = width;
+        _Height = height;
+        _NativeWindow = nativeWindow;
+        _GRIViewport = GRCCreateViewport(nativeWindow,width,height,PF_R8G8B8A8,true);
+    }
 }

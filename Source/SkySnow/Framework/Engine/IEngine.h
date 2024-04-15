@@ -34,13 +34,13 @@ namespace SkySnow
         
         virtual void Init() = 0;
         
-        virtual EngineWindow* CreateGameWindow(uint32 width,uint32 height) = 0;
+        virtual void BeginFrame() = 0;
         
-        virtual EngineWindow* CreateEditorWindow(uint32 width, uint32 height) = 0;
+        virtual void EngineLoop() = 0;
+        
+        virtual void EndFrame() = 0;
         
         virtual void ShutDown() = 0;
-
-        virtual bool IsEngineWindowClose() = 0;
 	private:
 
 	};

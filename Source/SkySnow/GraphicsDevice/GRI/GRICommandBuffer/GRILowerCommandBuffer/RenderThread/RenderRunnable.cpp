@@ -22,8 +22,9 @@
 //
 #include "RenderRunnable.h"
 #include "LogAssert.h"
-#include "GRI.h"
+#include "GRIModule.h"
 #include "GRICommandBuffer.h"
+
 namespace SkySnow
 {
     RenderRunnable::RenderRunnable()
@@ -45,12 +46,6 @@ namespace SkySnow
         _RenderSem.Signal();
     }
 
-    void RenderRunnable::OnRenderFrame()
-    {
-        _RenderSem.WaitForSignal();
-        _GQueue->PresentQueue();
-        _MainSem.Signal();
-    }
     void RenderRunnable::EndFrame()
     {
         _MainSem.WaitForSignal();
@@ -58,21 +53,23 @@ namespace SkySnow
 
     void RenderRunnable::Run()
     {
-        GRI->GRIDriveStart();
-        GRI->Init();
+        Drive()->GRIDriveStart();
+        Drive()->Init();
         while(!_ExitFlag)
         {
             _FrameFinish = false;
-            OnRenderFrame();
+            _RenderSem.WaitForSignal();
+            
+            CBQueue()->PresentQueue();
+            _MainSem.Signal();
             _FrameFinish = true;
         }
-        GRI->Exit();
-        GRIResource::FlushResourceRelease();
-        SN_LOG("RenderThread Exit.");
-        GRI->GRIDriveEnd();
+        Drive()->Exit();
+        GRIResManager::Instance().ShutDown();
+//        SN_LOG("RenderThread Exit.");
+        Drive()->GRIDriveEnd();
         _RenderThreadEnd = true;
     }
-
     void RenderRunnable::Stop()
     {
         _ExitFlag = true;

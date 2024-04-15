@@ -22,123 +22,125 @@
 //
 #include "GRICommands.h"
 #include "GRICommandBuffer.h"
-#include "GRI.h"
+#include "GRIModule.h"
+#include "GRIDrive.h"
+
 namespace SkySnow
 {
 	void CmdBeginViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRIBeginViewport(_ViewPort,_RenderTexture);
+		Drive()->GRIBeginViewport(_ViewPort,_RenderTexture);
 	}
 	void CmdEndViewportCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRIEndViewport(_ViewPort,_Present,_LockToVsync);
+        Drive()->GRIEndViewport(_ViewPort,_Present,_LockToVsync);
 	}
 	void CmdSetBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetBuffer(_BufferInfoId, _Buffer, _Offset);
+        Drive()->GRISetBuffer(_BufferInfoId, _Buffer, _Offset);
 	}
 	void CmdDrawPrimitiveCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRIDrawPrimitive(_NumPrimitive, _NumInstance);
+        Drive()->GRIDrawPrimitive(_NumPrimitive, _NumInstance);
 	}
 	void CmdSetPipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetPipelineShader(_PipelineShaderState);
+        Drive()->GRISetPipelineShader(_PipelineShaderState);
 	}
 	void CmdSetGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRISetGraphicsPipeline(_PipelineState);
+        Drive()->GRISetGraphicsPipeline(_PipelineState);
 	}
     void CmdSetShaderParameterCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRISetShaderParameter(_PipelineShader, _UniformBuffer, _UBIndex);
+        Drive()->GRISetShaderParameter(_PipelineShader, _UniformBuffer, _UBIndex);
     }
     void CmdUpdateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRIUpdateUniformBuffer(_UniformBuffer, _UBData);
+        Drive()->GRIUpdateUniformBuffer(_UniformBuffer, _UBData);
     }
 
     void CmdSetUniformBufferDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRISetUniformBufferDescriptor(_UBDescriptor);
+        Drive()->GRISetUniformBufferDescriptor(_UBDescriptor);
     }
     
     void CmdSetShaderTextureCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRISetShaderTexture(_ShaderPipeline, _Texture, _TextureIndex);
+        Drive()->GRISetShaderTexture(_ShaderPipeline, _Texture, _TextureIndex);
     }
     
     void CmdSetShaderSamplerCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRISetShaderSampler(_ShaderPipeline, _Sampler, _SamplerIndex);
+        Drive()->GRISetShaderSampler(_ShaderPipeline, _Sampler, _SamplerIndex);
     }
 	//===============================================================================
     void GRIFlushResourceReleaseCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRIResource::FlushResourceRelease();
+        GRIResManager::Instance().FlushResource();
     }
 	void GRICreateVertexShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateVertexShader(_ResourceData, _Handle);
+        Drive()->GRICreateVertexShader(_ResourceData, _Handle);
 	}
 
 	void GRICreateFragmentShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateFragmentShader(_ResourceData, _Handle);
+        Drive()->GRICreateFragmentShader(_ResourceData, _Handle);
 	}
 
 	void GRICreatePipelineShaderCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreatePipelineShader(_Handle);
+        Drive()->GRICreatePipelineShader(_Handle);
 	}
 
 	void GRICreateBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		 GRI->GRICreateBuffer(_UsageType, _Size, _Stride, _ResourceData, _Handle);
+        Drive()->GRICreateBuffer(_UsageType, _Size, _Stride, _ResourceData, _Handle);
 	}
 
 	void GRICreateGraphicsPipelineCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateGraphicsPipeline(_PsoInfo,_Handle);
+        Drive()->GRICreateGraphicsPipeline(_PsoInfo,_Handle);
 	}
 
     void GRICreateVertexDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateVertexDescriptor(_VertexElementList, _Handle);
+        Drive()->GRICreateVertexDescriptor(_VertexElementList, _Handle);
     }
 
     void GRICreateUniformBufferCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateUniformBuffer(_USlotList,_UBName,_UBType,_Handle);
+        Drive()->GRICreateUniformBuffer(_USlotList,_UBName,_UBType,_Handle);
     }
     
     void GRICreateUniformDescriptorCommand::Execute(GRICommandBufferBase& cmdBuffer)
     {
-        GRI->GRICreateUniformDescriptor(_UBSlotList, _Handle);
+        Drive()->GRICreateUniformDescriptor(_UBSlotList, _Handle);
     }
 
 	void GRICreateTexture2DCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTexture2D(_Sizex, _Sizey, _Format, _NumMips, _NumSamples, _UsageType, _ResourceData, _Handle);
+        Drive()->GRICreateTexture2D(_Sizex, _Sizey, _Format, _NumMips, _NumSamples, _UsageType, _ResourceData, _Handle);
 	}
 
 	void GRICreateTexture2DArrayCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTexture2DArray(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_NumSamples,_UsageType, _ResourceData,_Handle);
+        Drive()->GRICreateTexture2DArray(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_NumSamples,_UsageType, _ResourceData,_Handle);
 	}
 
 	void GRICreateTexture3DCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTexture3D(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_UsageType, _ResourceData,_Handle);
+        Drive()->GRICreateTexture3D(_Sizex,_Sizey,_Sizez,_Format,_NumMips,_UsageType, _ResourceData,_Handle);
 	}
 
 	void GRICreateTextureCubeCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateTextureCube(_Size,_Format,_NumMips,_UsageType, _ResourceData,_Handle);
+        Drive()->GRICreateTextureCube(_Size,_Format,_NumMips,_UsageType, _ResourceData,_Handle);
 	}
 
 	void GRICreateSamplerCommand::Execute(GRICommandBufferBase& cmdBuffer)
 	{
-		GRI->GRICreateSampler(_State,_Handle);
+        Drive()->GRICreateSampler(_State,_Handle);
 	}
 }

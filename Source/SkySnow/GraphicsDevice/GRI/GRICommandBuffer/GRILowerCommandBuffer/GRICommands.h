@@ -223,7 +223,6 @@ namespace SkySnow
 		}
 		void Execute(GRICommandBufferBase& cmdBuffer);
 
-		const char*				_FsCode;
         ResourceData            _ResourceData;
 		GRIFragmentShaderRef	_Handle;
 	};

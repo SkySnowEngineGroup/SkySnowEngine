@@ -20,34 +20,48 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "GRI.h"
-#include "GRICommandBuffer.h"
-#include "GRIPipelineCache.h"
-#include "GRICreate.h"
+#pragma once
+#include "IModule.h"
 namespace SkySnow
 {
-    //Globle Member Variable
-    GRICommandBufferQueue*  _GQueue = nullptr;
-    GRIPipelineCache*       _GPipelineCache = nullptr;
-    GRIDrive*               GRI = nullptr;
-    //Globle Member Function
-    void GRIInit()
+    class GRIDrive;
+    class GRICommandBufferQueue;
+    class GRIModule : public IModule
     {
-        if(!GRI)
-        {
-            GRI = GRICreate::CreateTargetGRI();
-            _GPipelineCache = new GRIPipelineCache();
-            _GQueue = GRICreate::CreateTargetCBQueue();
-            _GQueue->Init();
-        }
-    }
-
-    void GRIExit()
+        SkySnow_Object(GRIModule, IModule);
+        friend class GRICommandBufferQueue;
+    public:
+        GRIModule();
+        virtual ~GRIModule();
+        virtual void StartUp() final override;
+        virtual void ShutDown() final override;
+        void BeginFrame();
+        void EndFrame();
+        
+        GRICommandBufferQueue* GetQueue();
+        GRIDrive*              GetDrive();
+    private:
+        
+    private:
+        bool                    _IsStart;
+        GRICommandBufferQueue*  _CBQueue;
+        GRIDrive*               _GRI;
+        //GRIPipelineCache*       _GRIPipelineCache;
+    };
+    GRIModule* GRISystem();
+    GRICommandBufferQueue* CBQueue();
+    GRIDrive* Drive();
+    class GRICreate
     {
-        _GPipelineCache->Shutdown();
-        Delete_Object(_GPipelineCache);
-        _GQueue->WaitforRenderThreadExit();
-        Delete_Object(_GQueue);
-        Delete_Object(GRI);
-    }
+    public:
+        static GRIDrive* CreateTargetGRI();
+        
+        static GRICommandBufferQueue* CreateTargetCBQueue();
+    private:
+        static GRIDrive* WindowOSCreateGRI();
+        static GRIDrive* MacOSCreateGRI();
+        
+        static GRICommandBufferQueue* WindowOSCreateCBQueue();
+        static GRICommandBufferQueue* MacOSCreateCBQueue();
+    };
 }

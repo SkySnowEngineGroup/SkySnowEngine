@@ -24,6 +24,7 @@
 #include "SkySnowProfiles.h"
 #include "OSWindow.h"
 #include "Viewport.h"
+
 namespace SkySnow
 {
     enum EngineWindowType
@@ -49,8 +50,10 @@ namespace SkySnow
         Viewport* GetViewport() const { return _Viewport; }
 
         EngineWindowType GetEngineWindowType() const {return _EngineWindowType;}
-
-        void ExitViewPort();
+        
+        void BeginWindow();
+        
+        void EndWindow();
 
         void ShutDown();
     private:

@@ -38,4 +38,5 @@ namespace SkySnow
 
         virtual void ShutDown() final override;
     };
+    TimeModule* TimeSystem();
 }

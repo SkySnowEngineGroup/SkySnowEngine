@@ -39,7 +39,7 @@ namespace SkySnow
         static Context instance;
         return instance;
     }
-
+    //globle Interface
     Context& SSContext()
     {
         return Context::Instance();

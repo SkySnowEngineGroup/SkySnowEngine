@@ -21,21 +21,25 @@
 // THE SOFTWARE.
 //
 #pragma once
+
+#include "GRIResource.h"
+
 namespace SkySnow
 {
-	class GRIDrive;
-    class GRICommandBufferQueue;
-	class GRICreate
+	class Viewport
 	{
 	public:
-		static GRIDrive* CreateTargetGRI();
+        Viewport();
+        virtual ~Viewport();
         
-        static GRICommandBufferQueue* CreateTargetCBQueue();
-	private:
-		static GRIDrive* WindowOSCreateGRI();
-		static GRIDrive* MacOSCreateGRI();
+        void CreateEngineViewport(void* nativeWindow,uint32 width,uint32 height);
         
-        static GRICommandBufferQueue* WindowOSCreateCBQueue();
-        static GRICommandBufferQueue* MacOSCreateCBQueue();
+        GRIViewportStateRef GetGRIViewport() { return _GRIViewport;}
+    private:
+        uint32              _Width;
+        uint32              _Height;
+        void*               _NativeWindow;
+        PixelFormat         _PixelFormat;
+        GRIViewportStateRef _GRIViewport;
 	};
 }

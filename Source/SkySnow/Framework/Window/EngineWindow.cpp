@@ -23,10 +23,13 @@
 #include "EngineWindow.h"
 #include "GLFWWindow.h"
 #include "SkySnowProfiles.h"
+#include "GRIHeaders.h"
+
 namespace SkySnow
 {
 	EngineWindow::~EngineWindow()
 	{
+        _OSWindow->ShutDown();
         Delete_Object(_OSWindow);
         Delete_Object(_Viewport);
 	}
@@ -39,13 +42,21 @@ namespace SkySnow
         _Viewport->CreateEngineViewport(_OSWindow->GetNativeWindow(), width, height);
     }
 
-    void EngineWindow::ExitViewPort()
+    void EngineWindow::BeginWindow()
     {
-        Delete_Object(_Viewport);
+//        GRITexture2DRef tex2DGRI;
+//        GRIViewportStateRef viewRef = _Viewport->GetGRIViewport();
+//        GRCBeginViewport(viewRef,tex2DGRI);
+    }
+
+    void EngineWindow::EndWindow()
+    {
+//        GRIViewportStateRef viewRef = _Viewport->GetGRIViewport();
+//        GRCEndViewport(viewRef,false,false);
     }
 
     void EngineWindow::ShutDown()
     {
-        _OSWindow->ShutDown();
+        Delete_Object(_Viewport);
     }
 }

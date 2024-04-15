@@ -22,6 +22,8 @@
 //
 #include "ResourceModule.h"
 #include "HashUtil.h"
+#include "Context.h"
+
 namespace SkySnow
 {
     ResourceModule::ResourceModule()
@@ -58,5 +60,10 @@ namespace SkySnow
     void ResourceModule::ShutDown()
     {
 
+    }
+
+    ResourceModule* ResourceSystem()
+    {
+        return SSContext().GetModule<ResourceModule>();
     }
 }

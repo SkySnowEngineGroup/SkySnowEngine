@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRI.h"
 #include "GRICommons.h"
 #include "GRIResource.h"
 #include "GRIResourceCreateInfo.h"

@@ -44,4 +44,5 @@ namespace SkySnow
         
         virtual void ShutDown() final override;
     };
+    BehaviourModule* BehaviourSystem();
 }

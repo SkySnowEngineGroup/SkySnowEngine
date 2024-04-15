@@ -38,9 +38,13 @@ namespace SkySnow
 		{
 			SN_ERR("glfwInit() failed!");
 		}
-		//glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+		glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 		GLFWwindow* tShareWindow = shareWindow ? (GLFWwindow*)shareWindow->GetClientWindow() : nullptr;
 		_Window = glfwCreateWindow(width, height, _WindowName.c_str(), NULL, tShareWindow);
+        glfwFocusWindow(_Window);
+        glfwSetWindowCloseCallback(_Window, [](GLFWwindow* window) {
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
+        });
 		if (!_Window)
 		{
 			const char* description;
@@ -64,17 +68,7 @@ namespace SkySnow
 
 	bool GLFWWindow::IsCloseWindow()
 	{
-		int close = false;
-		if (_Window)
-		{
-			if (glfwGetKey(_Window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-			{
-				glfwSetWindowShouldClose(_Window, true);
-			}
-			//该函数返回0为未退出，返回非零为退出
-			close = glfwWindowShouldClose(_Window);
-		}
-		return close;
+        return glfwWindowShouldClose(_Window);
 	}
 
 	void GLFWWindow::ShutDown()

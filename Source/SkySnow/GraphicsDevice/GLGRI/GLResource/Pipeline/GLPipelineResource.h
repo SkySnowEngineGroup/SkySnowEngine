@@ -65,7 +65,7 @@ namespace SkySnow
 
 		virtual ~GLGraphicPipeline()
 		{
-            ReclaimPipelineResource();
+            ClearPipelineState();
             SN_LOG("GLGraphicPipeline DesConstruct.");
 		}
         
@@ -86,7 +86,7 @@ namespace SkySnow
             return dynamic_cast<GRIGLUniformBufferDescriptor*>(_UBODescriptor.GetReference());
         }
 
-        void ReclaimPipelineResource()
+        void ClearPipelineState()
         {
             _ShaderPipeline = nullptr;
             _VertexDescriptor = nullptr;

@@ -25,8 +25,7 @@
 #include "GLShaderResource.h"
 #include "GLBufferResource.h"
 #include "GLPipelineResource.h"
-#include "GRIPipelineCache.h"
-#include "GRI.h"
+
 namespace SkySnow
 {
 	GLRenderCommandBuffer::GLRenderCommandBuffer()
