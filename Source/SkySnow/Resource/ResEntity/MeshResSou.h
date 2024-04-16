@@ -20,29 +20,18 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Camera.h"
-#include "CameraProxy.h"
+#pragma once
+
 namespace SkySnow
 {
-    Camera::Camera()
-        : _CameraProxy(nullptr)
+    template<typename Res,typename Sou>
+    class MeshResSou : public IResSou
     {
-    }
-    Camera::~Camera()
-    {
-        if(_CameraProxy)
-        {
-            _CameraProxy->ProxyUnRegister(this);
-            Delete_Object(_CameraProxy);
-        }
-    }
-
-    void Camera::CreateProxy()
-    {
-        if(!_CameraProxy)
-        {
-            _CameraProxy = new CameraProxy();
-            _CameraProxy->ProxyRegister(this);
-        }
-    }
+        SkySnow_Object(MeshResSou,IResSou);
+    public:
+        
+        
+    private:
+        
+    };
 }

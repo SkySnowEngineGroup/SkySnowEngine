@@ -58,7 +58,7 @@ namespace SkySnow
 
     void Framework::ShutDown()
     {
-        RenderSystem()->ShutDown();
         ResourceSystem()->ShutDown();
+        RenderSystem()->ShutDown();
     }
 }

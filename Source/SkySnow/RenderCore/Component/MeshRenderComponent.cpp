@@ -30,11 +30,7 @@ namespace SkySnow
     }
     MeshRenderComponent::~MeshRenderComponent()
     {
-        if(_Proxy)
-        {
-            _Proxy->ProxyUnRegister(this);
-            Delete_Object(_Proxy);
-        }
+
     }
 
 
@@ -42,8 +38,17 @@ namespace SkySnow
     {
         if(!_Proxy)
         {
-            _Proxy = new RenderableProxy(this);
+            _Proxy = new RenderableProxy();
             _Proxy->ProxyRegister(this);
+        }
+    }
+
+    void MeshRenderComponent::RemoveProxy()
+    {
+        if(_Proxy)
+        {
+            _Proxy->ProxyUnRegister(this);
+            Delete_Object(_Proxy);
         }
     }
 }

@@ -28,8 +28,8 @@
 #include "Context.h"
 namespace SkySnow
 {
-    RenderableProxy::RenderableProxy(Renderable* renderable)
-        : _Renderable(renderable)
+    RenderableProxy::RenderableProxy()
+        : _Renderable(nullptr)
     {
         
     }
@@ -40,7 +40,8 @@ namespace SkySnow
 
     void RenderableProxy::ProxyRegister(IComponent* com)
     {
-        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Renderable->GetSceneHandle());
+        _Renderable = dynamic_cast<Renderable*>(com);
+        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetSceneHandle());
         if(rScene)
         {
             rScene->NotifyRenderableAdded(this);
@@ -48,7 +49,7 @@ namespace SkySnow
     }
     void RenderableProxy::ProxyUnRegister(IComponent* com)
     {
-        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Renderable->GetSceneHandle());
+        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetSceneHandle());
         if(rScene)
         {
             rScene->NotifyRenderableRemoved(this);

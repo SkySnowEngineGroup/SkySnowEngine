@@ -89,6 +89,7 @@ namespace SkySnow
         SPtr<Scene> removeScene = _ActiveScenes[handle];
         _DeleteScenes[handle] = removeScene;
         _ActiveScenes.erase(iter);
+        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(removeScene->GetSceneHandle());
         return true;
     }
     bool SceneManager::RemoveScene(std::string name)
@@ -109,16 +110,18 @@ namespace SkySnow
         SPtr<Scene> removeScene = _ActiveScenes[index];
         _DeleteScenes[index] = removeScene;
         _ActiveScenes.erase(_ActiveScenes.find(index));
+        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(removeScene->GetSceneHandle());
         return true;
     }
-    bool SceneManager::ClearRemoveScene()
+    
+    void SceneManager::ClearScene()
     {
-        for(auto iter = _DeleteScenes.begin(); iter != _DeleteScenes.end(); iter ++)
+        for(auto iter = _ActiveScenes.begin(); iter != _ActiveScenes.end(); iter ++)
         {
-            SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(iter->first);
+            SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(iter->second->GetSceneHandle());
         }
+        _ActiveScenes.clear();
         _DeleteScenes.clear();
-        return true;
     }
     //========================================================================
     SceneManager& GetSceneManager()

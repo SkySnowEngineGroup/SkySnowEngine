@@ -108,7 +108,7 @@ namespace SkySnow
         {
             if((*iter)->GetTypeName() == T::GetTypeNameStatic())
             {
-                //(*iter)->DetachGO();
+                (*iter)->RemoveProxy();
                 _ComponentList.erase(iter);
                 break;
             }

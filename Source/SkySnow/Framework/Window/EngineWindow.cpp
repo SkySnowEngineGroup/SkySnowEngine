@@ -44,14 +44,14 @@ namespace SkySnow
 
     void EngineWindow::BeginWindow()
     {
-//        GRITexture2DRef tex2DGRI;
-//        GRIViewportStateRef viewRef = _Viewport->GetGRIViewport();
+        GRITexture2DRef tex2DGRI;
+        GRIViewportStateRef viewRef = _Viewport->GetGRIViewport();
 //        GRCBeginViewport(viewRef,tex2DGRI);
     }
 
     void EngineWindow::EndWindow()
     {
-//        GRIViewportStateRef viewRef = _Viewport->GetGRIViewport();
+        GRIViewportStateRef viewRef = _Viewport->GetGRIViewport();
 //        GRCEndViewport(viewRef,false,false);
     }
 

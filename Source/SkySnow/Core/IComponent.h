@@ -76,6 +76,7 @@ namespace SkySnow
         //proxy
         //引擎层与渲染层代理，每个引擎层组件只能绑定一个代理
         virtual void CreateProxy(){}
+        virtual void RemoveProxy(){}
     protected:
         SPtr<IComponent> GetPtr()
         {

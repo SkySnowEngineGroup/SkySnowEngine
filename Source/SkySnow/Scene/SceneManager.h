@@ -42,7 +42,7 @@ namespace SkySnow
         SPtr<Scene> GetScene(SceneHandle handle);
         bool RemoveScene(SceneHandle handle);
         bool RemoveScene(std::string name);
-        bool ClearRemoveScene();
+        void ClearScene();
     private:
         SceneManager();
         ~SceneManager();

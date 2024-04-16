@@ -28,7 +28,7 @@ namespace SkySnow
     class RenderableProxy : public IProxy
     {
     public:
-        RenderableProxy(Renderable* renderable);
+        RenderableProxy();
         ~RenderableProxy();
         
         virtual void ProxyRegister(IComponent* com) override;

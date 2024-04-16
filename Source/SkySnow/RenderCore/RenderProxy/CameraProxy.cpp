@@ -28,8 +28,8 @@
 #include "RenderModule.h"
 namespace SkySnow
 {
-    CameraProxy::CameraProxy(Camera* camera)
-        : _Camera(camera)
+    CameraProxy::CameraProxy()
+        : _Camera(nullptr)
     {
         
     }
@@ -40,7 +40,8 @@ namespace SkySnow
 
     void CameraProxy::ProxyRegister(IComponent* com)
     {
-        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Camera->GetSceneHandle());
+        _Camera = dynamic_cast<Camera*>(com);
+        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetSceneHandle());
         if(rScene)
         {
             rScene->NotifyCameraAdded(this);
@@ -49,7 +50,7 @@ namespace SkySnow
 
     void CameraProxy::ProxyUnRegister(IComponent* com)
     {
-        auto rScene = SSContext().GetModule<RenderModule>()->GetRendererScene(_Camera->GetSceneHandle());
+        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetSceneHandle());
         if(rScene)
         {
             rScene->NotifyCameraRemoved(this);

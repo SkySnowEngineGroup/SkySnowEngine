@@ -34,8 +34,8 @@ namespace SkySnow
         ~MeshRenderComponent();
         //proxy
         virtual void CreateProxy() override;
+        virtual void RemoveProxy() override;
 	private:
-        
         RenderableProxy* _Proxy;
 	};
 }

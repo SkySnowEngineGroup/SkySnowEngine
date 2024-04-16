@@ -23,6 +23,7 @@
 #include "ResourceModule.h"
 #include "HashUtil.h"
 #include "Context.h"
+#include "SceneManager.h"
 
 namespace SkySnow
 {
@@ -59,7 +60,7 @@ namespace SkySnow
 
     void ResourceModule::ShutDown()
     {
-
+        SceneManager::Instance().ClearScene();
     }
 
     ResourceModule* ResourceSystem()

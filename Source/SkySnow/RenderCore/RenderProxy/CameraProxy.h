@@ -28,7 +28,7 @@ namespace SkySnow
     class CameraProxy : public IProxy
     {
     public:
-        CameraProxy(Camera* camera);
+        CameraProxy();
         ~CameraProxy();
         
         virtual void ProxyRegister(IComponent* com) override;
