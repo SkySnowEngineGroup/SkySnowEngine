@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "IResSource.h"
-#include "StandardMesh.h"
+#include "MeshUtil.h"
 namespace SkySnow
 {
     enum MeshType

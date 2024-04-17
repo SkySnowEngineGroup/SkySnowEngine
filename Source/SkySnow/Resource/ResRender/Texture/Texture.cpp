@@ -20,16 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "PositionBuffer.h"
+#include "Texture.h"
 
 namespace SkySnow
 {
-    PositionBuffer::PositionBuffer()
+    Texture::Texture()
+        : IResRender(GRT_None)
     {
-    }
-    PositionBuffer::~PositionBuffer()
-    {
+        
     }
 
+    Texture::~Texture()
+    {
+        
+    }
 
+    void Texture::SetTextureStream(TextureStream* stream)
+    {
+        _TextureStream = stream;
+    }
+    void Texture::CreateGTex()
+    {
+        ResourceData texRD;
+        texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
+        uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
+        _GRITexture2D = GRCCreateTexture2D(_TextureStream->GetImageWidth(),
+                                         _TextureStream->GetImageHeight(),
+                                         _TextureStream->GetPixelFormat(),
+                                         1, 1,
+                                         (TextureUsageType)tut,
+                                         texRD);
+    }
 }

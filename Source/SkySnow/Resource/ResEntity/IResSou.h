@@ -25,11 +25,16 @@
 
 namespace SkySnow
 {
-    class IResSou : public Object
+    template<typename Resource,typename Source>
+    class IRSEntity : public Object
     {
-        SkySnow_Object(IResSou,Object);
+        SkySnow_Object(IRSEntity,Object);
     public:
         IResSou(){}
         virtual ~IResSou(){}
+        
+    private:
+        SPtr<Resource>  _Resource;
+        SPtr<Source>    _Source;
     };
 }

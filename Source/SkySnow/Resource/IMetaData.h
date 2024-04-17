@@ -21,15 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IResRender.h"
+#include "Object.h"
 
 namespace SkySnow
 {
-    class ColorBuffer : public VertexBuffer
+    class IMateData : public Object
     {
-        SkySnow_Object(ColorBuffer, VertexBuffer);
+        SkySnow_Object(IMateData,Object);
     public:
-        ColorBuffer();
-        ~ColorBuffer();
+        IMateData();
+        virtual ~IMateData();
+    public:
+        
+    protected:
     };
 }

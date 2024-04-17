@@ -20,16 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "ColorBuffer.h"
+#include "IMetaData.h"
 
 namespace SkySnow
 {
-    ColorBuffer::ColorBuffer()
-    {
-        
-    }
-    ColorBuffer::~ColorBuffer()
-    {
-        
-    }
+
 }

@@ -21,15 +21,33 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "GRIResource.h"
+#include "TextureStream.h"
 #include "IResRender.h"
 namespace SkySnow
 {
-    class PositionBuffer : public VertexBuffer
+    class Texture : public IResRender
     {
-        SkySnow_Object(PositionBuffer, VertexBuffer);
+        SkySnow_Object(Texture, IResRender);
     public:
-        PositionBuffer();
-        ~PositionBuffer();
-
+        Texture();
+        
+        virtual ~Texture();
+    public:
+        void SetTextureStream(TextureStream* stream);
+        //temp code
+        GRITexture2DRef GetTexture()
+        {
+            if(!_GRITexture2D.GetReference())
+            {
+                CreateGTex();
+            }
+            return _GRITexture2D;
+        }
+        void CreateGTex();
+    public:
+        GRITexture2DRef     _GRITexture2D;//GpuResource
+    private:
+        TextureStream*      _TextureStream;//CPUResource
     };
 }

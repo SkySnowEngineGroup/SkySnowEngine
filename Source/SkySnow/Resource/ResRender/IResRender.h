@@ -42,29 +42,11 @@ namespace SkySnow
             return _GRIResType;
         }
     protected:
+        void SetResType(const EGRIResourceType resType)
+        {
+            _GRIResType = resType;
+        }
+    protected:
         EGRIResourceType    _GRIResType;
-    };
-
-    class VertexBuffer : public IResRender
-    {
-        SkySnow_Object(VertexBuffer, IResRender);
-    public:
-        VertexBuffer()
-            : IResRender(GRT_Buffer)
-        {}
-        virtual ~VertexBuffer(){}
-    public:
-        GRIBufferRef  _VertexBufferGRI;
-    };
-
-    class IndexBuffer : public IResRender
-    {
-    public:
-        IndexBuffer()
-            : IResRender(GRT_Buffer)
-        {}
-        virtual ~IndexBuffer(){}
-    public:
-        GRIVertexBufferRef  _IndexBufferGRI;
     };
 }
