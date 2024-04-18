@@ -21,30 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Mesh.h"
-#include "MeshBuffer.h"
-#include "VertexData.h"
+#include "IResRender.h"
 
 namespace SkySnow
 {
-    class StaticMesh : public MeshBase
+    class IndicesBuffer : public IResRender
     {
-        SkySnow_Object(StaticMesh,MeshBase);
+        SkySnow_Object(VertexBuffer, IResRender);
     public:
-        StaticMesh();
+        IndicesBuffer();
+        ~IndicesBuffer();
         
-        ~StaticMesh();
-        
-        virtual void CreateStandardMesh(StandardMeshType smType) override;
-
-        void SetVertexData(const SPtr<VertexData>& vertexData);
-        SPtr<VertexData> GetVertexData();
-
-        void CreateMeshBuffer();
-
-        SPtr<MeshBuffer> GetMeshBuffer();
     private:
-        SPtr<VertexData>      _VertexData;
-        SPtr<MeshBuffer>      _MeshBuffer;
+        
     };
 }

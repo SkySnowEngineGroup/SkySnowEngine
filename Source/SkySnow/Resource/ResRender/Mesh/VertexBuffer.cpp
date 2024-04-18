@@ -20,62 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "StaticMesh.h"
+#include "VertexBuffer.h"
 
 namespace SkySnow
 {
-    StaticMesh::StaticMesh()
-        : MeshBase(MT_StaticMesh)
+    VertexBuffer::VertexBuffer()
+        : IResRender(GRT_Buffer)
     {
-        if (!_VertexData)
-        {
-            _VertexData = CreateSPtr<VertexData>();
-        }
-        if (!_MeshBuffer)
-        {
-            _MeshBuffer = CreateSPtr<MeshBuffer>();
-        }
     }
-
-    StaticMesh::~StaticMesh()
+    VertexBuffer::~VertexBuffer()
     {
-        
     }
-
-    void StaticMesh::CreateStandardMesh(StandardMeshType smType)
-    {
-        SMesh sMesh;
-        switch(smType)
-        {
-            case SM_Quad: sMesh = MQuad(); break;
-            case SM_Cube: sMesh = MCube(); break;
-            case SM_Sphere: sMesh = MSphere(); break;
-            case SM_Cone: sMesh = MCone(); break;
-            default:
-                SN_LOG("Not support this StandardMeshType:%d",smType);
-                break;
-        }
-        _VertexData->PushVertexStream(sMesh._ArrayStream);
-    }
-
-    void StaticMesh::SetVertexData(const SPtr<VertexData>& vertexData)
-    {
-        _VertexData = vertexData;
-    }
-
-    SPtr<VertexData> StaticMesh::GetVertexData()
-    {
-        return _VertexData;
-    }
-
-    void StaticMesh::CreateMeshBuffer()
-    {
-        _MeshBuffer->SMCreateBuffer(_VertexData);
-    }
-
-    SPtr<MeshBuffer> StaticMesh::GetMeshBuffer()
-    {
-        return _MeshBuffer;
-    }
-    
 }
