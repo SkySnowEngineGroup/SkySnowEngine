@@ -30,8 +30,8 @@ namespace SkySnow
     {
         SkySnow_Object(IRSEntity,Object);
     public:
-        IResSou(){}
-        virtual ~IResSou(){}
+        IRSEntity(){}
+        virtual ~IRSEntity(){}
         
     private:
         SPtr<Resource>  _Resource;

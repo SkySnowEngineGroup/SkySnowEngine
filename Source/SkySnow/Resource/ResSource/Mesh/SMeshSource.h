@@ -22,16 +22,14 @@
 //
 #pragma once
 #include "MeshSource.h"
-#include "MeshBuffer.h"
-#include "VertexData.h"
 
 namespace SkySnow
 {
     class SMeshSource : public MeshSource
     {
-        SkySnow_Object(SMeshSource,MeshBase);
+        SkySnow_Object(SMeshSource, MeshSource);
     public:
-        SMeshSource() final;
+        SMeshSource();
         ~SMeshSource();
         
         void SetIndexStream(SPtr<IndexStream> iStream);
