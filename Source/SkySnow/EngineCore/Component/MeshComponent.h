@@ -22,7 +22,8 @@
 //
 #pragma once
 #include "IComponent.h"
-#include "Mesh.h"
+#include "MeshSource.h"
+
 namespace SkySnow
 {
     //For Dynamin and pyhix
@@ -33,8 +34,8 @@ namespace SkySnow
         MeshComponent();
         ~MeshComponent();
         
-        void SetShareMesh(SPtr<MeshBase> mesh);
+        void SetShareMesh(SPtr<MeshSource> mesh);
     private:
-        SPtr<MeshBase>  _Mesh;
+        SPtr<MeshSource>  _Mesh;
     };
 }

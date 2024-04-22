@@ -20,35 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#pragma once
+#include "IRSEntity.h"
 #include "SMeshSource.h"
+#include "MeshResource.h"
 
 namespace SkySnow
 {
-    SMeshSource::SMeshSource()
-        : MeshSource(MT_Static)
+    class ESMesh : public IRSEntity<SMeshSource,MeshResource>
     {
-    }
-
-    void SMeshSource::PushVertexStream(SPtr<VertexStream> vStream,int index)
-    {
-        _VertexStreams.push_back(vStream);
-        vStream->_StreamIndex = _VertexStreams.size() - 1;
-    }
-    void SMeshSource::SetIndexStream(SPtr<IndexStream> iStream)
-    {
-        _IndexStream = iStream;
-    }
-    SPtr<IndexStream> SMeshSource::GetIndexStream()
-    {
-        return _IndexStream;
-    }
-    std::vector<SPtr<VertexStream>> SMeshSource::GetVertexStreams()
-    {
-        return _VertexStreams;
-    }
-    int SMeshSource::GetVertexStreamCount()
-    {
-        return (int)_VertexStreams.size();
-    }
-    
+        SkySnow_Object(ESMesh,IRSEntity);
+    public:
+        
+        
+    private:
+        
+    };
 }

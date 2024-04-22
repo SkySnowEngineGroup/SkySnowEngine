@@ -20,35 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "SMeshSource.h"
+#include "TextureSource.h"
 
 namespace SkySnow
 {
-    SMeshSource::SMeshSource()
-        : MeshSource(MT_Static)
-    {
-    }
+	TextureSource::TextureSource()
+		: IResSource(RS_Texture)
+	{
+	}
 
-    void SMeshSource::PushVertexStream(SPtr<VertexStream> vStream,int index)
-    {
-        _VertexStreams.push_back(vStream);
-        vStream->_StreamIndex = _VertexStreams.size() - 1;
-    }
-    void SMeshSource::SetIndexStream(SPtr<IndexStream> iStream)
-    {
-        _IndexStream = iStream;
-    }
-    SPtr<IndexStream> SMeshSource::GetIndexStream()
-    {
-        return _IndexStream;
-    }
-    std::vector<SPtr<VertexStream>> SMeshSource::GetVertexStreams()
-    {
-        return _VertexStreams;
-    }
-    int SMeshSource::GetVertexStreamCount()
-    {
-        return (int)_VertexStreams.size();
-    }
-    
+	TextureSource::~TextureSource()
+	{
+	}
 }

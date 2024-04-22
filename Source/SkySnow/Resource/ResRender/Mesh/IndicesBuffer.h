@@ -27,7 +27,7 @@ namespace SkySnow
 {
     class IndicesBuffer : public IResRender
     {
-        SkySnow_Object(VertexBuffer, IResRender);
+        SkySnow_Object(IndicesBuffer, IResRender);
     public:
         IndicesBuffer();
         ~IndicesBuffer();

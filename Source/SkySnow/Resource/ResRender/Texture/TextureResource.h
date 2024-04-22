@@ -20,35 +20,36 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Texture.h"
-
+#pragma once
+#include "GRIResource.h"
+#include "TextureStream.h"
+#include "IResRender.h"
 namespace SkySnow
 {
-    Texture::Texture()
-        : IResRender(GRT_None)
+    class TextureResource : public IResRender
     {
+        SkySnow_Object(TextureResource, IResRender);
+    public:
+        TextureResource();
         
-    }
-
-    Texture::~Texture()
-    {
-        
-    }
-
-    void Texture::SetTextureStream(TextureStream* stream)
-    {
-        _TextureStream = stream;
-    }
-    void Texture::CreateGTex()
-    {
-        ResourceData texRD;
-        texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
-        uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
-        _GRITexture2D = GRCCreateTexture2D(_TextureStream->GetImageWidth(),
-                                         _TextureStream->GetImageHeight(),
-                                         _TextureStream->GetPixelFormat(),
-                                         1, 1,
-                                         (TextureUsageType)tut,
-                                         texRD);
-    }
+        virtual ~TextureResource();
+    public:
+        void SetTextureStream(TextureStream* stream);
+        //temp code
+        GRITexture2DRef GetTexture()
+        {
+            if(!_GRITexture2D.GetReference())
+            {
+                CreateGTex();
+            }
+            return _GRITexture2D;
+        }
+        void CreateGTex();
+    public:
+        GRITexture2DRef     _GRITexture2D;//GpuResource
+    private:
+        TextureStream*      _TextureStream;//CPUResource TODO Delete
+    private:
+        GRITextureRef   _GRIHandle;
+    };
 }

@@ -20,35 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "SMeshSource.h"
+#pragma once
+#include "IResSource.h"
+#include "TextureMetaData.h"
 
 namespace SkySnow
 {
-    SMeshSource::SMeshSource()
-        : MeshSource(MT_Static)
-    {
-    }
+	class TextureSource : public IResSource
+	{
+		SkySnow_Object(TextureSource, IResSource);
+	public:
+		TextureSource();
+		virtual ~TextureSource();
 
-    void SMeshSource::PushVertexStream(SPtr<VertexStream> vStream,int index)
-    {
-        _VertexStreams.push_back(vStream);
-        vStream->_StreamIndex = _VertexStreams.size() - 1;
-    }
-    void SMeshSource::SetIndexStream(SPtr<IndexStream> iStream)
-    {
-        _IndexStream = iStream;
-    }
-    SPtr<IndexStream> SMeshSource::GetIndexStream()
-    {
-        return _IndexStream;
-    }
-    std::vector<SPtr<VertexStream>> SMeshSource::GetVertexStreams()
-    {
-        return _VertexStreams;
-    }
-    int SMeshSource::GetVertexStreamCount()
-    {
-        return (int)_VertexStreams.size();
-    }
-    
+	private:
+		SPtr<TextureMetaData>	_MetaData;
+	};
 }

@@ -20,20 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "IRSEntity.h"
-#include "SMeshSource.h"
-#include "MeshResource.h"
+#include "TextureResource.h"
 
 namespace SkySnow
 {
-    class SMeshEntity : public IRSEntity<SMeshSource,MeshResource>
+    TextureResource::TextureResource()
+        : IResRender(GRT_None)
     {
-        SkySnow_Object(SMeshEntity,IRSEntity);
-    public:
         
+    }
+
+    TextureResource::~TextureResource()
+    {
         
-    private:
-        
-    };
+    }
+
+    void TextureResource::SetTextureStream(TextureStream* stream)
+    {
+        _TextureStream = stream;
+    }
+    void TextureResource::CreateGTex()
+    {
+        ResourceData texRD;
+        texRD.MakeCopy(_TextureStream->GetImageData(), _TextureStream->GetImageSize());
+        uint64 tut = (uint64)TextureUsageType::TUT_ShaderResource | (uint64)TextureUsageType::TUT_None;
+        _GRITexture2D = GRCCreateTexture2D(_TextureStream->GetImageWidth(),
+                                         _TextureStream->GetImageHeight(),
+                                         _TextureStream->GetPixelFormat(),
+                                         1, 1,
+                                         (TextureUsageType)tut,
+                                         texRD);
+    }
 }

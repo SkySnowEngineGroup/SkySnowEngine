@@ -24,7 +24,7 @@
 namespace SkySnow
 {
     MeshSource::MeshSource(MeshType meshType)
-        : IResSource(RS_MeshSource)
+        : IResSource(RS_Mesh)
         , _MeshType(meshType)
     {
     }

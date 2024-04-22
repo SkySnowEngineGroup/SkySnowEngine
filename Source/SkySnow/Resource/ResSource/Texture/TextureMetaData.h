@@ -21,33 +21,29 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "GRIResource.h"
-#include "TextureStream.h"
-#include "IResRender.h"
+#include "IMetaData.h"
+
 namespace SkySnow
 {
-    class Texture : public IResRender
+    class TextureMetaData : public IMateData
     {
-        SkySnow_Object(Texture, IResRender);
+        SkySnow_Object(TextureMetaData, IMateData);
     public:
-        Texture();
-        
-        virtual ~Texture();
+        TextureMetaData();
+        virtual ~TextureMetaData();
     public:
-        void SetTextureStream(TextureStream* stream);
-        //temp code
-        GRITexture2DRef GetTexture()
-        {
-            if(!_GRITexture2D.GetReference())
-            {
-                CreateGTex();
-            }
-            return _GRITexture2D;
-        }
-        void CreateGTex();
+
+    protected:
+    };
+
+    class Texture2DMetaData : public TextureMetaData
+    {
+        SkySnow_Object(Texture2DMetaData, TextureMetaData);
     public:
-        GRITexture2DRef     _GRITexture2D;//GpuResource
-    private:
-        TextureStream*      _TextureStream;//CPUResource
+        Texture2DMetaData();
+        virtual ~Texture2DMetaData();
+    public:
+
+    protected:
     };
 }

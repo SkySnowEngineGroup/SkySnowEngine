@@ -24,7 +24,7 @@
 namespace SkySnow
 {
     Material::Material()
-        : IResSource(RS_MaterialSource)
+        : IResSource(RS_Material)
     {
 
     }

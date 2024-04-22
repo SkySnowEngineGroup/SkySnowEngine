@@ -28,10 +28,10 @@ namespace SkySnow
     enum EResSource
     {
         RS_NoneSource,
-        RS_TextureSource,
-        RS_MeshSource,
-        RS_MaterialSource,
-        RS_SceneSource
+        RS_Texture,
+        RS_Mesh,
+        RS_Material,
+        RS_Scene
     };
     class IResSource : public Object
     {
