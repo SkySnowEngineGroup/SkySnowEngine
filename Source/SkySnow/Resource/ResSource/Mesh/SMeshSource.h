@@ -35,7 +35,7 @@ namespace SkySnow
         void SetIndexStream(SPtr<IndexStream> iStream);
         SPtr<IndexStream> GetIndexStream();
 
-        void PushVertexStream(SPtr<VertexStream> vStream, int index = 0);
+        void PushVertexStream(SPtr<VertexStream> vStream);
         std::vector<SPtr<VertexStream>> GetVertexStreams();
         int GetVertexStreamCount();
     private:

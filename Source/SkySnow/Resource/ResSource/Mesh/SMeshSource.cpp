@@ -29,10 +29,10 @@ namespace SkySnow
     {
     }
 
-    void SMeshSource::PushVertexStream(SPtr<VertexStream> vStream,int index)
+    void SMeshSource::PushVertexStream(SPtr<VertexStream> vStream)
     {
         _VertexStreams.push_back(vStream);
-        vStream->_StreamIndex = _VertexStreams.size() - 1;
+        vStream->SetStreamIndex(_VertexStreams.size() - 1);
     }
     void SMeshSource::SetIndexStream(SPtr<IndexStream> iStream)
     {

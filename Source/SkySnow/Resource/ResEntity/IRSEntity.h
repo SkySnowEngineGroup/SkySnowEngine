@@ -34,6 +34,8 @@ namespace SkySnow
         IRSEntity(){}
         virtual ~IRSEntity(){}
         
+        SPtr<Resource>  GetResource() { return _Resource; }
+        SPtr<Source>    GetSource() { return _Source; }
     private:
         SPtr<Resource>  _Resource;
         SPtr<Source>    _Source;

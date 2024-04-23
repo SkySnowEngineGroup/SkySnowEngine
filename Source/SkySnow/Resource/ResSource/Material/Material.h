@@ -21,9 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "StandardMesh.h"
 #include "IResSource.h"
-#include "Texture2D.h"
+#include "ETexture2D.h"
 #include "PropertyName.h"
 #include "GRIHeaders.h"
 #include "File.h"

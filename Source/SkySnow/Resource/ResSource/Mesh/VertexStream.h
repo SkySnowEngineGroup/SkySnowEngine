@@ -48,6 +48,7 @@ namespace SkySnow
         int GetVertexStrid(){return _Strid;}
         const VertexElementList& GetVertexElementList();
 
+        void SetStreamIndex(const int index) { _StreamIndex = index; }
         const int GetStreamIndex() { return _StreamIndex; }
     private:
         inline int ComBinaryBitIndex(VertexLayoutSlot slot);
