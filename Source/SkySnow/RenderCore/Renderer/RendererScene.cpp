@@ -26,7 +26,6 @@
 #include "RenderRenderable.h"
 #include "RenderableProxy.h"
 #include "SPtr.h"
-#include "StaticMesh.h"
 #include "Context.h"
 #include "GRIModule.h"
 
@@ -84,47 +83,47 @@ namespace SkySnow
 
     void RendererScene::RenderCore()
     {
-        //temp code
-        if (!_CMBPool)
-        {
-            _CMBPool = new GRICommandBufferPool();
-        }
-        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        GRITexture2DRef tempTex;
-        GRIViewportStateRef curVp = SSContext().GetGameWindow()->GetViewport()->GetGRIViewport();
-        commandBuffer->CmdBeginViewport(curVp, tempTex);
-        for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
-        {
-            SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
-            auto renderable = render->_RenderableProxy->GetRenderable();
-            
-            auto mesh = std::static_pointer_cast<StaticMesh>(renderable->GetShareMesh());
-            auto matList = renderable->GetMaterials();
+        ////temp code
+        //if (!_CMBPool)
+        //{
+        //    _CMBPool = new GRICommandBufferPool();
+        //}
+        //GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
+        //GRITexture2DRef tempTex;
+        //GRIViewportStateRef curVp = SSContext().GetGameWindow()->GetViewport()->GetGRIViewport();
+        //commandBuffer->CmdBeginViewport(curVp, tempTex);
+        //for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
+        //{
+        //    SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
+        //    auto renderable = render->_RenderableProxy->GetRenderable();
+        //    
+        //    auto mesh = std::static_pointer_cast<StaticMesh>(renderable->GetShareMesh());
+        //    auto matList = renderable->GetMaterials();
 
-            for (int i = 0; i < matList.size(); i ++)
-            {
-                auto mat = matList[i];
-                if (!_PSORef)
-                {
-                    SamplerState samplerState;
-                    _Sampler = GRCCreateSampler(samplerState);
-                    mesh->CreateMeshBuffer();
-                    
-                    GRICreateGraphicsPipelineInfo psoCreateInfo;
-                    psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
-                    psoCreateInfo._ShaderPipelineInfo._PipelineShader = mat->GetPShader();
-                    psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = mesh->GetMeshBuffer()->GetVertexDesc();
-                    psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();
-                    psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
-                    _PSORef = GRCCreateGraphicsPipeline(psoCreateInfo);
-                }
-            }
-            commandBuffer->CmdSetGraphicsPipeline(_PSORef);
-            
-            commandBuffer->CmdDrawPrimitive(2, 1);
-        }
-        commandBuffer->CmdEndViewport(curVp, false, false);
-        CBQueue()->SubmitCommandBuffer(commandBuffer);
+        //    for (int i = 0; i < matList.size(); i ++)
+        //    {
+        //        auto mat = matList[i];
+        //        if (!_PSORef)
+        //        {
+        //            SamplerState samplerState;
+        //            _Sampler = GRCCreateSampler(samplerState);
+        //            mesh->CreateMeshBuffer();
+        //            
+        //            GRICreateGraphicsPipelineInfo psoCreateInfo;
+        //            psoCreateInfo._PrimitiveType = PrimitiveType::PT_Trangles;
+        //            psoCreateInfo._ShaderPipelineInfo._PipelineShader = mat->GetPShader();
+        //            psoCreateInfo._ShaderPipelineInfo._VertexDescriptor = mesh->GetMeshBuffer()->GetVertexDesc();
+        //            psoCreateInfo._ShaderPipelineInfo._Textures[0] = mat->GetTexture("panda.png")->GetTexture();
+        //            psoCreateInfo._ShaderPipelineInfo._Samplers[0] = _Sampler;
+        //            _PSORef = GRCCreateGraphicsPipeline(psoCreateInfo);
+        //        }
+        //    }
+        //    commandBuffer->CmdSetGraphicsPipeline(_PSORef);
+        //    
+        //    commandBuffer->CmdDrawPrimitive(2, 1);
+        //}
+        //commandBuffer->CmdEndViewport(curVp, false, false);
+        //CBQueue()->SubmitCommandBuffer(commandBuffer);
         
     }
 }

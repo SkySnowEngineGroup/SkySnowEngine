@@ -24,6 +24,7 @@
 #include "Object.h"
 #include "GRIHeaders.h"
 #include "SPtr.h"
+#include "ResourceProperty.h"
 
 namespace SkySnow
 {
@@ -31,22 +32,18 @@ namespace SkySnow
     {
         SkySnow_Object(IResRender, Object);
     public:
-        IResRender(EGRIResourceType grirt) 
-            : _GRIResType(grirt)
+        IResRender(ResourceType resourceType)
+            : _ResourceType(resourceType)
         {
         }
         virtual ~IResRender() {}
 
-        EGRIResourceType GetResRenderType()
+        ResourceType GetResourceType()
         {
-            return _GRIResType;
+            return _ResourceType;
         }
+
     protected:
-        void SetResType(const EGRIResourceType resType)
-        {
-            _GRIResType = resType;
-        }
-    protected:
-        EGRIResourceType    _GRIResType;
+        ResourceType    _ResourceType;
     };
 }

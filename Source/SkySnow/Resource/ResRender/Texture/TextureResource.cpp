@@ -25,7 +25,7 @@
 namespace SkySnow
 {
     TextureResource::TextureResource()
-        : IResRender(GRT_None)
+        : IResRender(RT_Texture)
     {
         
     }

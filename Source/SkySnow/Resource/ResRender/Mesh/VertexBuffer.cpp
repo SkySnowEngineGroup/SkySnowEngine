@@ -25,7 +25,7 @@
 namespace SkySnow
 {
     VertexBuffer::VertexBuffer()
-        : IResRender(GRT_Buffer)
+        : IRender()
     {
     }
     VertexBuffer::~VertexBuffer()

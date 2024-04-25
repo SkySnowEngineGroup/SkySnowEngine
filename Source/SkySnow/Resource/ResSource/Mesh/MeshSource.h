@@ -25,24 +25,14 @@
 #include "MeshUtil.h"
 namespace SkySnow
 {
-    enum MeshType
-    {
-        MT_None,
-        MT_Static,
-        MT_Skinned,
-        MT_BlendShape,
-    };
     class MeshSource : public IResSource
     {
         SkySnow_Object(MeshSource, IResSource);
     public:
-        MeshSource(MeshType meshType = MT_None);
+        MeshSource(SourceType sourceType);
         virtual ~MeshSource();
-        
-        MeshType GetMeshType(){ return _MeshType;}
-        
+
         virtual void CreateStandardMesh(StandardMeshType smType) {};
     protected:
-        MeshType                        _MeshType;
     };
 }

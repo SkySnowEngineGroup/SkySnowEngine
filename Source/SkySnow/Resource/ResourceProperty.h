@@ -20,18 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+#pragma once
 
-#include "IResSource.h"
 namespace SkySnow
 {
-    IResSource::IResSource(EResSource ert)
-        : _ResourceType(ert)
-        , _IsKeepSource(true)
-    {
-        
-    }
-    IResSource::~IResSource()
-    {
-        
-    }
+	enum ResourceType
+	{
+		RT_StaticMesh,
+		RT_Texture,
+		RT_Material
+	};
+	enum SourceType
+	{
+		ST_StaticMesh,
+		ST_Texture,
+		ST_Material
+	};
 }

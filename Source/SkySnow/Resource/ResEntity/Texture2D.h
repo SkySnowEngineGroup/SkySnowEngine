@@ -20,46 +20,26 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Material.h"
+#pragma once
+#include "IRSEntity.h"
+#include "TextureResource.h"
+#include "TextureSource.h"
+
 namespace SkySnow
 {
-    Material::Material()
-        : IResSource(RS_Material)
+    class Texture2D : public IRSEntity<TextureSource, TextureResource>
     {
+        SkySnow_Object(Texture2D, IRSEntity);
+    public:
+        Texture2D();
+        virtual ~Texture2D();
+        
+        void SetTextureMeta(SPtr<Texture2DMetaData> meta);
 
-    }
+        void SetTextureStream(SPtr<TextureStream> stream);
 
-    Material::~Material()
-    {
-        Delete_Object(_File);
-        Delete_Object(_VsData);
-        Delete_Object(_FsData);
-    }
-
-    void Material::SetTexture(std::string name, Texture2D* texture)
-    {
-        _Textures[name] = texture;
-    }
-
-    Texture2D* Material::GetTexture(std::string name)
-    {
-        auto find = _Textures.find(name);
-        if (find != _Textures.end())
-        {
-            return find->second;
-        }
-        return nullptr;
-    }
-
-    void Material::CreateShader(std::string vsName,std::string fsName)
-    {
-        string vsShaderPath = GetMaterialAllPath("Test/" + vsName);
-        string fsShaderPath = GetMaterialAllPath("Test/" + fsName);
-        _File = new File();
-        _VsData = new Data();
-        _FsData = new Data();
-        //TODO Shader SourceData Manage
-        _File->ReadData(vsShaderPath, _VsData);
-        _File->ReadData(fsShaderPath, _FsData);
-    }
+        void FlushStream();
+    private:
+        TextureStream* _TextureStream;
+    };
 }

@@ -28,25 +28,12 @@
 
 namespace SkySnow
 {
-    struct ResKeyWords
-    {
-        std::string     _ResPath;
-        EResSource      _Ert;
-    };
-
-    struct ResResult
-    {
-        ResKeyWords _KeyWords;
-        IResSource* _ResSource;
-    };
     class ResourceModule : public IModule
     {
         SkySnow_Object(ResourceModule, IModule);
     public:
         ResourceModule();
         virtual ~ResourceModule();
-        
-        void PushLoadJob(std::string resPath, EResSource rst);
 
         virtual void StartUp() final override;
 
@@ -54,8 +41,7 @@ namespace SkySnow
 
         virtual void ShutDown() final override;
     private:
-        std::unordered_map<std::size_t, ResKeyWords>    _ResMapJob;
-        std::vector<ResResult>                          _ResResultMap;
+
     };
     ResourceModule* ResourceSystem();
 }

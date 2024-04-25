@@ -23,9 +23,8 @@
 #include "MeshSource.h"
 namespace SkySnow
 {
-    MeshSource::MeshSource(MeshType meshType)
-        : IResSource(RS_Mesh)
-        , _MeshType(meshType)
+    MeshSource::MeshSource(SourceType sourceType)
+        : IResSource(sourceType)
     {
     }
 

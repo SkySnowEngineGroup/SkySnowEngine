@@ -21,39 +21,3 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
-#include "GRIHeaders.h"
-#include "SPtr.h"
-
-namespace SkySnow
-{
-    class IResRender : public Object
-    {
-        SkySnow_Object(IResRender, Object);
-    public:
-        IResRender(EGRIResourceType grirt) 
-            : _GRIResType(grirt)
-        {
-        }
-        virtual ~IResRender() {}
-
-        EGRIResourceType GetResRenderType()
-        {
-            return _GRIResType;
-        }
-    protected:
-        EGRIResourceType    _GRIResType;
-    };
-
-    class VertexBuffer : public IResRender
-    {
-        SkySnow_Object(VertexBuffer, IResRender);
-    public:
-        VertexBuffer()
-            : IResRender(GRT_Buffer)
-        {}
-        virtual ~VertexBuffer(){}
-    public:
-        GRIVertexBufferRef  _VertexBufferGRI;
-    };
-}

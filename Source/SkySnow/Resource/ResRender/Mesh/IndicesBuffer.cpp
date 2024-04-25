@@ -25,7 +25,7 @@
 namespace SkySnow
 {
     IndicesBuffer::IndicesBuffer()
-        : IResRender(GRT_Buffer)
+        : IRender()
     {
         
     }

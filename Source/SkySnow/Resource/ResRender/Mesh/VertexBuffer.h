@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IResRender.h"
+#include "IRender.h"
 namespace SkySnow
 {
-    class VertexBuffer : public IResRender
+    class VertexBuffer : public IRender
     {
-        SkySnow_Object(VertexBuffer, IResRender);
+        SkySnow_Object(VertexBuffer, IRender);
     public:
         VertexBuffer();
         ~VertexBuffer();

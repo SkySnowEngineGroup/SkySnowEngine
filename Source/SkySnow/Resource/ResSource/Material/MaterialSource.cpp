@@ -20,35 +20,46 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "Object.h"
-#include "SPtr.h"
-#include "ResourceProperty.h"
-
+#include "MaterialSource.h"
 namespace SkySnow
 {
-    class IResSource : public Object
+    MaterialSource::MaterialSource()
+        : IResSource(ST_Material)
     {
-        SkySnow_Object(IResSource,Object);
-    public:
-        IResSource(SourceType sourceType)
-            : _SourceType(sourceType)
-        {
-        }
-        virtual ~IResSource()
-        {
-        }
 
-        void SetKeepSource(bool keepSource)
+    }
+
+    MaterialSource::~MaterialSource()
+    {
+        Delete_Object(_File);
+        Delete_Object(_VsData);
+        Delete_Object(_FsData);
+    }
+
+    void Material::SetTexture(std::string name, Texture2D* texture)
+    {
+        _Textures[name] = texture;
+    }
+
+    Texture2D* Material::GetTexture(std::string name)
+    {
+        auto find = _Textures.find(name);
+        if (find != _Textures.end())
         {
-            _IsKeepSource = keepSource;
+            return find->second;
         }
-        bool IsKeepSource()
-        {
-            return _IsKeepSource;
-        }
-    protected:
-        SourceType _SourceType;
-        bool       _IsKeepSource;
-    };
+        return nullptr;
+    }
+
+    void Material::CreateShader(std::string vsName,std::string fsName)
+    {
+        string vsShaderPath = GetMaterialAllPath("Test/" + vsName);
+        string fsShaderPath = GetMaterialAllPath("Test/" + fsName);
+        _File = new File();
+        _VsData = new Data();
+        _FsData = new Data();
+        //TODO Shader SourceData Manage
+        _File->ReadData(vsShaderPath, _VsData);
+        _File->ReadData(fsShaderPath, _FsData);
+    }
 }

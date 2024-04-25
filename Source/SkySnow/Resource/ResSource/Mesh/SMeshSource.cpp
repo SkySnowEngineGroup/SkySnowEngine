@@ -25,7 +25,7 @@
 namespace SkySnow
 {
     SMeshSource::SMeshSource()
-        : MeshSource(MT_Static)
+        : MeshSource(ST_StaticMesh)
     {
     }
 

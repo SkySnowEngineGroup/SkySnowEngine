@@ -21,19 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IRSEntity.h"
-#include "SMeshSource.h"
-#include "MeshResource.h"
+#include "IResRender.h"
 
 namespace SkySnow
 {
-    class ESMesh : public IRSEntity<SMeshSource,MeshResource>
-    {
-        SkySnow_Object(ESMesh,IRSEntity);
-    public:
-        
-        
-    private:
-        
-    };
+	class MaterialResource : public IResRender
+	{
+		SkySnow_Object(MaterialResource, IResRender);
+	public:
+		MaterialResource();
+		virtual ~MaterialResource();
+
+	private:
+	};
 }

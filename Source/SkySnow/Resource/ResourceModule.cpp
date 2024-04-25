@@ -36,17 +36,17 @@ namespace SkySnow
 
     }
 
-    void ResourceModule::PushLoadJob(std::string resPath, EResSource rst)
-    {
-        std::size_t hash = 0;
-        HashCombine(resPath,hash);
-        HashCombine((int)rst, hash);
+    //void ResourceModule::PushLoadJob(std::string resPath, EResSource rst)
+    //{
+    //    std::size_t hash = 0;
+    //    HashCombine(resPath,hash);
+    //    HashCombine((int)rst, hash);
 
-        ResKeyWords meta;
-        meta._ResPath   = resPath;
-        meta._Ert       = rst;
-        _ResMapJob[hash] = meta;
-    }
+    //    ResKeyWords meta;
+    //    meta._ResPath   = resPath;
+    //    meta._Ert       = rst;
+    //    _ResMapJob[hash] = meta;
+    //}
 
     void ResourceModule::StartUp()
     {

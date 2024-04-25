@@ -21,25 +21,3 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IRSEntity.h"
-#include "TextureResource.h"
-#include "TextureSource.h"
-
-namespace SkySnow
-{
-    class ETexture2D : public IRSEntity<TextureSource, TextureResource>
-    {
-        SkySnow_Object(ETexture2D, IRSEntity);
-    public:
-        ETexture2D();
-        virtual ~ETexture2D();
-        
-        void SetTextureMeta(SPtr<Texture2DMetaData> meta);
-
-        void SetTextureStream(SPtr<TextureStream> stream);
-
-        void FlushStream();
-    private:
-        TextureStream* _TextureStream;
-    };
-}

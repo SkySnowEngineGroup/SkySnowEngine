@@ -21,34 +21,16 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
-#include "SPtr.h"
-#include "ResourceProperty.h"
+#include "MaterialResource.h"
 
 namespace SkySnow
 {
-    class IResSource : public Object
-    {
-        SkySnow_Object(IResSource,Object);
-    public:
-        IResSource(SourceType sourceType)
-            : _SourceType(sourceType)
-        {
-        }
-        virtual ~IResSource()
-        {
-        }
+	MaterialResource::MaterialResource()
+		: IResRender(RT_Material)
+	{
+	}
 
-        void SetKeepSource(bool keepSource)
-        {
-            _IsKeepSource = keepSource;
-        }
-        bool IsKeepSource()
-        {
-            return _IsKeepSource;
-        }
-    protected:
-        SourceType _SourceType;
-        bool       _IsKeepSource;
-    };
+	MaterialResource::~MaterialResource()
+	{
+	}
 }

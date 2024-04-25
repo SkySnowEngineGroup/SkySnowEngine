@@ -22,18 +22,15 @@
 //
 #pragma once
 #include "IResSource.h"
-#include "ETexture2D.h"
-#include "PropertyName.h"
-#include "GRIHeaders.h"
-#include "File.h"
+
 namespace SkySnow
 {
-    class Material : public IResSource
+    class MaterialSource : public IResSource
     {
-        SkySnow_Object(Material, IResSource);
+        SkySnow_Object(MaterialSource, IResSource);
     public:
-        Material();
-        ~Material();
+        MaterialSource();
+        ~MaterialSource();
         
         void SetTexture(std::string name,Texture2D* texture);
 

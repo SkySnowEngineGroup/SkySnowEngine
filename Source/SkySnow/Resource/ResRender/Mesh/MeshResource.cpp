@@ -21,12 +21,11 @@
 // THE SOFTWARE.
 //
 #include "MeshResource.h"
-#include "VertexData.h"
 
 namespace SkySnow
 {
     MeshResource::MeshResource()
-        : IResRender(GRT_None)
+        : IResRender(RT_StaticMesh)
     {
         
     }

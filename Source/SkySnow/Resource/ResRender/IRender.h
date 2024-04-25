@@ -22,33 +22,14 @@
 //
 #pragma once
 #include "Object.h"
-#include "SPtr.h"
-#include "ResourceProperty.h"
 
 namespace SkySnow
 {
-    class IResSource : public Object
+    class IRender : public Object
     {
-        SkySnow_Object(IResSource,Object);
+        SkySnow_Object(IRender, Object);
     public:
-        IResSource(SourceType sourceType)
-            : _SourceType(sourceType)
-        {
-        }
-        virtual ~IResSource()
-        {
-        }
-
-        void SetKeepSource(bool keepSource)
-        {
-            _IsKeepSource = keepSource;
-        }
-        bool IsKeepSource()
-        {
-            return _IsKeepSource;
-        }
-    protected:
-        SourceType _SourceType;
-        bool       _IsKeepSource;
+        IRender() {}
+        virtual ~IRender() {}
     };
 }

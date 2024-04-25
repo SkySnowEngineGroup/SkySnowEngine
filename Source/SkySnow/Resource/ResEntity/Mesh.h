@@ -21,31 +21,20 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "IRSEntity.h"
+#include "SMeshSource.h"
+#include "MeshResource.h"
 
 namespace SkySnow
 {
-    static int G_PropertyIndex = 0;
-    static int G_MaxPropertyIndex = 256;
-    //struct PropertyName
-    //{
-    //    PropertyName(const char* name)
-    //        : 
-    //    {
-    //    }
-    //    void SetName(const char* name)
-    //    {
-    //        Init();
-    //    }
-    //    int GetIndex()
-    //    {
-    //        return _Index;
-    //    }
-    //private:
-    //    void Init()
-    //    {
-    //        _Index = G_PropertyIndex;
-    //        G_PropertyIndex ++;
-    //    }
-    //    int _Index;
-    //};
+    class Mesh : public IRSEntity<SMeshSource,MeshResource>
+    {
+        SkySnow_Object(Mesh,IRSEntity);
+    public:
+        Mesh();
+        ~Mesh();
+        
+    private:
+        
+    };
 }
