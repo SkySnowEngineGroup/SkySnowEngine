@@ -21,17 +21,20 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
-#include "SPtr.h"
+#include "ISource.h"
+#include "SubShader.h"
+#include <vector>
+
 namespace SkySnow
 {
-    class IStream : public Object
-    {
-        SkySnow_Object(IStream, Object);
-    public:
-        IStream()
-            : Object()
-        {}
-        virtual ~IStream(){}
-    };
+	class Shader : public ISource
+	{
+		SkySnow_Object(Shader, ISource);
+	public:
+		Shader();
+		virtual ~Shader();
+
+	private:
+		std::vector<SPtr<SubShader>> _SubShaders;
+	};
 }

@@ -20,9 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "IMetaData.h"
+#pragma once
+#include "ISouShader.h"
 
 namespace SkySnow
 {
-
+	class ShaderState : public ISouShader
+	{
+		SkySnow_Object(ShaderState,ISouShader);
+	public:
+		ShaderState();
+		virtual ~ShaderState();
+	};
 }

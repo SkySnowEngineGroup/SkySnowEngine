@@ -21,3 +21,21 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include <vector>
+#include "ShaderPass.h"
+#include "ISouShader.h"
+
+namespace SkySnow
+{
+	class SubShader : public ISouShader
+	{
+		SkySnow_Object(SubShader, ISouShader);
+	public:
+		SubShader();
+		virtual ~SubShader();
+
+	private:
+		std::vector<SPtr<ShaderPass>> _ShaderPasss;
+		SPtr<ShaderState>			  _ShaderState;
+	};
+}

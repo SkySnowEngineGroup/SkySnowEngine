@@ -25,11 +25,8 @@
 
 namespace SkySnow
 {
-    class IRender : public Object
-    {
-        SkySnow_Object(IRender, Object);
-    public:
-        IRender() {}
-        virtual ~IRender() {}
-    };
+	class IRender : public Object
+	{
+		SkySnow_Object(IRender,Object);
+	};
 }

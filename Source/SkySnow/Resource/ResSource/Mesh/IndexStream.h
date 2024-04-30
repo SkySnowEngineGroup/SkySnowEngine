@@ -21,12 +21,12 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IStream.h"
+#include "ISource.h"
 namespace SkySnow
 {
-	class IndexStream : public IStream
+	class IndexStream : public ISource
 	{
-		SkySnow_Object(IndexStream, IStream);
+		SkySnow_Object(IndexStream, ISource);
 	public:
         IndexStream();
 		~IndexStream();

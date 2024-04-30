@@ -31,35 +31,35 @@ namespace SkySnow
 
     MaterialSource::~MaterialSource()
     {
-        Delete_Object(_File);
-        Delete_Object(_VsData);
-        Delete_Object(_FsData);
+        //Delete_Object(_File);
+        //Delete_Object(_VsData);
+        //Delete_Object(_FsData);
     }
 
-    void Material::SetTexture(std::string name, Texture2D* texture)
-    {
-        _Textures[name] = texture;
-    }
+    //void Material::SetTexture(std::string name, Texture2D* texture)
+    //{
+    //    _Textures[name] = texture;
+    //}
 
-    Texture2D* Material::GetTexture(std::string name)
-    {
-        auto find = _Textures.find(name);
-        if (find != _Textures.end())
-        {
-            return find->second;
-        }
-        return nullptr;
-    }
+    //Texture2D* Material::GetTexture(std::string name)
+    //{
+    //    auto find = _Textures.find(name);
+    //    if (find != _Textures.end())
+    //    {
+    //        return find->second;
+    //    }
+    //    return nullptr;
+    //}
 
-    void Material::CreateShader(std::string vsName,std::string fsName)
-    {
-        string vsShaderPath = GetMaterialAllPath("Test/" + vsName);
-        string fsShaderPath = GetMaterialAllPath("Test/" + fsName);
-        _File = new File();
-        _VsData = new Data();
-        _FsData = new Data();
-        //TODO Shader SourceData Manage
-        _File->ReadData(vsShaderPath, _VsData);
-        _File->ReadData(fsShaderPath, _FsData);
-    }
+    //void Material::CreateShader(std::string vsName,std::string fsName)
+    //{
+    //    string vsShaderPath = GetMaterialAllPath("Test/" + vsName);
+    //    string fsShaderPath = GetMaterialAllPath("Test/" + fsName);
+    //    _File = new File();
+    //    _VsData = new Data();
+    //    _FsData = new Data();
+    //    //TODO Shader SourceData Manage
+    //    _File->ReadData(vsShaderPath, _VsData);
+    //    _File->ReadData(fsShaderPath, _FsData);
+    //}
 }

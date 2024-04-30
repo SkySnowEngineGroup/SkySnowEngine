@@ -21,3 +21,14 @@
 // THE SOFTWARE.
 //
 #pragma once
+#include "IResShader.h"
+
+namespace SkySnow
+{
+	class ShaderPipeline : public IRender
+	{
+		SkySnow_Object(ShaderPipeline, IRender);
+	public:
+
+	};
+}

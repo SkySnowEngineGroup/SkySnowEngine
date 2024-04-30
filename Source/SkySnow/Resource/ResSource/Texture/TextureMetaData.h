@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IMetaData.h"
+#include "IMateData.h"
 
 namespace SkySnow
 {

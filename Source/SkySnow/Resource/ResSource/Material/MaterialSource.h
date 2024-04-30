@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "IResSource.h"
+#include "Shader.h"
 
 namespace SkySnow
 {
@@ -32,36 +33,37 @@ namespace SkySnow
         MaterialSource();
         ~MaterialSource();
         
-        void SetTexture(std::string name,Texture2D* texture);
+        //void SetTexture(std::string name,Texture2D* texture);
 
-        Texture2D* GetTexture(std::string name);
-        
-        //temp code
-        void CreateShader(std::string vsName,std::string fsName);
-        GRIPipelineShaderRef GetPShader()
-        {
-            if(!_PipelineShaderRef.GetReference())
-            {
-                //Create VS And PS
-                ResourceData vsRD;
-                vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
-                _vsRef = GRCCreateVertexShader(vsRD);
-                ResourceData fsRD;
-                fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
-                _fsRef = GRCCreateFragmentShader(fsRD);
-                //Create ShaderPipeline
-                _PipelineShaderRef = GRCCreatePipelineShader(_vsRef, _fsRef);
-            }
-            return _PipelineShaderRef;
-        }
+        //Texture2D* GetTexture(std::string name);
+        //
+        ////temp code
+        //void CreateShader(std::string vsName,std::string fsName);
+        //GRIPipelineShaderRef GetPShader()
+        //{
+        //    if(!_PipelineShaderRef.GetReference())
+        //    {
+        //        //Create VS And PS
+        //        ResourceData vsRD;
+        //        vsRD.MakeCopy(_VsData->GetBytes(), (int32)_VsData->GetSize());
+        //        _vsRef = GRCCreateVertexShader(vsRD);
+        //        ResourceData fsRD;
+        //        fsRD.MakeCopy(_FsData->GetBytes(), (int32)_FsData->GetSize());
+        //        _fsRef = GRCCreateFragmentShader(fsRD);
+        //        //Create ShaderPipeline
+        //        _PipelineShaderRef = GRCCreatePipelineShader(_vsRef, _fsRef);
+        //    }
+        //    return _PipelineShaderRef;
+        //}
 
     private:
-        std::unordered_map<std::string, Texture2D*>    _Textures;
-        File*                       _File;
-        Data*                       _VsData;
-        Data*                       _FsData;
-        GRIVertexShaderRef          _vsRef;
-        GRIFragmentShaderRef        _fsRef;
-        GRIPipelineShaderRef        _PipelineShaderRef;
+        SPtr<Shader>    _Shader;
+        //std::unordered_map<std::string, Texture2D*>    _Textures;
+        //File*                       _File;
+        //Data*                       _VsData;
+        //Data*                       _FsData;
+        //GRIVertexShaderRef          _vsRef;
+        //GRIFragmentShaderRef        _fsRef;
+        //GRIPipelineShaderRef        _PipelineShaderRef;
     };
 }

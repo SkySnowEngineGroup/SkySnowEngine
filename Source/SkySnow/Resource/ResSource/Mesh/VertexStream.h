@@ -22,14 +22,14 @@
 //
 #pragma once
 #include "GRIResourceCreateInfo.h"
-#include "IStream.h"
+#include "ISource.h"
 #include "MathCommon.h"
 #include <vector>
 namespace SkySnow
 {
-    class VertexStream : public IStream
+    class VertexStream : public ISource
     {
-        SkySnow_Object(VertexStream, IStream);
+        SkySnow_Object(VertexStream, ISource);
         friend class VertexData;
         typedef std::unordered_map<uint32, VertexElementSlot> VertexLayouts;
     public:

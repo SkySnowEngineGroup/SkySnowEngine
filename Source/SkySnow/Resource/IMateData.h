@@ -25,14 +25,10 @@
 
 namespace SkySnow
 {
-    class IMateData : public Object
-    {
-        SkySnow_Object(IMateData,Object);
-    public:
-        IMateData();
-        virtual ~IMateData();
-    public:
-        
-    protected:
-    };
+	class IMateData : public Object
+	{
+		SkySnow_Object(IMateData, Object);
+	public:
+
+	};
 }
