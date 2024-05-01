@@ -31,18 +31,18 @@ namespace SkySnow
     RenderableProxy::RenderableProxy()
         : _Renderable(nullptr)
     {
-        
+
     }
     RenderableProxy::~RenderableProxy()
     {
-        
+
     }
 
     void RenderableProxy::ProxyRegister(IComponent* com)
     {
         _Renderable = dynamic_cast<Renderable*>(com);
         auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetSceneHandle());
-        if(rScene)
+        if (rScene)
         {
             rScene->NotifyRenderableAdded(this);
         }
@@ -50,7 +50,7 @@ namespace SkySnow
     void RenderableProxy::ProxyUnRegister(IComponent* com)
     {
         auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetSceneHandle());
-        if(rScene)
+        if (rScene)
         {
             rScene->NotifyRenderableRemoved(this);
         }

@@ -30,7 +30,7 @@ namespace SkySnow
     public:
         CameraProxy();
         ~CameraProxy();
-        
+
         virtual void ProxyRegister(IComponent* com) override;
         virtual void ProxyUnRegister(IComponent* com) override;
     private:

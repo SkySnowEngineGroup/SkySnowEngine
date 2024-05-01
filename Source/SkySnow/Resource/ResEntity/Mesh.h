@@ -27,14 +27,14 @@
 
 namespace SkySnow
 {
-    class Mesh : public IRSEntity<SMeshSource,MeshResource>
+    class Mesh : public IRSEntity<SMeshSource, MeshResource>
     {
-        SkySnow_Object(Mesh,IRSEntity);
+        SkySnow_Object(Mesh, IRSEntity);
     public:
         Mesh();
         ~Mesh();
-        
+
     private:
-        
+
     };
 }

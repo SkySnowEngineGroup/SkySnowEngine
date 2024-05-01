@@ -33,7 +33,7 @@ namespace SkySnow
     public:
         Texture2D();
         virtual ~Texture2D();
-        
+
         void SetTextureMeta(SPtr<Texture2DMetaData> meta);
 
         void SetTextureStream(SPtr<TextureStream> stream);

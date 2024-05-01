@@ -30,7 +30,7 @@ namespace SkySnow
     public:
         RenderableProxy();
         ~RenderableProxy();
-        
+
         virtual void ProxyRegister(IComponent* com) override;
         virtual void ProxyUnRegister(IComponent* com) override;
 

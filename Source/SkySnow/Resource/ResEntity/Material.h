@@ -33,5 +33,7 @@ namespace SkySnow
     public:
         Material();
         ~Material();
+    private:
+
     };
 }

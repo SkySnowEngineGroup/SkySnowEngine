@@ -33,7 +33,7 @@ namespace SkySnow
 {
     RenderModule::RenderModule()
     {
-        
+
     }
 
     RenderModule::~RenderModule()
@@ -52,7 +52,7 @@ namespace SkySnow
     }
     void RenderModule::RenderInternal()
     {
-        for(const auto& pair : _RendererScenes)
+        for (const auto& pair : _RendererScenes)
         {
             pair.second->RenderCore();
         }
@@ -67,7 +67,7 @@ namespace SkySnow
     void RenderModule::NotifyRemoveRendererScene(SceneHandle sceneHandle)
     {
         auto iter = _RendererScenes.find(sceneHandle);
-        if(iter != _RendererScenes.end())
+        if (iter != _RendererScenes.end())
         {
             delete iter->second;
             _RendererScenes.erase(iter);
@@ -76,18 +76,18 @@ namespace SkySnow
     RendererScene* RenderModule::GetRendererScene(SceneHandle sceneHandle)
     {
         auto iter = _RendererScenes.find(sceneHandle);
-        if(iter != _RendererScenes.end())
+        if (iter != _RendererScenes.end())
         {
             return _RendererScenes[sceneHandle];
         }
-        SN_WARN("Not find this SceneHandle(%d) RendererScene.",sceneHandle);
+        SN_WARN("Not find this SceneHandle(%d) RendererScene.", sceneHandle);
         return nullptr;
     }
     void RenderModule::ShutDown()
     {
         for (auto& pair : _RendererScenes)
         {
-            delete pair.second; // åˆ é™¤æŒ‡é’ˆæŒ‡å‘çš„å¯¹è±¡
+            delete pair.second; // É¾³ıÖ¸ÕëÖ¸ÏòµÄ¶ÔÏó
         }
         _RendererScenes.clear();
         SN_LOG("RenderModule ShutDown.");

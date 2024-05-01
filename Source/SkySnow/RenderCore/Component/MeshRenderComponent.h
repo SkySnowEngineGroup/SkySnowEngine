@@ -26,17 +26,17 @@
 namespace SkySnow
 {
     class RenderableProxy;
-	class MeshRenderComponent : public Renderable
-	{
-		SkySnow_Object(MeshRenderComponent, Renderable);
-	public:
+    class MeshRenderComponent : public Renderable
+    {
+        SkySnow_Object(MeshRenderComponent, Renderable);
+    public:
         MeshRenderComponent();
         ~MeshRenderComponent();
         //proxy
         virtual void CreateProxy() override;
         virtual void RemoveProxy() override;
-	private:
+    private:
         RenderableProxy* _Proxy;
         int aa;
-	};
+    };
 }

@@ -35,13 +35,13 @@ namespace SkySnow
         SkySnow_Object(RenderModule, IModule);
     public:
         RenderModule();
-        
+
         ~RenderModule();
-        
+
         virtual void StartUp() final override;
-        
+
         virtual void Update() final override;
-        
+
         virtual void ShutDown() final override;
 
         //Call from SceneManager
