@@ -30,7 +30,6 @@ namespace SkySnow
     class VertexStream : public ISource
     {
         SkySnow_Object(VertexStream, ISource);
-        friend class VertexData;
         typedef std::unordered_map<uint32, VertexElementSlot> VertexLayouts;
     public:
         VertexStream();

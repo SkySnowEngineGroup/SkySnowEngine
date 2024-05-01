@@ -27,7 +27,6 @@
 
 namespace SkySnow
 {
-    class VertexData;
     class MeshResource : public IResRender
     {
         SkySnow_Object(MeshResource, IResRender);
@@ -35,7 +34,7 @@ namespace SkySnow
         MeshResource();
         ~MeshResource();
         
-        void SMCreateBuffer(SPtr<VertexData> vertexData);
+        //void SMCreateBuffer(SPtr<VertexData> vertexData);
         
         void OnCreateResource();
         

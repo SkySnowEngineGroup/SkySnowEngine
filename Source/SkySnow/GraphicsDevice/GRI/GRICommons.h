@@ -104,6 +104,22 @@ namespace SkySnow
         VET_Float4,
         VET_Max
     };
+	enum VariablesType
+	{
+		VT_Float,
+		VT_Float2,
+		VT_Float3,
+		VT_Float4,
+		VT_Mat3,
+		VT_Mat4,
+		VT_Texture1D,
+		VT_Texture2D,
+		VT_Texture3D,
+		VT_TextureCube,
+		VT_SamplerBuffer,
+		VT_UniformBuffer,
+		VT_Count
+	};
 	enum class PrimitiveType
 	{
 		PT_Lines,

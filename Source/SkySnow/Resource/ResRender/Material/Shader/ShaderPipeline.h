@@ -21,21 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IComponent.h"
-#include "Mesh.h"
+#include "IRender.h"
 
 namespace SkySnow
 {
-    //For Dynamin and pyhix
-    class MeshComponent : public IComponent
-    {
-        SkySnow_Object(MeshComponent, IComponent);
-    public:
-        MeshComponent();
-        ~MeshComponent();
-        
-        void SetShareMesh(SPtr<Mesh> mesh);
-    private:
-        SPtr<Mesh>  _Mesh;
-    };
+	class ShaderPipeline : public IRender
+	{
+		SkySnow_Object(ShaderPipeline, IRender);
+	public:
+		ShaderPipeline();
+		~ShaderPipeline();
+	private:
+
+	};
 }

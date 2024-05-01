@@ -20,22 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include <vector>
-#include "ShaderPass.h"
-#include "ISouShader.h"
+#include "ShaderParse.h"
 
 namespace SkySnow
 {
-	class SubShader : public ISouShader
+	ShaderParse::ShaderParse()
+		: ILoader()
 	{
-		SkySnow_Object(SubShader, ISouShader);
-	public:
-		SubShader();
-		virtual ~SubShader();
-
-	private:
-		std::vector<SPtr<ShaderPass>> _ShaderPasss;
-		SPtr<ShaderState>			  _ShaderState;
-	};
+	}
+	ShaderParse::~ShaderParse()
+	{
+	}
+	void* ShaderParse::DoLoad(const std::string filePath)
+	{
+		return nullptr;
+	}
 }

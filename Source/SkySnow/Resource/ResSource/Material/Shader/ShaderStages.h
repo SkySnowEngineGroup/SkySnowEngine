@@ -21,14 +21,19 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IResShader.h"
+#include "ISource.h"
 
 namespace SkySnow
 {
-	class ShaderPipeline : public IRender
+	class ShaderStages : public ISource
 	{
-		SkySnow_Object(ShaderPipeline, IRender);
+		SkySnow_Object(ShaderStages, ISource);
 	public:
-
+		ShaderStages();
+		~ShaderStages();
+	public:
+		std::string _VSShaderCode;
+		std::string _FSShaderCode;
+		
 	};
 }

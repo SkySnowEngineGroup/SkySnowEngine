@@ -21,15 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IRender.h"
+#include "ISource.h"
 
 namespace SkySnow
 {
-	class IResShader : public IRender
+	class RenderState : public ISource
 	{
-		SkySnow_Object(IResShader, IRender);
+		SkySnow_Object(RenderState, ISource);
 	public:
-		IResShader() {}
-		virtual ~IResShader() {}
+		RenderState();
+		~RenderState();
+
+	private:
+
 	};
 }

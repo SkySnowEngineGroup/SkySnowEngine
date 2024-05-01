@@ -25,14 +25,11 @@
 
 namespace SkySnow
 {
-	class ISouShader : public ISource
+	class MaterialProperty : public ISource
 	{
-		SkySnow_Object(ISouShader, ISource);
-	public:
-		ISouShader();
-		virtual ~ISouShader();
-
-	private:
-
+		SkySnow_Object(MaterialProperty, ISource);
+	public :
+		MaterialProperty();
+		~MaterialProperty();
 	};
 }

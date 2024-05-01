@@ -21,15 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ShaderState.h"
+#include "IRender.h"
+#include "ShaderPipeline.h"
 
 namespace SkySnow
 {
-	class ShaderPass : public ShaderState
+	class GraphicsPipeline : public IRender
 	{
-		SkySnow_Object(ShaderPass,ShaderState);
+		SkySnow_Object(GraphicsPipeline,IRender);
 	public:
-		ShaderPass();
-		virtual ~ShaderPass();
+		GraphicsPipeline();
+		~GraphicsPipeline();
+	private:
+
 	};
 }

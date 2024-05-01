@@ -99,7 +99,6 @@ namespace SkySnow
         {
             SN_LOG("Not find this module:%s",T::GetTypeNameStatic());
         }
-        int a = 10;
     }
     Context& SSContext();
 }

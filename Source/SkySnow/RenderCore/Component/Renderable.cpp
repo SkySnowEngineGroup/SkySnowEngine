@@ -57,7 +57,7 @@ namespace SkySnow
         return _Materials;
     }
 
-    void Renderable::SetShareMesh(SPtr<MeshBase> mesh)
+    void Renderable::SetShareMesh(SPtr<Mesh> mesh)
     {
         _Mesh = mesh;
     }

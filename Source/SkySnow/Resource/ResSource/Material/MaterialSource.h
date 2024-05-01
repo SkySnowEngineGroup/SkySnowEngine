@@ -23,6 +23,7 @@
 #pragma once
 #include "IResSource.h"
 #include "Shader.h"
+#include "MaterialProperty.h"
 
 namespace SkySnow
 {
@@ -57,7 +58,8 @@ namespace SkySnow
         //}
 
     private:
-        SPtr<Shader>    _Shader;
+        SPtr<Shader>            _Shader;
+        SPtr<MaterialProperty>  _Property;
         //std::unordered_map<std::string, Texture2D*>    _Textures;
         //File*                       _File;
         //Data*                       _VsData;

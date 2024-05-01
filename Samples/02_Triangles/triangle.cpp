@@ -29,7 +29,6 @@
 #include "Renderable.h"
 #include "MeshRenderComponent.h"
 #include "MeshComponent.h"
-#include "StaticMesh.h"
 #include "SampleApplication.h"
 #include "Context.h"
 #include "Texture2D.h"
@@ -53,30 +52,30 @@ public:
 
 	bool Init()
 	{
-        _Scene = GetSceneManager().CreateScene("Test");
+  //      _Scene = GetSceneManager().CreateScene("Test");
 
-		SPtr<GameObject> go = _Scene->GetRootGo();
+		//SPtr<GameObject> go = _Scene->GetRootGo();
 
-        SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
-        SPtr<MeshRenderComponent> meshRenderCom = go->AddComponent<MeshRenderComponent>();
-        SPtr<MeshComponent>       meshCom = go->AddComponent<MeshComponent>();
+  //      SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
+  //      SPtr<MeshRenderComponent> meshRenderCom = go->AddComponent<MeshRenderComponent>();
+  //      SPtr<MeshComponent>       meshCom = go->AddComponent<MeshComponent>();
 
-        std::string imagePath = GetImageAllPath("panda.png");
-        TextureLoader* tImp = new TextureLoader();
-        TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
-        Texture2D* texture = new Texture2D();
-        texture->SetTextureStream(texStream);
+  //      std::string imagePath = GetImageAllPath("panda.png");
+  //      TextureLoader* tImp = new TextureLoader();
+  //      TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
+  //      Texture2D* texture = new Texture2D();
+  //      texture->SetTextureStream(texStream);
 
-        SPtr<Material> mat = CreateSPtr<Material>();
-        mat->SetTexture("panda.png",texture);
-        mat->CreateShader("QuadVS.sns", "QuadFS.sns");
-        
-        SPtr<StaticMesh> mesh = CreateSPtr<StaticMesh>();
-        mesh->CreateStandardMesh(StandardMeshType::SM_Quad);
-        meshCom->SetShareMesh(mesh);
+  //      SPtr<Material> mat = CreateSPtr<Material>();
+  //      mat->SetTexture("panda.png",texture);
+  //      mat->CreateShader("QuadVS.sns", "QuadFS.sns");
+  //      
+  //      SPtr<StaticMesh> mesh = CreateSPtr<StaticMesh>();
+  //      mesh->CreateStandardMesh(StandardMeshType::SM_Quad);
+  //      meshCom->SetShareMesh(mesh);
 
-        meshRenderCom->SetMaterialCount(1);
-        meshRenderCom->SetMaterial(mat,0);
+  //      meshRenderCom->SetMaterialCount(1);
+  //      meshRenderCom->SetMaterial(mat,0);
 
 		return true;
 	}

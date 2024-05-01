@@ -21,20 +21,19 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ISource.h"
-#include "SubShader.h"
-#include <vector>
+#include "ShaderStages.h"
+#include "RenderState.h"
 
 namespace SkySnow
 {
-	class Shader : public ISource
+	class ShaderPass : public ISource
 	{
-		SkySnow_Object(Shader, ISource);
+		SkySnow_Object(ShaderPass, ISource);
 	public:
-		Shader();
-		virtual ~Shader();
-
+		ShaderPass();
+		virtual ~ShaderPass();
 	private:
-		std::vector<SPtr<SubShader>> _SubShaders;
+		SPtr<RenderState>	_RenderState;
+		SPtr<ShaderStages>	_ShaderStagesInfo;
 	};
 }

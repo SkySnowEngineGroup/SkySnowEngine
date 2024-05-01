@@ -37,10 +37,10 @@ namespace SkySnow
         void SetMaterial(SPtr<Material> material,int index);
         std::vector<SPtr<Material>> GetMaterials();
         
-		void SetShareMesh(SPtr<MeshBase> mesh);
-		SPtr<MeshBase> GetShareMesh() { return _Mesh; }
+		void SetShareMesh(SPtr<Mesh> mesh);
+		SPtr<Mesh> GetShareMesh() { return _Mesh; }
     protected:
         std::vector<SPtr<Material>> _Materials;
-		SPtr<MeshBase>              _Mesh;
+		SPtr<Mesh>					_Mesh;
 	};
 }

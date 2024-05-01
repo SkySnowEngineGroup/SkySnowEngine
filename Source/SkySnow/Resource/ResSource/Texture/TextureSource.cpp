@@ -25,7 +25,7 @@
 namespace SkySnow
 {
 	TextureSource::TextureSource()
-		: IResSource(RS_Texture)
+		: IResSource(ST_Texture)
 	{
 	}
 

@@ -35,7 +35,7 @@ namespace SkySnow
         
     }
 
-    void MeshComponent::SetShareMesh(SPtr<MeshSource> mesh)
+    void MeshComponent::SetShareMesh(SPtr<Mesh> mesh)
     {
         _Mesh = mesh;
         auto go = GetGameObject().lock();
