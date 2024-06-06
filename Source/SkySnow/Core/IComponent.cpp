@@ -23,20 +23,22 @@
 #include "IComponent.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "GameObjectManager.h"
+#include "SceneManager.h"
+
 namespace SkySnow
 {
-	WPtr<Scene> IComponent::GetHostScene() const
-	{
-		if (!_GameObject.lock())
-		{
-			SN_WARN("Curr Component Not Attach Any GameObject.");
-		}
-		return _GameObject.lock()->GetHostScene();
-	}
-
-    void IComponent::AttachGO(WPtr<GameObject> go)
+    SPtr<GameObject> IComponent::GetHostGoPtr() const
     {
-        _GameObject = go;
-        _SceneHandle = _GameObject.lock()->GetHostScene().lock()->GetSceneHandle();
+        return GetGOManager().GetGoPtr(_GoUUID);
+    }
+    SPtr<Scene> IComponent::GetHostScenePtr() const
+    {
+        return GetSceneManager().GetScene(_SceneHandle);
+    }
+    void IComponent::AttachGO(int64 goUuid)
+    {
+        _GoUUID = goUuid;
+        _SceneHandle = GetGOManager().GetGoPtr(_GoUUID)->GetHostSceneHandle();
     }
 }

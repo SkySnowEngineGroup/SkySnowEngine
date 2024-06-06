@@ -19,26 +19,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 #include "GameObject.h"
 #include "LogAssert.h"
 #include "TransformComponent.h"
+#include "GameObjectManager.h"
+#include "SceneManager.h"
+
 namespace SkySnow
 {
     GameObject::GameObject()
         : _Enable(true)
         , _Layer(0)
         , _Tag(0)
-        , _Parent(nullptr)
+        , _ParentUUID(-1)
+        , _UUID(-1)
     {
         _ComponentList.clear();
-        _ChildList.clear();
+        _ChildUUIDList.clear();
     }
     
     GameObject::~GameObject()
     {
         _ComponentList.clear();
-        _ChildList.clear();
+        _ChildUUIDList.clear();
         SN_LOG("GameObject DesConstruct.");
     }
 
@@ -47,11 +50,12 @@ namespace SkySnow
         _Enable = enable;
         for(auto entry : _ComponentList)
         {
-            entry->SetEnabled(enable);
-        }
-        for(auto entry:_ChildList)
-        {
             entry->SetEnable(enable);
+        }
+        for(auto entry:_ChildUUIDList)
+        {
+            SPtr<GameObject> go = GetGOManager().GetGoPtr(entry);
+            go->SetEnable(enable);
         }
     }
 
@@ -94,34 +98,35 @@ namespace SkySnow
 
     SPtr<GameObject> GameObject::AddChild()
     {
-        SPtr<GameObject> cgo = CreateSPtr<GameObject>();
-        cgo->_Parent = GetPtr();
-        cgo->AttachScene(_HostScene);
+        SPtr<GameObject> cgo = GetGOManager().CreateGo();
+        cgo->SetParent(GetGOManager().GetGoPtr(_UUID));
+        cgo->SetSceneHandle(_SceneHandle);
         int32_t layer = _Layer + 1;
         cgo->SetLayer(layer);
 
-        _ChildList.push_back(cgo);
+        _ChildUUIDList.push_back(_UUID);
         return cgo;
     }
 
     void GameObject::RemoveChild(SPtr<GameObject> childGO)
     {
-        for (auto iter = _ChildList.begin(); iter != _ChildList.end(); iter++)
-        {
-            if (*iter == childGO)
-            {
-                _ChildList.erase(iter);
-                break;
-            }
-        }
+        GetGOManager().RemoveGoPtr(childGO->GetUUID());
     }
 
     void GameObject::SetParent(SPtr<GameObject> parentGO)
     {
-        if (parentGO != _Parent)
+        if (parentGO->GetUUID() != -1)
         {
-            _Parent = parentGO;
-            _HostScene = parentGO->GetHostScene();
+            _ParentUUID = parentGO->GetUUID();
+            _SceneHandle = parentGO->GetHostSceneHandle();
         }
+    }
+    SPtr<GameObject> GameObject::GetGoPtr()
+    {
+        return GetGOManager().GetGoPtr(_UUID);
+    }
+    SPtr<Scene> GameObject::GetHostScenePtr()
+    {
+        return GetSceneManager().GetScene(_SceneHandle);
     }
 }

@@ -38,22 +38,13 @@ namespace SkySnow
 
     }
 
-    void CameraProxy::ProxyRegister(IComponent* com)
+    void CameraProxy::RegisterProxy(SPtr<IComponent> proxy)
     {
-        _Camera = dynamic_cast<Camera*>(com);
-        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetSceneHandle());
-        if (rScene)
-        {
-            rScene->NotifyCameraAdded(this);
-        }
+        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetHostSceneHandle());
     }
 
-    void CameraProxy::ProxyUnRegister(IComponent* com)
+    void CameraProxy::UnRegisterProxy(SPtr<IComponent> proxy)
     {
-        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetSceneHandle());
-        if (rScene)
-        {
-            rScene->NotifyCameraRemoved(this);
-        }
+        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetHostSceneHandle());
     }
 }

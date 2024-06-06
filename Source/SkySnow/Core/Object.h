@@ -22,6 +22,9 @@
 #pragma once
 #include "ObjectDefines.h"
 #include "LogAssert.h"
+#include "VarType.h"
+#include "InstanceID.h"
+
 namespace SkySnow
 {
 	class Object
@@ -45,6 +48,6 @@ namespace SkySnow
 		}
 
 	private:
-
+        InstanceID  _InstanceID;
 	};
 }

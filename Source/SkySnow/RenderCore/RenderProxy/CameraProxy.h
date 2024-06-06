@@ -31,9 +31,9 @@ namespace SkySnow
         CameraProxy();
         ~CameraProxy();
 
-        virtual void ProxyRegister(IComponent* com) override;
-        virtual void ProxyUnRegister(IComponent* com) override;
+        virtual void RegisterProxy(SPtr<IComponent> proxy) override;
+        virtual void UnRegisterProxy(SPtr<IComponent> proxy) override;
     private:
-        Camera* _Camera;
+        SPtr<Camera> _Camera;
     };
 }

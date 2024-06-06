@@ -20,35 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "MeshRenderComponent.h"
-#include "RenderableProxy.h"
+#pragma once
+#include "Renderable.h"
+
 namespace SkySnow
 {
-    MeshRenderComponent::MeshRenderComponent()
-        : _Proxy(nullptr)
+    class RenderableProxy;
+    class MeshRendererComponent : public Renderable
     {
-    }
-    MeshRenderComponent::~MeshRenderComponent()
-    {
-
-    }
-
-
-    void MeshRenderComponent::CreateProxy()
-    {
-        if (!_Proxy)
-        {
-            _Proxy = new RenderableProxy();
-            _Proxy->ProxyRegister(this);
-        }
-    }
-
-    void MeshRenderComponent::RemoveProxy()
-    {
-        if (_Proxy)
-        {
-            _Proxy->ProxyUnRegister(this);
-            Delete_Object(_Proxy);
-        }
-    }
+        SkySnow_Object(MeshRendererComponent, Renderable);
+    public:
+        MeshRendererComponent();
+        ~MeshRendererComponent();
+    private:
+        RenderableProxy* _Proxy;
+        int aa;
+    };
 }

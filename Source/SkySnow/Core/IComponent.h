@@ -25,10 +25,10 @@
 #include <vector>
 namespace SkySnow
 {
-    class GameObject;
     class Scene;
     class IProxy;
-	class IComponent : public Object , public std::enable_shared_from_this<IComponent>
+    class GameObject;
+	class IComponent : public Object
 	{
 		SkySnow_Object(IComponent,Object);
 	public:
@@ -41,50 +41,19 @@ namespace SkySnow
         {
         }
 
-		virtual void Deactivate()
-        {
-            _Enable = false;
-        }
-
-		virtual bool HasEnabled() const
-        {
-            return _Enable;
-        }
-
-		virtual void SetEnabled(bool enable)
-        {
-            _Enable = enable;
-        }
-        //attach this comonent to gameobject
-        void AttachGO(WPtr<GameObject> go);
+		virtual bool IsEnable() const{ return _Enable;}
+		virtual void SetEnable(bool enable){ _Enable = enable;}
         
-        SceneHandle GetSceneHandle()
-        {
-            return _SceneHandle;
-        }
+        //attach this comonent to gameobject
+        void AttachGO(int64 goUuid);
         //Get curr component attach gameobject
-        WPtr<GameObject> GetGameObject() const
-        {
-            if(!_GameObject.lock())
-            {
-                SN_WARN("Curr Component Not Attach Any GameObject.");
-            }
-            return _GameObject;
-        }
+        SPtr<GameObject> GetHostGoPtr() const;
         //Get Scene
-        WPtr<Scene> GetHostScene() const;
-        //proxy
-        //引擎层与渲染层代理，每个引擎层组件只能绑定一个代理
-        virtual void CreateProxy(){}
-        virtual void RemoveProxy(){}
-    protected:
-        SPtr<IComponent> GetPtr()
-        {
-            return shared_from_this();
-        }
+        SPtr<Scene> GetHostScenePtr() const;
+        SceneHandle GetHostSceneHandle() const { return _SceneHandle;}
 	protected:
 		bool		     _Enable;
-        WPtr<GameObject> _GameObject;
+        int64            _GoUUID;
         SceneHandle      _SceneHandle;
 	};
 }

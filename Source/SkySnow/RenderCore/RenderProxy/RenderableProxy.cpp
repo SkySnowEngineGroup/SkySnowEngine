@@ -38,21 +38,12 @@ namespace SkySnow
 
     }
 
-    void RenderableProxy::ProxyRegister(IComponent* com)
+    void RenderableProxy::RegisterProxy(SPtr<IComponent> proxy)
     {
-        _Renderable = dynamic_cast<Renderable*>(com);
-        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetSceneHandle());
-        if (rScene)
-        {
-            rScene->NotifyRenderableAdded(this);
-        }
+        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetHostSceneHandle());
     }
-    void RenderableProxy::ProxyUnRegister(IComponent* com)
+    void RenderableProxy::UnRegisterProxy(SPtr<IComponent> proxy)
     {
-        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetSceneHandle());
-        if (rScene)
-        {
-            rScene->NotifyRenderableRemoved(this);
-        }
+        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetHostSceneHandle());
     }
 }

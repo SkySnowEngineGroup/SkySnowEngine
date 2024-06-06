@@ -29,7 +29,7 @@ namespace SkySnow
 {
     class GameObject;
     class RendererScene;
-    class Scene : public Object , public std::enable_shared_from_this<Scene>
+    class Scene : public Object
     {
         SkySnow_Object(Scene,Object);
         friend class SceneManager;
@@ -52,10 +52,6 @@ namespace SkySnow
         
         RendererScene* GetRendererScene() const;
     private:
-        SPtr<Scene> GetPtr()
-        {
-            return shared_from_this();
-        }
         //SetUp curr scene root gameobject
         SPtr<GameObject> AddRootGo();
     private:
@@ -63,7 +59,7 @@ namespace SkySnow
         SceneHandle                 _SceneHandle;
         uint64_t                    _CullingMask;
         std::string                 _SceneName;
-        SPtr<GameObject>            _RootGo;
+        int64                       _RootGoUUID;
         RendererScene*              _RendererScene;
     };
 }

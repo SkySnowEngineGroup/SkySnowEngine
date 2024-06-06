@@ -20,15 +20,32 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Camera.h"
-#include "CameraProxy.h"
+#pragma once
+#include "NonCopyable.h"
+#include "VarType.h"
+#include "SPtr.h"
+#include <map>
+
 namespace SkySnow
 {
-    Camera::Camera()
-        : _CameraProxy(nullptr)
+    class GameObject;
+    class IComponent;
+    class GameObjectManager : public NonCopyable
     {
-    }
-    Camera::~Camera()
-    {
-    }
+    public:
+        static GameObjectManager& Instance();
+        
+        SPtr<GameObject> CreateGo();
+        SPtr<GameObject> GetGoPtr(int64_t uuid);
+        void UpdateGOUUID(int64 oldUuid,int64 newUuid);
+        void RemoveGoPtr(int64_t uuid);
+        
+        SPtr<IComponent> CreateCom();
+        
+    private:
+        int64                               _tempUuidIdx = -1;
+        std::map<uint64_t,SPtr<GameObject>> _GOMaps;
+        
+    };
+    GameObjectManager& GetGOManager();
 }

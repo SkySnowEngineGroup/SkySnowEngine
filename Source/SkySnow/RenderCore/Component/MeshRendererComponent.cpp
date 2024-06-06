@@ -20,15 +20,16 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Camera.h"
-#include "CameraProxy.h"
+#include "MeshRendererComponent.h"
+#include "RenderableProxy.h"
 namespace SkySnow
 {
-    Camera::Camera()
-        : _CameraProxy(nullptr)
+    MeshRendererComponent::MeshRendererComponent()
+        : _Proxy(nullptr)
     {
     }
-    Camera::~Camera()
+    MeshRendererComponent::~MeshRendererComponent()
     {
+
     }
 }

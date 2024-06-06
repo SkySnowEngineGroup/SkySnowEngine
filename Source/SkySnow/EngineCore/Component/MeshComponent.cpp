@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "MeshComponent.h"
-#include "MeshRenderComponent.h"
+#include "MeshRendererComponent.h"
 #include "GameObject.h"
 namespace SkySnow
 {
@@ -38,10 +38,10 @@ namespace SkySnow
     void MeshComponent::SetShareMesh(SPtr<Mesh> mesh)
     {
         _Mesh = mesh;
-        auto go = GetGameObject().lock();
-        if(go && go->HasComponent<MeshRenderComponent>())
+        auto go = GetHostGoPtr();
+        if(go && go->HasComponent<MeshRendererComponent>())
         {
-            go->GetComponent<MeshRenderComponent>()->SetShareMesh(_Mesh);
+            go->GetComponent<MeshRendererComponent>()->SetShareMesh(_Mesh);
         }
     }
 }

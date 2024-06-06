@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RenderElement.h"
 #include <vector>
 namespace SkySnow
 {
@@ -32,6 +31,6 @@ namespace SkySnow
 		~RenderQueue();
 
 	private:
-		std::vector<RenderElement> _Elements;
+		
 	};
 }

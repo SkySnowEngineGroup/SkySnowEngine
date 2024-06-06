@@ -31,8 +31,8 @@ namespace SkySnow
         RenderableProxy();
         ~RenderableProxy();
 
-        virtual void ProxyRegister(IComponent* com) override;
-        virtual void ProxyUnRegister(IComponent* com) override;
+        virtual void RegisterProxy(SPtr<IComponent> proxy) override;
+        virtual void UnRegisterProxy(SPtr<IComponent> proxy) override;
 
         Renderable* GetRenderable() { return _Renderable; }
     private:

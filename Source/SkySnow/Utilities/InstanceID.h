@@ -21,22 +21,13 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Renderable.h"
 
 namespace SkySnow
 {
-    class RenderableProxy;
-    class MeshRenderComponent : public Renderable
+    class InstanceID
     {
-        SkySnow_Object(MeshRenderComponent, Renderable);
     public:
-        MeshRenderComponent();
-        ~MeshRenderComponent();
-        //proxy
-        virtual void CreateProxy() override;
-        virtual void RemoveProxy() override;
-    private:
-        RenderableProxy* _Proxy;
-        int aa;
+        constexpr InstanceID() = default;
+        
     };
 }

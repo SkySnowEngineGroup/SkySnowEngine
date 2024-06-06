@@ -40,23 +40,22 @@ namespace SkySnow
         
     }
 
-    void RendererScene::NotifyRenderableAdded(RenderableProxy* renderable)
+    void RendererScene::NotifyRenderableAdded(SPtr<RenderableProxy> renderable)
     {
-        auto renderElement = CreateSPtr<RenderRenderable>(renderable);
-        _RSceneInfo._RenderRenderables.push_back(renderElement);
+        _SceneInfo._RenderList.push_back(renderable);
 
     }
-    void RendererScene::NotifyRenderableUpdate(RenderableProxy* renderable)
+    void RendererScene::NotifyRenderableUpdate(SPtr<RenderableProxy> renderable)
     {
         
     }
-    void RendererScene::NotifyRenderableRemoved(RenderableProxy* renderable)
+    void RendererScene::NotifyRenderableRemoved(SPtr<RenderableProxy> renderable)
     {
-        for(auto iter = _RSceneInfo._RenderRenderables.begin();iter != _RSceneInfo._RenderRenderables.end();)
+        for(auto iter = _SceneInfo._RenderList.begin();iter != _SceneInfo._RenderList.end();)
         {
-            if((*iter)->IsEqual(renderable))
+            if((*iter) == renderable)
             {
-                iter = _RSceneInfo._RenderRenderables.erase(iter);
+                iter = _SceneInfo._RenderList.erase(iter);
             }
             else
             {
@@ -64,21 +63,27 @@ namespace SkySnow
             }
         }
     }
-    void RendererScene::NotifyCameraAdded(CameraProxy* camera)
+    void RendererScene::NotifyCameraAdded(SPtr<CameraProxy> camera)
     {
-        if(!_RSceneInfo._RenderViewFamily)
-        {
-            _RSceneInfo._RenderViewFamily = CreateSPtr<RenderViewFamily>();
-        }
-        _RSceneInfo._RenderViewFamily->AddRenderView(camera);
+        _SceneInfo._CameraList.push_back(camera);
     }
-    void RendererScene::NotifyCameraUpdate(CameraProxy* camera)
+    void RendererScene::NotifyCameraUpdate(SPtr<CameraProxy> camera)
     {
         
     }
-    void RendererScene::NotifyCameraRemoved(CameraProxy* camera)
+    void RendererScene::NotifyCameraRemoved(SPtr<CameraProxy> camera)
     {
-        _RSceneInfo._RenderViewFamily->RemoveRenderView(camera);
+        for(auto iter = _SceneInfo._CameraList.begin(); iter != _SceneInfo._CameraList.end();)
+        {
+            if((*iter) == camera)
+            {
+                iter = _SceneInfo._CameraList.erase(iter);
+            }
+            else
+            {
+                iter ++;
+            }
+        }
     }
 
     void RendererScene::RenderCore()

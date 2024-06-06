@@ -23,6 +23,9 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "SkySnowProfiles.h"
+#include "SceneManager.h"
+#include "GameObjectManager.h"
+
 namespace SkySnow
 {
     Scene::Scene(std::string sceneName)
@@ -30,7 +33,7 @@ namespace SkySnow
         , _SceneHandle(-1)
         , _CullingMask(g_DefaultCullingMask)
         , _SceneName(sceneName)
-        , _RootGo(nullptr)
+        , _RootGoUUID(-1)
         , _RendererScene(nullptr)
     {
     }
@@ -60,12 +63,13 @@ namespace SkySnow
     }
     SPtr<GameObject> Scene::AddRootGo()
     {
-        if(!_RootGo)
+        if(_RootGoUUID == -1)
         {
-            _RootGo = CreateSPtr<GameObject>();
-            _RootGo->AttachScene(GetPtr());
+            SPtr<GameObject> rootGo= GetGOManager().CreateGo();
+            _RootGoUUID = rootGo->GetUUID();
+            rootGo->SetSceneHandle(_SceneHandle);
         }
-        return _RootGo;
+        return GetGOManager().GetGoPtr(_RootGoUUID);
     }
     
     SPtr<GameObject> Scene::GetRootGo()

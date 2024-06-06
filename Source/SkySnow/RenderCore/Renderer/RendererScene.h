@@ -34,7 +34,7 @@ namespace SkySnow
     struct RSceneInfo
     {
         std::vector<SPtr<RenderableProxy>>  _RenderList;
-        std::vector<SPtr<RenderPass>>       _RenderPass;
+        std::vector<SPtr<CameraProxy>>      _CameraList;
     };
     class Renderable;
     class RendererScene final
@@ -44,13 +44,13 @@ namespace SkySnow
         
         ~RendererScene();
         //Renderable
-        void NotifyRenderableAdded(RenderableProxy* renderable);
-        void NotifyRenderableUpdate(RenderableProxy* renderable);
-        void NotifyRenderableRemoved(RenderableProxy* renderable);
+        void NotifyRenderableAdded(SPtr<RenderableProxy> renderable);
+        void NotifyRenderableUpdate(SPtr<RenderableProxy> renderable);
+        void NotifyRenderableRemoved(SPtr<RenderableProxy> renderable);
         //Camera
-        void NotifyCameraAdded(CameraProxy* camera);
-        void NotifyCameraUpdate(CameraProxy* camera);
-        void NotifyCameraRemoved(CameraProxy* camera);
+        void NotifyCameraAdded(SPtr<CameraProxy> camera);
+        void NotifyCameraUpdate(SPtr<CameraProxy> camera);
+        void NotifyCameraRemoved(SPtr<CameraProxy> camera);
 
         void RenderCore();
     private:

@@ -28,10 +28,11 @@ namespace SkySnow
     //if GO has parent-child,A TransformComponent must be mounted
     //https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
     class Scene;
-	class GameObject : public Object , public std::enable_shared_from_this<GameObject>
+	class GameObject : public Object
 	{
 		SkySnow_Object(GameObject, Object);
         friend class Scene;
+        friend class GameObjectManager;
 	public:
 		GameObject();
 		virtual ~GameObject();
@@ -55,33 +56,24 @@ namespace SkySnow
         SPtr<GameObject> AddChild();
         void RemoveChild(SPtr<GameObject> childGO);
         void SetParent(SPtr<GameObject> parentGO);
-
-        WPtr<Scene> GetHostScene() const
-        {
-            if (!_HostScene.lock())
-            {
-                SN_WARN("Curr GameObject Not Attach Any Scene.");
-            }
-            return _HostScene;
-        }
+        
+        SPtr<GameObject> GetGoPtr();
+        SPtr<Scene> GetHostScenePtr();
+        
+        int64 GetUUID() const{ return _UUID;}
+        SceneHandle GetHostSceneHandle()const{ return _SceneHandle;}
 	private:
-        SPtr<GameObject> GetPtr()
-        {
-            return shared_from_this();
-        }
-
-        void AttachScene(WPtr<Scene> scene)
-        {
-            _HostScene = scene;
-        }
+        void SetSceneHandle(const SceneHandle sHandle){_SceneHandle = sHandle;}
+        void SetUUID(const int64 uuid){_UUID = uuid;}
     private:
         bool                        _Enable;
         //GameObject at Layer
         int32_t                         _Layer;
         int16_t                         _Tag;
-        SPtr<GameObject>                _Parent;
-        WPtr<Scene>                     _HostScene;
-        std::vector<SPtr<GameObject>>   _ChildList;
+        int64_t                         _UUID;
+        int64_t                         _ParentUUID;
+        SceneHandle                     _SceneHandle;
+        std::vector<int64>              _ChildUUIDList;
         std::vector<SPtr<IComponent>>   _ComponentList;
 	};
 
@@ -97,9 +89,8 @@ namespace SkySnow
             }
         }
         SPtr<T> newCom = CreateSPtr<T>();
-        newCom->AttachGO(GetPtr());
+        newCom->AttachGO(_UUID);
         _ComponentList.emplace_back(newCom);
-        newCom->CreateProxy();
         return newCom;
     }
     template<typename T> void GameObject::RemoveComponent()
@@ -108,7 +99,6 @@ namespace SkySnow
         {
             if((*iter)->GetTypeName() == T::GetTypeNameStatic())
             {
-                (*iter)->RemoveProxy();
                 _ComponentList.erase(iter);
                 break;
             }

@@ -25,6 +25,8 @@
 #include "Context.h"
 #include "RenderModule.h"
 #include "Scene.h"
+#include "GameObject.h"
+
 namespace SkySnow
 {
     SceneManager::SceneManager()
@@ -128,6 +130,5 @@ namespace SkySnow
     {
         return SceneManager::Instance();
     }
-
 }
 

@@ -31,9 +31,6 @@ namespace SkySnow
     public:
         Camera();
         ~Camera();
-        
-        //proxy
-        virtual void CreateProxy() override;
     private:
         CameraProxy* _CameraProxy;
     };

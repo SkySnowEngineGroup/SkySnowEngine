@@ -27,7 +27,7 @@
 #include "SceneManager.h"
 #include "GameObject.h"
 #include "Renderable.h"
-#include "MeshRenderComponent.h"
+#include "MeshRendererComponent.h"
 #include "MeshComponent.h"
 #include "SampleApplication.h"
 #include "Context.h"

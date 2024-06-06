@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-
+#include "SPtr.h"
 namespace SkySnow
 {
     class IComponent;
@@ -31,7 +31,7 @@ namespace SkySnow
         IProxy(){}
         virtual ~IProxy(){}
         
-        virtual void ProxyRegister(IComponent* com) = 0;
-        virtual void ProxyUnRegister(IComponent* com) = 0;
+        virtual void RegisterProxy(SPtr<IComponent> proxy) = 0;
+        virtual void UnRegisterProxy(SPtr<IComponent> proxy) = 0;
 	};
 }

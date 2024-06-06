@@ -20,15 +20,54 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "Camera.h"
-#include "CameraProxy.h"
+#include "GameObjectManager.h"
+#include "GameObject.h"
+
 namespace SkySnow
 {
-    Camera::Camera()
-        : _CameraProxy(nullptr)
+    GameObjectManager& GameObjectManager::Instance()
     {
+        static GameObjectManager instance;
+        return instance;
     }
-    Camera::~Camera()
+
+    SPtr<GameObject> GameObjectManager::CreateGo()
     {
+        _tempUuidIdx ++;
+        SPtr<GameObject> go = CreateSPtr<GameObject>();
+        go->SetUUID(_tempUuidIdx);
+        _GOMaps[_tempUuidIdx] = go;
+        return go;
+    }
+    SPtr<GameObject> GameObjectManager::GetGoPtr(int64_t uuid)
+    {
+        auto iter = _GOMaps.find(uuid);
+        if(iter != _GOMaps.end())
+        {
+            return iter->second;
+        }
+        return nullptr;
+    }
+    void GameObjectManager::UpdateGOUUID(int64 oldUuid,int64 newUuid)
+    {
+        auto iter = _GOMaps.find(oldUuid);
+        if(iter != _GOMaps.end())
+        {
+            SPtr<GameObject> go = iter->second;
+            _GOMaps.erase(iter);
+            _GOMaps[newUuid] = go;
+        }
+    }
+    void GameObjectManager::RemoveGoPtr(int64_t uuid)
+    {
+        auto iter = _GOMaps.find(uuid);
+        if(iter != _GOMaps.end())
+        {
+            _GOMaps.erase(iter);
+        }
+    }
+    GameObjectManager& GetGOManager()
+    {
+        return GameObjectManager::Instance();
     }
 }
