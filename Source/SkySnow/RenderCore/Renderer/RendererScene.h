@@ -23,8 +23,7 @@
 #pragma once
 #include <vector>
 #include "SPtr.h"
-#include "RenderRenderable.h"
-#include "RenderViewFamily.h"
+#include "RenderPass.h"
 #include "GRIHeaders.h"
 namespace SkySnow
 {
@@ -34,9 +33,8 @@ namespace SkySnow
     //每个Scene对应一个RendererScene，当Scene卸载加载时，RendererScene同时卸载加载
     struct RSceneInfo
     {
-        std::vector<SPtr<RenderRenderable>> _RenderRenderables;
-        
-        SPtr<RenderViewFamily>              _RenderViewFamily;
+        std::vector<SPtr<RenderableProxy>>  _RenderList;
+        std::vector<SPtr<RenderPass>>       _RenderPass;
     };
     class Renderable;
     class RendererScene final
@@ -56,9 +54,9 @@ namespace SkySnow
 
         void RenderCore();
     private:
-        RSceneInfo      _RSceneInfo;
-        GRIGraphicsPipelineRef      _PSORef;
-        GRISamplerStateRef          _Sampler;
-        GRICommandBufferPool*       _CMBPool = nullptr;
+        RSceneInfo      _SceneInfo;
+        //GRIGraphicsPipelineRef      _PSORef;
+        //GRISamplerStateRef          _Sampler;
+        //GRICommandBufferPool*       _CMBPool = nullptr;
     };
 }

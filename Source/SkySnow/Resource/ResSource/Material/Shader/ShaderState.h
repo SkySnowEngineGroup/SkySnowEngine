@@ -20,17 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-
-#include "RenderableElement.h"
+#pragma once
+#include "ISource.h"
 
 namespace SkySnow
 {
-    RenderableElement::RenderableElement()
-    {
-        
-    }
-    RenderableElement::~RenderableElement()
-    {
-        
-    }
+	class ShaderState : public ISource
+	{
+		SkySnow_Object(ShaderState, ISource);
+	public:
+		ShaderState();
+		~ShaderState();
+
+	private:
+
+	};
 }

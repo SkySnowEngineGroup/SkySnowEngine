@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "ShaderStages.h"
-#include "RenderState.h"
+#include "ShaderState.h"
 
 namespace SkySnow
 {
@@ -33,7 +33,7 @@ namespace SkySnow
 		ShaderPass();
 		virtual ~ShaderPass();
 	private:
-		SPtr<RenderState>	_RenderState;
+		SPtr<ShaderState>	_RenderState;
 		SPtr<ShaderStages>	_ShaderStagesInfo;
 	};
 }

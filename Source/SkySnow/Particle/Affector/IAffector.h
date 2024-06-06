@@ -21,22 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "SPtr.h"
-#include "RenderQueue.h"
+#include "Object.h"
+
 namespace SkySnow
 {
-    class CameraProxy;
-	class RenderView
-	{
-	public:
-		RenderView(CameraProxy* cameraProxy);
-
-		virtual ~RenderView();
-        bool IsEqual(CameraProxy* cameraProxy);
-	private:
-        CameraProxy*        _CameraProxy;
-		SPtr<RenderQueue>   _ForwardOpaqueQueue;
-		SPtr<RenderQueue>   _TransparentQueue;
-        //SPtr<RenderQueue> _DeferredOpaqueQueue;
-	};
+    class IAffector : public Object
+    {
+        SkySnow_Object(IAffector,Object);
+    public:
+        IAffector();
+        ~IAffector();
+        
+    private:
+        
+    };
 }

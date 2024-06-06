@@ -21,22 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RenderView.h"
-#include <vector>
-#include "SPtr.h"
+#include "IRender.h"
+
 namespace SkySnow
 {
-	//Every Scene Has Family RenderView
-	class RenderViewFamily final
+	class RenderProgram : public IRender
 	{
+		SkySnow_Object(RenderProgram, IRender);
 	public:
-		RenderViewFamily();
-		
-		~RenderViewFamily();
-        
-        void AddRenderView(CameraProxy* cameraProxy);
-        void RemoveRenderView(CameraProxy* cameraProxy);
+		RenderProgram();
+		~RenderProgram();
 	private:
-		std::vector<SPtr<RenderView>> _RenderViews;
+
 	};
 }

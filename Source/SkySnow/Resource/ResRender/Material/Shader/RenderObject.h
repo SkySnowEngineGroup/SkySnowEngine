@@ -21,23 +21,20 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RenderableElement.h"
-#include <vector>
-#include "MathCommon.h"
-#include "SPtr.h"
+#include "IRender.h"
+#include "RenderState.h"
+#include "RenderProgram.h"
 namespace SkySnow
 {
-    class RenderableProxy;
-    class RenderRenderable
-    {
-    public:
-        RenderRenderable(RenderableProxy* renderProxy);
-        ~RenderRenderable();
-        
-        bool IsEqual(RenderableProxy* renderProxy);
-    public:
-        RenderableProxy*                _RenderableProxy;
-        std::vector<RenderableElement>  _Elements;
-        Matrix4                         _WorldTransform;
-    };
+	class RenderObject : public IRender
+	{
+		SkySnow_Object(RenderObject,IRender);
+	public:
+		RenderObject();
+		~RenderObject();
+
+	private:
+		SPtr<RenderState>	_RenderState;
+		SPtr<RenderProgram> _RenderProgram;
+	};
 }

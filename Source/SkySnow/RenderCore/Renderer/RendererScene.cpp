@@ -23,7 +23,6 @@
 #include "RendererScene.h"
 #include "LogAssert.h"
 #include "Renderable.h"
-#include "RenderRenderable.h"
 #include "RenderableProxy.h"
 #include "SPtr.h"
 #include "Context.h"
@@ -45,6 +44,7 @@ namespace SkySnow
     {
         auto renderElement = CreateSPtr<RenderRenderable>(renderable);
         _RSceneInfo._RenderRenderables.push_back(renderElement);
+
     }
     void RendererScene::NotifyRenderableUpdate(RenderableProxy* renderable)
     {

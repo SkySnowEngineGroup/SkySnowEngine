@@ -20,38 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RenderViewFamily.h"
+#pragma once
+#include "IComponent.h"
 
 namespace SkySnow
 {
-	RenderViewFamily::RenderViewFamily()
-	{
-
-	}
-
-	RenderViewFamily::~RenderViewFamily()
-	{
-
-	}
-
-    void RenderViewFamily::AddRenderView(CameraProxy* cameraProxy)
+    class ParticleComponent : public IComponent
     {
-        auto renderView = CreateSPtr<RenderView>(cameraProxy);
-        _RenderViews.push_back(renderView);
-    }
-
-    void RenderViewFamily::RemoveRenderView(CameraProxy* cameraProxy)
-    {
-        for(auto iter = _RenderViews.begin(); iter != _RenderViews.end();)
-        {
-            if((*iter)->IsEqual(cameraProxy))
-            {
-                iter = _RenderViews.erase(iter);
-            }
-            else
-            {
-                iter ++;
-            }
-        }
+        SkySnow_Object(ParticleComponent,IComponent);
+    public:
+        ParticleComponent();
+        ~ParticleComponent();
+    private:
     }
 }

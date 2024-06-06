@@ -21,18 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ISource.h"
+#include "Object.h"
 
 namespace SkySnow
 {
-	class RenderState : public ISource
-	{
-		SkySnow_Object(RenderState, ISource);
-	public:
-		RenderState();
-		~RenderState();
-
-	private:
-
-	};
+    class Particle : public Object
+    {
+        SkySnow_Object(Particle,Object);
+    public:
+        Particle();
+        ~Particle();
+    private:
+        
+    };
 }

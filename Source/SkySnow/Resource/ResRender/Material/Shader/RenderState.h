@@ -21,15 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "RenderElement.h"
+#include "IRender.h"
+
 namespace SkySnow
 {
-    class RenderableElement : public RenderElement
-    {
-        SkySnow_Object(RenderableElement, RenderElement);
-    public:
-        RenderableElement();
-        ~RenderableElement();
-    private:
-    };
+	class RenderState : public IRender
+	{
+		SkySnow_Object(RenderState,IRender);
+	public:
+		RenderState();
+		~RenderState();
+	private:
+
+	};
 }

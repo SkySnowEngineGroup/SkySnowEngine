@@ -20,21 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RenderRenderable.h"
+#pragma once
+#include "IModule.h"
 
 namespace SkySnow
 {
-    RenderRenderable::RenderRenderable(RenderableProxy* renderProxy)
-        : _RenderableProxy(renderProxy)
+    class ParticleModule : public IModule
     {
+        SkySnow_Object(ParticleModule,IModule);
+    public:
+        ParticleModule();
+        ~ParticleModule();
         
-    }
-    RenderRenderable::~RenderRenderable()
-    {
+        virtual void StartUp() final override;
+
+        virtual void Update() final override;
+
+        virtual void ShutDown() final override;
+    private:
         
-    }
-    bool RenderRenderable::IsEqual(RenderableProxy* renderProxy)
-    {
-        return _RenderableProxy == renderProxy;
-    }
+    };
 }

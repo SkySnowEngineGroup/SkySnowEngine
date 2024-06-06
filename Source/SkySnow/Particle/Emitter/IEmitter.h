@@ -21,18 +21,17 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IRender.h"
-#include "ShaderPipeline.h"
+#include "Object.h"
 
 namespace SkySnow
 {
-	class GraphicsPipeline : public IRender
-	{
-		SkySnow_Object(GraphicsPipeline,IRender);
-	public:
-		GraphicsPipeline();
-		~GraphicsPipeline();
-	private:
-
-	};
+    class IEmitter : public Object
+    {
+        SkySnow_Object(IEmitter,Object);
+    public:
+        IEmitter();
+        ~IEmitter();
+    private:
+        
+    };
 }
