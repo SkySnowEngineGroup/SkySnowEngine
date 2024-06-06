@@ -32,15 +32,9 @@ namespace SkySnow
 	{
 		SkySnow_Object(IComponent,Object);
 	public:
-		IComponent()
-			: _Enable(true)
-		{
-		}
+        IComponent();
+        virtual ~IComponent();
         
-		virtual ~IComponent()
-        {
-        }
-
 		virtual bool IsEnable() const{ return _Enable;}
 		virtual void SetEnable(bool enable){ _Enable = enable;}
         

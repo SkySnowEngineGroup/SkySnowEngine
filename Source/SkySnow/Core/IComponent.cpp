@@ -28,6 +28,16 @@
 
 namespace SkySnow
 {
+    IComponent::IComponent()
+        : _Enable(true)
+        , _GoUUID(-1)
+        , _SceneHandle(-1)
+    {
+    }
+
+    IComponent::~IComponent()
+    {
+    }
     SPtr<GameObject> IComponent::GetHostGoPtr() const
     {
         return GetGOManager().GetGoPtr(_GoUUID);
