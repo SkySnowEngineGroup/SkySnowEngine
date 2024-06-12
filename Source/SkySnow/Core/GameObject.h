@@ -85,7 +85,7 @@ namespace SkySnow
             if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
             {
                 SN_WARN("A component of this type(%s) is already included",_ComponentList[i]->GetTypeName());
-                return SPtr<T>(dynamic_cast<T*>(_ComponentList[i].get()));
+                return std::static_pointer_cast<T>(_ComponentList[i]);
             }
         }
         SPtr<T> newCom = CreateSPtr<T>();
