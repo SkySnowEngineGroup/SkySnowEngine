@@ -22,6 +22,7 @@
 #pragma once
 #include "Object.h"
 #include "IComponent.h"
+#include "GameObjectManager.h"
 #include <memory>
 namespace SkySnow
 {
@@ -80,52 +81,37 @@ namespace SkySnow
     //========================================================================================
     template<typename T> inline SPtr<T> GameObject::AddComponent()
     {
-        for (int i = 0; i < _ComponentList.size(); i++)
+        SPtr<T> curCom = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        if(!curCom)
         {
-            if(T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
-            {
-                SN_WARN("A component of this type(%s) is already included",_ComponentList[i]->GetTypeName());
-                return std::static_pointer_cast<T>(_ComponentList[i]);
-            }
+            curCom = CreateSPtr<T>();
+            curCom->AttachGO(_UUID);
+            curCom->OnInitialized();
+            GetGOManager().GetComs()[_UUID].emplace_back(curCom);
         }
-        SPtr<T> newCom = CreateSPtr<T>();
-        newCom->AttachGO(_UUID);
-        _ComponentList.emplace_back(newCom);
-        return newCom;
+        return curCom;
     }
+    //========================================================================================
     template<typename T> void GameObject::RemoveComponent()
     {
-        for (auto iter = _ComponentList.begin(); iter != _ComponentList.end(); ++iter)
+        SPtr<T> curCom = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        if(curCom)
         {
-            if((*iter)->GetTypeName() == T::GetTypeNameStatic())
-            {
-                _ComponentList.erase(iter);
-                break;
-            }
+            curCom->OnDestroyed();
+            GetGOManager().RemoveComPtr(_UUID, T::GetTypeNameStatic());
         }
     }
+    //========================================================================================
     template<typename T> inline SPtr<T> GameObject::GetComponent()
     {
-        for (int i = 0; i < _ComponentList.size(); i++)
-        {
-            if (T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
-            {
-                return std::static_pointer_cast<T>(_ComponentList[i]);
-            }
-        }
-        return nullptr;
+        SPtr<T> com = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        return com;
     }
     //========================================================================================
     template<typename T> inline bool GameObject::HasComponent()
     {
-        for (int i = 0; i < _ComponentList.size(); i++)
-        {
-            if (T::GetTypeNameStatic() == _ComponentList[i]->GetTypeName())
-            {
-                return true;
-            }
-        }
-        return false;
+        SPtr<T> com = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        return com ? true : false;
     }
     //========================================================================================
 }

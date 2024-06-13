@@ -35,6 +35,9 @@ namespace SkySnow
         IComponent();
         virtual ~IComponent();
         
+        virtual void OnInitialized(){}
+        virtual void OnDestroyed(){}
+        
 		virtual bool IsEnable() const{ return _Enable;}
 		virtual void SetEnable(bool enable){ _Enable = enable;}
         

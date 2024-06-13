@@ -25,7 +25,6 @@
 namespace SkySnow
 {
     MeshRendererComponent::MeshRendererComponent()
-        : _Proxy(nullptr)
     {
     }
     MeshRendererComponent::~MeshRendererComponent()

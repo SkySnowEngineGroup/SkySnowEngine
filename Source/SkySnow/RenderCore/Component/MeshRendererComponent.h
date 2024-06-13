@@ -25,7 +25,7 @@
 
 namespace SkySnow
 {
-    class RenderableProxy;
+    
     class MeshRendererComponent : public Renderable
     {
         SkySnow_Object(MeshRendererComponent, Renderable);
@@ -33,7 +33,5 @@ namespace SkySnow
         MeshRendererComponent();
         ~MeshRendererComponent();
     private:
-        RenderableProxy* _Proxy;
-        int aa;
     };
 }

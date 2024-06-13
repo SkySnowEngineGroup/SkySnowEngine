@@ -32,7 +32,14 @@ namespace SkySnow
     {
         
     }
-    
+    void Renderable::OnInitialized()
+    {
+        
+    }
+    void Renderable::OnDestroyed()
+    {
+        
+    }
     void Renderable::SetMaterialCount(int matCount)
     {
         const size_t oldSize = _Materials.size();

@@ -66,6 +66,40 @@ namespace SkySnow
             _GOMaps.erase(iter);
         }
     }
+    std::map<int64,std::vector<SPtr<IComponent>>>& GameObjectManager::GetComs()
+    {
+        return _ComMaps;
+    }
+    SPtr<IComponent> GameObjectManager::GetComPtr(int64 goUuid,const char* typeName)
+    {
+        auto iter = _ComMaps.find(goUuid);
+        if(iter != _ComMaps.end())
+        {
+            for(auto ci = iter->second.begin();ci != iter->second.end();ci ++)
+            {
+               if((*ci)->GetTypeName() == typeName)
+               {
+                   return *ci;
+               }
+            }
+        }
+        return nullptr;
+    }
+    void GameObjectManager::RemoveComPtr(int64 goUuid,const char* typeName)
+    {
+        auto iter = _ComMaps.find(goUuid);
+        if(iter != _ComMaps.end())
+        {
+            for(auto ci = iter->second.begin();ci != iter->second.end();ci ++)
+            {
+               if((*ci)->GetTypeName() == typeName)
+               {
+                   iter->second.erase(ci);
+                   break;
+               }
+            }
+        }
+    }
     GameObjectManager& GetGOManager()
     {
         return GameObjectManager::Instance();

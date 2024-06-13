@@ -25,6 +25,7 @@
 #include "VarType.h"
 #include "SPtr.h"
 #include <map>
+#include <vector>
 
 namespace SkySnow
 {
@@ -40,12 +41,13 @@ namespace SkySnow
         void UpdateGOUUID(int64 oldUuid,int64 newUuid);
         void RemoveGoPtr(int64_t uuid);
         
-        SPtr<IComponent> CreateCom();
-        
+        std::map<int64,std::vector<SPtr<IComponent>>>& GetComs();
+        SPtr<IComponent> GetComPtr(int64 goUuid,const char* typeName);
+        void RemoveComPtr(int64 goUuid,const char* typeName);
     private:
-        int64                               _tempUuidIdx = -1;
-        std::map<uint64_t,SPtr<GameObject>> _GOMaps;
-        
+        int64                            _tempUuidIdx = -1;
+        std::map<int64,SPtr<GameObject>> _GOMaps;
+        std::map<int64,std::vector<SPtr<IComponent>>> _ComMaps;
     };
     GameObjectManager& GetGOManager();
 }

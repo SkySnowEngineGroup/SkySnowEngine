@@ -26,12 +26,16 @@
 #include "Mesh.h"
 namespace SkySnow
 {
+    class RenderableProxy;
 	class Renderable : public IComponent
 	{
 		SkySnow_Object(Renderable, IComponent);
 	public:
         Renderable();
 		~Renderable();
+        
+        virtual void OnInitialized() override;
+        virtual void OnDestroyed() override;
         
         void SetMaterialCount(int matCount);
         void SetMaterial(SPtr<Material> material,int index);
@@ -40,6 +44,7 @@ namespace SkySnow
 		void SetShareMesh(SPtr<Mesh> mesh);
 		SPtr<Mesh> GetShareMesh() { return _Mesh; }
     protected:
+        RenderableProxy* _Proxy;
         std::vector<SPtr<Material>> _Materials;
 		SPtr<Mesh>					_Mesh;
 	};
