@@ -40,22 +40,17 @@ namespace SkySnow
         
     }
 
-    void RendererScene::NotifyRenderableAdded(SPtr<RenderableProxy> renderable)
+    void RendererScene::NotifyRenderableAdded(SPtr<Renderable> renderable)
     {
-        _SceneInfo._RenderList.push_back(renderable);
-
+        _SceneInfo._RendererList.emplace_back(renderable);
     }
-    void RendererScene::NotifyRenderableUpdate(SPtr<RenderableProxy> renderable)
+    void RendererScene::NotifyRenderableRemoved(SPtr<Renderable> renderable)
     {
-        
-    }
-    void RendererScene::NotifyRenderableRemoved(SPtr<RenderableProxy> renderable)
-    {
-        for(auto iter = _SceneInfo._RenderList.begin();iter != _SceneInfo._RenderList.end();)
+        for(auto iter = _SceneInfo._RendererList.begin();iter != _SceneInfo._RendererList.end();)
         {
             if((*iter) == renderable)
             {
-                iter = _SceneInfo._RenderList.erase(iter);
+                iter = _SceneInfo._RendererList.erase(iter);
             }
             else
             {
@@ -63,31 +58,37 @@ namespace SkySnow
             }
         }
     }
-    void RendererScene::NotifyCameraAdded(SPtr<CameraProxy> camera)
-    {
-        _SceneInfo._CameraList.push_back(camera);
-    }
-    void RendererScene::NotifyCameraUpdate(SPtr<CameraProxy> camera)
+    void RendererScene::NotifyRenderableUpdate(SPtr<Renderable> renderable)
     {
         
     }
-    void RendererScene::NotifyCameraRemoved(SPtr<CameraProxy> camera)
+    
+    void RendererScene::NotifyCameraAdded(SPtr<Camera> camera)
     {
-        for(auto iter = _SceneInfo._CameraList.begin(); iter != _SceneInfo._CameraList.end();)
+        _SceneInfo._RenderViewList.emplace_back(camera);
+    }
+    void RendererScene::NotifyCameraRemoved(SPtr<Camera> camera)
+    {
+        for(auto iter = _SceneInfo._RenderViewList.begin(); iter != _SceneInfo._RenderViewList.end();)
         {
             if((*iter) == camera)
             {
-                iter = _SceneInfo._CameraList.erase(iter);
+                iter = _SceneInfo._RenderViewList.erase(iter);
             }
             else
             {
                 iter ++;
             }
         }
+    }
+    void RendererScene::NotifyCameraUpdate(SPtr<Camera> camera)
+    {
+        
     }
 
     void RendererScene::RenderCore()
     {
+        int a = 10;
         ////temp code
         //if (!_CMBPool)
         //{

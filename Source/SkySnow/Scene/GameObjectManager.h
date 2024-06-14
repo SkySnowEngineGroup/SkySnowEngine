@@ -36,14 +36,20 @@ namespace SkySnow
     public:
         static GameObjectManager& Instance();
         
-        SPtr<GameObject> CreateGo();
-        SPtr<GameObject> GetGoPtr(int64_t uuid);
-        void UpdateGOUUID(int64 oldUuid,int64 newUuid);
-        void RemoveGoPtr(int64_t uuid);
+        SPtr<GameObject> CreateGameObject();
+        SPtr<GameObject> GetGameObjectPtr(int64_t uuid);
+        void UpdateGameObjectUUID(int64 oldUuid,int64 newUuid);
+        void RemoveGameObjectPtr(int64_t uuid);
         
-        std::map<int64,std::vector<SPtr<IComponent>>>& GetComs();
-        SPtr<IComponent> GetComPtr(int64 goUuid,const char* typeName);
-        void RemoveComPtr(int64 goUuid,const char* typeName);
+        std::map<int64,std::vector<SPtr<IComponent>>>& GetComponents();
+        SPtr<IComponent> GetComponentPtr(int64 goUuid,const char* typeName);
+        void RemoveComponentPtr(int64 goUuid,const char* typeName);
+        void RemoveGameObjectComponents(int64 goUuid);
+        
+        void ClearGameObject();
+    private:
+        GameObjectManager();
+        ~GameObjectManager();
     private:
         int64                            _tempUuidIdx = -1;
         std::map<int64,SPtr<GameObject>> _GOMaps;

@@ -33,7 +33,7 @@ namespace SkySnow
 		ShaderPass();
 		virtual ~ShaderPass();
 	private:
-		SPtr<ShaderState>	_RenderState;
+		SPtr<ShaderState>	_ShaderState;
 		SPtr<ShaderStages>	_ShaderStagesInfo;
 	};
 }

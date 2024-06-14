@@ -34,13 +34,15 @@ namespace SkySnow
         , _ParentUUID(-1)
         , _UUID(-1)
     {
-        _ComponentList.clear();
         _ChildUUIDList.clear();
     }
     
     GameObject::~GameObject()
     {
-        _ComponentList.clear();
+        for(int i = 0; i < _ChildUUIDList.size();i ++)
+        {
+            GetGOManager().RemoveGameObjectPtr(_ChildUUIDList[i]);
+        }
         _ChildUUIDList.clear();
         SN_LOG("GameObject DesConstruct.");
     }
@@ -48,13 +50,13 @@ namespace SkySnow
     void GameObject::SetEnable(bool enable)
     {
         _Enable = enable;
-        for(auto entry : _ComponentList)
+        for(auto entry : GetGOManager().GetComponents()[_UUID])
         {
             entry->SetEnable(enable);
         }
         for(auto entry:_ChildUUIDList)
         {
-            SPtr<GameObject> go = GetGOManager().GetGoPtr(entry);
+            SPtr<GameObject> go = GetGOManager().GetGameObjectPtr(entry);
             go->SetEnable(enable);
         }
     }
@@ -98,8 +100,8 @@ namespace SkySnow
 
     SPtr<GameObject> GameObject::AddChild()
     {
-        SPtr<GameObject> cgo = GetGOManager().CreateGo();
-        cgo->SetParent(GetGOManager().GetGoPtr(_UUID));
+        SPtr<GameObject> cgo = GetGOManager().CreateGameObject();
+        cgo->SetParent(GetGOManager().GetGameObjectPtr(_UUID));
         cgo->SetSceneHandle(_SceneHandle);
         int32_t layer = _Layer + 1;
         cgo->SetLayer(layer);
@@ -110,7 +112,7 @@ namespace SkySnow
 
     void GameObject::RemoveChild(SPtr<GameObject> childGO)
     {
-        GetGOManager().RemoveGoPtr(childGO->GetUUID());
+        GetGOManager().RemoveGameObjectPtr(childGO->GetUUID());
     }
 
     void GameObject::SetParent(SPtr<GameObject> parentGO)
@@ -121,9 +123,9 @@ namespace SkySnow
             _SceneHandle = parentGO->GetHostSceneHandle();
         }
     }
-    SPtr<GameObject> GameObject::GetGoPtr()
+    SPtr<GameObject> GameObject::GetGameObjectPtr()
     {
-        return GetGOManager().GetGoPtr(_UUID);
+        return GetGOManager().GetGameObjectPtr(_UUID);
     }
     SPtr<Scene> GameObject::GetHostScenePtr()
     {

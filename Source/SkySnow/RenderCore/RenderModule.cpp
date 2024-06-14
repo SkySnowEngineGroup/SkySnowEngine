@@ -87,7 +87,7 @@ namespace SkySnow
     {
         for (auto& pair : _RendererScenes)
         {
-            delete pair.second; // 删除指针指向的对象
+            delete pair.second;
         }
         _RendererScenes.clear();
         SN_LOG("RenderModule ShutDown.");

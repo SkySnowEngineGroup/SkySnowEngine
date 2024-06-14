@@ -24,6 +24,7 @@
 #include "HashUtil.h"
 #include "Context.h"
 #include "SceneManager.h"
+#include "GameObjectManager.h"
 
 namespace SkySnow
 {
@@ -60,7 +61,8 @@ namespace SkySnow
 
     void ResourceModule::ShutDown()
     {
-        SceneManager::Instance().ClearScene();
+        GetGOManager().ClearGameObject();
+        GetSceneManager().ClearScene();
     }
 
     ResourceModule* ResourceSystem()

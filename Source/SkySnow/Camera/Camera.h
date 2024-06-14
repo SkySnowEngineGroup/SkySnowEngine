@@ -33,7 +33,10 @@ namespace SkySnow
         ~Camera();
         virtual void OnInitialized() final override;
         virtual void OnDestroyed() final override;
+        
+        virtual void AddToModule() final override;
+        virtual void RemoveFromModule() final override;
     private:
-        CameraProxy* _CameraProxy;
+//        CameraProxy* _CameraProxy;
     };
 }

@@ -25,13 +25,15 @@
 
 namespace SkySnow
 {
-    
     class MeshRendererComponent : public Renderable
     {
         SkySnow_Object(MeshRendererComponent, Renderable);
     public:
         MeshRendererComponent();
         ~MeshRendererComponent();
+        
+        virtual void AddToModule() final override;
+        virtual void RemoveFromModule() final override;
     private:
     };
 }

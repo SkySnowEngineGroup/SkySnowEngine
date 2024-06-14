@@ -22,6 +22,10 @@
 //
 #include "MeshRendererComponent.h"
 #include "RenderableProxy.h"
+#include "Scene.h"
+#include "RendererScene.h"
+#include "GameObject.h"
+
 namespace SkySnow
 {
     MeshRendererComponent::MeshRendererComponent()
@@ -30,5 +34,16 @@ namespace SkySnow
     MeshRendererComponent::~MeshRendererComponent()
     {
 
+    }
+
+    void MeshRendererComponent::AddToModule()
+    {
+        SPtr<MeshRendererComponent> thisPtr = GetHostGameObjectPtr()->GetComponent<MeshRendererComponent>();
+        GetHostScenePtr()->GetRendererScene()->NotifyRenderableAdded(thisPtr);
+    }
+    void MeshRendererComponent::RemoveFromModule()
+    {
+        SPtr<MeshRendererComponent> thisPtr = GetHostGameObjectPtr()->GetComponent<MeshRendererComponent>();
+        GetHostScenePtr()->GetRendererScene()->NotifyRenderableRemoved(thisPtr);
     }
 }

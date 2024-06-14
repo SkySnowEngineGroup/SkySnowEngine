@@ -29,7 +29,7 @@ namespace SkySnow
 	{
 		SkySnow_Object(RenderProgram, IRender);
 	public:
-		RenderProgram();
+        RenderProgram();
 		~RenderProgram();
 	private:
 

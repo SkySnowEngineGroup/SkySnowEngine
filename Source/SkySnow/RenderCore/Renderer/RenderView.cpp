@@ -20,16 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "Renderable.h"
-
+#include "RenderView.h"
 namespace SkySnow
 {
-    class ParticleRenderComponent : public Renderable
+    RenderView::RenderView(CameraProxy* cameraProxy)
+        : _CameraProxy(cameraProxy)
+	{
+
+	}
+
+    RenderView::~RenderView()
+	{
+
+	}
+
+    bool RenderView::IsEqual(CameraProxy* cameraProxy)
     {
-        SkySnow_Object(ParticleRenderComponent,Renderable);
-    public:
-        ParticleRenderComponent();
-        ~ParticleRenderComponent();
-    };
+        return _CameraProxy == cameraProxy;
+    }
 }

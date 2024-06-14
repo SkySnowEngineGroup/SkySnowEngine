@@ -22,16 +22,23 @@
 //
 #include "GameObjectManager.h"
 #include "GameObject.h"
+#include "IComponent.h"
 
 namespace SkySnow
 {
+    GameObjectManager::GameObjectManager()
+    {
+    }
+    GameObjectManager::~GameObjectManager()
+    {
+    }
     GameObjectManager& GameObjectManager::Instance()
     {
         static GameObjectManager instance;
         return instance;
     }
 
-    SPtr<GameObject> GameObjectManager::CreateGo()
+    SPtr<GameObject> GameObjectManager::CreateGameObject()
     {
         _tempUuidIdx ++;
         SPtr<GameObject> go = CreateSPtr<GameObject>();
@@ -39,7 +46,7 @@ namespace SkySnow
         _GOMaps[_tempUuidIdx] = go;
         return go;
     }
-    SPtr<GameObject> GameObjectManager::GetGoPtr(int64_t uuid)
+    SPtr<GameObject> GameObjectManager::GetGameObjectPtr(int64_t uuid)
     {
         auto iter = _GOMaps.find(uuid);
         if(iter != _GOMaps.end())
@@ -48,7 +55,7 @@ namespace SkySnow
         }
         return nullptr;
     }
-    void GameObjectManager::UpdateGOUUID(int64 oldUuid,int64 newUuid)
+    void GameObjectManager::UpdateGameObjectUUID(int64 oldUuid,int64 newUuid)
     {
         auto iter = _GOMaps.find(oldUuid);
         if(iter != _GOMaps.end())
@@ -58,47 +65,80 @@ namespace SkySnow
             _GOMaps[newUuid] = go;
         }
     }
-    void GameObjectManager::RemoveGoPtr(int64_t uuid)
+    void GameObjectManager::RemoveGameObjectPtr(int64_t uuid)
     {
         auto iter = _GOMaps.find(uuid);
         if(iter != _GOMaps.end())
         {
+            RemoveGameObjectComponents(iter->second->GetUUID());
             _GOMaps.erase(iter);
         }
     }
-    std::map<int64,std::vector<SPtr<IComponent>>>& GameObjectManager::GetComs()
+    std::map<int64,std::vector<SPtr<IComponent>>>& GameObjectManager::GetComponents()
     {
         return _ComMaps;
     }
-    SPtr<IComponent> GameObjectManager::GetComPtr(int64 goUuid,const char* typeName)
+    SPtr<IComponent> GameObjectManager::GetComponentPtr(int64 goUuid,const char* typeName)
     {
         auto iter = _ComMaps.find(goUuid);
         if(iter != _ComMaps.end())
         {
-            for(auto ci = iter->second.begin();ci != iter->second.end();ci ++)
+            for(auto com : iter->second)
             {
-               if((*ci)->GetTypeName() == typeName)
+               if(com->GetTypeName() == typeName)
                {
-                   return *ci;
+                   return com;
                }
             }
         }
         return nullptr;
     }
-    void GameObjectManager::RemoveComPtr(int64 goUuid,const char* typeName)
+    void GameObjectManager::RemoveComponentPtr(int64 goUuid,const char* typeName)
     {
         auto iter = _ComMaps.find(goUuid);
         if(iter != _ComMaps.end())
         {
-            for(auto ci = iter->second.begin();ci != iter->second.end();ci ++)
+            for(auto ci = iter->second.begin();ci != iter->second.end();)
             {
                if((*ci)->GetTypeName() == typeName)
                {
-                   iter->second.erase(ci);
+                   (*ci)->RemoveFromModule();
+                   (*ci)->OnDestroyed();
+                   ci = iter->second.erase(ci);
                    break;
+               }else
+               {
+                   ci ++;
                }
             }
         }
+    }
+    void GameObjectManager::RemoveGameObjectComponents(int64 goUuid)
+    {
+        auto iter = _ComMaps.find(goUuid);
+        if(iter != _ComMaps.end())
+        {
+            for (auto com : iter->second)
+            {
+                com->RemoveFromModule();
+                com->OnDestroyed();
+            }
+            _ComMaps.erase(iter);
+        }
+    }
+
+    void GameObjectManager::ClearGameObject()
+    {
+        for(auto go = _ComMaps.begin();go != _ComMaps.end(); go ++)
+        {
+            for(auto com : go->second)
+            {
+                com->RemoveFromModule();
+                com->OnDestroyed();
+            }
+        }
+        _ComMaps.clear();
+        _GOMaps.clear();
     }
     GameObjectManager& GetGOManager()
     {

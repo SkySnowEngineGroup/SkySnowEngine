@@ -38,13 +38,16 @@ namespace SkySnow
         virtual void OnInitialized(){}
         virtual void OnDestroyed(){}
         
+        virtual void AddToModule(){};
+        virtual void RemoveFromModule(){};
+        
 		virtual bool IsEnable() const{ return _Enable;}
 		virtual void SetEnable(bool enable){ _Enable = enable;}
         
         //attach this comonent to gameobject
-        void AttachGO(int64 goUuid);
+        void AttachGameObject(int64 goUuid);
         //Get curr component attach gameobject
-        SPtr<GameObject> GetHostGoPtr() const;
+        SPtr<GameObject> GetHostGameObjectPtr() const;
         //Get Scene
         SPtr<Scene> GetHostScenePtr() const;
         SceneHandle GetHostSceneHandle() const { return _SceneHandle;}

@@ -58,7 +58,7 @@ namespace SkySnow
         void RemoveChild(SPtr<GameObject> childGO);
         void SetParent(SPtr<GameObject> parentGO);
         
-        SPtr<GameObject> GetGoPtr();
+        SPtr<GameObject> GetGameObjectPtr();
         SPtr<Scene> GetHostScenePtr();
         
         int64 GetUUID() const{ return _UUID;}
@@ -75,42 +75,37 @@ namespace SkySnow
         int64_t                         _ParentUUID;
         SceneHandle                     _SceneHandle;
         std::vector<int64>              _ChildUUIDList;
-        std::vector<SPtr<IComponent>>   _ComponentList;
 	};
 
     //========================================================================================
     template<typename T> inline SPtr<T> GameObject::AddComponent()
     {
-        SPtr<T> curCom = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        SPtr<T> curCom = std::static_pointer_cast<T>(GetGOManager().GetComponentPtr(_UUID, T::GetTypeNameStatic()));
         if(!curCom)
         {
             curCom = CreateSPtr<T>();
-            curCom->AttachGO(_UUID);
+            GetGOManager().GetComponents()[_UUID].emplace_back(curCom);
+            curCom->AttachGameObject(_UUID);
             curCom->OnInitialized();
-            GetGOManager().GetComs()[_UUID].emplace_back(curCom);
+            curCom->AddToModule();
         }
         return curCom;
     }
     //========================================================================================
     template<typename T> void GameObject::RemoveComponent()
     {
-        SPtr<T> curCom = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
-        if(curCom)
-        {
-            curCom->OnDestroyed();
-            GetGOManager().RemoveComPtr(_UUID, T::GetTypeNameStatic());
-        }
+        GetGOManager().RemoveComponentPtr(_UUID, T::GetTypeNameStatic());
     }
     //========================================================================================
     template<typename T> inline SPtr<T> GameObject::GetComponent()
     {
-        SPtr<T> com = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        SPtr<T> com = std::static_pointer_cast<T>(GetGOManager().GetComponentPtr(_UUID, T::GetTypeNameStatic()));
         return com;
     }
     //========================================================================================
     template<typename T> inline bool GameObject::HasComponent()
     {
-        SPtr<T> com = std::static_pointer_cast<T>(GetGOManager().GetComPtr(_UUID, T::GetTypeNameStatic()));
+        SPtr<T> com = std::static_pointer_cast<T>(GetGOManager().GetComponentPtr(_UUID, T::GetTypeNameStatic()));
         return com ? true : false;
     }
     //========================================================================================

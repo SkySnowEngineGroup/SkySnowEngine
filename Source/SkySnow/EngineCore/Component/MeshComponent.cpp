@@ -38,7 +38,7 @@ namespace SkySnow
     void MeshComponent::SetShareMesh(SPtr<Mesh> mesh)
     {
         _Mesh = mesh;
-        auto go = GetHostGoPtr();
+        auto go = GetHostGameObjectPtr();
         if(go && go->HasComponent<MeshRendererComponent>())
         {
             go->GetComponent<MeshRendererComponent>()->SetShareMesh(_Mesh);

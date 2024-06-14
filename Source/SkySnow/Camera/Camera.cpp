@@ -22,13 +22,28 @@
 //
 #include "Camera.h"
 #include "CameraProxy.h"
+#include "Scene.h"
+#include "RendererScene.h"
+#include "GameObject.h"
+
 namespace SkySnow
 {
     Camera::Camera()
-        : _CameraProxy(nullptr)
+//        : _CameraProxy(nullptr)
     {
     }
     Camera::~Camera()
     {
+    }
+
+    void Camera::AddToModule()
+    {
+        SPtr<Camera> thisPtr = GetHostGameObjectPtr()->GetComponent<Camera>();
+        GetHostScenePtr()->GetRendererScene()->NotifyCameraAdded(thisPtr);
+    }
+    void Camera::RemoveFromModule()
+    {
+        SPtr<Camera> thisPtr = GetHostGameObjectPtr()->GetComponent<Camera>();
+        GetHostScenePtr()->GetRendererScene()->NotifyCameraRemoved(thisPtr);
     }
 }

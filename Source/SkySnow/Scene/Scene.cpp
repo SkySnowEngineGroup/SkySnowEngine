@@ -65,11 +65,11 @@ namespace SkySnow
     {
         if(_RootGoUUID == -1)
         {
-            SPtr<GameObject> rootGo= GetGOManager().CreateGo();
+            SPtr<GameObject> rootGo= GetGOManager().CreateGameObject();
             _RootGoUUID = rootGo->GetUUID();
             rootGo->SetSceneHandle(_SceneHandle);
         }
-        return GetGOManager().GetGoPtr(_RootGoUUID);
+        return GetGOManager().GetGameObjectPtr(_RootGoUUID);
     }
     
     SPtr<GameObject> Scene::GetRootGo()

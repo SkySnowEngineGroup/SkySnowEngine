@@ -23,40 +23,39 @@
 #pragma once
 #include <vector>
 #include "SPtr.h"
-#include "RenderPass.h"
+#include "RenderView.h"
 #include "GRIHeaders.h"
 namespace SkySnow
 {
-    class RenderRenderable;
-    class RenderableProxy;
-    class CameraProxy;
+//    class RenderRenderable;
+//    class RenderableProxy;
+//    class CameraProxy;
+    class Renderable;
+    class Camera;
     //每个Scene对应一个RendererScene，当Scene卸载加载时，RendererScene同时卸载加载
+    //暂时关闭渲染层与引擎层的代理框架---后续在JobBatchRenderer架构添加时加回
     struct RSceneInfo
     {
-        std::vector<SPtr<RenderableProxy>>  _RenderList;
-        std::vector<SPtr<CameraProxy>>      _CameraList;
+        std::vector<SPtr<Renderable>>   _RendererList;
+        std::vector<SPtr<Camera>>       _RenderViewList;
     };
-    class Renderable;
+    
     class RendererScene final
     {
     public:
         RendererScene();
-        
         ~RendererScene();
         //Renderable
-        void NotifyRenderableAdded(SPtr<RenderableProxy> renderable);
-        void NotifyRenderableUpdate(SPtr<RenderableProxy> renderable);
-        void NotifyRenderableRemoved(SPtr<RenderableProxy> renderable);
+        void NotifyRenderableAdded(SPtr<Renderable> renderable);
+        void NotifyRenderableUpdate(SPtr<Renderable> renderable);
+        void NotifyRenderableRemoved(SPtr<Renderable> renderable);
         //Camera
-        void NotifyCameraAdded(SPtr<CameraProxy> camera);
-        void NotifyCameraUpdate(SPtr<CameraProxy> camera);
-        void NotifyCameraRemoved(SPtr<CameraProxy> camera);
+        void NotifyCameraAdded(SPtr<Camera> camera);
+        void NotifyCameraUpdate(SPtr<Camera> camera);
+        void NotifyCameraRemoved(SPtr<Camera> camera);
 
         void RenderCore();
     private:
         RSceneInfo      _SceneInfo;
-        //GRIGraphicsPipelineRef      _PSORef;
-        //GRISamplerStateRef          _Sampler;
-        //GRICommandBufferPool*       _CMBPool = nullptr;
     };
 }

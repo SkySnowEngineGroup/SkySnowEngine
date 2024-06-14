@@ -20,22 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "RenderPass.h"
+#pragma once
+#include "SPtr.h"
+#include "RenderQueue.h"
 namespace SkySnow
 {
-    RenderPass::RenderPass(CameraProxy* cameraProxy)
-        : _CameraProxy(cameraProxy)
+    class CameraProxy;
+	class RenderView
 	{
+	public:
+        RenderView(CameraProxy* cameraProxy);
 
-	}
-
-    RenderPass::~RenderPass()
-	{
-
-	}
-
-    bool RenderPass::IsEqual(CameraProxy* cameraProxy)
-    {
-        return _CameraProxy == cameraProxy;
-    }
+		virtual ~RenderView();
+        bool IsEqual(CameraProxy* cameraProxy);
+	private:
+        CameraProxy*        _CameraProxy;
+		SPtr<RenderQueue>   _ForwardOpaqueQueue;
+		SPtr<RenderQueue>   _TransparentQueue;
+        //SPtr<RenderQueue> _DeferredOpaqueQueue;
+	};
 }

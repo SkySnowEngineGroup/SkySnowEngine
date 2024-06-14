@@ -52,14 +52,15 @@ public:
 
 	bool Init()
 	{
-  //      _Scene = GetSceneManager().CreateScene("Test");
+        _Scene = GetSceneManager().CreateScene("Test");
 
-		//SPtr<GameObject> go = _Scene->GetRootGo();
+		SPtr<GameObject> go = _Scene->GetRootGo();
 
-  //      SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
-  //      SPtr<MeshRenderComponent> meshRenderCom = go->AddComponent<MeshRenderComponent>();
-  //      SPtr<MeshComponent>       meshCom = go->AddComponent<MeshComponent>();
-
+        SPtr<TransformComponent> transCom = go->AddComponent<TransformComponent>();
+        SPtr<MeshRendererComponent> meshRenderCom = go->AddComponent<MeshRendererComponent>();
+        SPtr<MeshComponent> meshCom = go->AddComponent<MeshComponent>();
+        
+        
   //      std::string imagePath = GetImageAllPath("panda.png");
   //      TextureLoader* tImp = new TextureLoader();
   //      TextureStream* texStream = tImp->Load<TextureStream>(imagePath);

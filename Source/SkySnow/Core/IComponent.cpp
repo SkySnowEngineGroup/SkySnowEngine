@@ -38,17 +38,17 @@ namespace SkySnow
     IComponent::~IComponent()
     {
     }
-    SPtr<GameObject> IComponent::GetHostGoPtr() const
+    SPtr<GameObject> IComponent::GetHostGameObjectPtr() const
     {
-        return GetGOManager().GetGoPtr(_GoUUID);
+        return GetGOManager().GetGameObjectPtr(_GoUUID);
     }
     SPtr<Scene> IComponent::GetHostScenePtr() const
     {
         return GetSceneManager().GetScene(_SceneHandle);
     }
-    void IComponent::AttachGO(int64 goUuid)
+    void IComponent::AttachGameObject(int64 goUuid)
     {
         _GoUUID = goUuid;
-        _SceneHandle = GetGOManager().GetGoPtr(_GoUUID)->GetHostSceneHandle();
+        _SceneHandle = GetGOManager().GetGameObjectPtr(_GoUUID)->GetHostSceneHandle();
     }
 }

@@ -21,22 +21,18 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "SPtr.h"
-#include "RenderQueue.h"
+#include "Renderable.h"
+
 namespace SkySnow
 {
-    class CameraProxy;
-	class RenderPass
-	{
-	public:
-		RenderPass(CameraProxy* cameraProxy);
-
-		virtual ~RenderPass();
-        bool IsEqual(CameraProxy* cameraProxy);
-	private:
-        CameraProxy*        _CameraProxy;
-		SPtr<RenderQueue>   _ForwardOpaqueQueue;
-		SPtr<RenderQueue>   _TransparentQueue;
-        //SPtr<RenderQueue> _DeferredOpaqueQueue;
-	};
+    class ParticleRendererComponent : public Renderable
+    {
+        SkySnow_Object(ParticleRendererComponent,Renderable);
+    public:
+        ParticleRendererComponent();
+        ~ParticleRendererComponent();
+        
+        virtual void AddToModule() final override;
+        virtual void RemoveFromModule() final override;
+    };
 }
