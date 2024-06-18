@@ -31,7 +31,7 @@ namespace SkySnow
         SkySnow_Object(TextureStream, ISource);
     public:
         TextureStream() = delete;
-        TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight);
+        TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight,std::string filePath);
         ~TextureStream();
         
         void WriteTargetData(void* targetData);
@@ -47,6 +47,8 @@ namespace SkySnow
         uint32 GetImageWidth() const;
         
         uint32 GetImageHeight() const;
+        
+        std::string GetImagePath() const;
     private:
         PixelFormat _PixelFormat    = PF_None;
         char*       _ImageRawData   = nullptr;
@@ -54,5 +56,6 @@ namespace SkySnow
         uint32      _Width          = 1;
         uint32      _Height         = 1;
         uint32      _ImageSize      = 0;
+        std::string _FilePath;
     };
 }

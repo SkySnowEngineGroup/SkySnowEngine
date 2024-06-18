@@ -36,6 +36,8 @@
 #include "SkySnowEngine.h"
 #include "TextureLoader.h"
 #include "SPtr.h"
+#include "ResourceModule.h"
+
 using namespace SkySnow;
 using namespace SampleEntry;
 class Triangle : public SkySnow::Application
@@ -61,14 +63,14 @@ public:
         SPtr<MeshComponent> meshCom = go->AddComponent<MeshComponent>();
         
         
-  //      std::string imagePath = GetImageAllPath("panda.png");
-  //      TextureLoader* tImp = new TextureLoader();
-  //      TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
-  //      Texture2D* texture = new Texture2D();
-  //      texture->SetTextureStream(texStream);
+        std::string imagePath = GetImageAllPath("panda.png");
+        TextureLoader* tImp = new TextureLoader();
+        TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
+        SPtr<Texture2D> tex2D = ResourceSystem()->CreateRSEntity<Texture2D>();
+//        tex2D->SetTextureStream(texStream);
 
-  //      SPtr<Material> mat = CreateSPtr<Material>();
-  //      mat->SetTexture("panda.png",texture);
+        SPtr<Material> mat = CreateSPtr<Material>();
+//        mat->SetTexture("panda.png",texture);
   //      mat->CreateShader("QuadVS.sns", "QuadFS.sns");
   //      
   //      SPtr<StaticMesh> mesh = CreateSPtr<StaticMesh>();

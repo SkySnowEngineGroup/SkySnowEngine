@@ -24,6 +24,7 @@
 #include "NonCopyable.h"
 #include "VarType.h"
 #include "SPtr.h"
+#include "UUID.h"
 #include <map>
 #include <vector>
 
@@ -37,23 +38,22 @@ namespace SkySnow
         static GameObjectManager& Instance();
         
         SPtr<GameObject> CreateGameObject();
-        SPtr<GameObject> GetGameObjectPtr(int64_t uuid);
-        void UpdateGameObjectUUID(int64 oldUuid,int64 newUuid);
-        void RemoveGameObjectPtr(int64_t uuid);
+        SPtr<GameObject> GetGameObjectPtr(const UUID& uuid);
+        void UpdateGameObjectUUID(const UUID& oldUuid,const UUID& newUuid);
+        void RemoveGameObjectPtr(const UUID& uuid);
         
-        std::map<int64,std::vector<SPtr<IComponent>>>& GetComponents();
-        SPtr<IComponent> GetComponentPtr(int64 goUuid,const char* typeName);
-        void RemoveComponentPtr(int64 goUuid,const char* typeName);
-        void RemoveGameObjectComponents(int64 goUuid);
+        std::map<UUID,std::vector<SPtr<IComponent>>>& GetComponents();
+        SPtr<IComponent> GetComponentPtr(const UUID& goUuid,const char* typeName);
+        void RemoveComponentPtr(const UUID& goUuid,const char* typeName);
+        void RemoveGameObjectComponents(const UUID& goUuid);
         
         void ClearGameObject();
     private:
         GameObjectManager();
         ~GameObjectManager();
     private:
-        int64                            _tempUuidIdx = -1;
-        std::map<int64,SPtr<GameObject>> _GOMaps;
-        std::map<int64,std::vector<SPtr<IComponent>>> _ComMaps;
+        std::map<UUID,SPtr<GameObject>>                 _GOMaps;
+        std::map<UUID,std::vector<SPtr<IComponent>>>    _ComMaps;
     };
     GameObjectManager& GetGOManager();
 }

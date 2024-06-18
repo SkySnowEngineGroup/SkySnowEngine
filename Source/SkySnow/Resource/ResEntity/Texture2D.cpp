@@ -19,20 +19,20 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Object.h"
+//
+#include "Texture2D.h"
+
 namespace SkySnow
 {
-	Object::Object()
-        : _UUID(Random64::RandUUID())
-	{
-	}
-
-	Object::~Object()
-	{
-	}
-
-    void Object::ReGenerUUID()
+    Texture2D::Texture2D()
     {
-        _UUID = Random64::RandUUID();
+    }
+    Texture2D::~Texture2D()
+    {
+    }
+
+    void Texture2D::SetTextureStream(SPtr<TextureStream> stream)
+    {
+        
     }
 }

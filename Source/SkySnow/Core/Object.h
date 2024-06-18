@@ -23,7 +23,7 @@
 #include "ObjectDefines.h"
 #include "LogAssert.h"
 #include "VarType.h"
-#include "InstanceID.h"
+#include "UUID.h"
 
 namespace SkySnow
 {
@@ -46,8 +46,12 @@ namespace SkySnow
 		{
 			return nullptr; 
 		}
-
-	private:
-        InstanceID  _InstanceID;
+        UUID GetUUID() const { return _UUID;}
+        
+        void ReGenerUUID();
+	protected:
+        UUID  _UUID = UUID::EMPTY;
+    private:
+        
 	};
 }

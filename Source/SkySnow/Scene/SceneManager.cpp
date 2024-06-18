@@ -44,10 +44,8 @@ namespace SkySnow
     SPtr<Scene> SceneManager::CreateScene(std::string name)
     {
         SPtr<Scene> scene = CreateSPtr<Scene>(name);
-        g_SceneHandle ++;
-        _ActiveScenes[g_SceneHandle] = scene;
-        scene->_SceneHandle = g_SceneHandle;
-        scene->_RendererScene = SSContext().GetModule<RenderModule>()->NotifyCreateRendererScene(g_SceneHandle);
+        _ActiveScenes[scene->GetUUID()] = scene;
+        scene->_RendererScene = SSContext().GetModule<RenderModule>()->NotifyCreateRendererScene(scene->GetUUID());
         return scene;
     }
 
@@ -70,28 +68,28 @@ namespace SkySnow
             sceneList.push_back(iter->second);
         }
     }
-    SPtr<Scene> SceneManager::GetScene(SceneHandle handle)
+    SPtr<Scene> SceneManager::GetScene(const UUID& uuid)
     {
-        auto iter = _ActiveScenes.find(handle);
+        auto iter = _ActiveScenes.find(uuid);
         if(iter == _ActiveScenes.end())
         {
-            SN_WARN("Not has this index(%d) scene.", handle);
+            SN_WARN("Not has this index(%d) scene.", (uint64_t)uuid);
             return  nullptr;
         }
-        return _ActiveScenes[handle];
+        return _ActiveScenes[uuid];
     }
-    bool SceneManager::RemoveScene(SceneHandle handle)
+    bool SceneManager::RemoveScene(const UUID& uuid)
     {
-        auto iter = _ActiveScenes.find(handle);
+        auto iter = _ActiveScenes.find(uuid);
         if(iter == _ActiveScenes.end())
         {
-            SN_WARN("Not has this index(%d) scene.", handle);
+            SN_WARN("Not has this index(%d) scene.", (uint64_t)uuid);
             return false;
         }
-        SPtr<Scene> removeScene = _ActiveScenes[handle];
-        _DeleteScenes[handle] = removeScene;
+        SPtr<Scene> removeScene = _ActiveScenes[uuid];
+        _DeleteScenes[uuid] = removeScene;
         _ActiveScenes.erase(iter);
-        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(removeScene->GetSceneHandle());
+        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(removeScene->GetUUID());
         return true;
     }
     bool SceneManager::RemoveScene(std::string name)
@@ -112,7 +110,7 @@ namespace SkySnow
         SPtr<Scene> removeScene = _ActiveScenes[index];
         _DeleteScenes[index] = removeScene;
         _ActiveScenes.erase(_ActiveScenes.find(index));
-        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(removeScene->GetSceneHandle());
+        SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(removeScene->GetUUID());
         return true;
     }
     
@@ -120,7 +118,7 @@ namespace SkySnow
     {
         for(auto iter = _ActiveScenes.begin(); iter != _ActiveScenes.end(); iter ++)
         {
-            SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(iter->second->GetSceneHandle());
+            SSContext().GetModule<RenderModule>()->NotifyRemoveRendererScene(iter->second->GetUUID());
         }
         _ActiveScenes.clear();
         _DeleteScenes.clear();

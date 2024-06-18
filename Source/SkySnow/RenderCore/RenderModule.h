@@ -45,15 +45,15 @@ namespace SkySnow
         virtual void ShutDown() final override;
 
         //Call from SceneManager
-        RendererScene* NotifyCreateRendererScene(SceneHandle sceneHandle);
+        RendererScene* NotifyCreateRendererScene(const UUID& uuid);
         //Call from SceneManager
-        void NotifyRemoveRendererScene(SceneHandle sceneHandle);
+        void NotifyRemoveRendererScene(const UUID& uuid);
         //Get RenderScene
-        RendererScene* GetRendererScene(SceneHandle sceneHandle);
+        RendererScene* GetRendererScene(const UUID& uuid);
     private:
         void RenderInternal();
     private:
-        std::map<SceneHandle, RendererScene*> _RendererScenes;
+        std::map<UUID, RendererScene*> _RendererScenes;
     };
     RenderModule* RenderSystem();
 }

@@ -19,20 +19,50 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Object.h"
+//
+#pragma once
+#include <stdint.h>
+#include "VarType.h"
+#include "HashUtil.h"
+#include "Random.h"
+
 namespace SkySnow
 {
-	Object::Object()
-        : _UUID(Random64::RandUUID())
-	{
-	}
-
-	Object::~Object()
-	{
-	}
-
-    void Object::ReGenerUUID()
+    class UUID
     {
-        _UUID = Random64::RandUUID();
-    }
+    public:
+        UUID();
+        UUID(uint64 uuid);
+        UUID(const UUID& other);
+        ~UUID() = default;
+        UUID& operator=(const UUID& other)
+        {
+            if(this == &other)
+                return *this;
+            _UUID = other._UUID;
+            return *this;
+        }
+        constexpr bool operator==(const UUID& rhs) const { return _UUID == rhs._UUID;}
+        constexpr bool operator!=(const UUID& rhs) const { return !(*this == rhs); }
+        constexpr bool Empty() const { return _UUID == 0;}
+        operator uint64(){ return _UUID;}
+        operator const uint64() const {return _UUID;}
+        static UUID EMPTY;
+    private:
+        uint64 _UUID = 0;
+    };
+}
+
+namespace std
+{
+    template<>
+    struct hash<SkySnow::UUID>
+    {
+        std::size_t operator()(const SkySnow::UUID& uuid) const
+        {
+            size_t hash = 0;
+            hash = SkySnow::HashCombine((uint64_t)uuid,hash);
+            return hash;
+        }
+    };
 }

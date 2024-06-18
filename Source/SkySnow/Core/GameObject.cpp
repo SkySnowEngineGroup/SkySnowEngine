@@ -31,8 +31,6 @@ namespace SkySnow
         : _Enable(true)
         , _Layer(0)
         , _Tag(0)
-        , _ParentUUID(-1)
-        , _UUID(-1)
     {
         _ChildUUIDList.clear();
     }
@@ -102,7 +100,7 @@ namespace SkySnow
     {
         SPtr<GameObject> cgo = GetGOManager().CreateGameObject();
         cgo->SetParent(GetGOManager().GetGameObjectPtr(_UUID));
-        cgo->SetSceneHandle(_SceneHandle);
+        cgo->SetSceneUUID(_SceneUUID);
         int32_t layer = _Layer + 1;
         cgo->SetLayer(layer);
 
@@ -117,10 +115,10 @@ namespace SkySnow
 
     void GameObject::SetParent(SPtr<GameObject> parentGO)
     {
-        if (parentGO->GetUUID() != -1)
+        if (parentGO->GetUUID().Empty())
         {
             _ParentUUID = parentGO->GetUUID();
-            _SceneHandle = parentGO->GetHostSceneHandle();
+            _SceneUUID = parentGO->GetHostSceneUUID();
         }
     }
     SPtr<GameObject> GameObject::GetGameObjectPtr()
@@ -129,6 +127,6 @@ namespace SkySnow
     }
     SPtr<Scene> GameObject::GetHostScenePtr()
     {
-        return GetSceneManager().GetScene(_SceneHandle);
+        return GetSceneManager().GetScene(_SceneUUID);
     }
 }

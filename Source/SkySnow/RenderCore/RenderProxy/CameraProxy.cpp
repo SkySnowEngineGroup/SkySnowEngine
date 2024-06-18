@@ -40,12 +40,12 @@ namespace SkySnow
 
     void CameraProxy::RegisterProxy(SPtr<IComponent> proxy)
     {
-        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetHostSceneHandle());
+        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetHostSceneUUID());
         _Camera = std::static_pointer_cast<Camera>(proxy);
     }
 
     void CameraProxy::UnRegisterProxy(SPtr<IComponent> proxy)
     {
-        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetHostSceneHandle());
+        auto rScene = RenderSystem()->GetRendererScene(_Camera->GetHostSceneUUID());
     }
 }

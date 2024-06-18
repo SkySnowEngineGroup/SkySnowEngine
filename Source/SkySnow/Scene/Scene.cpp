@@ -30,10 +30,8 @@ namespace SkySnow
 {
     Scene::Scene(std::string sceneName)
         : _IsSubScene(false)
-        , _SceneHandle(-1)
         , _CullingMask(g_DefaultCullingMask)
         , _SceneName(sceneName)
-        , _RootGoUUID(-1)
         , _RendererScene(nullptr)
     {
     }
@@ -63,11 +61,11 @@ namespace SkySnow
     }
     SPtr<GameObject> Scene::AddRootGo()
     {
-        if(_RootGoUUID == -1)
+        if(_RootGoUUID.Empty())
         {
             SPtr<GameObject> rootGo= GetGOManager().CreateGameObject();
             _RootGoUUID = rootGo->GetUUID();
-            rootGo->SetSceneHandle(_SceneHandle);
+            rootGo->SetSceneUUID(GetUUID());
         }
         return GetGOManager().GetGameObjectPtr(_RootGoUUID);
     }

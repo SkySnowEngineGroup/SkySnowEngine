@@ -27,7 +27,6 @@
 namespace SkySnow
 {
     //if GO has parent-child,A TransformComponent must be mounted
-    //https://en.cppreference.com/w/cpp/memory/enable_shared_from_this
     class Scene;
 	class GameObject : public Object
 	{
@@ -61,19 +60,16 @@ namespace SkySnow
         SPtr<GameObject> GetGameObjectPtr();
         SPtr<Scene> GetHostScenePtr();
         
-        int64 GetUUID() const{ return _UUID;}
-        SceneHandle GetHostSceneHandle()const{ return _SceneHandle;}
+        const UUID& GetHostSceneUUID() const { return _SceneUUID;}
 	private:
-        void SetSceneHandle(const SceneHandle sHandle){_SceneHandle = sHandle;}
-        void SetUUID(const int64 uuid){_UUID = uuid;}
+        void SetSceneUUID(const UUID& sceneUUID){_SceneUUID = sceneUUID;}
     private:
         bool                        _Enable;
         //GameObject at Layer
         int32_t                         _Layer;
         int16_t                         _Tag;
-        int64_t                         _UUID;
-        int64_t                         _ParentUUID;
-        SceneHandle                     _SceneHandle;
+        UUID                            _ParentUUID = UUID::EMPTY;
+        UUID                            _SceneUUID = UUID::EMPTY;
         std::vector<int64>              _ChildUUIDList;
 	};
 

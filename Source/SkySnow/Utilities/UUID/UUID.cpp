@@ -20,14 +20,22 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
+#include "UUID.h"
 
 namespace SkySnow
 {
-    class InstanceID
+    UUID UUID::EMPTY;
+    UUID::UUID()
     {
-    public:
-        constexpr InstanceID() = default;
-        
-    };
+    }
+    
+    UUID::UUID(uint64 uuid)
+        : _UUID(uuid)
+    {
+    }
+    
+    UUID::UUID(const UUID& other)
+        : _UUID(other._UUID)
+    {
+    }
 }

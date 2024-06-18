@@ -31,8 +31,11 @@ namespace SkySnow
     {
         SkySnow_Object(Material, IRSEntity);
     public:
-        Material();
-        ~Material();
+        Material(){}
+        ~Material(){}
+        
+        void SetTexture();
+        void SetRenderTexture();
     private:
 
     };

@@ -40,10 +40,10 @@ namespace SkySnow
 
     void RenderableProxy::RegisterProxy(SPtr<IComponent> proxy)
     {
-        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetHostSceneHandle());
+        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetHostSceneUUID());
     }
     void RenderableProxy::UnRegisterProxy(SPtr<IComponent> proxy)
     {
-        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetHostSceneHandle());
+        auto rScene = RenderSystem()->GetRendererScene(_Renderable->GetHostSceneUUID());
     }
 }

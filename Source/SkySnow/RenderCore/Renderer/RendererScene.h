@@ -27,9 +27,6 @@
 #include "GRIHeaders.h"
 namespace SkySnow
 {
-//    class RenderRenderable;
-//    class RenderableProxy;
-//    class CameraProxy;
     class Renderable;
     class Camera;
     //每个Scene对应一个RendererScene，当Scene卸载加载时，RendererScene同时卸载加载

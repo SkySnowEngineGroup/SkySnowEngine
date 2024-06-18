@@ -22,12 +22,15 @@
 //
 #pragma once
 #include "IModule.h"
-#include "IResSource.h"
 #include <vector>
+#include <map>
 #include <unordered_map>
+#include "IRSEntity.h"
 
 namespace SkySnow
 {
+class IResSource;
+class IResRender;
     class ResourceModule : public IModule
     {
         SkySnow_Object(ResourceModule, IModule);
@@ -40,8 +43,24 @@ namespace SkySnow
         virtual void Update() final override;
 
         virtual void ShutDown() final override;
+        
+        void LoadAsync();
+        void LoadSync();
+        
+        template<typename T> SPtr<T> CreateRSEntity();
+        template<typename T> SPtr<T> GetRSEntity(int64 uuid);
+        
+        void RemoveRSEntity(int64 uuid);
     private:
-
+        std::map<int64,SPtr<IRSEntity<IResSource,IResRender>>> _RSEnMaps;
     };
+
+    template<typename T>
+    SPtr<T> ResourceModule::CreateRSEntity()
+    {
+        SPtr<T> entity = CreateSPtr<T>();
+        return entity;
+    }
+
     ResourceModule* ResourceSystem();
 }

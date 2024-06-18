@@ -24,11 +24,12 @@
 #include "SkySnowProfiles.h"
 namespace SkySnow
 {
-    TextureStream::TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight)
+    TextureStream::TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight,std::string filePath)
         : _PixelFormat(inPixelFormat)
         , _NumChannel(inNumChannel)
         , _Width(inWidth)
         , _Height(inHeight)
+        , _FilePath(filePath)
     {
     }
     TextureStream::~TextureStream()
@@ -96,5 +97,10 @@ namespace SkySnow
     uint32 TextureStream::GetImageHeight() const
     {
         return _Height;
+    }
+    
+    std::string TextureStream::GetImagePath() const
+    {
+        return _FilePath;
     }
 }

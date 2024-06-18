@@ -58,29 +58,29 @@ namespace SkySnow
         }
     }
     //Call from SceneManager
-    RendererScene* RenderModule::NotifyCreateRendererScene(SceneHandle sceneHandle)
+    RendererScene* RenderModule::NotifyCreateRendererScene(const UUID& uuid)
     {
-        _RendererScenes[sceneHandle] = new RendererScene();
-        return _RendererScenes[sceneHandle];
+        _RendererScenes[uuid] = new RendererScene();
+        return _RendererScenes[uuid];
     }
     //Call from SceneManager
-    void RenderModule::NotifyRemoveRendererScene(SceneHandle sceneHandle)
+    void RenderModule::NotifyRemoveRendererScene(const UUID& uuid)
     {
-        auto iter = _RendererScenes.find(sceneHandle);
+        auto iter = _RendererScenes.find(uuid);
         if (iter != _RendererScenes.end())
         {
             delete iter->second;
             _RendererScenes.erase(iter);
         }
     }
-    RendererScene* RenderModule::GetRendererScene(SceneHandle sceneHandle)
+    RendererScene* RenderModule::GetRendererScene(const UUID& uuid)
     {
-        auto iter = _RendererScenes.find(sceneHandle);
+        auto iter = _RendererScenes.find(uuid);
         if (iter != _RendererScenes.end())
         {
-            return _RendererScenes[sceneHandle];
+            return _RendererScenes[uuid];
         }
-        SN_WARN("Not find this SceneHandle(%d) RendererScene.", sceneHandle);
+        SN_WARN("Not find this SceneHandle(%d) RendererScene.", (uint64)uuid);
         return nullptr;
     }
     void RenderModule::ShutDown()

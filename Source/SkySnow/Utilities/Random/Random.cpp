@@ -19,20 +19,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-#include "Object.h"
+//
+#include "Random.h"
+#include "UUID.h"
+
 namespace SkySnow
 {
-	Object::Object()
-        : _UUID(Random64::RandUUID())
-	{
-	}
-
-	Object::~Object()
-	{
-	}
-
-    void Object::ReGenerUUID()
+    std::mt19937_64 Random64::_Rand64Engine = std::mt19937_64(std::chrono::system_clock::now().time_since_epoch().count());
+    
+    UUID Random64::RandUUID()
     {
-        _UUID = Random64::RandUUID();
+        return UUID(uint64(_Rand64Engine()));
     }
 }

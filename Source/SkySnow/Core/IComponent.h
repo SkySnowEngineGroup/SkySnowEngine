@@ -45,15 +45,15 @@ namespace SkySnow
 		virtual void SetEnable(bool enable){ _Enable = enable;}
         
         //attach this comonent to gameobject
-        void AttachGameObject(int64 goUuid);
+        void AttachGameObject(const UUID& goUuid);
         //Get curr component attach gameobject
         SPtr<GameObject> GetHostGameObjectPtr() const;
         //Get Scene
         SPtr<Scene> GetHostScenePtr() const;
-        SceneHandle GetHostSceneHandle() const { return _SceneHandle;}
+        const UUID& GetHostSceneUUID() const { return _SceneUUID;}
 	protected:
 		bool		     _Enable;
-        int64            _GoUUID;
-        SceneHandle      _SceneHandle;
+        UUID             _GoUUID;
+        UUID             _SceneUUID;
 	};
 }

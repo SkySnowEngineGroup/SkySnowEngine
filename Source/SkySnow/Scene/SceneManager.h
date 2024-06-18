@@ -39,16 +39,16 @@ namespace SkySnow
         //Get Taget SceneName Scene
         SPtr<Scene> GetScene(std::string name);
         //Get Target SceneIndex Scene
-        SPtr<Scene> GetScene(SceneHandle handle);
-        bool RemoveScene(SceneHandle handle);
+        SPtr<Scene> GetScene(const UUID& uuid);
+        bool RemoveScene(const UUID& uuid);
         bool RemoveScene(std::string name);
         void ClearScene();
     private:
         SceneManager();
         ~SceneManager();
     private:
-        std::map<int, SPtr<Scene>> _ActiveScenes;
-        std::map<int, SPtr<Scene>> _DeleteScenes;
+        std::map<UUID, SPtr<Scene>> _ActiveScenes;
+        std::map<UUID, SPtr<Scene>> _DeleteScenes;
     };
 
     SceneManager& GetSceneManager();

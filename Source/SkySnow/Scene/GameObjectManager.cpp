@@ -40,13 +40,11 @@ namespace SkySnow
 
     SPtr<GameObject> GameObjectManager::CreateGameObject()
     {
-        _tempUuidIdx ++;
         SPtr<GameObject> go = CreateSPtr<GameObject>();
-        go->SetUUID(_tempUuidIdx);
-        _GOMaps[_tempUuidIdx] = go;
+        _GOMaps[go->GetUUID()] = go;
         return go;
     }
-    SPtr<GameObject> GameObjectManager::GetGameObjectPtr(int64_t uuid)
+    SPtr<GameObject> GameObjectManager::GetGameObjectPtr(const UUID& uuid)
     {
         auto iter = _GOMaps.find(uuid);
         if(iter != _GOMaps.end())
@@ -55,7 +53,7 @@ namespace SkySnow
         }
         return nullptr;
     }
-    void GameObjectManager::UpdateGameObjectUUID(int64 oldUuid,int64 newUuid)
+    void GameObjectManager::UpdateGameObjectUUID(const UUID& oldUuid,const UUID& newUuid)
     {
         auto iter = _GOMaps.find(oldUuid);
         if(iter != _GOMaps.end())
@@ -65,7 +63,7 @@ namespace SkySnow
             _GOMaps[newUuid] = go;
         }
     }
-    void GameObjectManager::RemoveGameObjectPtr(int64_t uuid)
+    void GameObjectManager::RemoveGameObjectPtr(const UUID& uuid)
     {
         auto iter = _GOMaps.find(uuid);
         if(iter != _GOMaps.end())
@@ -74,11 +72,11 @@ namespace SkySnow
             _GOMaps.erase(iter);
         }
     }
-    std::map<int64,std::vector<SPtr<IComponent>>>& GameObjectManager::GetComponents()
+    std::map<UUID,std::vector<SPtr<IComponent>>>& GameObjectManager::GetComponents()
     {
         return _ComMaps;
     }
-    SPtr<IComponent> GameObjectManager::GetComponentPtr(int64 goUuid,const char* typeName)
+    SPtr<IComponent> GameObjectManager::GetComponentPtr(const UUID& goUuid,const char* typeName)
     {
         auto iter = _ComMaps.find(goUuid);
         if(iter != _ComMaps.end())
@@ -93,7 +91,7 @@ namespace SkySnow
         }
         return nullptr;
     }
-    void GameObjectManager::RemoveComponentPtr(int64 goUuid,const char* typeName)
+    void GameObjectManager::RemoveComponentPtr(const UUID& goUuid,const char* typeName)
     {
         auto iter = _ComMaps.find(goUuid);
         if(iter != _ComMaps.end())
@@ -113,7 +111,7 @@ namespace SkySnow
             }
         }
     }
-    void GameObjectManager::RemoveGameObjectComponents(int64 goUuid)
+    void GameObjectManager::RemoveGameObjectComponents(const UUID& goUuid)
     {
         auto iter = _ComMaps.find(goUuid);
         if(iter != _ComMaps.end())
