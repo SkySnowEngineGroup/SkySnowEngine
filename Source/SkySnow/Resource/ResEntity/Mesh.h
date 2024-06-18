@@ -33,7 +33,9 @@ namespace SkySnow
     public:
         Mesh();
         ~Mesh();
-
+        
+        void SetVertexElement(const SPtr<VertexStream>& vStream,const SPtr<IndexStream>& iStream);
+        void SetVertexArray(const SPtr<VertexStream>& vStream);
     private:
 
     };

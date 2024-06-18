@@ -38,7 +38,6 @@ namespace SkySnow
         virtual ~IResSource()
         {
         }
-
         void SetKeepSource(bool keepSource)
         {
             _IsKeepSource = keepSource;
@@ -47,6 +46,7 @@ namespace SkySnow
         {
             return _IsKeepSource;
         }
+        SourceType GetSourceType() const { return _SourceType;}
     protected:
         SourceType _SourceType;
         bool       _IsKeepSource;

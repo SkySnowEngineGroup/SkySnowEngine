@@ -62,14 +62,19 @@ public:
         SPtr<MeshRendererComponent> meshRenderCom = go->AddComponent<MeshRendererComponent>();
         SPtr<MeshComponent> meshCom = go->AddComponent<MeshComponent>();
         
+        SPtr<Mesh> mesh = ResourceSystem()->CreateRSEntity<Mesh>();
+        MQuad quad;
+        mesh->SetVertexArray(quad._ArrayStream);
+        meshRenderCom->SetShareMesh(mesh);
         
         std::string imagePath = GetImageAllPath("panda.png");
         TextureLoader* tImp = new TextureLoader();
-        TextureStream* texStream = tImp->Load<TextureStream>(imagePath);
+        SPtr<TextureStream> texStream = tImp->LoadSource<TextureStream>(imagePath);
         SPtr<Texture2D> tex2D = ResourceSystem()->CreateRSEntity<Texture2D>();
-//        tex2D->SetTextureStream(texStream);
+        tex2D->SetTextureStream(texStream);
 
-        SPtr<Material> mat = CreateSPtr<Material>();
+        SPtr<Material> mat = ResourceSystem()->CreateRSEntity<Material>();
+        
 //        mat->SetTexture("panda.png",texture);
   //      mat->CreateShader("QuadVS.sns", "QuadFS.sns");
   //      

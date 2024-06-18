@@ -58,7 +58,15 @@ namespace SkySnow
     {
 
     }
-
+    
+    void ResourceModule::RemoveRSEntity(const UUID& uuid)
+    {
+        auto iter = _RSEnMaps.find(uuid);
+        if(iter != _RSEnMaps.end())
+        {
+            _RSEnMaps.erase(iter);
+        }
+    }
     void ResourceModule::ShutDown()
     {
         GetGOManager().ClearGameObject();

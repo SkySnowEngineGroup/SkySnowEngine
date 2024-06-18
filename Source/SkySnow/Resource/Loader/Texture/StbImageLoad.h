@@ -20,19 +20,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "ShaderParse.h"
-
+#pragma once
+#include <string>
+#include "TextureStream.h"
 namespace SkySnow
 {
-	ShaderParse::ShaderParse()
-		: ILoader()
-	{
-	}
-	ShaderParse::~ShaderParse()
-	{
-	}
-	void* ShaderParse::DoLoad(const std::string filePath)
-	{
-		return nullptr;
-	}
+    class StbImageLoad
+    {
+    public:
+        StbImageLoad(){}
+        ~StbImageLoad(){}
+        
+        static SPtr<TextureStream> StbLoadPNG(const std::string& filePath);
+    };
 }

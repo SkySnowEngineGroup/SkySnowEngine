@@ -21,6 +21,7 @@
 // THE SOFTWARE.
 //
 #include "Texture2D.h"
+#include "TextureSource.h"
 
 namespace SkySnow
 {
@@ -31,8 +32,12 @@ namespace SkySnow
     {
     }
 
-    void Texture2D::SetTextureStream(SPtr<TextureStream> stream)
+    void Texture2D::SetTextureStream(const SPtr<TextureStream>& stream)
     {
-        
+        if(!_Tex2DMetaData)
+        {
+            _Tex2DMetaData = CreateSPtr<Texture2DMetaData>();
+        }
+        Sou()->SetTextureStream(stream);
     }
 }

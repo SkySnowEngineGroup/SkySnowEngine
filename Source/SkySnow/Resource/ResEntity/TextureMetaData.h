@@ -21,41 +21,32 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ISource.h"
-#include "GRICommons.h"
-#include "GRIResourceCreateInfo.h"
+#include "IMateData.h"
+
 namespace SkySnow
 {
-    class TextureStream : public ISource
+    class TextureMetaData : public IMateData
     {
-        SkySnow_Object(TextureStream, ISource);
+        SkySnow_Object(TextureMetaData, IMateData);
     public:
-        TextureStream() = delete;
-        TextureStream(PixelFormat inPixelFormat,uint32 inNumChannel,uint32 inWidth,uint32 inHeight,std::string filePath);
-        ~TextureStream();
-        
-        void WriteTargetData(void* targetData);
-        
-        void* GetImageData();
-        
-        uint32 GetImageSize();
-        
-        PixelFormat GetPixelFormat() const;
-        
-        uint32 GetImageChannels() const;
-        
-        uint32 GetImageWidth() const;
-        
-        uint32 GetImageHeight() const;
-        
-        std::string GetImagePath() const;
-    private:
-        PixelFormat _PixelFormat    = PF_None;
-        char*       _ImageRawData   = nullptr;
-        uint32      _NumChannel     = 0;
-        uint32      _Width          = 1;
-        uint32      _Height         = 1;
-        uint32      _ImageSize      = 0;
-        std::string _FilePath       = "";
+        TextureMetaData();
+        virtual ~TextureMetaData();
+    };
+
+    class Texture2DMetaData : public TextureMetaData
+    {
+        SkySnow_Object(Texture2DMetaData, TextureMetaData);
+    public:
+        Texture2DMetaData();
+        virtual ~Texture2DMetaData();
+    
+    };
+
+    class FrameTexture2DMetaData : public TextureMetaData
+    {
+        SkySnow_Object(TextureMetaData, IMateData);
+    public:
+        FrameTexture2DMetaData();
+        virtual ~FrameTexture2DMetaData();
     };
 }

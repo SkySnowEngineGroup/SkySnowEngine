@@ -21,32 +21,28 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "Object.h"
+#include "ILoader.h"
+#include "TextureStream.h"
+
 namespace SkySnow
 {
-    class ILoader : public Object
+    enum TLoaderType
     {
-        SkySnow_Object(ILoader, Object);
+        StbImage,
+        PngLib,
+        Jpg
+    };
+    class TextureLoader : public ILoader
+    {
+        SkySnow_Object(TextureLoader, ILoader);
     public:
-        ILoader()
-        {
-        }
-        virtual ~ILoader()
-        {
-        }
-        template<typename T>
-        T* Load(const std::string& filePath)
-        {
-            T* res = static_cast<T*>(DoLoad(filePath));
-            return res;
-        }
-        template<typename T>
-        void Release()
-        {
-
-        }
+        TextureLoader(TLoaderType tLT = StbImage);
+        
     private:
-        virtual void* DoLoad(const std::string filePath) = 0;
-        virtual bool Release(void* data) = 0;
+        virtual SPtr<ISource> DoLoadSource(const std::string filePath) final override;
+//        virtual bool Release(void* data) final override;
+
+    private:
+        TLoaderType _LoadType = StbImage;
     };
 }

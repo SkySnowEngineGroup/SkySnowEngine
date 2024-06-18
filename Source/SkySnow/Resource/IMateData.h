@@ -29,6 +29,7 @@ namespace SkySnow
 	{
 		SkySnow_Object(IMateData, Object);
 	public:
-
+        IMateData(){}
+        virtual ~IMateData(){}
 	};
 }

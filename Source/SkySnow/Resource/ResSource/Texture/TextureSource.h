@@ -22,7 +22,7 @@
 //
 #pragma once
 #include "IResSource.h"
-#include "TextureMetaData.h"
+#include "TextureStream.h"
 
 namespace SkySnow
 {
@@ -33,7 +33,8 @@ namespace SkySnow
 		TextureSource();
 		virtual ~TextureSource();
 
+        void SetTextureStream(const SPtr<TextureStream>& texStream);
 	private:
-		SPtr<TextureMetaData>	_MetaData;
+        SPtr<TextureStream>     _TextureStream;
 	};
 }

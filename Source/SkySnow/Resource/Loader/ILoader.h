@@ -20,43 +20,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "StbImageLoad.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-#include "LogAssert.h"
+#pragma once
+#include "Object.h"
+#include "ISource.h"
+#include "IResSource.h"
+
 namespace SkySnow
 {
-    TextureStream* StbImageLoad::StbLoadPNG(const std::string& filePath)
+    class ILoader : public Object
     {
-        int width, height, channels;
-        unsigned char* image_data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
-        if(image_data == nullptr)
-        {
-            SN_WARN("Load Image(ImagePath:%s) fail.\n",filePath.c_str());
-            return nullptr;
-        }
-        PixelFormat pixelFormat = PF_None;
-        switch (channels)
-        {
-            case STBI_rgb_alpha:
-                pixelFormat = PF_R8G8B8A8;
-                break;
-            case STBI_rgb:
-                pixelFormat = PF_R8G8B8;
-                break;
-            case STBI_grey_alpha:
-                pixelFormat = PF_R8G8;
-                break;
-            case STBI_grey:
-                pixelFormat = PF_R8;
-                break;
-            default:
-                break;
-        }
+        SkySnow_Object(ILoader, Object);
+    public:
+        ILoader(){}
+        virtual ~ILoader(){}
         
-        TextureStream* stream = new TextureStream(pixelFormat,channels,width,height,filePath);
-        stream->WriteTargetData(image_data);
-        stbi_image_free(image_data);
-        return stream;
+        template<typename T> SPtr<T> LoadSource(const std::string& path);
+    protected:
+        virtual SPtr<ISource> DoLoadSource(const std::string filePath) = 0;
+    };
+
+    template<typename T>
+    SPtr<T> ILoader::LoadSource(const std::string& path)
+    {
+        return std::static_pointer_cast<T>(DoLoadSource(path));
     }
+
 }

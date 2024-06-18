@@ -20,36 +20,19 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "TextureLoader.h"
-#include "StbImageLoad.h"
-#include "LogAssert.h"
+#include "ShaderParse.h"
+
 namespace SkySnow
 {
-    TextureLoader::TextureLoader(TLoaderType tLT)
-        : _LoadType(tLT)
-    {
-    }
-    void* TextureLoader::DoLoad(const std::string filePath)
-    {
-        switch (_LoadType)
-        {
-        case SkySnow::StbImage:
-            _TextureStream = StbImageLoad::StbLoadPNG(filePath);
-            break;
-        case SkySnow::PngLib:
-            break;
-        case SkySnow::Jpg:
-            break;
-        default:
-            SN_WARN("TLoaderType(%d) Not Support[Support(StbImage 0) (PngLib 1) (Jpg 2)].", _LoadType);
-            break;
-        }
-        return _TextureStream;
-    }
-    bool TextureLoader::Release(void* data)
-    {
-        TextureStream* stream = static_cast<TextureStream*>(data);
-        Delete_Object(stream);
-        return true;
-    }
+	ShaderParse::ShaderParse()
+		: ILoader()
+	{
+	}
+	ShaderParse::~ShaderParse()
+	{
+	}
+    SPtr<ISource> ShaderParse::DoLoadSource(const std::string filePath)
+	{
+		return nullptr;
+	}
 }

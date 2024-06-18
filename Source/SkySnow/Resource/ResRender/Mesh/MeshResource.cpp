@@ -32,7 +32,6 @@ namespace SkySnow
 
     MeshResource::~MeshResource()
     {
-        
     }
 
     //void MeshResource::SMCreateBuffer(SPtr<VertexData> vertexData)

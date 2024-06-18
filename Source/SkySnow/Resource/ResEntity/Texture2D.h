@@ -24,6 +24,7 @@
 #include "IRSEntity.h"
 #include "TextureResource.h"
 #include "TextureSource.h"
+#include "TextureMetaData.h"
 
 namespace SkySnow
 {
@@ -33,11 +34,9 @@ namespace SkySnow
     public:
         Texture2D();
         virtual ~Texture2D();
-
-        void SetTextureStream(SPtr<TextureStream> stream);
-
-        void FlushStream();
+        
+        void SetTextureStream(const SPtr<TextureStream>& stream);
     private:
-        TextureStream* _TextureStream;
+        SPtr<Texture2DMetaData> _Tex2DMetaData;
     };
 }

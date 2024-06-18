@@ -20,30 +20,20 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "IMateData.h"
+#include "Material.h"
 
 namespace SkySnow
 {
-    class TextureMetaData : public IMateData
+    Material::Material()
     {
-        SkySnow_Object(TextureMetaData, IMateData);
-    public:
-        TextureMetaData();
-        virtual ~TextureMetaData();
-    public:
-
-    protected:
-    };
-
-    class Texture2DMetaData : public TextureMetaData
+    }
+    Material::~Material()
     {
-        SkySnow_Object(Texture2DMetaData, TextureMetaData);
-    public:
-        Texture2DMetaData();
-        virtual ~Texture2DMetaData();
-    public:
-
-    protected:
-    };
+    }
+    void Material::SetTexture()
+    {
+    }
+    void Material::SetRenderTexture()
+    {
+    }
 }

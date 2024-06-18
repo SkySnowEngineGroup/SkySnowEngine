@@ -20,17 +20,31 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include <string>
-#include "TextureStream.h"
+#include "TextureLoader.h"
+#include "StbImageLoad.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
-    class StbImageLoad
+    TextureLoader::TextureLoader(TLoaderType tLT)
+        : _LoadType(tLT)
     {
-    public:
-        StbImageLoad(){}
-        ~StbImageLoad(){}
-        
-        static TextureStream* StbLoadPNG(const std::string& filePath);
-    };
+    }
+    SPtr<ISource> TextureLoader::DoLoadSource(const std::string filePath)
+    {
+        SPtr<ISource> stream;
+        switch (_LoadType)
+        {
+        case SkySnow::StbImage:
+            stream = StbImageLoad::StbLoadPNG(filePath);
+            break;
+        case SkySnow::PngLib:
+            break;
+        case SkySnow::Jpg:
+            break;
+        default:
+            SN_WARN("TLoaderType(%d) Not Support[Support(StbImage 0) (PngLib 1) (Jpg 2)].", _LoadType);
+            break;
+        }
+        return stream;
+    }
 }

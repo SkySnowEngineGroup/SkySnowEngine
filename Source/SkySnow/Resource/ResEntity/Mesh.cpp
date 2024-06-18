@@ -20,29 +20,24 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "ILoader.h"
-#include "TextureStream.h"
+#include "Mesh.h"
+
 namespace SkySnow
 {
-    enum TLoaderType
+    Mesh::Mesh()
     {
-        StbImage,
-        PngLib,
-        Jpg
-    };
-    class TextureLoader : public ILoader
+    }
+    Mesh::~Mesh()
     {
-        SkySnow_Object(TextureLoader, ILoader);
-    public:
-        TextureLoader(TLoaderType tLT = StbImage);
-        
-    private:
-        virtual void* DoLoad(const std::string filePath) final override;
-        virtual bool Release(void* data) final override;
+    }
 
-    private:
-        TLoaderType _LoadType = StbImage;
-        TextureStream* _TextureStream = nullptr;
-    };
+    void Mesh::SetVertexElement(const SPtr<VertexStream>& vStream,const SPtr<IndexStream>& iStream)
+    {
+        Sou()->SetIndexStream(iStream);
+        Sou()->PushVertexStream(vStream);
+    }
+    void Mesh::SetVertexArray(const SPtr<VertexStream>& vStream)
+    {
+        Sou()->PushVertexStream(vStream);
+    }
 }

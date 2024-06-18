@@ -20,18 +20,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#pragma once
-#include "ILoader.h"
-
+#include "StbImageLoad.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#include "LogAssert.h"
 namespace SkySnow
 {
-	class ShaderParse : public ILoader
-	{
-		SkySnow_Object(ShaderParse, ILoader);
-	public:
-		ShaderParse();
-		~ShaderParse();
-	private:
-		virtual void* DoLoad(const std::string filePath) final override;
-	};
+    SPtr<TextureStream> StbImageLoad::StbLoadPNG(const std::string& filePath)
+    {
+        int width, height, channels;
+        unsigned char* image_data = stbi_load(filePath.c_str(), &width, &height, &channels, 0);
+        if(image_data == nullptr)
+        {
+            SN_WARN("Load Image(ImagePath:%s) fail.\n",filePath.c_str());
+            return nullptr;
+        }
+        PixelFormat pixelFormat = PF_None;
+        switch (channels)
+        {
+            case STBI_rgb_alpha:
+                pixelFormat = PF_R8G8B8A8;
+                break;
+            case STBI_rgb:
+                pixelFormat = PF_R8G8B8;
+                break;
+            case STBI_grey_alpha:
+                pixelFormat = PF_R8G8;
+                break;
+            case STBI_grey:
+                pixelFormat = PF_R8;
+                break;
+            default:
+                break;
+        }
+        SPtr<TextureStream> stream = CreateSPtr<TextureStream>(pixelFormat,channels,width,height,filePath);
+        stream->WriteTargetData(image_data);
+        stbi_image_free(image_data);
+        return stream;
+    }
 }

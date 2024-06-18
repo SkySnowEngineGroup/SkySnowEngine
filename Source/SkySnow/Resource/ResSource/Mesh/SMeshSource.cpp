@@ -28,7 +28,10 @@ namespace SkySnow
         : MeshSource(ST_StaticMesh)
     {
     }
-
+    SMeshSource::~SMeshSource()
+    {
+    }
+    
     void SMeshSource::PushVertexStream(SPtr<VertexStream> vStream)
     {
         _VertexStreams.push_back(vStream);

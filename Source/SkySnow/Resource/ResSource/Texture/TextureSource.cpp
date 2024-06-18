@@ -32,4 +32,9 @@ namespace SkySnow
 	TextureSource::~TextureSource()
 	{
 	}
+
+    void TextureSource::SetTextureStream(const SPtr<TextureStream>& texStream)
+    {
+        _TextureStream = texStream;
+    }
 }

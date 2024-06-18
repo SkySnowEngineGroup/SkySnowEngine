@@ -23,14 +23,13 @@
 #pragma once
 #include "IModule.h"
 #include <vector>
-#include <map>
 #include <unordered_map>
 #include "IRSEntity.h"
 
 namespace SkySnow
 {
-class IResSource;
-class IResRender;
+    class IResSource;
+    class IResRender;
     class ResourceModule : public IModule
     {
         SkySnow_Object(ResourceModule, IModule);
@@ -48,18 +47,34 @@ class IResRender;
         void LoadSync();
         
         template<typename T> SPtr<T> CreateRSEntity();
-        template<typename T> SPtr<T> GetRSEntity(int64 uuid);
+        template<typename T> SPtr<T> GetRSEntity(const UUID& uuid);
+        void RemoveRSEntity(const UUID& uuid);
         
-        void RemoveRSEntity(int64 uuid);
+//        template<typename T> void RegisterBuiltinRSEntity();
+//        void UnRegisterBuiltinRSEntity();
     private:
-        std::map<int64,SPtr<IRSEntity<IResSource,IResRender>>> _RSEnMaps;
+        std::unordered_map<UUID,SPtr<IRSBase>> _RSEnMaps;
     };
 
     template<typename T>
     SPtr<T> ResourceModule::CreateRSEntity()
     {
         SPtr<T> entity = CreateSPtr<T>();
+        entity->CreateSource();
+        //Load Source Data Task Will Push JobSystem
+        _RSEnMaps[entity->GetUUID()] = entity;
         return entity;
+    }
+
+    template<typename T>
+    SPtr<T> ResourceModule::GetRSEntity(const UUID& uuid)
+    {
+        auto iter = _RSEnMaps.find(uuid);
+        if(iter != _RSEnMaps.end())
+        {
+            return std::static_pointer_cast<T>(_RSEnMaps[uuid]);
+        }
+        return nullptr;
     }
 
     ResourceModule* ResourceSystem();
