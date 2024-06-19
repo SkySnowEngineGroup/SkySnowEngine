@@ -31,6 +31,8 @@ namespace SkySnow
 	public:
 		ShaderStages();
 		~ShaderStages();
+        
+        void SetShderCode(std::string& vsData,std::string& fsData);
 	public:
 		std::string _VSShaderCode;
 		std::string _FSShaderCode;

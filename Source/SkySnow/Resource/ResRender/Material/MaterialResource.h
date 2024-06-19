@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "IResRender.h"
+#include "RenderObject.h"
 
 namespace SkySnow
 {
@@ -33,5 +34,6 @@ namespace SkySnow
 		virtual ~MaterialResource();
 
 	private:
+        std::vector<SPtr<RenderObject>> _RnderObjects;
 	};
 }

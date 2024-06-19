@@ -31,7 +31,17 @@ namespace SkySnow
 	public:
 		ShaderParse();
 		~ShaderParse();
+        
+        //tempCode
+        void SetShaderPath(std::string vsp,std::string fsp)
+        {
+            vsPath = vsp;
+            fsPath = fsp;
+        }
 	private:
         virtual SPtr<ISource> DoLoadSource(const std::string filePath) final override;
+    private:
+        std::string vsPath;
+        std::string fsPath;
 	};
 }

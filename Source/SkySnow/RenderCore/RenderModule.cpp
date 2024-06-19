@@ -43,7 +43,7 @@ namespace SkySnow
 
     void RenderModule::StartUp()
     {
-
+        _CBPool = CreateSPtr<GRICommandBufferPool>();
     }
 
     void RenderModule::Update()
@@ -54,7 +54,7 @@ namespace SkySnow
     {
         for (const auto& pair : _RendererScenes)
         {
-            pair.second->RenderCore();
+            pair.second->RenderCore(_CBPool);
         }
     }
     //Call from SceneManager

@@ -32,6 +32,9 @@ namespace SkySnow
 	public:
 		ShaderPass();
 		virtual ~ShaderPass();
+        
+        void SetShaderState(SPtr<ShaderState>& state);
+        void SetShaderStages(SPtr<ShaderStages>& stages);
 	private:
 		SPtr<ShaderState>	_ShaderState;
 		SPtr<ShaderStages>	_ShaderStagesInfo;

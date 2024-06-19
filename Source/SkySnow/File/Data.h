@@ -48,7 +48,7 @@ namespace SkySnow
 		void SetBytes(unsigned char* bytes,const size_t size);
 
 		unsigned char* GetBytes() const;
-
+        
 		size_t GetSize() const;
 	private:
 		void Clear();

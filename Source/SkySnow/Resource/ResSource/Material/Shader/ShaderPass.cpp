@@ -20,35 +20,23 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
-#include "ShaderParse.h"
-#include "ShaderStages.h"
-#include "File.h"
+#include "ShaderPass.h"
 
 namespace SkySnow
 {
-	ShaderParse::ShaderParse()
-		: ILoader()
-	{
-	}
-	ShaderParse::~ShaderParse()
-	{
-	}
-    SPtr<ISource> ShaderParse::DoLoadSource(const std::string filePath)
-	{
-        SPtr<ShaderStages> stages = CreateSPtr<ShaderStages>();
-        File* _File = new File();
-        Data* _VsData = new Data();
-        Data* _FsData = new Data();
-        //TODO Shader SourceData Manage
-        _File->ReadData(vsPath, _VsData);
-        _File->ReadData(fsPath, _FsData);
-        
-        std::string vs = (char*)_VsData->GetBytes();
-        std::string fs = (char*)_FsData->GetBytes();
-        stages->SetShderCode(vs, fs);
-        Delete_Object(_FsData);
-        Delete_Object(_VsData);
-        Delete_Object(_File);
-		return stages;
-	}
+    ShaderPass::ShaderPass()
+    {
+    }
+    ShaderPass::~ShaderPass()
+    {
+    }
+
+    void ShaderPass::SetShaderState(SPtr<ShaderState>& state)
+    {
+        _ShaderState = state;
+    }
+    void ShaderPass::SetShaderStages(SPtr<ShaderStages>& stages)
+    {
+        _ShaderStagesInfo = stages;
+    }
 }

@@ -86,18 +86,13 @@ namespace SkySnow
         
     }
 
-    void RendererScene::RenderCore()
+    void RendererScene::RenderCore(SPtr<GRICommandBufferPool>& cmPool)
     {
-        int a = 10;
-        ////temp code
-        //if (!_CMBPool)
-        //{
-        //    _CMBPool = new GRICommandBufferPool();
-        //}
-        //GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)_CMBPool->AllocCommandBuffer();
-        //GRITexture2DRef tempTex;
-        //GRIViewportStateRef curVp = SSContext().GetGameWindow()->GetViewport()->GetGRIViewport();
-        //commandBuffer->CmdBeginViewport(curVp, tempTex);
+        
+        GRIRenderCommandBuffer* commandBuffer = (GRIRenderCommandBuffer*)cmPool->AllocCommandBuffer();
+        GRITexture2DRef tempTex;
+        GRIViewportStateRef curVp = SSContext().GetGameWindow()->GetViewport()->GetGRIViewport();
+        commandBuffer->CmdBeginViewport(curVp, tempTex);
         //for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
         //{
         //    SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];
@@ -128,8 +123,8 @@ namespace SkySnow
         //    
         //    commandBuffer->CmdDrawPrimitive(2, 1);
         //}
-        //commandBuffer->CmdEndViewport(curVp, false, false);
-        //CBQueue()->SubmitCommandBuffer(commandBuffer);
+        commandBuffer->CmdEndViewport(curVp, false, false);
+        CBQueue()->SubmitCommandBuffer(commandBuffer);
         
     }
 }

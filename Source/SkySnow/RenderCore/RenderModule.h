@@ -53,7 +53,8 @@ namespace SkySnow
     private:
         void RenderInternal();
     private:
-        std::map<UUID, RendererScene*> _RendererScenes;
+        std::map<UUID, RendererScene*>  _RendererScenes;
+        SPtr<GRICommandBufferPool>      _CBPool;
     };
     RenderModule* RenderSystem();
 }

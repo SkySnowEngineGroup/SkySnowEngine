@@ -37,6 +37,7 @@
 #include "TextureLoader.h"
 #include "SPtr.h"
 #include "ResourceModule.h"
+#include "ShaderParse.h"
 
 using namespace SkySnow;
 using namespace SampleEntry;
@@ -74,6 +75,18 @@ public:
         tex2D->SetTextureStream(texStream);
 
         SPtr<Material> mat = ResourceSystem()->CreateRSEntity<Material>();
+        SPtr<Shader> shader = CreateSPtr<Shader>();
+        SPtr<ShaderPass> shaderPass = CreateSPtr<ShaderPass>();
+        
+        ShaderParse* sParse = new ShaderParse();
+        std::string vsShaderPath = g_RelativeMaterialPath + "Material/" + "Test/" + "QuadVS.sns";
+        std::string fsShaderPath = g_RelativeMaterialPath + "Material/" + "Test/" + "QuadFS.sns";
+        sParse->SetShaderPath(vsShaderPath, fsShaderPath);
+        SPtr<ShaderStages> stages = sParse->LoadSource<ShaderStages>("");
+        shaderPass->SetShaderStages(stages);
+        
+        shader->SetPass(shaderPass, 0);
+        mat->SetShader(shader);
         
 //        mat->SetTexture("panda.png",texture);
   //      mat->CreateShader("QuadVS.sns", "QuadFS.sns");

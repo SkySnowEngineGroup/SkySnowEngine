@@ -23,7 +23,8 @@
 #pragma once
 #include "IRender.h"
 #include "RenderState.h"
-#include "ShaderProgram.h"
+#include "RenderProgram.h"
+
 namespace SkySnow
 {
 	class RenderObject : public IRender

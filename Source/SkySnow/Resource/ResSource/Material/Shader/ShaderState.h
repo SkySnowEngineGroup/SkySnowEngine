@@ -31,7 +31,7 @@ namespace SkySnow
 	public:
 		ShaderState();
 		~ShaderState();
-
+        
 	private:
 
 	};

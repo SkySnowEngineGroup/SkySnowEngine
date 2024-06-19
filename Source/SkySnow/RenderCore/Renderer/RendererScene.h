@@ -51,7 +51,7 @@ namespace SkySnow
         void NotifyCameraUpdate(SPtr<Camera> camera);
         void NotifyCameraRemoved(SPtr<Camera> camera);
 
-        void RenderCore();
+        void RenderCore(SPtr<GRICommandBufferPool>& cmPool);
     private:
         RSceneInfo      _SceneInfo;
     };

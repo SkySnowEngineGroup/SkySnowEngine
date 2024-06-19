@@ -30,10 +30,8 @@ namespace SkySnow
     Material::~Material()
     {
     }
-    void Material::SetTexture()
+    void Material::SetShader(SPtr<Shader>& shader)
     {
-    }
-    void Material::SetRenderTexture()
-    {
+        Sou()->SetShader(shader);
     }
 }

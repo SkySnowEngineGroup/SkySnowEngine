@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include <vector>
+#include <map>
 #include "ShaderPass.h"
 #include "ISource.h"
 
@@ -34,9 +34,13 @@ namespace SkySnow
 		Shader();
 		virtual ~Shader();
 
+        void SetPass(SPtr<ShaderPass>& pass,int idx);
+        
+        int GetPassSize(){ return _ShaderPass.size();}
+        
+        void SetRenderQueue(int idx) { _RenderQueue = idx;}
 	private:
-		int							  _RenderQueue;
-		std::vector<SPtr<ShaderPass>> _ShaderPass;
-		
+		int							    _RenderQueue;
+		std::map<int,SPtr<ShaderPass>>  _ShaderPass;
 	};
 }

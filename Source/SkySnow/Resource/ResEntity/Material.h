@@ -34,8 +34,7 @@ namespace SkySnow
         Material();
         ~Material();
         
-        void SetTexture();
-        void SetRenderTexture();
+        void SetShader(SPtr<Shader>& shader);
     private:
         
     };
