@@ -22,6 +22,8 @@
 //
 #pragma once
 #include "ISource.h"
+#include "ShaderKeywordBits.h"
+#include "ShaderPropertyTable.h"
 
 namespace SkySnow
 {
@@ -31,5 +33,9 @@ namespace SkySnow
 	public :
 		MaterialProperty();
 		~MaterialProperty();
+        
+    private:
+        SPtr<ShaderKeywordBits>     _KeyWordBits;
+        SPtr<ShaderPropertyTable>   _Propertys;
 	};
 }

@@ -21,20 +21,15 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "IResRender.h"
-#include "RenderObject.h"
+#include "ISource.h"
 
 namespace SkySnow
 {
-	class MaterialResource : public IResRender
+	class ShaderPropertyTable : public ISource
 	{
-		SkySnow_Object(MaterialResource, IResRender);
-	public:
-		MaterialResource();
-		virtual ~MaterialResource();
-
-        
-	private:
-        std::map<int,SPtr<RenderObject>>    _RenderObjects;
+		SkySnow_Object(ShaderPropertyTable, ISource);
+	public :
+        ShaderPropertyTable();
+		~ShaderPropertyTable();
 	};
 }
