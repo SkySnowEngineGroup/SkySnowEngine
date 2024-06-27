@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "VarType.h"
+#include "Variable.h"
 #include <random>
 #include <chrono>
 

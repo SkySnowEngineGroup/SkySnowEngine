@@ -21,7 +21,8 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "VarType.h"
+#include "Variable.h"
+
 namespace SkySnow
 {
 #define Max_Num_Vertex_Attribute 16

@@ -23,6 +23,7 @@
 #pragma once
 #include "IResRender.h"
 #include "RenderObject.h"
+#include <map>
 
 namespace SkySnow
 {
@@ -34,7 +35,7 @@ namespace SkySnow
 		virtual ~MaterialResource();
 
         
-	private:
+    private:
         std::map<int,SPtr<RenderObject>>    _RenderObjects;
 	};
 }

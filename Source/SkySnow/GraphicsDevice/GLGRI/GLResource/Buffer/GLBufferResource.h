@@ -169,7 +169,7 @@ namespace SkySnow
         void SetUp(UniformSlotList& contents,const char* ubName,UniformBufferUsageType ubType)
         {
             _UniformBufferUsagType = ubType;
-            _HashKey = String2Hash(ubName);
+            _HashKey = ShortStrHash32(ubName);
             for (int i = 0; i < contents.size(); i ++)
             {
                 _Size += contents[i]._Size;

@@ -22,8 +22,8 @@
 //
 #pragma once
 #include <stdint.h>
-#include "VarType.h"
-#include "HashUtil.h"
+#include "Variable.h"
+#include "HashHeader.h"
 #include "Random.h"
 
 namespace SkySnow
@@ -60,8 +60,7 @@ namespace std
     {
         std::size_t operator()(const SkySnow::UUID& uuid) const
         {
-            size_t hash = 0;
-            hash = SkySnow::HashCombine((uint64_t)uuid,hash);
+            const size_t hash = std::hash<size_t>()((uint64_t)uuid);
             return hash;
         }
     };

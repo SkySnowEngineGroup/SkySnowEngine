@@ -25,7 +25,7 @@
 #include "GLRenderStateResource.h"
 #include "GLTextureResource.h"
 #include "GLPipelineResource.h"
-#include "VarType.h"
+#include "Variable.h"
 #include "GRIModule.h"
 
 namespace SkySnow

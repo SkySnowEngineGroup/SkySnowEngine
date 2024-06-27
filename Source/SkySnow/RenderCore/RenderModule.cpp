@@ -24,7 +24,6 @@
 #include "Context.h"
 #include "RendererScene.h"
 #include "GRIResourceCreateInfo.h"
-#include "HashUtil.h"
 #include "StbImageLoad.h"
 #include "SkySnowEngine.h"
 #include "TextureLoader.h"

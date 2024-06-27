@@ -24,7 +24,7 @@
 #include "ResourcePathConfig.h"
 #include <iostream>
 #include <cfloat>
-#include "VarType.h"
+#include "AtomicVariable.h"
 
 #define PLATFORM_UNKNOW 0
 #define PLATFORM_ANDROID 1

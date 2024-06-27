@@ -23,7 +23,7 @@
 #pragma once
 #include "GRICommons.h"
 #include "GRIResource.h"
-#include "HashUtil.h"
+#include "HashHeader.h"
 #include <vector>
 #include <unordered_map>
 #include "AllocatorBase.h"
@@ -186,7 +186,7 @@ namespace SkySnow
     struct UniformSlot
     {
         UniformSlot(const char* inName,void* inData,uint8_t size)
-            : _Hash(String2Hash(inName))
+            : _Hash(ShortStrHash32(inName))
             , _Size(size)
         { 
             _Data = GMalloc::Alloc(size);
@@ -205,7 +205,7 @@ namespace SkySnow
         }
         uint8_t _Size;
         void*   _Data;
-        size_t  _Hash;
+        uint32  _Hash;
     };
     //Create Uniform Buffer Descriptor Info
     //Depth RenderLoop Descriptor,or Light RenderLoop Descriptor ext
@@ -214,14 +214,14 @@ namespace SkySnow
         UniformBufferSlot(uint8_t inUBIndex,const char* inUBName,UniformBufferUsageType inType,GRIUniformBuffer* inUB = nullptr)
             : _UBIndex(inUBIndex)
             , _UBType(inType)
-            , _UBHashKey(String2Hash(inUBName))
+            , _UBHashKey(ShortStrHash32(inUBName))
             , _UniformBuffer(inUB)
         {
         }
         //A single draw is a list of uniform buffer owned by the current draw
         uint8_t                 _UBIndex;
         UniformBufferUsageType  _UBType;
-        size_t                  _UBHashKey;
+        uint32                  _UBHashKey;
         GRIUniformBufferRef     _UniformBuffer;
     };
     //Sampler Create Info

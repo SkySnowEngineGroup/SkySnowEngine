@@ -21,7 +21,6 @@
 // THE SOFTWARE.
 //
 #include "ResourceModule.h"
-#include "HashUtil.h"
 #include "Context.h"
 #include "SceneManager.h"
 #include "GameObjectManager.h"

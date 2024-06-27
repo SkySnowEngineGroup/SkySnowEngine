@@ -21,6 +21,8 @@
 // THE SOFTWARE.
 #pragma once
 #include <cstdint>
+#include <stddef.h>
+
 namespace SkySnow
 {
 	using int8		= std::int8_t;

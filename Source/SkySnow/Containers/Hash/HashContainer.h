@@ -19,41 +19,18 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include "NonCopyable.h"
-#include "Variable.h"
-#include "SPtr.h"
-#include "UUID.h"
-#include <map>
-#include <vector>
+#include "Murmur3Hash.h"
 
 namespace SkySnow
 {
-    class GameObject;
-    class IComponent;
-    class GameObjectManager : public NonCopyable
+    template<typename T>
+    struct HMapHashFn
     {
-    public:
-        static GameObjectManager& Instance();
-        
-        SPtr<GameObject> CreateGameObject();
-        SPtr<GameObject> GetGameObjectPtr(const UUID& uuid);
-        void UpdateGameObjectUUID(const UUID& oldUuid,const UUID& newUuid);
-        void RemoveGameObjectPtr(const UUID& uuid);
-        
-        std::map<UUID,std::vector<SPtr<IComponent>>>& GetComponents();
-        SPtr<IComponent> GetComponentPtr(const UUID& goUuid,const char* typeName);
-        void RemoveComponentPtr(const UUID& goUuid,const char* typeName);
-        void RemoveGameObjectComponents(const UUID& goUuid);
-        
-        void ClearGameObject();
-    private:
-        GameObjectManager();
-        ~GameObjectManager();
-    private:
-        std::map<UUID,SPtr<GameObject>>                 _GOMaps;
-        std::map<UUID,std::vector<SPtr<IComponent>>>    _ComMaps;
+        uint32_t operator()(const T& key) const noexcept
+        {
+            return murmur3((const uint32_t*)&key, sizeof(key) / 4, 0);
+        }
     };
-    GameObjectManager& GetGOManager();
+    
 }

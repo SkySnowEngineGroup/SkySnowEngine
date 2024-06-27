@@ -19,41 +19,32 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include "NonCopyable.h"
 #include "Variable.h"
-#include "SPtr.h"
-#include "UUID.h"
-#include <map>
-#include <vector>
 
 namespace SkySnow
 {
-    class GameObject;
-    class IComponent;
-    class GameObjectManager : public NonCopyable
+    static inline uint32 FNV1aHash(const char* key)
     {
-    public:
-        static GameObjectManager& Instance();
-        
-        SPtr<GameObject> CreateGameObject();
-        SPtr<GameObject> GetGameObjectPtr(const UUID& uuid);
-        void UpdateGameObjectUUID(const UUID& oldUuid,const UUID& newUuid);
-        void RemoveGameObjectPtr(const UUID& uuid);
-        
-        std::map<UUID,std::vector<SPtr<IComponent>>>& GetComponents();
-        SPtr<IComponent> GetComponentPtr(const UUID& goUuid,const char* typeName);
-        void RemoveComponentPtr(const UUID& goUuid,const char* typeName);
-        void RemoveGameObjectComponents(const UUID& goUuid);
-        
-        void ClearGameObject();
-    private:
-        GameObjectManager();
-        ~GameObjectManager();
-    private:
-        std::map<UUID,SPtr<GameObject>>                 _GOMaps;
-        std::map<UUID,std::vector<SPtr<IComponent>>>    _ComMaps;
-    };
-    GameObjectManager& GetGOManager();
+        const uint32 fnvPrime = 16777619U;
+        uint32 hash = 2166136261U;
+        const uint8* ptr = (const uint8*)key;
+        while(*ptr)
+        {
+            hash = (hash ^ *ptr++) * fnvPrime;
+        }
+        return hash;
+    }
+    static inline uint32 FNV1aHash(const void* data,size_t dataSize)
+    {
+        const uint32 fnvPrime = 16777619U;
+        uint32 hash = 2166136261U;
+        const uint8* ptr = (const uint8*)data;
+        const uint8* end = ptr + dataSize;
+        while(ptr < end)
+        {
+            hash = (hash ^ *ptr++) * fnvPrime;
+        }
+        return hash;
+    }
 }

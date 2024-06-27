@@ -25,7 +25,7 @@
 #include "LogAssert.h"
 #include "GLShaderResource.h"
 #include "GLPipelineResource.h"
-#include "HashUtil.h"
+
 namespace SkySnow
 {
 	using namespace OGLShader;
@@ -136,7 +136,7 @@ namespace SkySnow
                     uSlot._Type     = type;
                     uSlot._Location = location;
                     uSlot._Size     = size;
-                    block._UniformSlots[String2Hash(uniformName)] = uSlot;
+                    block._UniformSlots[ShortStrHash32(uniformName)] = uSlot;
 //                    SN_LOG("Var UniformName:%s type:%d location:%d size:%d",uniformName,uSlot._Type,uSlot._Location,uSlot._Size);
                 }
                 else if(location != -1 && !isUVar)//收集Sampler并设置绑定点
@@ -176,7 +176,7 @@ namespace SkySnow
                 {
                     GLUniformBufferSlot uBlock;
                     uBlock._BlockIndex = blockIndex;
-                    pipelineShader->_InternalUBs[String2Hash(uniformBlockName)] = uBlock;
+                    pipelineShader->_InternalUBs[ShortStrHash32(uniformBlockName)] = uBlock;
 //                    SN_LOG("uniformBlockName HashKey:%ld", String2Hash(uniformBlockName));
 //                    SN_LOG("uniformBlockName:%s Binding:%d Offset:%d BlockIndex:%d",uniformBlockName,uBlock._BindingIndex,offset,uBlock._BlockIndex);
                 }

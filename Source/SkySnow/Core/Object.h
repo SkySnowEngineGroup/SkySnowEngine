@@ -22,7 +22,7 @@
 #pragma once
 #include "ObjectDefines.h"
 #include "LogAssert.h"
-#include "VarType.h"
+#include "Variable.h"
 #include "UUID.h"
 
 namespace SkySnow

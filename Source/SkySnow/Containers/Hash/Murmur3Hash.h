@@ -19,41 +19,29 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #pragma once
-#include "NonCopyable.h"
-#include "Variable.h"
-#include "SPtr.h"
-#include "UUID.h"
-#include <map>
-#include <vector>
 
 namespace SkySnow
 {
-    class GameObject;
-    class IComponent;
-    class GameObjectManager : public NonCopyable
+    inline uint32_t murmur3(const uint32_t* key, size_t wordCount, uint32_t seed) noexcept
     {
-    public:
-        static GameObjectManager& Instance();
-        
-        SPtr<GameObject> CreateGameObject();
-        SPtr<GameObject> GetGameObjectPtr(const UUID& uuid);
-        void UpdateGameObjectUUID(const UUID& oldUuid,const UUID& newUuid);
-        void RemoveGameObjectPtr(const UUID& uuid);
-        
-        std::map<UUID,std::vector<SPtr<IComponent>>>& GetComponents();
-        SPtr<IComponent> GetComponentPtr(const UUID& goUuid,const char* typeName);
-        void RemoveComponentPtr(const UUID& goUuid,const char* typeName);
-        void RemoveGameObjectComponents(const UUID& goUuid);
-        
-        void ClearGameObject();
-    private:
-        GameObjectManager();
-        ~GameObjectManager();
-    private:
-        std::map<UUID,SPtr<GameObject>>                 _GOMaps;
-        std::map<UUID,std::vector<SPtr<IComponent>>>    _ComMaps;
-    };
-    GameObjectManager& GetGOManager();
+        uint32_t h = seed;
+        size_t i = wordCount;
+        do {
+            uint32_t k = *key++;
+            k *= 0xcc9e2d51u;
+            k = (k << 15u) | (k >> 17u);
+            k *= 0x1b873593u;
+            h ^= k;
+            h = (h << 13u) | (h >> 19u);
+            h = (h * 5u) + 0xe6546b64u;
+        } while (--i);
+        h ^= wordCount;
+        h ^= h >> 16u;
+        h *= 0x85ebca6bu;
+        h ^= h >> 13u;
+        h *= 0xc2b2ae35u;
+        h ^= h >> 16u;
+        return h;
+    }
 }
