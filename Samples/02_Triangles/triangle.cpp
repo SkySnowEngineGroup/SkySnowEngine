@@ -87,16 +87,11 @@ public:
         
         shader->SetPass(shaderPass, 0);
         mat->SetShader(shader);
-        
+        //UBO or uniform
 //        mat->SetTexture("panda.png",texture);
-  //      mat->CreateShader("QuadVS.sns", "QuadFS.sns");
-  //      
-  //      SPtr<StaticMesh> mesh = CreateSPtr<StaticMesh>();
-  //      mesh->CreateStandardMesh(StandardMeshType::SM_Quad);
-  //      meshCom->SetShareMesh(mesh);
 
-  //      meshRenderCom->SetMaterialCount(1);
-  //      meshRenderCom->SetMaterial(mat,0);
+        meshRenderCom->SetMaterialCount(1);
+        meshRenderCom->SetMaterial(mat,0);
 
 		return true;
 	}

@@ -51,6 +51,7 @@ namespace SkySnow
         //Get Scene
         SPtr<Scene> GetHostScenePtr() const;
         const UUID& GetHostSceneUUID() const { return _SceneUUID;}
+        const bool IsBelongScene(const UUID& uuid) { return _SceneUUID == uuid;}
 	protected:
 		bool		     _Enable;
         UUID             _GoUUID;

@@ -61,12 +61,12 @@ namespace SkySnow
         SPtr<Scene> GetHostScenePtr();
         
         const UUID& GetHostSceneUUID() const { return _SceneUUID;}
+        const bool IsBelongScene(const UUID& uuid) { return uuid == _SceneUUID;}
 	private:
         void SetSceneUUID(const UUID& sceneUUID){_SceneUUID = sceneUUID;}
     private:
-        bool                        _Enable;
-        //GameObject at Layer
-        int32_t                         _Layer;
+        bool                            _Enable;
+        int32_t                         _Layer;//GameObject at Layer
         int16_t                         _Tag;
         UUID                            _ParentUUID = UUID::EMPTY;
         UUID                            _SceneUUID = UUID::EMPTY;

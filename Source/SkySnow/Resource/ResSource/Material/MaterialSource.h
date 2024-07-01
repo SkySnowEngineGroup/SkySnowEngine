@@ -56,8 +56,12 @@ namespace SkySnow
         //    }
         //    return _PipelineShaderRef;
         //}
+        void SetTextue();
         void SetShader(SPtr<Shader>& shader){_Shader = shader;}
         void SetMaterialProperty(SPtr<MaterialProperty>& mp){ _Property = mp;}
+        
+        SPtr<Shader>& GetShader() { return _Shader;}
+        SPtr<MaterialProperty>& GetMaterialProperty() { return _Property;}
     private:
         SPtr<Shader>            _Shader;
         SPtr<MaterialProperty>  _Property;

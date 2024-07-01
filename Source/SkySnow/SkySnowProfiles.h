@@ -104,6 +104,19 @@
 	#endif
 #endif
 
+#undef ArraySize
+#if defined(__GNUC__) && __cplusplus < 201103L
+#   define ArraySize(x) (sizeof(x) / sizeof(x[0]))
+#else
+#   include <cstdlib> // size_t
+#   include <stddef.h>  // size_t on Vita
+
+template<typename T, size_t N>
+char(&ArraySizeArg(T(&)[N]))[N];
+
+#   define ArraySize(x) sizeof(ArraySizeArg(x))
+#endif
+
 namespace SkySnow
 {
 	//Globle config for engine

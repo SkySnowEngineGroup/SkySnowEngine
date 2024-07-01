@@ -21,22 +21,25 @@
 // THE SOFTWARE.
 //
 #pragma once
-#include "ISource.h"
-#include "ShaderKeywordBits.h"
-#include "ShaderPropertyTable.h"
 
 namespace SkySnow
 {
-    //property is uniform variable and builtin uniform object
-	class MaterialProperty : public ISource
-	{
-		SkySnow_Object(MaterialProperty, ISource);
-	public :
-		MaterialProperty();
-		~MaterialProperty();
-        
-    private:
-        SPtr<ShaderKeywordBits>     _KeyWordBits;
-        SPtr<ShaderPropertyTable>   _Propertys;
-	};
+//
+struct CharHash
+{
+    size_t operator()(const char* str) const
+    {
+        return ShortStrHash32(str);
+    }
+};
+struct CharCompare
+{
+    bool operator()(const char* lhs,const char* rhs) const
+    {
+        return lhs == rhs || (lhs != nullptr && rhs != nullptr && strcmp(lhs, rhs) == 0);
+    }
+};
+typedef std::map<const char*,int,CharHash,CharCompare> KeyCValueIMap;
+
+
 }
