@@ -36,6 +36,17 @@ namespace SkySnow
         virtual ~Texture2D();
         
         void SetTextureStream(const SPtr<TextureStream>& stream);
+        
+        void SetTextureName(const std::string texName);
+        
+        const std::string& GetTextureName() const;
+        
+        inline SPtr<Texture2DMetaData> GetTexture2DMetaData()
+        {
+            return _Tex2DMetaData;
+        }
+    private:
+        void CreateTextureMeta();
     private:
         SPtr<Texture2DMetaData> _Tex2DMetaData;
     };

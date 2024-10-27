@@ -72,6 +72,7 @@ public:
         TextureLoader* tImp = new TextureLoader();
         SPtr<TextureStream> texStream = tImp->LoadSource<TextureStream>(imagePath);
         SPtr<Texture2D> tex2D = ResourceSystem()->CreateRSEntity<Texture2D>();
+        tex2D->SetTextureName("panda.png");
         tex2D->SetTextureStream(texStream);
 
         SPtr<Material> mat = ResourceSystem()->CreateRSEntity<Material>();
@@ -87,6 +88,7 @@ public:
         
         shader->SetPass(shaderPass, 0);
         mat->SetShader(shader);
+        mat->SetTexture(tex2D);
         //UBO or uniform
 //        mat->SetTexture("panda.png",texture);
 

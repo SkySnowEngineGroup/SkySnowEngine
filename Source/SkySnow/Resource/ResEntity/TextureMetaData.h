@@ -31,6 +31,17 @@ namespace SkySnow
     public:
         TextureMetaData();
         virtual ~TextureMetaData();
+        
+        void SetTextureName(const std::string& texName)
+        {
+            _TexName = texName;
+        }
+        const std::string& GetTextureName() 
+        {
+            return _TexName;
+        }
+    private:
+        std::string _TexName;
     };
 
     class Texture2DMetaData : public TextureMetaData

@@ -34,8 +34,31 @@ namespace SkySnow
         Material();
         ~Material();
         
-        void SetShader(SPtr<Shader>& shader);
-    private:
+        inline void SetShader(SPtr<Shader>& shader);
+        inline const SPtr<Shader>& GetShader() const;
         
+        void SetTexture(SPtr<IRSBase> texture);
+        template<typename T> SPtr<T> GetTexture(const UUID& uuid);
+    private:
+        std::unordered_map<UUID, SPtr<IRSBase>> _TexMaps;
     };
+
+    template<typename T> SPtr<T> Material::GetTexture(const UUID& uuid)
+    {
+        auto iter = _TexMaps.find(uuid);
+        if(iter != _TexMaps.end())
+        {
+            return std::static_pointer_cast<T>(_TexMaps[uuid]);
+        }
+        return nullptr;
+    }
+
+    inline void Material::SetShader(SPtr<Shader>& shader)
+    {
+        Sou()->SetShader(shader);
+    }
+    inline const SPtr<Shader>& Material::GetShader() const
+    {
+        return Sou()->GetShader();
+    }
 }

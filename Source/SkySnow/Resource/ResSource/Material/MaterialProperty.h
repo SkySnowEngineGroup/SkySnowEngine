@@ -27,7 +27,7 @@
 
 namespace SkySnow
 {
-    //property is uniform variable and builtin uniform object
+    //property is uniform variable with builtin uniform object
 	class MaterialProperty : public ISource
 	{
 		SkySnow_Object(MaterialProperty, ISource);

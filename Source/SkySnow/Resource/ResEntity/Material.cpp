@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 //
 #include "Material.h"
-
+#include "LogAssert.h"
 namespace SkySnow
 {
     Material::Material()
@@ -30,8 +30,19 @@ namespace SkySnow
     Material::~Material()
     {
     }
-    void Material::SetShader(SPtr<Shader>& shader)
+    void Material::SetTexture(SPtr<IRSBase> texture)
     {
-        Sou()->SetShader(shader);
+        auto iter = _TexMaps.find(texture->GetUUID());
+        if(iter != _TexMaps.end())
+        {
+            SN_WARN("Material TextureMaps has this texture.");
+            return;
+        }
+        if(!texture)
+        {
+            SN_WARN("Material Texture is nullptr.");
+            return;
+        }
+        _TexMaps[texture->GetUUID()] = texture;
     }
 }

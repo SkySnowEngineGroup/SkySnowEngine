@@ -27,6 +27,7 @@ namespace SkySnow
 {
     Texture2D::Texture2D()
     {
+        CreateTextureMeta();
     }
     Texture2D::~Texture2D()
     {
@@ -34,10 +35,21 @@ namespace SkySnow
 
     void Texture2D::SetTextureStream(const SPtr<TextureStream>& stream)
     {
+        Sou()->SetTextureStream(stream);
+    }
+    void Texture2D::SetTextureName(const std::string texName)
+    {
+        _Tex2DMetaData->SetTextureName(texName);
+    }
+    const std::string& Texture2D::GetTextureName() const
+    {
+        return _Tex2DMetaData->GetTextureName();
+    }
+    void Texture2D::CreateTextureMeta()
+    {
         if(!_Tex2DMetaData)
         {
             _Tex2DMetaData = CreateSPtr<Texture2DMetaData>();
         }
-        Sou()->SetTextureStream(stream);
     }
 }

@@ -93,6 +93,26 @@ namespace SkySnow
         GRITexture2DRef tempTex;
         GRIViewportStateRef curVp = SSContext().GetGameWindow()->GetViewport()->GetGRIViewport();
         commandBuffer->CmdBeginViewport(curVp, tempTex);
+        for(int i = 0; i < _SceneInfo._RendererList.size(); i ++)
+        {
+            SPtr<Renderable> renderer = _SceneInfo._RendererList[i];
+            
+            auto mesh = renderer->GetShareMesh();
+            if(!mesh->Res())
+            {
+                mesh->IRSBase::CreateResource();
+            }
+            auto mats = renderer->GetMaterials();
+            for (int j = 0; j < mats.size(); i ++) 
+            {
+                SPtr<Material> mat = mats[j];
+                if(!mat->Res())
+                {
+                    mat->IRSBase::CreateResource();
+                }
+                
+            }
+        }
         //for(int i = 0; i < _RSceneInfo._RenderRenderables.size(); i ++)
         //{
         //    SPtr<RenderRenderable> render = _RSceneInfo._RenderRenderables[i];

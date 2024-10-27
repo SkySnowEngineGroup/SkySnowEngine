@@ -22,6 +22,7 @@
 //
 #pragma once
 #include "ISource.h"
+#include "PropertyName.h"
 
 namespace SkySnow
 {
